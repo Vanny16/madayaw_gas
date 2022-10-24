@@ -12,12 +12,12 @@
                         <div class="d-flex">
                             <div class="w-100">
                                 <p class="social-media d-flex justify-content-end">
-                                    <a rel="noreferrer" target="_BLANK" href="https://www.facebook.com/profile.php?id=100075744402391" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                    {{-- <a rel="noreferrer" target="_BLANK" href="https://www.facebook.com/profile.php?id=100075744402391" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a> --}}
                                     {{-- <a rel="noreferrer" target="_BLANK" href="https://twitter.com/uniminofficial" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a> --}}
                                     {{-- <a rel="noreferrer" target="_BLANK" href="https://www.tiktok.com/@uniminofficial" class="social-icon d-flex align-items-center justify-content-center"><img src="{{ asset('bootstrap/landing/images/icons/tiktok3.png') }}" /></a></a> --}}
                                     {{-- <a rel="noreferrer" target="_BLANK" href="https://www.youtube.com/channel/UCAXq0GXoLfWY2zB_p_O3ALQ" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-youtube-play"></span></a> --}}
                                     {{-- <a rel="noreferrer" target="_BLANK" href="http://instagram.com/uniminofficial" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-instagram"></span></a> --}}
-                                    <a rel="noreferrer" target="_BLANK" href="https://www.infinitwebsolutions.com" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-globe"></span></a>
+                                    {{-- <a rel="noreferrer" target="_BLANK" href="https://www.infinitwebsolutions.com" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-globe"></span></a> --}}
                                 </p>
                             </div>
                         </div>

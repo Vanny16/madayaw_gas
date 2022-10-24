@@ -14,3 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'LoginController@login');
+
+
+Route::group(['prefix' => 'home'], function()
+{
+    Route::get('main', 'MainController@home');
+});
