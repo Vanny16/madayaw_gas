@@ -75,20 +75,20 @@
                                     <tr>
                                         <th width="50px"></th>
                                         <th>Employee Name</th>
-                                        <th>E-mail</th>
+                                        <th>Username</th>
                                         <th width="100px">Status</th>
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(isset($employees))
-                                        @foreach($employees as $employee)
+                                    @if(isset($users))
+                                        @foreach($users as $user)
                                             <tr>
                                                 <td>
-                                                     @if($employee->emp_image <> '')
+                                                     @if($user->emp_image <> '')
                                                         <div class="user-panel">
                                                             <div class="image">
-                                                                <img src="{{ asset('images/employees/' . $employee->emp_image) }}" class="img-circle elevation-2" alt="User Image">
+                                                                <img src="{{ asset('images/employees/' . $user->usr_image) }}" class="img-circle elevation-2" alt="User Image">
                                                             </div>
                                                         </div>
                                                     @else
@@ -101,13 +101,13 @@
                                                 </td>
                                                 <td>   
                                                     <a href="#">
-                                                        {{ $employee->emp_last_name }}, {{ $employee->emp_first_name }} {{ $employee->emp_middle_name }}
+                                                        {{ $user->usr_full_name }}
                                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
-                                                <td>{{ $employee->emp_email }}</td>
+                                                <td>{{ $user->usr_name }}</td>
                                                 <td>
-                                                    @if($employee->emp_active == '1')
+                                                    @if($user->usr_active == '1')
                                                         <span class="badge badge-success">Active</span>
                                                         <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                                     @else 
@@ -147,7 +147,6 @@
                                                     </div>
                                                 </div>
                                             </div> --}}
-
                                         @endforeach
                                     @endif
                                 </tbody>
@@ -175,86 +174,16 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="emp_last_name">Last Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="emp_last_name" placeholder="Last Name" value="{{ old('emp_last_name') }}" required/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="emp_first_name">First Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="emp_first_name" placeholder="First Name" value="{{ old('emp_first_name') }}" required/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="emp_middle_name">Middle Name </label>
-                                <input type="text" class="form-control" name="emp_middle_name" placeholder="Middle Name" value="{{ old('emp_middle_name') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="emp_sex">Sex <span style="color:red">*</span></label>
-                                <select class="form-control" name="emp_sex">
-                                    @if(old('emp_sex'))
-                                        @if(old('emp_sex') == 'M')
-                                            <option value="M" selected>Male</option>
-                                            <option value="F">Female</option>
-                                        @else 
-                                            <option value="M">Male</option>
-                                            <option value="F" selected>Female</option>
-                                        @endif
-                                    @else
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="emp_birthdate">Date of Birth <span style="color:red">*</span></label>
-                                <input type="date" class="form-control" name="emp_birthdate" value="{{ old('emp_birthdate') }}" required/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="emp_date_employment">Date of Employement <span style="color:red">*</span></label>
-                                <input type="date" class="form-control" name="emp_date_employment" value="{{ old('emp_date_employment') }}" required/>
+                                <label for="emp_last_name">Full Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="usr_full_name" placeholder="Full Name" value="{{ old('usr_full_name') }}" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label for="emp_email">E-mail <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="emp_email" placeholder="employee@email.com" value="{{ old('emp_email') }}" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="">Special Roles</label>
-                                <select class="select2" name="modules1[]" multiple="multiple">
-                                    @foreach($modules as $module)
-                                        @if($module->mod_category == '1')
-                                            <option value="{{ $module->mod_id }}">{{ $module->mod_description }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">User Privileges</label>
-                                <select class="select2" name="modules2[]" multiple="multiple">
-                                    @foreach($modules as $module)
-                                        @if($module->mod_category == '2')
-                                            <option value="{{ $module->mod_id }}">{{ $module->mod_description }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
+                                <label for="usr_name">Username <span style="color:red">*</span></label>
+                                <input type="email" class="form-control" name="usr_name" value="{{ old('emp_email') }}" required/>
                             </div>
                         </div>
                     </div>

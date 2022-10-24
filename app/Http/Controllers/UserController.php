@@ -18,19 +18,19 @@ class UserController extends Controller
         return view('admin.employees.manage',compact('modules'));
     }
     
-    public function saveuser(Request $request)
-    {
-        $usr_fullname = $request->usr_fullname;
-        $usr_name = $request->usr_name;
-        $usr_password = $request->usr_password;
+    // public function saveuser(Request $request)
+    // {
+    //     $usr_full_name = $request->usr_fullname;
+    //     $usr_name = $request->usr_name;
+    //     $usr_password = $request->usr_password;
 
-        $usr_id = DB::table('users')
-        ->insert([
-            'acc_id' => session('acc_id')
-            'usr_fullname' => $usr_fullname
-            'usr_name' => $usr_name
-            'usr_password' => $usr_password
+    //     $usr_id = DB::table('users')
+    //     ->insert([
+    //         'acc_id' => session('acc_id')
+    //         'usr_full_name' => $usr_full_name
+    //         'usr_name' => $usr_name
+    //         'usr_password' => $usr_password
 
-        ]);
-    }
+    //     ]);
+    // }
 }
