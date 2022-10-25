@@ -49,7 +49,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" data-toggle="modal" data-target="#addUserModal" class="nav-link">
+                                    <a href="{{ action('MainController@home') }}" data-toggle="modal" data-target="#user-modal" class="nav-link">
                                         <i class="nav-icon fa fa-plus"></i>
                                         <p>
                                             Create New User
@@ -58,7 +58,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" data-toggle="modal" data-target="#editUserModal" class="nav-link">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link">
                                         <i class="nav-icon fa fa-edit"></i>
                                         <p>
                                             Modify User
