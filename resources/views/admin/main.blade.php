@@ -90,6 +90,56 @@
                 </div>
                 
 	    </div>
+
+		<!-- Customer Modal -->
+		<div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Employee Form</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form method="POST" action="">
+					{{ csrf_field() }} 
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="cus_name">Full Name <span style="color:red">*</span></label>
+										<input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="" required/>
+									</div>
+
+									<div class="form-group">
+										<label for="cus_address">Address <span style="color:red">*</span></label>
+										<input type="email" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
+									</div>
+
+									<div class="form-group">
+										<label for="cus_address">Contact # <span style="color:red">*</span></label>
+										<input type="email" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
+									</div>
+
+									<div class="form-group">
+										<label for="cus_address">Notes <span style="color:red">*</span></label>
+										<textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+									</div>
+								</div>
+							</div>
+							
+							<hr/>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
 	</section>
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
