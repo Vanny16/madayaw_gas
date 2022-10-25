@@ -28,8 +28,6 @@ Route::group(['prefix' => 'customer'], function()
     Route::get('manage', 'CustomerController@manage');
 });
 
-
-
 Route::group(['prefix' => 'user'], function()
 {
     Route::get('main', 'UserController@user');
