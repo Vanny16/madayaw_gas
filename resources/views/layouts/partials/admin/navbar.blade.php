@@ -28,18 +28,18 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-danger navbar-badge">{{ total_notifications() }}</span>
+                <span class="badge badge-danger navbar-badge">3</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">{{ total_notifications() }} Notifications</span>
+                        <span class="dropdown-item dropdown-header">Notifications</span>
                 <div class="dropdown-divider"></div>
-                <a href="{{ action('LeaveController@leaveprocessing')}}" class="dropdown-item">
-                    <i class="fas fa-user-tie mr-2"></i> {{ approve_officer_notifs() }} leave applications  
+                <a href="" class="dropdown-item">
+                    <i class="fas fa-user-tie mr-2"></i>leave applications  
                 </a>
                
                 <div class="dropdown-divider"></div>
-                <a href="{{ action('LeaveController@leaveprocessing') }}" class="dropdown-item">
-                    <i class="fas fa-id-badge mr-2"></i> {{ hr_notifs() }} leave applications for HR
+                <a href="" class="dropdown-item">
+                    <i class="fas fa-id-badge mr-2"></i>leave applications for HR
                 </a>
               
             </div>

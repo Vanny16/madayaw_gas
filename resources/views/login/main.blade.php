@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <p><small>Please login to continue</small></p>
-                        <form method="POST" action="{{-- action('LoginController@validateUser') --}}">
+                        <form method="POST" action="{{ action('LoginController@validateUser') }}">
                         {{ csrf_field() }} 
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 mb-2">

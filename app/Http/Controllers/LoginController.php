@@ -30,6 +30,7 @@ class LoginController extends Controller
         //     $request->session()->flash('error_login', 'Wrong username or password');
         //     return redirect()->action('AdminController@admin');
         // }
+        return redirect()->action('MainController@home');
     }
 
     public function logout()
