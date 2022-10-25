@@ -1,4 +1,4 @@
-<title>Infinit | HRIS</title>
+<title>Madayaw Gas | Home</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Infinit Human Resource Information System">

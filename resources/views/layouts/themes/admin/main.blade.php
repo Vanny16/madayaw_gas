@@ -8,7 +8,7 @@
             @include('layouts.partials.admin.navbar')
             @include('layouts.partials.admin.sidebar')
             @yield('content')
-            @include('layouts.partials.admin.footer')
+            {{-- @include('layouts.partials.admin.footer') --}}
             @include('layouts.partials.admin.controlsidebar')
         </div>
         @include('layouts.partials.admin.script')

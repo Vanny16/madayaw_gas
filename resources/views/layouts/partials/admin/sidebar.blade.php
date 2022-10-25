@@ -36,6 +36,84 @@
                     </a>
                 </li>
 
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-archive"></i>
+                        <p>Management <i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Users <i class="right fas fa-angle-left"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-plus"></i>
+                                        <p>
+                                            Create New User
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-edit"></i>
+                                        <p>
+                                            Modify User
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-address-card"></i>
+                                <p>Customers <i class="right fas fa-angle-left"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-plus"></i>
+                                        <p>
+                                            New Customer
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-edit"></i>
+                                        <p>
+                                            Modify Customer
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p>
+                            Products
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                        <i class="nav-icon fas fa-truck-moving"></i>
+                        <p>
+                            Suppliers 
+                        </p>
+                    </a>
+                </li>
+
 
             </ul>
         </nav>

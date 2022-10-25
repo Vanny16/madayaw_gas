@@ -5,12 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">User Account</h1>
+                    <h1 class="m-0 text-dark">Home</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
-                        <li class="breadcrumb-item">User Account</li>
                     </ol>
                 </div>
             </div>
@@ -25,6 +24,72 @@
                     @include('layouts.partials.alert')
                 </div>
             </div>
+
+
+			<div class="row">
+                <div class="col-md-9"> 
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fa fa-bullhorn"></i> News and Announcements</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                <div class="time-label">
+                                    <span class="bg-danger"><i class="fa fa-bullhorn"></i> News and Announcements</span>
+                                    @if(session('mod_news') == '1')  
+                                        <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createNews"><i class="fa fa-comment"></i> Compose</button>
+                                    @endif
+                                </div>
+                                    <div>
+                                        <i class="fas fa-newspaper bg-blue"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i> </span>
+                                            <h3 class="timeline-header"></h3>
+                                            <div class="timeline-body">
+                                                
+                                                    <div class="thumbnail">
+                                                        <a href="">
+                                                            <img src="" alt="" style="width:100%">
+                                                        </a>
+                                                        <div class="caption">
+                                                            <p></p>
+                                                        </div>
+                                                    </div>
+                                                    <p></p>
+                                            </div>
+                                            <div class="timeline-footer">
+                                                    {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i> Delete</button> --}}
+                                                    {{--<a style="color:#dc3545;" href="javascript:void(0)" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i></a>--}}
+                                            
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="removeNews">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Confirm Deletion</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete this news/announcement?</p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        <a class="btn btn-danger btn-sm" href=""><i class="fa fa-trash"></i> Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 	    </div>
 	</section>
 
