@@ -75,7 +75,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                    <a href="{{ action('MainController@home') }}" class="nav-link" data-toggle="modal" data-target="#customer-modal">
                                         <i class="nav-icon fa fa-plus"></i>
                                         <p>
                                             New Customer
