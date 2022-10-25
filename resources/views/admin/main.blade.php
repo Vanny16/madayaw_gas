@@ -157,7 +157,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
-                                        <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ old('usr_full_name') }}" required/>
+                                        <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="" required/>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="usr_address">Address <span style="color:red">*</span></label>
-                                        <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ old('usr_address') }}" required/>
+                                        <input type="text" class="form-control" name="usr_address" placeholder="Address" value="" required/>
                                     </div>
                                 </div>
                             </div>
@@ -173,13 +173,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="usr_username">Username <span style="color:red">*</span></label>
-                                        <input type="email" class="form-control" name="usr_username" value="{{ old('usr_username') }}" required/>
+                                        <input type="text" class="form-control" name="usr_username" value="" required/>
                                     </div>
                                 </div>    
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="usr_password">Password <span style="color:red">*</span></label>
-                                        <input type="email" class="form-control" name="usr_password" value="{{ old('usr_password') }}" required/>
+                                        <input type="password" class="form-control" name="usr_password" value="" required/>
                                     </div>
                                 </div>
                             </div>
