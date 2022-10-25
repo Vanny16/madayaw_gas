@@ -10,6 +10,6 @@ class UserController extends Controller
     //
     public function User()
     {
-        return view('admin.user.main');
+        return view('admin.user.manage');
     }
 }
