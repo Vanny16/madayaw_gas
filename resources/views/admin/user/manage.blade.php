@@ -69,7 +69,7 @@
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
