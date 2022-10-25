@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Session;
 use DB;
 
-class LoginController extends Controller
+class MainController extends Controller
 {
     public function home()
     {
-        return view('login.main'); 
+        return view('admin.main'); 
     }
 
 }
