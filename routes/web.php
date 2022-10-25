@@ -22,3 +22,8 @@ Route::group(['prefix' => 'home'], function()
 {
     Route::get('main', 'MainController@home');
 });
+
+Route::group(['prefix' => 'customer'], function()
+{
+    Route::get('manage', 'CustomerController@manage');
+});

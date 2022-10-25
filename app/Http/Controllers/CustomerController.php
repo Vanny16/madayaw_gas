@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
     //
     public function manage()
     {
-        $modules = DB::table('modules')
-        ->where('mod_active','=','1')
-        ->orderBy('mod_name')
-        ->get();
+        // $modules = DB::table('modules')
+        // ->where('mod_active','=','1')
+        // ->orderBy('mod_name')
+        // ->get();
 
-        return view('admin.employees.manage',compact('modules'));
+        return view('admin.customers.manage');
     }
     
     // public function saveuser(Request $request)
