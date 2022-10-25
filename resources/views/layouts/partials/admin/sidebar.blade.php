@@ -58,7 +58,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                                    <a href="{{ action('UserController@user') }}" class="nav-link">
                                         <i class="nav-icon fa fa-edit"></i>
                                         <p>
                                             Modify User

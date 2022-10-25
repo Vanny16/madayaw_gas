@@ -22,3 +22,9 @@ Route::group(['prefix' => 'home'], function()
 {
     Route::get('main', 'MainController@home');
 });
+
+
+Route::group(['prefix' => 'user'], function()
+{
+    Route::get('main', 'UserController@user');
+});
