@@ -15,22 +15,50 @@ class LoginController extends Controller
 
     public function validateUser(Request $request)
     {
-        // $username = $request->username;
-        // $password = $request->password;
+        $username = $request->username;
+        $password = $request->password;
 
-        // $admin = DB::table('tbl_admin')
-        // ->where('username','=',$username)
-        // ->where('password','=',$password)
-        // ->first();
+        $users = DB::table('users')
+        ->join('accounts','accounts.acc_id','=','users.acc_id')
+        ->where('usr_name','=',$username)
+        ->where('usr_password','=',$password)
+        //->where('password','=',md5($password)) COMMENTED FOR TESTING
+        ->first();
 
-        // if($admin){
-        //     $request->session()->put('admin_session', '1');
-        //     return redirect()->action('AdminController@admin');
-        // }else{
-        //     $request->session()->flash('error_login', 'Wrong username or password');
-        //     return redirect()->action('AdminController@admin');
-        // }
-        return redirect()->action('MainController@home');
+        if($users)
+        {
+            if($users->usr_active == '1')
+            {
+                if($users->acc_active == '1')
+                {
+
+                    session(['usr_id' => $users->usr_id]);
+                    session(['acc_id' => $users->acc_id]);
+                    session(['usr_full_name' => $users->usr_full_name]);
+                    session(['usr_name' => $users->usr_name]);
+                    session(['usr_address' => $users->usr_address]);
+                    session(['usr_image' => $users->usr_image]);
+                    session(['usr_type' => $users->usr_type]);
+
+                    return redirect()->action('MainController@home');
+                }
+                else
+                {
+                    session()->flash('errorMessage', 'Organization account is inactive. Please contact your HR.');
+                    return redirect()->action('LoginController@login');
+                }
+            }
+            else
+            {
+                session()->flash('errorMessage', 'Employee is inactive. Please contact your HR.');
+                return redirect()->action('LoginController@login');
+            }
+        }
+        else
+        {
+            session()->flash('errorMessage', 'Invalid username or password');
+            return redirect()->action('LoginController@login');
+        }       
     }
 
     public function logout()

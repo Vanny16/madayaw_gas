@@ -34,11 +34,11 @@
                                     @include('layouts.partials.alert')
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="std_id_no">Username</label>
+                                    <label for="usr_name">Username</label>
                                     <input class="form-control" type="text" name="username" />
                                 </div>
                                 <div class="col-md-12 mb-3">
-                                    <label for="std_id_no">Password</label>
+                                    <label for="usr_password">Password</label>
                                     <input class="form-control" type="password" name="password" />
                                 </div>
                                 <div class="col-md-12 col-sm-12 mb-2">
