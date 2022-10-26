@@ -74,7 +74,7 @@
             </div>
         </li> --}}
 
-        <li class="nav-item d-none d-sm-inline-block">
+        <li class="nav-item d-sm-inline-block">
             <a href="{{ action('LoginController@logout') }}" class="nav-link"><i class="fa fa-sign-out"></i></a>
         </li>
 

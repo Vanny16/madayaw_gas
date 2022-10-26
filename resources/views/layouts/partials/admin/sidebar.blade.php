@@ -36,10 +36,37 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>
+                            Calendar 
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p>
+                            Products
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('SupplierController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-warehouse"></i>
+                        <p>
+                            Suppliers 
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-archive"></i>
-                        <p>Management <i class="right fas fa-angle-left"></i></p>
+                        <i class="nav-icon fas fa-address-card"></i>
+                        <p>Accounts Manager <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
 
@@ -63,79 +90,11 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-box-open"></i>
-                        <p>
-                            Products
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ action('SupplierController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-truck"></i>
-                        <p>
-                            Suppliers 
-                        </p>
-                    </a>
-                </li>
-
 
             </ul>
         </nav>
     </div>
 </aside>
-
-
-<!-- Customer Modal -->
-<div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="cus_name">Full Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Address <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Notes <span style="color:red">*</span></label>
-                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <hr/>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 {{--@else
     <script type="text/javascript">

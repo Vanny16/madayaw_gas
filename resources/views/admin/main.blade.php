@@ -87,7 +87,48 @@
                         </div>
                     </div>
                 </div>
-            </div>    
+				
+				<div class="col-md-3">
+					<div class="card card-info">
+                        <div class="card-header border-bottom-0 bg-navy">
+                            <h3 class="card-title"><i class="fas fa-users"></i> Recent users</h3>
+                        </div>
+                        <div class="card-body pt-0">
+                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                    <li class="item">
+                                        <div class="product-img"> 
+                                            <img class="img-size-50 img-circle" src="" alt="logs user image">
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="#" class="product-title">
+                                                <span class="badge badge-info float-right"></span>
+                                            </a>
+                                            <span class="product-description">
+                                            </span> 
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="product-img"> 
+                                            
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="#" class="product-title">
+                                                <span class="badge badge-info float-right"></span>
+                                            </a>
+                                            <span class="product-description">
+                                                No logs for today...
+                                            </span> 
+                                        </div>
+                                    </li>
+                            </ul>
+                        </div> 
+                        <div class="card-footer text-center">
+                            
+                        </div>
+                    </div>
+				</div>
+
+            </div>
 	</section>
 
 <script>
