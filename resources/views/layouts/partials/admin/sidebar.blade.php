@@ -60,64 +60,11 @@
                                 </p>
                             </a>
                         </li>
-
-
-                        <!-- <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>Users <i class="right fas fa-angle-left"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" data-toggle="modal" data-target="#user-modal" class="nav-link">
-                                        <i class="nav-icon fa fa-plus"></i>
-                                        <p>
-                                            Create New User
-                                        </p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ action('UserController@user') }}" class="nav-link">
-                                        <i class="nav-icon fa fa-edit"></i>
-                                        <p>
-                                            Modify User
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-address-card"></i>
-                                <p>Customers <i class="right fas fa-angle-left"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ action('MainController@home') }}" class="nav-link" data-toggle="modal" data-target="#customer-modal">
-                                        <i class="nav-icon fa fa-plus"></i>
-                                        <p>
-                                            New Customer
-                                        </p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ action('CustomerController@manage') }}" class="nav-link">
-                                        <i class="nav-icon fa fa-edit"></i>
-                                        <p>
-                                            Modify Customer
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
                     </ul>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('MainController@home') }}" class="nav-link">
+                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-box-open"></i>
                         <p>
                             Products
@@ -126,8 +73,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('MainController@home') }}" class="nav-link">
-                        <i class="nav-icon fas fa-truck-moving"></i>
+                    <a href="{{ action('SupplierController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-truck"></i>
                         <p>
                             Suppliers 
                         </p>
