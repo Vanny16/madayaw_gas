@@ -104,7 +104,7 @@
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                         </td>
                                     </tr> 
                                 </tbody>
