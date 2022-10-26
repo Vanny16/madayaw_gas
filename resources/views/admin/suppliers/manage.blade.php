@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-warehouse"></i> New Supplier</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fas fa-plus"></i> New Supplier</a>
                 </div>
 
                 <div class="col-md-12"> 

@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-dolly"></i> New Product</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Product</a>
                 </div>
 
                 <div class="col-md-12"> 
@@ -94,7 +94,7 @@
                                             100000
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
                                         </td>
                                     </tr> 
                                 </tbody>
@@ -106,6 +106,60 @@
             </div>
         </div>
     </section>
+</div>
+
+<!-- Products Modal -->
+<div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="prod_name">Product Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prod_name" placeholder="Enter Product Name" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod_description">Description <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prod_description" placeholder="Enter Description" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod_sku">SKU <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prod_sku" placeholder="Enter SKU" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod_quantity">Quantity <span style="color:red">*</span></label>
+                                <input type="number" class="form-control" name="prod_quantity" placeholder="Enter Quantity" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cus_address">Notes <span style="color:red">*</span></label>
+                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr/>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection
