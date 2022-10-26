@@ -30,7 +30,7 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-user"></i> Find Supplier</h3>
+                            <h3 class="card-title"><i class="fas fa-warehouse"></i> Find Supplier</h3>
                         </div>
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="">
@@ -58,13 +58,13 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Supplier</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-warehouse"></i> New Supplier</a>
                 </div>
 
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-users"></i> Suppliers</h3>
+                            <h3 class="card-title"><i class="fas fa-warehouse"></i> Suppliers</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
