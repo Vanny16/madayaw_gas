@@ -10,23 +10,22 @@ class UserController extends Controller
 {
     public function user()
     {
-        return view('admin.user.manage');
+        $users = DB::table('users')
+        ->where('acc_id', '=',session('acc_id'))
+        ->get();
+
+        return view('admin.user.manage',compact('users'));
     }
 
     public function searchUser(Request $request)
     {
-        $search_string = $request->search_string;
-
-       
         $users = DB::table('users')
         ->where('usr_full_name','LIKE', $search_string . '%')
         ->where('acc_id','=',session('acc_id'))
         ->orderBy('usr_full_name')
         ->get();
 
-        session()->flash('errorMessage','test');
-        return redirect()->action('UserController@User',compact('users','search_string'));
-        
+        return redirect()->action('UserController@User',compact('users'));  
     }
 
     public function createUser(Request $request)
@@ -59,6 +58,5 @@ class UserController extends Controller
             session()->flash('errorMessage','Username already taken');
             return redirect()->action('UserController@user');
         }
-        //test4
     }
 }
