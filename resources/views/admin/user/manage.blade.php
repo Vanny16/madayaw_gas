@@ -42,7 +42,7 @@
                                             @if(isset($search_string))
                                                 <input type="text" class="form-control" name="search_string" placeholder="Name" value="{{ $search_string }}" required/>
                                             @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" required/>
+                                                <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Name" required/>
                                             @endif
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-users">
                                     <tr>
                                         <td>
                                             <div class="user-panel">
@@ -164,5 +164,18 @@
         </div>
     </section>
 </div>
+
+<script>
+
+$(document).ready(function(){
+        $("#search-users").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-users tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
 
 @endsection
