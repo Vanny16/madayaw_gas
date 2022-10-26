@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Customers</h1>
+                    <h1 class="m-0 text-dark">Suppliers</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Manage Customers</li>
+                        <li class="breadcrumb-item active">Manage Supplier</li>
                     </ol>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-user"></i> Find Customer</h3>
+                            <h3 class="card-title"><i class="fas fa-user"></i> Find Supplier</h3>
                         </div>
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="">
@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
-                                            <label for="search_string">Find Customer</label>
+                                            <label for="search_string">Find Supplier</label>
                                             @if(isset($search_string))
                                                 <input type="text" class="form-control" name="search_string" placeholder="Name" value="{{ $search_string }}" required/>
                                             @else
@@ -58,13 +58,13 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Supplier</a>
                 </div>
 
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-users"></i> Customers</h3>
+                            <h3 class="card-title"><i class="fas fa-users"></i> Suppliers</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
@@ -74,10 +74,11 @@
                                 <thead>
                                     <tr>
                                         <th width="50px"></th>
-                                        <th>Customer Name</th>
+                                        <th>Supplier Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
-                                        <th width="100px">Status</th>
+                                        <th>Status</th>
+                                        <th width="100px">Notes</th>
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
@@ -104,9 +105,35 @@
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                           
+                                        </td>
+                                        <td>
+                                            <small><a href="javascript:void(0)" data-toggle="modal" data-target="#notes-Modal"><span class="fa fa-edit"></span></button></small>
                                         </td>
                                     </tr> 
+                                    <div id="notes-Modal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Set Notes</h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <form method="POST" action="">
+                                                {{ csrf_field() }} 
+                                                    <div class="modal-body">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label for="tme_remarks">Notes<span style="color:red;">*</span></label>
+                                                            <input class="form-control" type="text" name="sup_notes" value="" required/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>
