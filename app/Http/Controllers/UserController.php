@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function User()
+    public function user()
     {
         return view('admin.user.manage');
     }
