@@ -31,4 +31,6 @@ Route::group(['prefix' => 'customer'], function()
 Route::group(['prefix' => 'user'], function()
 {
     Route::get('main', 'UserController@user');
+
+    Route::post('search-user', 'UserController@searchUser');
 });
