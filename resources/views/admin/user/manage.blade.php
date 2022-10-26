@@ -98,87 +98,65 @@
                                                 </td>
                                                 <td>
                                                     <span class="badge badge-success">Active</span>
-                                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@user') }}" aria-hidden="true"></a>
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                                 </td>
-                                            </tr>
-                                            @endif
-                                            <tr>
-                                                <td>
-                                                    <div class="user-panel">
-                                                        <div class="image">
-                                                            <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>   
-                                                    Raevin Jhon Palacio
-                                                </td>
-                                                <td>
-                                                    Darkpalace45
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-success">Active</span>
-                                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
-                                                </td>
-                                            </tr> 
-                                            <!--Edit User Modal-->
-                                            <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Create New User</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action=" {{ action('UserController@createUser') }} ">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ $user->usr_full_name }}" readonly/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="usr_address">Address <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ $user->usr_address }}" readonly/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="usr_name">Username <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="usr_name" value="{{ $user->usr_name }}" readonly/>
-                                                                        </div>
-                                                                    </div>    
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="usr_password">Password <span style="color:red">*</span></label>
-                                                                            <input type="password" class="form-control" name="usr_password" value="" required/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                <!--Edit User Modal-->
+                                                <div class="modal fade" id="edit-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Create New User</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
+                                                            <form method="POST" action=" {{ action('UserController@createUser') }} ">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ $user->usr_full_name }}" readonly/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_address">Address <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ $user->usr_address }}" readonly/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_name">Username <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="usr_name" value="{{ $user->usr_name }}" readonly/>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
+                                                                                <input type="password" class="form-control" name="usr_password" value="" required/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </tr>
+                                            @endif
                                         @endforeach
                                     @endif
                                 </tbody>
