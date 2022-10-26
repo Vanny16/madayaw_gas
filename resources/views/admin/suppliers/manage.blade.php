@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
                 </div>
 
                 <div class="col-md-12"> 
