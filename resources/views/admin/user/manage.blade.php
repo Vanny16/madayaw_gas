@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><i class="fa fa-user-plus"></i> New User</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><i class="fa fa-user-plus"></i> New User</a>
                 </div>
 
                 <div class="col-md-12"> 
@@ -100,7 +100,7 @@
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                         </td>
                                     </tr> 
                                 </tbody>

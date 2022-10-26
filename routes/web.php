@@ -35,3 +35,13 @@ Route::group(['prefix' => 'user'], function()
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
 });
+
+Route::group(['prefix' => 'product'], function()
+{
+    Route::get('manage', 'ProductController@manage');
+});
+
+Route::group(['prefix' => 'supplier'], function()
+{
+    Route::get('manage', 'SupplierController@manage');
+});
