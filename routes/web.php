@@ -33,4 +33,5 @@ Route::group(['prefix' => 'user'], function()
     Route::get('main', 'UserController@user');
 
     Route::post('search-user', 'UserController@searchUser');
+    Route::post('create-user', 'UserController@createUser');
 });
