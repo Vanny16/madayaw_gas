@@ -59,6 +59,6 @@ class UserController extends Controller
             session()->flash('errorMessage','Username already taken');
             return redirect()->action('UserController@user');
         }
-        //test3
+        //test4
     }
 }
