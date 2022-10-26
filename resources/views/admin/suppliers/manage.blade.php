@@ -108,7 +108,7 @@
                                            
                                         </td>
                                         <td>
-                                            <small><a href="javascript:void(0)" data-toggle="modal" data-target="#notes-Modal"><span class="fa fa-edit"></span></button></small>
+                                            <a class="btn btn-primary btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#notes-Modal"><span class="fa fa-edit"></span></button>
                                         </td>
                                     </tr> 
                                     <div id="notes-Modal" class="modal fade" role="dialog">
