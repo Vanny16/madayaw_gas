@@ -65,7 +65,7 @@
 
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="nav-icon fas fa-address-card"></i>
                         <p>Accounts Manager <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
