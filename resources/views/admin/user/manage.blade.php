@@ -33,7 +33,7 @@
                             <h3 class="card-title"><i class="fas fa-user"></i> Find User</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="">
+                            <form class="form-horizontal" method="POST" action="{{ action('UserController@searchUser') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
