@@ -14,6 +14,7 @@ class UserController extends Controller
         ->where('acc_id', '=',session('acc_id'))
         ->get();
 
+        // dd(session('usr_id'));
         return view('admin.user.manage',compact('users'));
     }
 
@@ -24,6 +25,7 @@ class UserController extends Controller
         ->where('acc_id','=',session('acc_id'))
         ->orderBy('usr_full_name')
         ->get();
+
 
         return redirect()->action('UserController@User',compact('users'));  
     }
@@ -62,7 +64,35 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUser($usr_id)
+    public function editUser(Request $request, $usr_id)
+    {
+        $usr_type = (int)$request->usr_type;
+        $usr_password = $request->usr_password;
+
+        if($usr_password == null)
+        {
+        DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->update([
+            'usr_type' => $usr_type
+        ]);
+        }
+        else
+        {
+        DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->update([
+            'usr_type' => $usr_type,
+            'usr_password' => $usr_password
+        ]);
+        }
+        
+        // dd($request);
+        session()->flash('successMessage','User details updated');
+        return redirect()->action('UserController@user');
+    }
+
+    public function deactivateUser($usr_id)
     {
         DB::table('users')
         ->where('usr_id', '=', $usr_id)
@@ -71,6 +101,18 @@ class UserController extends Controller
         ]);
 
         session()->flash('successMessage','User deleted');
+            return redirect()->action('UserController@user');
+    }
+
+    public function reactivateUser($usr_id)
+    {
+        DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->update([
+            'usr_active' => 1
+        ]);
+
+        session()->flash('successMessage','User reactivated');
             return redirect()->action('UserController@user');
     }
 }

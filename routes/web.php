@@ -31,10 +31,13 @@ Route::group(['prefix' => 'customer'], function()
 Route::group(['prefix' => 'user'], function()
 {
     Route::get('main', 'UserController@user');
-    Route::get('delete-user/{usr_id}', 'UserController@deleteUser');
+    Route::get('deactivate-user/{usr_id}', 'UserController@deactivateUser');
+    Route::get('reactivate-user/{usr_id}', 'UserController@reactivateUser');
+
 
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
+    Route::post('edit-user/{usr_id}', 'UserController@editUser');
 });
 
 Route::group(['prefix' => 'product'], function()

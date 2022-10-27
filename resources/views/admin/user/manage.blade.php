@@ -99,8 +99,8 @@
                                 <tbody id="tbl-users">
                                     @if(isset($users))
                                         @foreach($users as $user)
-                                            @if($user->usr_active == 0)
-                                                @continue 
+                                            @if($user->usr_id == session('usr_id'))
+                                                @continue
                                             @else
                                             <tr>
                                                 <td>
@@ -121,10 +121,17 @@
                                                 @elseif($user->usr_type == null)
                                                 <td>-</td>    
                                                 @endif
+                                                @if($user->usr_active == 0)
+                                                    <td>
+                                                        <span class="badge badge-danger">Inactive</span>
+                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('UserController@reactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
+                                                    </td>
+                                                @elseif($user->usr_active == 1)
                                                 <td>
                                                     <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deleteUser',[$user->usr_id]) }}" aria-hidden="true"></a>
+                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                 </td>
+                                                @endif
                                                 <td>
                                                     <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                                 </td>
@@ -138,7 +145,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action=" {{ action('UserController@createUser') }} ">
+                                                            <form method="POST" action=" {{ action('UserController@editUser',[$user->usr_id]) }} ">
                                                             {{ csrf_field() }} 
                                                                 <div class="modal-body">
                                                                     <div class="row">
@@ -174,8 +181,8 @@
                                                                         </div>    
                                                                         <div class="col-md-5">
                                                                             <div class="form-group">
-                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
-                                                                                <input type="password" class="form-control" name="usr_password" value="" required/>
+                                                                                <label for="usr_password">Password</label>
+                                                                                <input type="password" class="form-control" name="usr_password" value=""/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
