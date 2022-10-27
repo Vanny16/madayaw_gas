@@ -16,7 +16,6 @@
             </div>
         </div>
     </div>
-    {{-- test --}}
 
     <section class="content">
         <div class="container-fluid">
@@ -113,51 +112,60 @@
                         </div>
                     </div>
                 </div>
-                <!--Edit Customer Modal-->
-                <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Update Customer</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form method="POST" action=" {{ action('UserController@createUser') }} ">
-                            {{ csrf_field() }} 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
-                                                <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ $user->usr_full_name }}" readonly/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="usr_address">Address <span style="color:red">*</span></label>
-                                                <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ $user->usr_address }}" readonly/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="usr_name">Contact <span style="color:red">*</span></label>
-                                                <input type="text" class="form-control" name="usr_contact" value="{{ $user->usr_contact }}" readonly/>
-                                            </div>
-                                        </div>   
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
 </div>
+
+
+<!-- Customer Modal -->
+<div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="cus_name">Full Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cus_address">Address <span style="color:red">*</span></label>
+                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cus_address">Contact # <span style="color:red">*</span></label>
+                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cus_address">Notes <span style="color:red">*</span></label>
+                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr/>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
