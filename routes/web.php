@@ -31,6 +31,7 @@ Route::group(['prefix' => 'customer'], function()
 Route::group(['prefix' => 'user'], function()
 {
     Route::get('main', 'UserController@user');
+    Route::get('delete-user/{usr_id}', 'UserController@deleteUser');
 
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
