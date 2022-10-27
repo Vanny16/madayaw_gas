@@ -146,6 +146,16 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label for="usr_type">Type of User<span style="color:red;">*</span></label>
+                                                                            <select class="form-control" name="usr_type" required>
+                                                                                <option value="1" selected>Admin</option>
+                                                                                <option value="2">Employee</option>
+                                                                                <option value="2">Observer</option>
+                                                                            </select> 
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -206,6 +216,16 @@
                                             <label for="usr_password">Password <span style="color:red">*</span></label>
                                             <input type="password" class="form-control" name="usr_password" value="{{ old('usr_password') }}" required/>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="usr_type">Type of User<span style="color:red;">*</span></label>
+                                        <select class="form-control" name="usr_type" required>
+                                            <option value="1" selected>Admin</option>
+                                            <option value="2">Employee</option>
+                                            <option value="2">Observer</option>
+                                        </select> 
                                     </div>
                                 </div>
                             </div>
