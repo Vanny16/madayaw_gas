@@ -84,6 +84,7 @@
                                         <th width="50px"></th>
                                         <th>Full Name</th>
                                         <th>Username</th>
+                                        <th>User Type</th>
                                         <th width="100px">Status</th>
                                         <th width="100px"></th>
                                     </tr>
@@ -104,9 +105,18 @@
                                                 <td>
                                                     {{ $user->usr_name }}
                                                 </td>
+                                                @if($user->usr_type == 1)
+                                                    <td>Administrator</td>
+                                                @elseif($user->usr_type == 2)
+                                                    <td>Employee</td>
+                                                @elseif($user->usr_type == 3)
+                                                    <td>Observer</td>
+                                                @elseif($user->usr_type == null)
+                                                <td>-</td>    
+                                                @endif
                                                 <td>
                                                     <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@user') }}" aria-hidden="true"></a>
+                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deleteUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>

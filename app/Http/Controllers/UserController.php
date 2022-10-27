@@ -34,6 +34,7 @@ class UserController extends Controller
         $usr_address = $request->usr_address;
         $usr_name = $request->usr_name;
         $usr_password = $request->usr_password;
+        $usr_type = $request->usr_type;
 
         $check_usr_name = DB::table('users')
         ->where('usr_name','=', $usr_name)
@@ -47,7 +48,8 @@ class UserController extends Controller
                 'usr_full_name' => $usr_full_name,
                 'usr_name' => $usr_name,
                 'usr_password' => $usr_password,
-                'usr_address' => $usr_address
+                'usr_address' => $usr_address,
+                'usr_type' => $usr_type
             ]);
 
             session()->flash('successMessage','New user has been added');
@@ -58,5 +60,17 @@ class UserController extends Controller
             session()->flash('errorMessage','Username already taken');
             return redirect()->action('UserController@user');
         }
+    }
+
+    public function deleteUser($usr_id)
+    {
+        DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->update([
+            'usr_active' => 0
+        ]);
+
+        session()->flash('successMessage','User deleted');
+            return redirect()->action('UserController@user');
     }
 }
