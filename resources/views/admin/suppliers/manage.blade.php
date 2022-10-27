@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fas fa-plus"></i> New Supplier</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#supplier-modal"><i class="fas fa-plus"></i> New Supplier</a>
                 </div>
 
                 <div class="col-md-12"> 
@@ -143,6 +143,52 @@
             </div>
         </div>
     </section>
+</div>
+
+<!-- Supplier Modal -->
+<div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_contact">Contact # <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_contact" placeholder="Enter Contact" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod_address">Address <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Address" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_address">Notes <span style="color:red">*</span></label>
+                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection
