@@ -63,6 +63,14 @@
 
                 <div class="col-md-12"> 
                     <div class="card">
+                        <div class="col-md-2">
+                            <label for="usr_type">Type of User<span style="color:red;">*</span></label>
+                            <select class="form-control" name="usr_type" required>
+                                <option value="1" selected>All</option>
+                                <option value="2">Active</option>
+                                <option value="2">Inactive</option>
+                            </select> 
+                        </div>
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-users"></i> Users</h3>
                             <div class="card-tools">
