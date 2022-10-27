@@ -39,11 +39,26 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find User</label>
-                                            @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" value="{{ $search_string }}" required/>
-                                            @else
-                                                <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Name" required/>
-                                            @endif
+                                            <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Search ..." required/>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label for="usr_type">User Type</label>
+                                            <select class="form-control" name="usr_type" required>
+                                                <option value="1" selected>All</option>
+                                                <option value="2">Administrator</option>
+                                                <option value="2">Employee</option>
+                                                <option value="2">Observer</option>
+                                            </select> 
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label for="usr_type">User Status</label>
+                                            <select class="form-control" name="usr_type" required>
+                                                <option value="1" selected>All</option>
+                                                <option value="2">Active</option>
+                                                <option value="2">Inactive</option>
+                                            </select> 
                                         </div>
                                     </div>
                                     <div class="row">
@@ -63,14 +78,6 @@
 
                 <div class="col-md-12"> 
                     <div class="card">
-                        <div class="col-md-2">
-                            <label for="usr_type">Type of User<span style="color:red;">*</span></label>
-                            <select class="form-control" name="usr_type" required>
-                                <option value="1" selected>All</option>
-                                <option value="2">Active</option>
-                                <option value="2">Inactive</option>
-                            </select> 
-                        </div>
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-users"></i> Users</h3>
                             <div class="card-tools">
@@ -151,27 +158,25 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="usr_name">Username <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="usr_name" value="{{ $user->usr_name }}" readonly/>
-                                                                            </div>
-                                                                        </div>    
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
-                                                                                <input type="password" class="form-control" name="usr_password" value="" required/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label for="usr_type">Type of User<span style="color:red;">*</span></label>
+                                                                        <div class="col-md-2">
+                                                                            <label for="usr_type">User Type<span style="color:red;">*</span></label>
                                                                             <select class="form-control" name="usr_type" required>
                                                                                 <option value="1" selected>Admin</option>
                                                                                 <option value="2">Employee</option>
                                                                                 <option value="2">Observer</option>
                                                                             </select> 
+                                                                        </div>
+                                                                        <div class="col-md-5">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_name">Username <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="usr_name" value="{{ $user->usr_name }}" readonly/>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <div class="col-md-5">
+                                                                            <div class="form-group">
+                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
+                                                                                <input type="password" class="form-control" name="usr_password" value="" required/>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -193,6 +198,7 @@
                     </div>
                 </div>    
             </div>
+            
             <!--Create User Modal-->
             <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -210,7 +216,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
-                                            <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ old('usr_full_name') }}" required/>
+                                            <input type="text" class="form-control" name="usr_full_name" placeholder="Enter Fullname" value="{{ old('usr_full_name') }}" required/>
                                         </div>
                                     </div>
                                 </div>
@@ -218,32 +224,32 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_address">Address <span style="color:red">*</span></label>
-                                            <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ old('usr_address') }}" required/>
+                                            <!-- <textarea name="usr_address" placeholder="Enter Address" class="form-control" value="{{ old('usr_address') }}" required></textarea> -->
+                                            <input type="text" class="form-control" name="usr_address" placeholder="Enter Address" value="{{ old('usr_address') }}" required/>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="usr_name">Username <span style="color:red">*</span></label>
-                                            <input type="text" class="form-control" name="usr_name" value="{{ old('usr_name') }}" required/>
-                                        </div>
-                                    </div>    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="usr_password">Password <span style="color:red">*</span></label>
-                                            <input type="password" class="form-control" name="usr_password" value="{{ old('usr_password') }}" required/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="usr_type">Type of User<span style="color:red;">*</span></label>
+                                    <div class="col-md-2">
+                                        <label for="usr_type">User Type<span style="color:red;">*</span></label>
                                         <select class="form-control" name="usr_type" required>
                                             <option value="1" selected>Admin</option>
                                             <option value="2">Employee</option>
                                             <option value="2">Observer</option>
                                         </select> 
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="usr_name">Username <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="usr_name" placeholder="Enter Username" value="{{ old('usr_name') }}" required/>
+                                        </div>
+                                    </div>    
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="usr_password">Password <span style="color:red">*</span></label>
+                                            <input type="password" class="form-control" name="usr_password" placeholder="Enter Password" value="{{ old('usr_password') }}" required/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

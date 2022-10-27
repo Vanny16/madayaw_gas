@@ -40,9 +40,9 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Customer</label>
                                             @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" value="{{ $search_string }}" required/>
+                                                <input type="text" class="form-control" name="search_string" placeholder="Search ..." value="{{ $search_string }}"/>
                                             @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" required/>
+                                                <input type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                             @endif
                                         </div>
                                     </div>
@@ -82,6 +82,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @if(isset($customers))
+                                    @foreach($customers as $customer)
+                                        @if($customer->cus_active == 0)
+                                            @continue 
+                                        @else
                                     <tr>
                                         <td>
                                             <div class="user-panel">
@@ -91,13 +96,13 @@
                                             </div>
                                         </td>
                                         <td>   
-                                            Raevin Jhon Palacio
+                                        {{ $customer->cus_name }}
                                         </td>
                                         <td>
-                                            09876543210
+                                        {{ $customer->cus_contact }}
                                         </td>
                                         <td>
-                                            Indangan, Davao City
+                                        {{ $customer->cus_address }}
                                         </td>
                                         <td>
                                             <span class="badge badge-success">Active</span>
@@ -107,6 +112,9 @@
                                             <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                         </td>
                                     </tr> 
+                                        @endif
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>

@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
 
 class CustomerController extends Controller
 {
-    //
+    
     public function manage()
     {
-        // $modules = DB::table('modules')
-        // ->where('mod_active','=','1')
-        // ->orderBy('mod_name')
-        // ->get();
+    
+        $customers = DB::table('customers')
+        ->where('acc_id', '=',session('acc_id'))
+        ->get();
 
-        return view('admin.customers.manage');
+        return view('admin.customers.manage',compact('customers'));
     }
     
     // public function saveuser(Request $request)
