@@ -136,7 +136,7 @@
                                                 <td>-</td>
                                                 @else
                                                 <td>
-                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-ellipsis-vertical" aria-hidden="true"></i></a>
                                                 </td>
                                                 @endif
                                                 <!--Edit User Modal-->
