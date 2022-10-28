@@ -38,7 +38,7 @@ class LoginController extends Controller
                     session(['usr_name' => $users->usr_name]);
                     session(['usr_address' => $users->usr_address]);
                     session(['usr_image' => $users->usr_image]);
-                    session(['usr_type' => $users->usr_type]);
+                    session(['typ_id' => $users->typ_id]);
 
                     return redirect()->action('MainController@home');
                 }
