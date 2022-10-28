@@ -43,8 +43,8 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label for="usr_type">User Type</label>
-                                            <select class="form-control" name="usr_type" required>
+                                            <label for="filter_type">User Type</label>
+                                            <select class="form-control" if="filter_type" name="filter_type" required>
                                                 <option value="1" selected>All</option>
                                                 <option value="2">Administrator</option>
                                                 <option value="2">Employee</option>
@@ -53,8 +53,8 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label for="usr_type">User Status</label>
-                                            <select class="form-control" name="usr_type" required>
+                                            <label for="filter_status">User Status</label>
+                                            <select class="form-control" if="filter_status" name="filter_status" required>
                                                 <option value="1" selected>All</option>
                                                 <option value="2">Active</option>
                                                 <option value="2">Inactive</option>
@@ -112,13 +112,13 @@
                                                 <td>
                                                     {{ $user->usr_name }}
                                                 </td>
-                                                @if($user->usr_type == 1)
+                                                @if($user->typ_id == 1)
                                                     <td>Administrator</td>
-                                                @elseif($user->usr_type == 2)
+                                                @elseif($user->typ_id == 2)
                                                     <td>Employee</td>
-                                                @elseif($user->usr_type == 3)
+                                                @elseif($user->typ_id == 3)
                                                     <td>Observer</td>
-                                                @elseif($user->usr_type == null)
+                                                @elseif($user->typ_id == null)
                                                 <td>-</td>    
                                                 @endif
                                                 @if($user->usr_active == 0)
@@ -132,9 +132,13 @@
                                                     <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                 </td>
                                                 @endif
+                                                @if($user->usr_active == 0)
+                                                <td>-</td>
+                                                @else
                                                 <td>
                                                     <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
                                                 </td>
+                                                @endif
                                                 <!--Edit User Modal-->
                                                 <div class="modal fade" id="edit-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg" role="document">
@@ -166,11 +170,15 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-2">
-                                                                            <label for="usr_type">User Type<span style="color:red;">*</span></label>
-                                                                            <select class="form-control" name="usr_type" required>
-                                                                                <option value="1" selected>Admin</option>
-                                                                                <option value="2">Employee</option>
-                                                                                <option value="2">Observer</option>
+                                                                            <label for="typ_id">User Type<span style="color:red;">*</span></label>
+                                                                            <select class="form-control" name="typ_id" required>
+                                                                            @foreach($user_types as $user_type)
+                                                                                @if($user->usr_id == $user_type->typ_id)
+                                                                                    <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                                                @endif
+                                                                            @endforeach
                                                                             </select> 
                                                                         </div>
                                                                         <div class="col-md-5">
@@ -231,7 +239,6 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_address">Address <span style="color:red">*</span></label>
-                                            <!-- <textarea name="usr_address" placeholder="Enter Address" class="form-control" value="{{ old('usr_address') }}" required></textarea> -->
                                             <input type="text" class="form-control" name="usr_address" placeholder="Enter Address" value="{{ old('usr_address') }}" required/>
                                         </div>
                                     </div>
@@ -239,8 +246,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label for="usr_type">User Type<span style="color:red;">*</span></label>
-                                        <select class="form-control" name="usr_type" required>
+                                        <label for="typ_id">User Type<span style="color:red;">*</span></label>
+                                        <select class="form-control" name="typ_id" required>
                                             <option value="1" selected>Admin</option>
                                             <option value="2">Employee</option>
                                             <option value="2">Observer</option>

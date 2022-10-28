@@ -11,23 +11,32 @@ class UserController extends Controller
     public function user()
     {
         $users = DB::table('users')
+        ->join('user_types', 'user_types.typ_id', '=', 'users.typ_id')
         ->where('acc_id', '=',session('acc_id'))
         ->get();
 
-        // dd(session('usr_id'));
-        return view('admin.user.manage',compact('users'));
+        $user_types = DB::table('user_types')
+        ->get();
+
+        return view('admin.user.manage',compact('users','user_types'));
     }
 
     public function searchUser(Request $request)
     {
+        $search_string = $request->search_string;
+        $typ_id = $request->filter_type;
+        $usr_active = $request->filter_status;
+
         $users = DB::table('users')
         ->where('usr_full_name','LIKE', $search_string . '%')
+        ->where('typ_id', '=', $typ_id)
+        ->where('usr_active', '=', $usr_active)
         ->where('acc_id','=',session('acc_id'))
         ->orderBy('usr_full_name')
         ->get();
 
 
-        return redirect()->action('UserController@User',compact('users'));  
+        return redirect()->action('UserController@user',compact('users'));  
     }
 
     public function createUser(Request $request)
@@ -36,7 +45,7 @@ class UserController extends Controller
         $usr_address = $request->usr_address;
         $usr_name = $request->usr_name;
         $usr_password = $request->usr_password;
-        $usr_type = $request->usr_type;
+        $typ_id = $request->typ_id;
 
         $check_usr_name = DB::table('users')
         ->where('usr_name','=', $usr_name)
@@ -51,7 +60,7 @@ class UserController extends Controller
                 'usr_name' => $usr_name,
                 'usr_password' => $usr_password,
                 'usr_address' => $usr_address,
-                'usr_type' => $usr_type
+                'typ_id' => $typ_id
             ]);
 
             session()->flash('successMessage','New user has been added');
@@ -66,7 +75,7 @@ class UserController extends Controller
 
     public function editUser(Request $request, $usr_id)
     {
-        $usr_type = (int)$request->usr_type;
+        $typ_id = (int)$request->typ_id;
         $usr_password = $request->usr_password;
 
         if($usr_password == null)
@@ -74,7 +83,7 @@ class UserController extends Controller
         DB::table('users')
         ->where('usr_id', '=', $usr_id)
         ->update([
-            'usr_type' => $usr_type
+            'typ_id' => $typ_id
         ]);
         }
         else
@@ -82,7 +91,7 @@ class UserController extends Controller
         DB::table('users')
         ->where('usr_id', '=', $usr_id)
         ->update([
-            'usr_type' => $usr_type,
+            'typ_id' => $typ_id,
             'usr_password' => $usr_password
         ]);
         }
