@@ -59,7 +59,15 @@
                                         <div class="col-md-2">
                                             <label for="filter_status">User Status</label>
                                             <select class="form-control" if="filter_status" name="filter_status" required>
-                                                <option value="1" selected>All</option>
+                                                @foreach($statuses as $status)
+                                                    @if($typ_i == $user_type->typ_id)
+                                                        <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                    @else
+                                                        <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                    @endif
+                                                @endforeach    
+                                            
+                                            <option value="1" selected>All</option>
                                                 <option value="2">Active</option>
                                                 <option value="2">Inactive</option>
                                             </select> 
