@@ -45,10 +45,10 @@
                                         <div class="col-md-2">
                                             <label for="filter_type">User Type</label>
                                             <select class="form-control" if="filter_type" name="filter_type" required>
-                                                <option value="1" selected>All</option>
-                                                <option value="2">Administrator</option>
-                                                <option value="2">Employee</option>
-                                                <option value="2">Observer</option>
+                                                <option value="0" selected>All</option>
+                                                @foreach($user_types as $user_type)
+                                                    <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                @endforeach
                                             </select> 
                                         </div>
 

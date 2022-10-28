@@ -27,12 +27,24 @@ class UserController extends Controller
         $typ_id = $request->filter_type;
         $usr_active = $request->filter_status;
 
-        $users = DB::table('users')
-        ->where('typ_id', '=', $typ_id)
-        ->where('usr_active', '=', $usr_active)
-        ->where('acc_id','=',session('acc_id'))
-        ->orderBy('usr_full_name')
-        ->get();
+        if($typ_id == 0)
+        {
+            $users = DB::table('users')     
+            ->where('usr_active', '=', $usr_active)
+            ->where('acc_id','=',session('acc_id'))
+            ->orderBy('usr_full_name')
+            ->get();
+        }
+        else
+        {
+            $users = DB::table('users')
+            ->where('typ_id', '=', $typ_id)
+            ->where('usr_active', '=', $usr_active)
+            ->where('acc_id','=',session('acc_id'))
+            ->orderBy('usr_full_name')
+            ->get();
+        }
+        
 
         $user_types = DB::table('user_types')
         ->get();
