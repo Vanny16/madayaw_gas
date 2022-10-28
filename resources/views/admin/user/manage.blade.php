@@ -39,7 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find User</label>
-                                            <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Search ..." required/>
+                                            <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                         </div>
 
                                         <div class="col-md-2">
