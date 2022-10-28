@@ -28,15 +28,16 @@ class UserController extends Controller
         $usr_active = $request->filter_status;
 
         $users = DB::table('users')
-        ->where('usr_full_name','LIKE', $search_string . '%')
         ->where('typ_id', '=', $typ_id)
         ->where('usr_active', '=', $usr_active)
         ->where('acc_id','=',session('acc_id'))
         ->orderBy('usr_full_name')
         ->get();
 
+        $user_types = DB::table('user_types')
+        ->get();
 
-        return redirect()->action('UserController@user',compact('users'));  
+        return view('admin.user.manage',compact('users','user_types'));  
     }
 
     public function createUser(Request $request)
