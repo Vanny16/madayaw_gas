@@ -133,7 +133,6 @@
     </section>
 </div>
 
-
 <!-- Customer Modal -->
 <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -144,7 +143,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('CustomerController@createCustomer')}}">
+            <form method="POST" action="">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
