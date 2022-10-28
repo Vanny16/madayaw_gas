@@ -26,6 +26,8 @@ Route::group(['prefix' => 'home'], function()
 Route::group(['prefix' => 'customer'], function()
 {
     Route::get('manage', 'CustomerController@manage');
+
+    Route::post('create-customer', 'CustomerController@createCustomer');
 });
 
 Route::group(['prefix' => 'user'], function()

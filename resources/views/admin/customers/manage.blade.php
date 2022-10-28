@@ -137,7 +137,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{ action('CustomerController@createCustomer')}}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -149,12 +149,12 @@
 
                             <div class="form-group">
                                 <label for="cus_address">Address <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
+                                <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
                             </div>
 
                             <div class="form-group">
                                 <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
+                                <input type="number" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
                             </div>
 
                             <div class="form-group">
