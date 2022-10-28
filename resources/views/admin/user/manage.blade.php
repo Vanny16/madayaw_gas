@@ -250,7 +250,7 @@
                                         <select class="form-control" name="typ_id" required>
                                             <option value="1" selected>Admin</option>
                                             <option value="2">Employee</option>
-                                            <option value="2">Observer</option>
+                                            <option value="3">Observer</option>
                                         </select> 
                                     </div>
                                     <div class="col-md-5">

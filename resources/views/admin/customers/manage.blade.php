@@ -109,7 +109,12 @@
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                            <div class="dropdown">
+                                                <i class="fa fa-ellipsis-vertical" data-toggle="dropdown"></i>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr> 
                                         @endif

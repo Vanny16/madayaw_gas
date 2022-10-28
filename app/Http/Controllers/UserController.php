@@ -13,6 +13,7 @@ class UserController extends Controller
         $users = DB::table('users')
         ->join('user_types', 'user_types.typ_id', '=', 'users.typ_id')
         ->where('acc_id', '=',session('acc_id'))
+        ->where('usr_active', '=', '1')
         ->get();
 
         $user_types = DB::table('user_types')
@@ -62,9 +63,9 @@ class UserController extends Controller
 
         $check_usr_name = DB::table('users')
         ->where('usr_name','=', $usr_name)
-        ->get();
+        ->first();
 
-        if($check_usr_name != null)
+        if($check_usr_name == null)
         {
             DB::table('users')
             ->insert([
