@@ -150,7 +150,12 @@
                                                 <td>-</td>
                                                 @else
                                                 <td>
-                                                    <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-ellipsis-vertical" aria-hidden="true"></i></a>
+                                                    <div class="btn btn-default bg-transparent btn-outline-trasparent dropdown" data-toggle="dropdown" style="border: transparent;">
+                                                        <i class="fa fa-ellipsis-vertical"></i>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                                 @endif
                                                 <!--Edit User Modal-->
