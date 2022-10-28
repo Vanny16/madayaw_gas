@@ -109,7 +109,12 @@
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-key" aria-hidden="true"></i> Reset</a>
+                                            <div class="dropdown">
+                                                <i class="fa fa-ellipsis-vertical" data-toggle="dropdown"></i>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr> 
                                         @endif
@@ -137,7 +142,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{ action('CustomerController@createCustomer')}}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -149,12 +154,12 @@
 
                             <div class="form-group">
                                 <label for="cus_address">Address <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
+                                <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
                             </div>
 
                             <div class="form-group">
                                 <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="email" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
+                                <input type="number" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
                             </div>
 
                             <div class="form-group">
