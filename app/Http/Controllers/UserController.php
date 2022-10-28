@@ -36,7 +36,19 @@ class UserController extends Controller
     {
         $search_string = $request->search_string;
         $typ_id = $request->filter_type;
-        $usr_active = $request->filter_status;
+        
+        $user_types = DB::table('user_types')
+        ->get();
+
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+        $usr_active = array_search($request->filter_status, $statuses);
+        dd($usr_active);   
 
         if($typ_id == 0)
         {
@@ -55,17 +67,9 @@ class UserController extends Controller
             ->orderBy('usr_full_name')
             ->get();
         }
+             
         
-        $statuses = array(
-            1 => 'All',
-            2 => 'Active',
-            3 => 'Inactive'
-        );
-
-        $user_types = DB::table('user_types')
-        ->get();
-
-        return view('admin.user.manage',compact('users','user_types','typ_id','statuses'));  
+        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));  
     }
 
     public function createUser(Request $request)
