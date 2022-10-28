@@ -44,7 +44,7 @@
 
                                         <div class="col-md-2">
                                             <label for="filter_type">User Type</label>
-                                            <select class="form-control" if="filter_type" name="filter_type" required>
+                                            <select class="form-control" id="filter_type" name="filter_type" required>
                                                 <option value="0" selected>All</option>
                                                 @foreach($user_types as $user_type)
                                                     @if($typ_id == $user_type->typ_id)
@@ -58,18 +58,14 @@
 
                                         <div class="col-md-2">
                                             <label for="filter_status">User Status</label>
-                                            <select class="form-control" if="filter_status" name="filter_status" required>
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
                                                 @foreach($statuses as $status)
-                                                    @if($typ_id == $user_type->typ_id)
-                                                        <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                    @if($status == $default_status)
+                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
                                                     @else
-                                                        <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                        <option value="{{ $status }}">{{ $status }}</option>
                                                     @endif
-                                                @endforeach    
-                                            
-                                            <option value="1" selected>All</option>
-                                                <option value="2">Active</option>
-                                                <option value="2">Inactive</option>
+                                                @endforeach   
                                             </select> 
                                         </div>
                                     </div>
@@ -85,7 +81,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><i class="fa fa-user-plus"></i> New User</a>
+                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><d class="fa fa-user-plus"></d> New User</a>
                 </div>
 
                 <div class="col-md-12"> 
@@ -150,11 +146,14 @@
                                                 <td>-</td>
                                                 @else
                                                 <td>
-                                                    <div class="btn btn-default bg-transparent btn-outline-trasparent dropdown" data-toggle="dropdown" style="border: transparent;">
-                                                        <i class="fa fa-ellipsis-vertical"></i>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                        </ul>
+                                                    <div class="dropdown">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-key mr-2" aria-hidden="true"></i>Reset Password</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 @endif

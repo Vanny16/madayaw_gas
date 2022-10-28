@@ -110,10 +110,12 @@
                                         </td>
                                         <td>
                                             <div class="dropdown">
-                                                <i class="fa fa-ellipsis-vertical" data-toggle="dropdown"></i>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                </ul>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr> 
