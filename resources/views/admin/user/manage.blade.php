@@ -60,7 +60,7 @@
                                             <label for="filter_status">User Status</label>
                                             <select class="form-control" if="filter_status" name="filter_status" required>
                                                 @foreach($statuses as $status)
-                                                    @if($typ_i == $user_type->typ_id)
+                                                    @if($typ_id == $user_type->typ_id)
                                                         <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
                                                     @else
                                                         <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
