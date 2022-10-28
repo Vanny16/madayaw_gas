@@ -59,7 +59,7 @@
                                         <div class="col-md-2">
                                             <label for="filter_status">User Status</label>
                                             <select class="form-control" id="filter_status" name="filter_status" required>
-                                                @foreach(array_reverse($statuses) as $status)
+                                                @foreach($statuses as $status)
                                                     @if($status == $default_status)
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
                                                     @else
@@ -166,33 +166,33 @@
                                                             <form method="POST" action=" {{ action('UserController@editUser',[$user->usr_id]) }} ">
                                                             {{ csrf_field() }} 
                                                                 <div class="modal-body">
-                                                                    <div class="row">
+
+                                                                    <div class="row mb-2" style="box-shadow: 0 0 2px black; padding: 10px;">
                                                                         <div class="col-md-12">
                                                                             <div class="form-group">
                                                                                 <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ $user->usr_full_name }}" readonly/>
+                                                                                <input type="text" class="form-control" name="usr_full_name" placeholder="Fullname" value="{{ $user->usr_full_name }}" required/>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row">
+
                                                                         <div class="col-md-12">
                                                                             <div class="form-group">
                                                                                 <label for="usr_address">Address <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ $user->usr_address }}" readonly/>
+                                                                                <input type="text" class="form-control" name="usr_address" placeholder="Address" value="{{ $user->usr_address }}" required/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row">
+                                                                    <div class="row" style="box-shadow: 0 0 2px black; padding: 10px;">
                                                                         <div class="col-md-2">
                                                                             <label for="typ_id">User Type<span style="color:red;">*</span></label>
-                                                                            <select class="form-control" name="typ_id" required>
-                                                                            @foreach($user_types as $user_type)
-                                                                                @if($user->usr_id == $user_type->typ_id)
-                                                                                    <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
-                                                                                @else
-                                                                                    <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
-                                                                                @endif
-                                                                            @endforeach
+                                                                                <select class="form-control" name="typ_id" required>
+                                                                                @foreach($user_types as $user_type)
+                                                                                    @if($user->usr_id == $user_type->typ_id)
+                                                                                        <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                                                    @else
+                                                                                        <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                                                    @endif
+                                                                                @endforeach
                                                                             </select> 
                                                                         </div>
                                                                         <div class="col-md-5">
@@ -203,7 +203,7 @@
                                                                         </div>    
                                                                         <div class="col-md-5">
                                                                             <div class="form-group">
-                                                                                <label for="usr_password">Password</label>
+                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
                                                                                 <input type="password" class="form-control" name="usr_password" value=""/>
                                                                             </div>
                                                                         </div>
@@ -241,15 +241,14 @@
                         <form method="POST" action=" {{ action('UserController@createUser') }} ">
                         {{ csrf_field() }} 
                             <div class="modal-body">
-                                <div class="row">
+                                <div class="row mb-2" style="box-shadow: 0 0 2px black; padding: 10px;">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_full_name">Full Name <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="usr_full_name" placeholder="Enter Fullname" value="{{ old('usr_full_name') }}" required/>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_address">Address <span style="color:red">*</span></label>
@@ -257,31 +256,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <i class="fa fa-user-cog fa-10x"></i>
+                                <div class="row" style="box-shadow: 0 0 2px black; padding: 10px;">
+                                    <div class="col-md-2">
+                                        <label for="typ_id">User Type<span style="color:red;">*</span></label>
+                                        <select class="form-control" name="typ_id" required>
+                                            <option value="1" selected>Admin</option>
+                                            <option value="2">Employee</option>
+                                            <option value="3">Observer</option>
+                                        </select> 
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="typ_id">User Type <span style="color:red;">*</span></label>
-                                            <select class="form-control" name="typ_id" required>
-                                                <option value="1" selected>Admin</option>
-                                                <option value="2">Employee</option>
-                                                <option value="3">Observer</option>
-                                            </select> 
-                                        </div>
-
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label for="usr_name">Username <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="usr_name" placeholder="Enter Username" value="{{ old('usr_name') }}" required/>
                                         </div>
-                                        
+                                    </div>    
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label for="usr_password">Password <span style="color:red">*</span></label>
                                             <input type="password" class="form-control" name="usr_password" placeholder="Enter Password" value="{{ old('usr_password') }}" required/>
                                         </div>
-                                    </div>    
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
