@@ -36,14 +36,14 @@ class UserController extends Controller
     {
         $search_string = $request->search_string;
         $typ_id = $request->filter_type;
-        
+
         $user_types = DB::table('user_types')
         ->get();
 
         $statuses = array(
-            1 => 'All',
-            2 => 'Active',
-            3 => 'Inactive'
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
         );
 
         $default_status = $request->filter_status;
@@ -51,20 +51,41 @@ class UserController extends Controller
 
         if($typ_id == 0)
         {
-            $users = DB::table('users')     
-            ->where('usr_active', '=', $usr_active - 1)
-            ->where('acc_id','=',session('acc_id'))
-            ->orderBy('usr_full_name')
-            ->get();
+            if($usr_active == 2)
+            {
+                $users = DB::table('users')     
+                ->where('acc_id','=',session('acc_id'))
+                ->orderBy('usr_full_name')
+                ->get();
+            }
+            else
+            {
+                $users = DB::table('users')     
+                ->where('usr_active', '=', $usr_active)
+                ->where('acc_id','=',session('acc_id'))
+                ->orderBy('usr_full_name')
+                ->get();
+            }
         }
         else
         {
-            $users = DB::table('users')
-            ->where('typ_id', '=', $typ_id)
-            ->where('usr_active', '=', $usr_active - 1)
-            ->where('acc_id','=',session('acc_id'))
-            ->orderBy('usr_full_name')
-            ->get();
+            if($usr_active == 2)
+            {
+                $users = DB::table('users')
+                ->where('typ_id', '=', $typ_id)
+                ->where('acc_id','=',session('acc_id'))
+                ->orderBy('usr_full_name')
+                ->get();    
+            }
+            else
+            {
+                $users = DB::table('users')
+                ->where('typ_id', '=', $typ_id)
+                ->where('usr_active', '=', $usr_active)
+                ->where('acc_id','=',session('acc_id'))
+                ->orderBy('usr_full_name')
+                ->get();
+            }
         }
              
         

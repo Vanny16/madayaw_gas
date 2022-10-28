@@ -59,7 +59,7 @@
                                         <div class="col-md-2">
                                             <label for="filter_status">User Status</label>
                                             <select class="form-control" id="filter_status" name="filter_status" required>
-                                                @foreach($statuses as $status)
+                                                @foreach(array_reverse($statuses) as $status)
                                                     @if($status == $default_status)
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
                                                     @else
