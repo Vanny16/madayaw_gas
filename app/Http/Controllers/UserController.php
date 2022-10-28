@@ -49,7 +49,7 @@ class UserController extends Controller
         $user_types = DB::table('user_types')
         ->get();
 
-        return view('admin.user.manage',compact('users','user_types'));  
+        return view('admin.user.manage',compact('users','user_types','typ_id'));  
     }
 
     public function createUser(Request $request)

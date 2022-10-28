@@ -47,7 +47,11 @@
                                             <select class="form-control" if="filter_type" name="filter_type" required>
                                                 <option value="0" selected>All</option>
                                                 @foreach($user_types as $user_type)
-                                                    <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                    @if($typ_id == $user_type->typ_id)
+                                                        <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                    @else
+                                                        <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                    @endif
                                                 @endforeach
                                             </select> 
                                         </div>
@@ -99,9 +103,6 @@
                                 <tbody id="tbl-users">
                                     @if(isset($users))
                                         @foreach($users as $user)
-                                            @if($user->usr_id == session('usr_id'))
-                                                @continue
-                                            @else
                                             <tr>
                                                 <td>
                                                     <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
@@ -127,10 +128,15 @@
                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('UserController@reactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                     </td>
                                                 @elseif($user->usr_active == 1)
-                                                <td>
-                                                    <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
-                                                </td>
+                                                    @if($user->usr_id == session('usr_id'))
+                                                        <td>
+                                                            <span class="badge badge-success">Active</span>
+                                                        </td>
+                                                    @else
+                                                    <td>
+                                                        <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
+                                                    </td>
                                                 @endif
                                                 @if($user->usr_active == 0)
                                                 <td>-</td>
