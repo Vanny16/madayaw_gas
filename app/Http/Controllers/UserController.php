@@ -46,14 +46,13 @@ class UserController extends Controller
             3 => 'Inactive'
         );
 
-        $default_status = '0';
+        $default_status = $request->filter_status;
         $usr_active = array_search($request->filter_status, $statuses);
-        dd($usr_active);   
 
         if($typ_id == 0)
         {
             $users = DB::table('users')     
-            ->where('usr_active', '=', $usr_active)
+            ->where('usr_active', '=', $usr_active - 1)
             ->where('acc_id','=',session('acc_id'))
             ->orderBy('usr_full_name')
             ->get();
@@ -62,7 +61,7 @@ class UserController extends Controller
         {
             $users = DB::table('users')
             ->where('typ_id', '=', $typ_id)
-            ->where('usr_active', '=', $usr_active)
+            ->where('usr_active', '=', $usr_active - 1)
             ->where('acc_id','=',session('acc_id'))
             ->orderBy('usr_full_name')
             ->get();
