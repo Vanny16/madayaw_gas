@@ -19,7 +19,17 @@ class UserController extends Controller
         $user_types = DB::table('user_types')
         ->get();
 
-        return view('admin.user.manage',compact('users','user_types'));
+        $typ_id = '0';
+
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+         
+        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));
     }
 
     public function searchUser(Request $request)
@@ -46,11 +56,16 @@ class UserController extends Controller
             ->get();
         }
         
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
 
         $user_types = DB::table('user_types')
         ->get();
 
-        return view('admin.user.manage',compact('users','user_types'));  
+        return view('admin.user.manage',compact('users','user_types','typ_id','statuses'));  
     }
 
     public function createUser(Request $request)
