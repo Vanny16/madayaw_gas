@@ -26,18 +26,30 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
 
-        $usr_id = DB::table('customers')
-        ->insert([
+        $check_cus_name = DB::table('customers')
+        ->where('cus_name','=', $cus_name)
+        ->get();
+
+        if($check_cus_name == null)
+        {
+            $usr_id = DB::table('customers')
+            ->insert([
             'acc_id' => session('acc_id'),
+            'cus_uuid' => generateuuid(),
             'cus_name' => $cus_name, 
             'cus_address' => $cus_address,
             'cus_contact' => $cus_contact,
             'cus_notes' => $cus_notes
+            ]);
 
-        ]);
-
-        session()->flash('successMessage','New customer has been added');
-        return redirect()->action('CustomerController@manage');
+            session()->flash('successMessage','New customer has been added');
+            return redirect()->action('CustomerController@manage');
+        }
+        else
+        {
+            session()->flash('errorMessage','Customer name is already existing');
+            return redirect()->action('CustomerController@manage');
+        }
     }
     
     public function editCustomer(Request $request)
@@ -53,7 +65,7 @@ class CustomerController extends Controller
             'cus_active' => 0
         ]);
 
-        session()->flash('successMessage','Customer has been deactivate');
+        session()->flash('successMessage','Customer has been deactivated.');
             return redirect()->action('CustomerController@manage');
     }
 
@@ -65,7 +77,7 @@ class CustomerController extends Controller
             'cus_active' => 1
         ]);
 
-        session()->flash('successMessage','Customer reactivated');
+        session()->flash('successMessage','Customer reactivated.');
             return redirect()->action('CustomerController@manage');
     }
 }

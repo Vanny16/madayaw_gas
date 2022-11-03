@@ -34,6 +34,7 @@ class LoginController extends Controller
 
                     session(['usr_id' => $users->usr_id]);
                     session(['acc_id' => $users->acc_id]);
+                    session(['usr_uuid' => $users->acc_uuid]);
                     session(['usr_full_name' => $users->usr_full_name]);
                     session(['usr_name' => $users->usr_name]);
                     session(['usr_address' => $users->usr_address]);
@@ -44,7 +45,7 @@ class LoginController extends Controller
                 }
                 else
                 {
-                    session()->flash('errorMessage', 'Organization account is inactive. Please contact your HR.');
+                    session()->flash('errorMessage', 'User account is inactive. Please contact your HR.');
                     return redirect()->action('LoginController@login');
                 }
             }

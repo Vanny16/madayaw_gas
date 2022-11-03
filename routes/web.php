@@ -26,6 +26,8 @@ Route::group(['prefix' => 'home'], function()
 Route::group(['prefix' => 'customer'], function()
 {
     Route::get('manage', 'CustomerController@manage');
+    Route::get('deactivate-customer/{cus_id}', 'CustomerController@deactivateCustomer');
+    Route::get('reactivate-customer/{cus_id}', 'CustomerController@reactivateCustomer');
 
     Route::post('create-customer', 'CustomerController@createCustomer');
 });
@@ -35,7 +37,6 @@ Route::group(['prefix' => 'user'], function()
     Route::get('main', 'UserController@user');
     Route::get('deactivate-user/{usr_id}', 'UserController@deactivateUser');
     Route::get('reactivate-user/{usr_id}', 'UserController@reactivateUser');
-
 
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
