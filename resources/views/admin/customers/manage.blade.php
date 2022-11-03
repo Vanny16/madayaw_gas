@@ -103,8 +103,7 @@
                                             {{ $customer->cus_address }}
                                         </td>
                                         
-                                        <td>Notch</td>
-
+                                        <td><a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal"><i class="fa fa-eye"></i></a></td>
                                         @if($customer->cus_active == 0)
                                             <td>
                                                 <span class="badge badge-danger">Inactive</span>
@@ -127,6 +126,34 @@
                                             </div>
                                         </td>
                                     </tr> 
+
+
+
+                                    <!--Notes Modal -->
+                                        <div class="modal fade" id="notes-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Notes</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                This is a note..
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <!--Edit Customer Modal -->
                                         <div class="modal fade" id="edit-customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
