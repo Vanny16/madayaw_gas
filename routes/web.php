@@ -30,6 +30,8 @@ Route::group(['prefix' => 'customer'], function()
     Route::get('reactivate-customer/{cus_id}', 'CustomerController@reactivateCustomer');
 
     Route::post('create-customer', 'CustomerController@createCustomer');
+    Route::post('edit_customer', 'CustomerController@editCustomer');
+
 });
 
 Route::group(['prefix' => 'user'], function()
