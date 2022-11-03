@@ -132,6 +132,7 @@ class UserController extends Controller
 
     public function editUser(Request $request, $usr_id)
     {
+        $usr_full_name = $request->usr_full_name;
         $typ_id = (int)$request->typ_id;
         $usr_password = $request->usr_password;
 
@@ -140,6 +141,8 @@ class UserController extends Controller
         DB::table('users')
         ->where('usr_id', '=', $usr_id)
         ->update([
+            'usr_full_name' => $usr_full_name,
+            'usr_address' => $usr_address,
             'typ_id' => $typ_id
         ]);
         }
@@ -148,12 +151,13 @@ class UserController extends Controller
         DB::table('users')
         ->where('usr_id', '=', $usr_id)
         ->update([
+            'usr_full_name' => $usr_full_name,
+            'usr_address' => $usr_address,
             'typ_id' => $typ_id,
             'usr_password' => $usr_password
         ]);
         }
         
-        // dd($request);
         session()->flash('successMessage','User details updated');
         return redirect()->action('UserController@user');
     }
