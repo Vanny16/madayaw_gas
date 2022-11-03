@@ -45,10 +45,10 @@ class CustomerController extends Controller
 
     }
     
-    public function deactivateCustomer($usr_id)
+    public function deactivateCustomer($cus_id)
     {
         DB::table('customers')
-        ->where('cus_id', '=', $usr_id)
+        ->where('cus_id', '=', $cus_id)
         ->update([
             'cus_active' => 0
         ]);
@@ -57,7 +57,7 @@ class CustomerController extends Controller
             return redirect()->action('CustomerController@manage');
     }
 
-    public function reactivateCustomer($usr_id)
+    public function reactivateCustomer($cus_id)
     {
         DB::table('customers')
         ->where('cus_id', '=', $cus_id)
