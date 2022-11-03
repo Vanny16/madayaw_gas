@@ -143,7 +143,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{ action('CustomerController@createCustomer')}}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
