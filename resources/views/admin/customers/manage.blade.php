@@ -77,6 +77,7 @@
                                         <th>Customer Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
+                                        <th>Notes</th>
                                         <th width="100px">Status</th>
                                         <th width="100px"></th>
                                     </tr>
@@ -101,6 +102,9 @@
                                         <td>
                                             {{ $customer->cus_address }}
                                         </td>
+                                        
+                                        <td>Notch</td>
+
                                         @if($customer->cus_active == 0)
                                             <td>
                                                 <span class="badge badge-danger">Inactive</span>
