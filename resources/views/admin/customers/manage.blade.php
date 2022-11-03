@@ -40,9 +40,9 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Customer</label>
                                             @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Search ..." value="{{ $search_string }}"/>
+                                                <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..." value="{{ $search_string }}"/>
                                             @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Search ..."/>
+                                                <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                             @endif
                                         </div>
                                     </div>
@@ -81,12 +81,9 @@
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-customers">
                                 @if(isset($customers))
                                     @foreach($customers as $customer)
-                                        @if($customer->cus_active == 0)
-                                            @continue 
-                                        @else
                                     <tr>
                                         <td>
                                             <div class="user-panel">
@@ -96,18 +93,25 @@
                                             </div>
                                         </td>
                                         <td>   
-                                        {{ $customer->cus_name }}
+                                            {{ $customer->cus_name }}
                                         </td>
                                         <td>
-                                        {{ $customer->cus_contact }}
+                                            {{ $customer->cus_contact }}
                                         </td>
                                         <td>
-                                        {{ $customer->cus_address }}
+                                            {{ $customer->cus_address }}
                                         </td>
-                                        <td>
-                                            <span class="badge badge-success">Active</span>
-                                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                        </td>
+                                        @if($customer->cus_active == 0)
+                                            <td>
+                                                <span class="badge badge-danger">Inactive</span>
+                                                <a class="fa fa-toggle-off" type="button" href="{{ action('CustomerController@reactivateCustomer',[$customer->cus_id]) }}" aria-hidden="true"></a>
+                                            </td>
+                                        @else
+                                            <td>
+                                                <span class="badge badge-success">Active</span>
+                                                <a class="fa fa-toggle-on" type="button" href="{{ action('CustomerController@deactivateCustomer',[$customer->cus_id]) }}" aria-hidden="true"></a>
+                                            </td>
+                                        @endif
                                         <td>
                                             <div class="dropdown">
                                                 <div class="dropdown">
@@ -150,7 +154,7 @@
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label for="cus_notes">Notes <span style="color:red">*</span></label>
+                                                                        <label for="cus_notes">Notes</label>
                                                                         <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                                                                     </div>
                                                                 </div>
@@ -164,7 +168,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @endif
                                     @endforeach
                                 @endif
                                 </tbody>
@@ -209,7 +212,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="cus_notes">Notes <span style="color:red">*</span></label>
+                                <label for="cus_notes">Notes</label>
                                 <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
@@ -223,5 +226,16 @@
         </div>
     </div>
 </div>
+<script>
 
+$(document).ready(function(){
+        $("#search_customers").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-customers tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
 @endsection
