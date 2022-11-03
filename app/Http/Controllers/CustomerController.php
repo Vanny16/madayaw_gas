@@ -28,9 +28,14 @@ class CustomerController extends Controller
 
         $check_cus_name = DB::table('customers')
         ->where('cus_name','=', $cus_name)
-        ->get();
+        ->first();
 
-        if($check_cus_name == null)
+        if($check_cus_name != null)
+        {
+            session()->flash('errorMessage','Customer name is already existing');
+            return redirect()->action('CustomerController@manage');
+        }
+        else
         {
             $usr_id = DB::table('customers')
             ->insert([
@@ -45,16 +50,26 @@ class CustomerController extends Controller
             session()->flash('successMessage','New customer has been added');
             return redirect()->action('CustomerController@manage');
         }
-        else
-        {
-            session()->flash('errorMessage','Customer name is already existing');
-            return redirect()->action('CustomerController@manage');
-        }
     }
     
     public function editCustomer(Request $request)
     {
+        $cus_name = $request->cus_name;
+        $cus_address = $request->cus_address;
+        $cus_contact = $request->cus_contact;
+        $cus_notes = $request->cus_notes;
 
+        DB::table('customers')
+        ->where('cus_id', '=', $cus_id)
+        ->update([
+            'cus_name' => $cus_name,
+            'cus_address' => $cus_address,
+            'cus_contact' => $cus_contact,
+            'cus_notes' => $cus_notes
+        ]);
+        
+        session()->flash('successMessage','Customer details updated.');
+        return redirect()->action('CustomerController@manage');
     }
     
     public function deactivateCustomer($cus_id)
