@@ -46,6 +46,9 @@ class UserController extends Controller
             2 => 'All'
         );
 
+        session(['search_typ_id' => $users->usr_id]);
+        session(['usr_id' => $users->usr_id]);
+
         $default_status = $request->filter_status;
         $usr_active = array_search($request->filter_status, $statuses);
 
@@ -109,6 +112,7 @@ class UserController extends Controller
             DB::table('users')
             ->insert([
                 'acc_id' => session('acc_id'),
+                'usr_uuid' => generateuuid(),
                 'usr_full_name' => $usr_full_name,
                 'usr_name' => $usr_name,
                 'usr_password' => $usr_password,
