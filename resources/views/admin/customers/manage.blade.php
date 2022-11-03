@@ -113,12 +113,57 @@
                                                 <div class="dropdown">
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr> 
+                                        <!--Edit Customer Modal -->
+                                        <div class="modal fade" id="edit-customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST" action="{{ action('CustomerController@createCustomer')}}">
+                                                    {{ csrf_field() }} 
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="cus_name">Full Name <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="{{$customer->cus_name}}" required/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="cus_address">Address <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="cus_contact">Contact # <span style="color:red">*</span></label>
+                                                                        <input type="number" class="form-control" name="cus_contact" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" required/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="cus_notes">Notes <span style="color:red">*</span></label>
+                                                                        <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @endif
                                     @endforeach
                                 @endif
@@ -159,19 +204,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="number" class="form-control" name="cus_address" placeholder="Enter Contact #" value="" required/>
+                                <label for="cus_contact">Contact # <span style="color:red">*</span></label>
+                                <input type="number" class="form-control" name="cus_contact" placeholder="Enter Contact #" value="" required/>
                             </div>
 
                             <div class="form-group">
-                                <label for="cus_address">Notes <span style="color:red">*</span></label>
+                                <label for="cus_notes">Notes <span style="color:red">*</span></label>
                                 <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
-                    
-                    <hr/>
-                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

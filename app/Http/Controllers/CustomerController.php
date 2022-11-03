@@ -53,7 +53,7 @@ class CustomerController extends Controller
             'cus_active' => 0
         ]);
 
-        session()->flash('successMessage','Customer has been deactivated');
+        session()->flash('successMessage','Customer has been deactivate');
             return redirect()->action('CustomerController@manage');
     }
 
