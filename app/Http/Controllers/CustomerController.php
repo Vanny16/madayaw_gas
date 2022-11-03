@@ -37,7 +37,7 @@ class CustomerController extends Controller
         ]);
 
         session()->flash('successMessage','New customer has been added');
-        return redirect()->action('UserController@manage');
+        return redirect()->action('CustomerController@manage');
     } 
   
 }
