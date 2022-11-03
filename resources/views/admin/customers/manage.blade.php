@@ -160,7 +160,7 @@
 
                             <div class="form-group">
                                 <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="text" name="cus_address" class="form-control" placeholder="Enter Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
                             </div>
 
                             <div class="form-group">
