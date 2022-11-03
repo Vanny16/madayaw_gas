@@ -96,14 +96,29 @@
                                         <td>   
                                             {{ $customer->cus_name }}
                                         </td>
-                                        <td>
-                                            {{ $customer->cus_contact }}
-                                        </td>
+                                        @if($customer->cus_contact)
+                                            <td>
+                                                {{ $customer->cus_contact }}
+                                            </td>
+                                        @else
+                                            <td>-</td>
+                                        @endif
+                                        @if($customer->cus_address)
                                         <td>
                                             {{ $customer->cus_address }}
                                         </td>
-                                        
-                                        <td><a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal"><i class="fa fa-eye"></i></a></td>
+                                        @else
+                                            <td>-</td>
+                                        @endif
+                                        @if($customer->cus_notes)
+                                        <td>
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a>
+                                        </td>
+                                        @else
+                                        <td>
+                                            <a class="fa fa-eye-slash"></a>
+                                        </td>
+                                        @endif
                                         @if($customer->cus_active == 0)
                                             <td>
                                                 <span class="badge badge-danger">Inactive</span>
@@ -120,85 +135,80 @@
                                                 <div class="dropdown">
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr> 
-
-
-
+                                    
                                     <!--Notes Modal -->
-                                        <div class="modal fade" id="notes-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Notes</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
+                                    <div class="modal fade" id="notes-modal-{{$customer->cus_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Notes</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                        <div class="col-md-12">
+                                                            {{ $customer->cus_notes }}
+                                                        </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Edit Customer Modal -->
+                                    <div class="modal fade" id="edit-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form method="POST" action="{{ action('CustomerController@editCustomer')}}">
+                                                {{ csrf_field() }} 
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                This is a note..
+                                                                <div class="form-group">
+                                                                    <label for="cus_name">Full Name <span style="color:red">*</span></label>
+                                                                    <input type="text" class="form-control" id="cus_name" placeholder="Enter Full Name" value="{{$customer->cus_name}}" required/>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="cus_address">Address <span style="color:red">*</span></label>
+                                                                    <input type="text" class="form-control" id="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="cus_contact">Contact # <span style="color:red">*</span></label>
+                                                                    <input type="number" class="form-control" id="cus_contact" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" required/>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="cus_notes">Notes</label>
+                                                                    <textarea id="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
-
-
-                                        <!--Edit Customer Modal -->
-                                        <div class="modal fade" id="edit-customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form method="POST" action="{{ action('CustomerController@editCustomer')}}">
-                                                    {{ csrf_field() }} 
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label for="cus_name">Full Name <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" id="cus_name" placeholder="Enter Full Name" value="{{$customer->cus_name}}" required/>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Address <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" id="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label for="cus_contact">Contact # <span style="color:red">*</span></label>
-                                                                        <input type="number" class="form-control" id="cus_contact" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" required/>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label for="cus_notes">Notes</label>
-                                                                        <textarea id="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    </tr>
                                     @endforeach
                                 @endif
                                 </tbody>
@@ -206,7 +216,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
