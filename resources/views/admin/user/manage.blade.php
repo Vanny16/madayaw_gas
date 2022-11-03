@@ -70,8 +70,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <button type="submit" class="btn btn-success col-md-2 col-12"><span class="fa fa-search"></span> Find</button> 
                                         </div>
                                     </div>
                                 </div>
@@ -202,7 +202,7 @@
                                                                         </div>    
                                                                         <div class="col-md-5">
                                                                             <div class="form-group">
-                                                                                <label for="usr_password">Password <span style="color:red">*</span></label>
+                                                                                <label for="usr_password">Reset Password <span style="color:red">*</span></label>
                                                                                 <input type="password" class="form-control" name="usr_password" value=""/>
                                                                             </div>
                                                                         </div>
