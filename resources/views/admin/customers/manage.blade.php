@@ -165,7 +165,7 @@
 
                             <div class="form-group">
                                 <label for="cus_address">Notes <span style="color:red">*</span></label>
-                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
