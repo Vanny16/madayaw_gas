@@ -38,6 +38,34 @@ class CustomerController extends Controller
 
         session()->flash('successMessage','New customer has been added');
         return redirect()->action('CustomerController@manage');
-    } 
-  
+    }
+    
+    public function editCustomer(Request $request)
+    {
+
+    }
+    
+    public function deactivateCustomer($cus_id)
+    {
+        DB::table('customers')
+        ->where('cus_id', '=', $cus_id)
+        ->update([
+            'cus_active' => 0
+        ]);
+
+        session()->flash('successMessage','Customer has been deactivate');
+            return redirect()->action('CustomerController@manage');
+    }
+
+    public function reactivateCustomer($cus_id)
+    {
+        DB::table('customers')
+        ->where('cus_id', '=', $cus_id)
+        ->update([
+            'cus_active' => 1
+        ]);
+
+        session()->flash('successMessage','Customer reactivated');
+            return redirect()->action('CustomerController@manage');
+    }
 }
