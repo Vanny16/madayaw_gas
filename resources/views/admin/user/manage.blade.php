@@ -131,6 +131,7 @@
                                                         <span class="badge badge-danger">Inactive</span>
                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('UserController@reactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                     </td>
+                                                    <td></td>
                                                 @elseif($user->usr_active == 1)
                                                     @if($user->usr_id == session('usr_id'))
                                                         <td>
@@ -141,7 +142,7 @@
                                                         <span class="badge badge-success">Active</span>
                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                     </td>
-                                                @endif
+                                                    @endif
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="dropdown">
@@ -152,6 +153,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
                                                 <!--Edit User Modal-->
                                                 <div class="modal fade" id="edit-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg" role="document">
