@@ -224,10 +224,10 @@
                                                                 </div>
 
                                                                 <div class="col-md-10 col-12">
-                                                                    <h3><strong>RAEVIN JHON PALACIO</strong></h3>
+                                                                    <h3><strong style="text-transform:uppercase;">{{ $customer->cus_name }}</strong></h3>
                                                                     <i class="text-default">
-                                                                        Indangan, Davao City <br>
-                                                                        099876543211
+                                                                        {{ $customer->cus_address }} <br>
+                                                                        {{ $customer->cus_contact }}
                                                                     </i>
                                                                 </div>
                                                             </div>
