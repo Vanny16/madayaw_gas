@@ -45,6 +45,17 @@
                                                 <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                             @endif
                                         </div>
+
+                                        <div class="col-md-2">
+                                            <label for="filter_status">Status</label>
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
+                                                <option value="">Active</option> 
+                                                <option value="">Inactive</option> 
+                                                <option value="">All</option> 
+                                            </select> 
+                                        </div>
+
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -217,23 +228,24 @@
                                                 <div class="modal-body">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-md-2 col-12">
+                                                                <div class="col-md-2 col-12 mb-3 text-center">
                                                                     <div class="image">
                                                                         <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="100vh">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-10 col-12">
-                                                                    <h3><strong>RAEVIN JHON PALACIO</strong></h3>
+                                                                    <h3><strong style="text-transform:uppercase;">{{ $customer->cus_name }}</strong></h3>
                                                                     <i class="text-default">
-                                                                        Indangan, Davao City <br>
-                                                                        099876543211
+                                                                        {{ $customer->cus_address }} <br>
+                                                                        {{ $customer->cus_contact }}
                                                                     </i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Print</button>
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
