@@ -14,11 +14,11 @@
                 @if(session('emp_image') <> '')
                     <img src="{{ asset('images/employees/' . session('emp_image')) }}" class="img-circle elevation-2" alt="User Image">
                 @else
-                    <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px">
                 @endif
             </div>
             <div class="info">
-                <a href="{{-- action('UserController@main') --}}" class="d-block"> {{ session('emp_full_name') }}</a>
+                <a href="{{-- action('UserController@main') --}}" class="d-block"> {{ session('emp_full_name') }} John Doe</a>
             </div>
         </div>
 
