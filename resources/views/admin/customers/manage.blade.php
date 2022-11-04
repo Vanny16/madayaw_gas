@@ -89,7 +89,7 @@
                                         <td>
                                             <div class="user-panel">
                                                 <div class="image">
-                                                    <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
+                                                    <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="30px">
                                                 </div>
                                             </div>
                                         </td>
@@ -134,6 +134,7 @@
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$customer->cus_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -206,6 +207,39 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <!--Print Modal -->
+                                    <div class="modal fade" id="print-customer-modal-{{$customer->cus_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                
+                                                <div class="modal-body">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-md-2 col-12">
+                                                                    <div class="image">
+                                                                        <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="100vh">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-10 col-12">
+                                                                    <h3><strong>RAEVIN JHON PALACIO</strong></h3>
+                                                                    <i class="text-default">
+                                                                        Indangan, Davao City <br>
+                                                                        099876543211
+                                                                    </i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     </tr>
                                     @endforeach
                                 @endif
