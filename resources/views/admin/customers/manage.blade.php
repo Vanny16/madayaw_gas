@@ -89,7 +89,7 @@
                                         <td>
                                             <div class="user-panel">
                                                 <div class="image">
-                                                    <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
+                                                    <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="30px">
                                                 </div>
                                             </div>
                                         </td>
@@ -116,7 +116,7 @@
                                         </td>
                                         @else
                                         <td>
-                                            <a class="fa fa-eye-slash"></a>
+                                            -
                                         </td>
                                         @endif
                                         @if($customer->cus_active == 0)
@@ -190,7 +190,7 @@
 
                                                                 <div class="form-group">
                                                                     <label for="cus_contact">Contact # <span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="cus_contact" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" required/>
+                                                                    <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
                                                                 </div>
 
                                                                 <div class="form-group">

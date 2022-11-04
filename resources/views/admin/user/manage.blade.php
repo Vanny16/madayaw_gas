@@ -109,7 +109,7 @@
                                         @foreach($users as $user)
                                             <tr>
                                                 <td>
-                                                    <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
+                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px">
                                                 </td>
                                                 <td>
                                                     {{ $user->usr_full_name }}
