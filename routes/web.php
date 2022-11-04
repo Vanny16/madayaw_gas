@@ -53,4 +53,10 @@ Route::group(['prefix' => 'product'], function()
 Route::group(['prefix' => 'supplier'], function()
 {
     Route::get('manage', 'SupplierController@manage');
+    Route::get('deactivate-supplier/{sup_id}', 'SupplierController@deactivateSupplier');
+    Route::get('reactivate-supplier/{sup_id}', 'SupplierController@reactivateSupplier');
+    Route::get('search_supplier', 'UserController@searchUser');
+    
+    Route::post('create-supplier', 'SupplierController@createSupplier');
+    Route::post('edit-supplier/{sup_id}', 'SupplierController@editSupplier');
 });

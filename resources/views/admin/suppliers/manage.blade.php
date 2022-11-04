@@ -33,7 +33,7 @@
                             <h3 class="card-title"><i class="fas fa-warehouse"></i> Find Supplier</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="">
+                            <form class="form-horizontal" method="GET" action="">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
@@ -82,113 +82,232 @@
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="user-panel">
-                                                <div class="image">
-                                                    <img src="{{ asset('images/employees/default.png') }}" class="img-circle elevation-2" alt="Customer Image">
+                                <tbody id="tbl-suppliers">
+                                    @if(isset($suppliers))
+                                        @foreach($suppliers as $supplier)
+                                        <tr>
+                                            <td>
+                                                <div class="user-panel">
+                                                    <div class="image">
+                                                        <img src="{{ asset('img/suppliers/default.png') }}" class="img-circle elevation-2" alt="Supplier Image" height="30px">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>   
-                                            Raevin Jhon Palacio
-                                        </td>
-                                        <td>
-                                            09876543210
-                                        </td>
-                                        <td>
-                                            Indangan, Davao City
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-success">Active</span>
-                                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                           
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#notes-Modal"><span class="fa fa-edit"></span></button>
-                                        </td>
-                                    </tr> 
-                                    <div id="notes-Modal" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Set Notes</h4>
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </td>
+                                            <td>   
+                                                {{ $supplier->sup_name }}
+                                            </td>
+                                            @if($supplier->sup_contact)
+                                                <td>
+                                                    {{ $supplier->sup_contact }}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($supplier->sup_address)
+                                            <td>
+                                                {{ $supplier->sup_address }}
+                                            </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($supplier->sup_notes)
+                                            <td>
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$supplier->sup_id}}"><i class="fa fa-eye"></i></a>
+                                            </td>
+                                            @else
+                                            <td>-</td>
+                                            @endif
+                                            @if($supplier->sup_active == 0)
+                                                <td>
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('SupplierController@reactivateSupplier',[$supplier->sup_id]) }}" aria-hidden="true"></a>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <span class="badge badge-success">Active</span>
+                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('SupplierController@deactivateSupplier',[$supplier->sup_id]) }}" aria-hidden="true"></a>
+                                                </td>
+                                            @endif
+                                            <td>
+                                                <div class="dropdown">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                                <form method="POST" action="">
-                                                {{ csrf_field() }} 
+                                            </td>
+                                        
+                                        <!--Notes Modal -->
+                                        <div class="modal fade" id="notes-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Notes</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
                                                     <div class="modal-body">
-                                                        <div class="col-md-12 mb-3">
-                                                            <label for="tme_remarks">Notes<span style="color:red;">*</span></label>
-                                                            <input class="form-control" type="text" name="sup_notes" value="" required/>
-                                                        </div>
+                                                            <div class="col-md-12">
+                                                                {{ $supplier->sup_notes }}
+                                                            </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </tbody>
-                            </table>
+    
+                                        <!--Edit Supplier Modal -->
+                                        <div class="modal fade" id="edit-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}">
+                                                    {{ csrf_field() }} 
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="sup_name">Suppliers Name <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="{{$supplier->sup_name}}" required/>
+                                                                    </div>
+    
+                                                                    <div class="form-group">
+                                                                        <label for="sup_address">Address <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="{{$supplier->sup_address}}" required/>
+                                                                    </div>
+    
+                                                                    <div class="form-group">
+                                                                        <label for="sup_contact">Contact <span style="color:red">*</span></label>
+                                                                        <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" value="{{$supplier->sup_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                                                                    </div>
+    
+                                                                    <div class="form-group">
+                                                                        <label for="sup_notes">Notes</label>
+                                                                        <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control" >{{$supplier->sup_notes}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+    
+                                        <!--Print Modal -->
+                                        <div class="modal fade" id="print-supplier-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    
+                                                    <div class="modal-body">
+                                                            <div class="col-12">
+                                                                <div class="row">
+                                                                    <div class="col-md-2 col-12">
+                                                                        <div class="image">
+                                                                            <img src="{{ asset('img/suppliers/default.png') }}" class="img-circle elevation-2" alt="Supplier Image" height="100vh">
+                                                                        </div>
+                                                                    </div>
+    
+                                                                    <div class="col-md-10 col-12">
+                                                                        <h3><strong style="text-transform:uppercase;">{{ $supplier->sup_name }}</strong></h3>
+                                                                        <i class="text-default">
+                                                                            {{ $supplier->sup_address }} <br>
+                                                                            {{ $supplier->sup_contact }}
+                                                                        </i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        </tr>
+                                        @endforeach
+                                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
+    
+    <!-- Supplier Modal -->
+    <div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ action('SupplierController@createSupplier')}}">
+                {{ csrf_field() }} 
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
+                                </div>
 
-<!-- Supplier Modal -->
-<div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
-                            </div>
+                                <div class="form-group">
+                                    <label for="sup_address">Address <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="" required/>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="sup_contact">Contact # <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_contact" placeholder="Enter Contact" value="" required/>
-                            </div>
+                                <div class="form-group">
+                                    <label for="sup_contact">Contact <span style="color:red">*</span></label>
+                                    <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="prod_address">Address <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Address" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sup_address">Notes <span style="color:red">*</span></label>
-                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                                <div class="form-group">
+                                    <label for="sup_notes">Notes</label>
+                                    <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>     
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-@endsection
+    <script>
+    
+    $(document).ready(function(){
+            $("#search_suppliers").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#tbl-suppliers tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    
+    </script>
+    @endsection
