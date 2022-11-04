@@ -54,6 +54,7 @@ class CustomerController extends Controller
     
     public function editCustomer(Request $request)
     {
+        $cus_id = $request->cus_id;
         $cus_name = $request->cus_name;
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
