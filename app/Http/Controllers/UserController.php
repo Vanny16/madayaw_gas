@@ -52,45 +52,21 @@ class UserController extends Controller
         $default_status = $request->filter_status;
         $usr_active = array_search($request->filter_status, $statuses);
 
-        if($typ_id == 0)
-        {
-            if($usr_active == 2)
-            {
-                $users = DB::table('users')     
-                ->where('acc_id','=',session('acc_id'))
-                ->orderBy('usr_full_name')
-                ->get();
-            }
-            else
-            {
-                $users = DB::table('users')     
-                ->where('usr_active', '=', $usr_active)
-                ->where('acc_id','=',session('acc_id'))
-                ->orderBy('usr_full_name')
-                ->get();
-            }
+
+
+        $query = DB::table('users')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('usr_full_name','LIKE', $search_string . '%');
+
+        if($typ_id != 0){
+            $query = $query->where('typ_id', '=', $typ_id);
         }
-        else
-        {
-            if($usr_active == 2)
-            {
-                $users = DB::table('users')
-                ->where('typ_id', '=', $typ_id)
-                ->where('acc_id','=',session('acc_id'))
-                ->orderBy('usr_full_name')
-                ->get();    
-            }
-            else
-            {
-                $users = DB::table('users')
-                ->where('typ_id', '=', $typ_id)
-                ->where('usr_active', '=', $usr_active)
-                ->where('acc_id','=',session('acc_id'))
-                ->orderBy('usr_full_name')
-                ->get();
-            }
+
+        if($usr_active != 2){
+            $query = $query->where('usr_active', '=', $usr_active);
         }
-             
+
+        $users = $query->orderBy('usr_full_name')->get(); 
         
         return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));  
     }

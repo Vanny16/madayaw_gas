@@ -41,7 +41,6 @@
                                             <label for="search_string">Find User</label>
                                             <input id="search-users" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                         </div>
-
                                         <div class="col-md-2">
                                             <label for="filter_type">User Type</label>
                                             <select class="form-control" id="filter_type" name="filter_type" required>
@@ -188,7 +187,7 @@
                                                                             <label for="typ_id">User Type<span style="color:red;">*</span></label>
                                                                                 <select class="form-control" name="typ_id" required>
                                                                                 @foreach($user_types as $user_type)
-                                                                                    @if($user->usr_id == $user_type->typ_id)
+                                                                                    @if($user->typ_id == $user_type->typ_id)
                                                                                         <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
                                                                                     @else
                                                                                         <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
