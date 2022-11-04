@@ -172,19 +172,19 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="POST" action="{{ action('CustomerController@editCustomer')}}">
+                                                <form method="POST" action="{{ action('CustomerController@editCustomer',[$customer->cus_id])}}">
                                                 {{ csrf_field() }} 
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="cus_name">Full Name <span style="color:red">*</span></label>
-                                                                    <input type="text" class="form-control" id="cus_name" placeholder="Enter Full Name" value="{{$customer->cus_name}}" required/>
+                                                                    <input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="{{$customer->cus_name}}" required/>
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="cus_address">Address <span style="color:red">*</span></label>
-                                                                    <input type="text" class="form-control" id="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
+                                                                    <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -194,7 +194,7 @@
 
                                                                 <div class="form-group">
                                                                     <label for="cus_notes">Notes</label>
-                                                                    <textarea id="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                                                                    <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" >{{$customer->cus_notes}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
