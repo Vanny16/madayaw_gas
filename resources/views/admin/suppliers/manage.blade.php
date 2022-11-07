@@ -77,8 +77,8 @@
                                         <th>Supplier Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
-                                        <th>Status</th>
-                                        <th width="100px">Notes</th>
+                                        <th>Notes</th>
+                                        <th width="100px">Status</th>
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>

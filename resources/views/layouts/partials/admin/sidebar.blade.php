@@ -18,7 +18,7 @@
                 @endif
             </div>
             <div class="info">
-                <a href="{{-- action('UserController@main') --}}" class="d-block"> {{ session('emp_full_name') }} John Doe</a>
+                <a href="{{-- action('UserController@main') --}}" class="d-block"> {{ session('usr_full_name') }}</a>
             </div>
         </div>
 
