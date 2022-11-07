@@ -33,7 +33,7 @@
                             <h3 class="card-title"><i class="fas fa-user"></i> Find Customer</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="">
+                            <form class="form-horizontal" method="POST" action="{{ action('CustomerController@searchCustomer') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
@@ -45,17 +45,18 @@
                                                 <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                             @endif
                                         </div>
-
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
                                             <select class="form-control" id="filter_status" name="filter_status" required>
-                                                <option value="">Active</option> 
-                                                <option value="">Inactive</option> 
-                                                <option value="">All</option> 
+                                                @foreach($statuses as $status)
+                                                    @if($status == $default_status)
+                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                    @else
+                                                        <option value="{{ $status }}">{{ $status }}</option>
+                                                    @endif
+                                                @endforeach   
                                             </select> 
                                         </div>
-
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
