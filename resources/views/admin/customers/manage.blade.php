@@ -59,8 +59,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
+                                        <div class="col-md-6 col-12 mt-2">
+                                            <button type="submit" class="btn btn-success col-md-3 col-12"><span class="fa fa-search"></span> Find</button> 
                                         </div>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
 
                 <div class="col-md-12 mb-3">
                 @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                    <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
                 @endif
                     <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allcustomerDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
