@@ -79,9 +79,11 @@
                     </div>
                 </div>
 
+                @if(session('typ_id') == '1')
                 <div class="col-md-12 mb-3"> 
                     <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><d class="fa fa-user-plus"></d> New User</a>
                 </div>
+                @endif
 
                 <div class="col-md-12"> 
                     <div class="card">
@@ -98,9 +100,12 @@
                                         <th width="50px"></th>
                                         <th>Full Name</th>
                                         <th>Username</th>
+                                        <th>Address</th>
                                         <th>User Type</th>
                                         <th width="100px">Status</th>
+                                        @if(session('typ_id') == '1')
                                         <th width="100px"></th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-users">
@@ -116,6 +121,9 @@
                                                 <td>
                                                     {{ $user->usr_name }}
                                                 </td>
+                                                <td>
+                                                    {{ $user->usr_address }}
+                                                </td>
                                                 @if($user->typ_id == 1)
                                                     <td>Administrator</td>
                                                 @elseif($user->typ_id == 2)
@@ -128,9 +136,15 @@
                                                 @if($user->usr_active == 0)
                                                     <td>
                                                         <span class="badge badge-danger">Inactive</span>
+                                                        @if(session('typ_id') == '1')
                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('UserController@reactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
+                                                        @endif
                                                     </td>
-                                                    <td></td>
+                                                    @if(session('typ_id') == '1')
+                                                    <td>
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    </td>
+                                                    @endif
                                                 @elseif($user->usr_active == 1)
                                                     @if($user->usr_id == session('usr_id'))
                                                         <td>
@@ -139,9 +153,12 @@
                                                     @else
                                                     <td>
                                                         <span class="badge badge-success">Active</span>
+                                                        @if(session('typ_id') == '1')
                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
+                                                        @endif
                                                     </td>
                                                     @endif
+                                                @if(session('typ_id') == '1')
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="dropdown">
@@ -152,6 +169,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                @endif
 
                                                 <!--Edit User Modal-->
                                                 <div class="modal fade" id="edit-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

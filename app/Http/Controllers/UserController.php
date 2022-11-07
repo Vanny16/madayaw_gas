@@ -13,7 +13,6 @@ class UserController extends Controller
         $users = DB::table('users')
         ->join('user_types', 'user_types.typ_id', '=', 'users.typ_id')
         ->where('acc_id', '=',session('acc_id'))
-        // ->where('usr_active', '=', '1')
         ->get();
 
         $user_types = DB::table('user_types')
@@ -46,13 +45,8 @@ class UserController extends Controller
             2 => 'All'
         );
 
-        // session(['search_typ_id' => $users->usr_id]);
-        // session(['usr_id' => $users->usr_id]);
-
         $default_status = $request->filter_status;
         $usr_active = array_search($request->filter_status, $statuses);
-
-
 
         $query = DB::table('users')
         ->where('acc_id','=',session('acc_id'))

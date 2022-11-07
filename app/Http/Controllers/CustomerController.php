@@ -11,15 +11,48 @@ class CustomerController extends Controller
     
     public function manage()
     {
-    
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->get();
 
-        return view('admin.customers.manage',compact('customers'));
+        return view('admin.customers.manage',compact('customers','statuses','default_status'));
     }
     
-   public function createCustomer(Request $request)
+    public function searchCustomer(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+        $cus_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('customers')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('cus_name','LIKE', $search_string . '%');
+
+        if($cus_active != 2){
+            $query = $query->where('cus_active', '=', $cus_active);
+        }
+
+        $customers = $query->orderBy('cus_name')->get(); 
+
+        return view('admin.customers.manage', compact('customers','cus_active', 'statuses', 'default_status'));
+    }
+
+    public function createCustomer(Request $request)
     {
         $cus_name = $request->cus_name;
         $cus_address = $request->cus_address;

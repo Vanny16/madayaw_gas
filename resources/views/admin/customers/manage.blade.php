@@ -33,7 +33,7 @@
                             <h3 class="card-title"><i class="fas fa-user"></i> Find Customer</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="">
+                            <form class="form-horizontal" method="POST" action="{{ action('CustomerController@searchCustomer') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
@@ -45,17 +45,18 @@
                                                 <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
                                             @endif
                                         </div>
-
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
                                             <select class="form-control" id="filter_status" name="filter_status" required>
-                                                <option value="">Active</option> 
-                                                <option value="">Inactive</option> 
-                                                <option value="">All</option> 
+                                                @foreach($statuses as $status)
+                                                    @if($status == $default_status)
+                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                    @else
+                                                        <option value="{{ $status }}">{{ $status }}</option>
+                                                    @endif
+                                                @endforeach   
                                             </select> 
                                         </div>
-
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -68,8 +69,11 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 mb-3"> 
+                <div class="col-md-12 mb-3">
+                @if(session('typ_id') == '1' || session('typ_id') == '2') 
                     <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                @endif
+                    <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allcustomerDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
 
                 <div class="col-md-12"> 
@@ -90,7 +94,9 @@
                                         <th>Address</th>
                                         <th>Notes</th>
                                         <th width="100px">Status</th>
+                                        @if(session('typ_id') == '1' || session('typ_id') == '2') 
                                         <th width="100px"></th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-customers">
@@ -131,25 +137,36 @@
                                         @if($customer->cus_active == 0)
                                             <td>
                                                 <span class="badge badge-danger">Inactive</span>
+                                                @if(session('typ_id') == '1' || session('typ_id') == '2') 
                                                 <a class="fa fa-toggle-off" type="button" href="{{ action('CustomerController@reactivateCustomer',[$customer->cus_id]) }}" aria-hidden="true"></a>
+                                                @endif
                                             </td>
                                         @else
                                             <td>
                                                 <span class="badge badge-success">Active</span>
+                                                @if(session('typ_id') == '1' || session('typ_id') == '2') 
                                                 <a class="fa fa-toggle-on" type="button" href="{{ action('CustomerController@deactivateCustomer',[$customer->cus_id]) }}" aria-hidden="true"></a>
+                                                @endif
                                             </td>
                                         @endif
+                                        
                                         <td>
+                                        @if($customer->cus_active == 0)
+                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                        @else   
                                             <div class="dropdown">
                                                 <div class="dropdown">
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                     <ul class="dropdown-menu">
+                                                        @if(session('typ_id') == '1' || session('typ_id') == '2')
                                                         <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        @endif
                                                         <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$customer->cus_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
+                                        @endif
                                     
                                         <!--Notes Modal -->
                                         <div class="modal fade" id="notes-modal-{{$customer->cus_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -258,9 +275,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <a class="btn btn-info" href="{{ action('PrintController@allcustomerDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
             </div>
         </div>
