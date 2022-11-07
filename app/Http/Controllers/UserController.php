@@ -170,4 +170,14 @@ class UserController extends Controller
         session()->flash('successMessage','User reactivated');
             return redirect()->action('UserController@user');
     }
+
+    //USER SCREEN FOR PROFILE EDITS
+    public function profile()
+    {
+        $user_details = DB::table('users')
+        ->where('user_id', '=', session('user_id'))
+        ->get();
+
+        return view('admin.profile.profile', compact('user_details'));
+    }
 }

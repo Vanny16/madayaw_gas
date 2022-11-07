@@ -43,24 +43,7 @@
 							<div class="text-center">
 								 <p class="text-muted text-center"><em><small>(upload)</small></em></p>
 							</div>
-                            <h3 class="profile-username text-center"></h3>
-                            {{-- <p class="text-muted text-center">{{ $employee->pos_name }}</p> --}}
-                            <ul class="list-group list-group-unbordered mb-3">
-                                <li class="list-group-item">
-                                    <b>Employed Since</b> <a class="float-right"></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Years in Service</b> 
-									<a class="float-right">
-										{{ $employ_years }} 
-										@if($employ_years <= 1)
-											year
-										@else 
-											years
-										@endif
-									</a>
-                                </li>
-                            </ul>
+                            
                         </div>
                     </div>
       
@@ -69,18 +52,9 @@
                             <h3 class="card-title">Contact Details</h3>
                         </div>
                         <div class="card-body">
-                            <strong><i class="fa fa-envelope mr-1"></i> E-mail</strong>
-                            <p class="text-muted"></p>
-                            <hr>
-
                             <strong><i class="fa fa-phone mr-1"></i> Mobile</strong>
                             <p class="text-muted"></p>
                             <hr>
-
-                            <strong><i class="fa fa-map-marker mr-1"></i> Address</strong>
-                            <p class="text-muted"></p>
-                            <hr>
-
 							<a class="btn btn-warning btn-block" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
                         </div>
                     </div>
@@ -91,12 +65,12 @@
 						<div class="card-body">
 							<div class="tab-content">
 								<div class="active tab-pane" id="personal">
-									<form class="form-horizontal" method="POST" action="{{ action('UserController@savePersonal') }}">
+									<form class="form-horizontal" method="POST" action="{{-- action('UserController@savePersonal') --}}">
 									{{ csrf_field() }} 
 										<div class="form-group row">
 											<label for="emp_last_name" class="col-sm-2 col-form-label">Full Name</label>
 											<div class="col-sm-10">
-												<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="" placeholder="Full Name" required disabled/>
+												<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{}}" placeholder="Full Name" required disabled/>
 											</div>
 										</div>
 										<div class="form-group row">
@@ -113,7 +87,7 @@
 										</div>
 										<div class="form-group row">
 											<div class="offset-sm-2 col-sm-10">
-												<input type="hidden" name="emp_uuid" value="{{ $employee->emp_uuid }}">
+												<input type="hidden" name="emp_uuid" value="">
 												<button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save Changes</button>
 											</div>
 										</div>
@@ -135,7 +109,7 @@
 				<h4 class="modal-title">Upload Profile Photo</h4>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
-			<form method="POST" action="{{ action('UserController@uploadAvatar') }}" enctype="multipart/form-data">
+			<form method="POST" action="{{-- action('UserController@uploadAvatar') --}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
 				<div class="modal-body">
 					<label for="emp_image">Attach File</label>
@@ -146,7 +120,7 @@
 					<small id="fileHelp" class="form-text text-muted">Please upload a valid file in jpg, png, or gif format. Size of image should not be more than 3MB.</small>
 				</div>
 				<div class="modal-footer">
-					<input type="hidden" name="emp_id" value="{{ $employee->emp_id }}">
+					<input type="hidden" name="emp_id" value="{{-- $employee->emp_id --}}">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
 				</div>
@@ -162,7 +136,7 @@
 				<h4 class="modal-title">Change Password</h4>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
-			<form method="POST" action="{{ action('UserController@updatePassword') }}">
+			<form method="POST" action="{{-- action('UserController@updatePassword') --}}">
             {{ csrf_field() }} 
 				<div class="modal-body">
 					<div class="col-md-12">
@@ -190,7 +164,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<input type="hidden" name="emp_uuid" value="{{ $employee->emp_uuid }}">
+					<input type="hidden" name="emp_uuid" value="{{-- $employee->emp_uuid --}}">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
 				</div>

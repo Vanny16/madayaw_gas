@@ -40,6 +40,7 @@ Route::group(['prefix' => 'user'], function()
     Route::get('main', 'UserController@user');
     Route::get('deactivate-user/{usr_id}', 'UserController@deactivateUser');
     Route::get('reactivate-user/{usr_id}', 'UserController@reactivateUser');
+    Route::get('profile', 'UserController@profile');
 
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
