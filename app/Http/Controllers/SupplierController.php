@@ -18,19 +18,22 @@ class SupplierController extends Controller
         return view('admin.suppliers.manage');
     }
     
-    // public function saveuser(Request $request)
-    // {
-    //     $usr_full_name = $request->usr_fullname;
-    //     $usr_name = $request->usr_name;
-    //     $usr_password = $request->usr_password;
+    public function createSupplier(Request $request)
+    {
+        $sup_name = $request->sup_name;
+        $sup_contact = $request->sup_contact;
+        $sup_address = $request->sup_address;
 
-    //     $usr_id = DB::table('users')
-    //     ->insert([
-    //         'acc_id' => session('acc_id')
-    //         'usr_full_name' => $usr_full_name
-    //         'usr_name' => $usr_name
-    //         'usr_password' => $usr_password
+        $sup_id = DB::table('suppliers')
+        ->insert([
+            'acc_id' => session('acc_id'),
+            'sup_name' => $sup_name,
+            'sup_contact' => $sup_contact,
+            'sup_address' => $sup_address
 
-    //     ]);
-    // }
+        ]);
+
+        session()->flash('successMessage','New supplier has been added');
+        return redirect()->action('SupplierController@manage');
+    }
 }

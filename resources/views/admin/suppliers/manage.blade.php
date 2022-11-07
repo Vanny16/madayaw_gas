@@ -82,7 +82,7 @@
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-suppliers">
                                     <tr>
                                         <td>
                                             <div class="user-panel">

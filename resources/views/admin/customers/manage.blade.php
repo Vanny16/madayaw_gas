@@ -248,6 +248,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <a class="btn btn-info" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                </div>
             </div>
         </div>
     </section>
