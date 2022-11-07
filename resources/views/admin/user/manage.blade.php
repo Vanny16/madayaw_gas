@@ -204,8 +204,7 @@
                                                                         <div class="col-md-5">
                                                                             <div class="form-group">
                                                                                 <label for="usr_password">Reset Password <span style="color:red">*</span></label>
-                                                                                <input type="password" class="form-control" name="usr_password" id="usr_password" value="" disabled/>
-                                                                                <small type="button" id="btn_changePass" class="text-info pull-right" onclick="changePassword()">Edit Password</small>
+                                                                                <input type="password" class="form-control" name="usr_password" id="usr_password" value=""/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -303,19 +302,6 @@ $(document).ready(function(){
             });
         });
     });
-
-function changePassword(){
-    var btnChangePass = document.getElementByID('btn_changePass').value;
-
-    if(btnChangePass == "Edit Password"){
-        document.getElementByID('btn_changePass').value = "Cancel";
-        document.getElementByID('usr_password').disabled = "false";
-    }
-    else if(btnChangePass == "Cancel"){
-        document.getElementByID('btn_changePass').value = "Edit Password";
-        document.getElementByID('usr_password').disabled = "true";
-    }
-}
 
 </script>
 
