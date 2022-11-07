@@ -245,7 +245,7 @@
                                                             </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Print</button>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="print-customer-modal.print()">Print</button>
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
