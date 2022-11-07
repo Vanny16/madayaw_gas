@@ -60,3 +60,9 @@ Route::group(['prefix' => 'supplier'], function()
     Route::post('create-supplier', 'SupplierController@createSupplier');
     Route::post('edit-supplier/{sup_id}', 'SupplierController@editSupplier');
 });
+
+Route::group(['prefix' => 'print'], function()
+{
+    Route::get('customer/{pay_uuid}', 'PrintController@customerDetails');
+    Route::get('customer', 'PrintController@allcustomerDetails');
+});

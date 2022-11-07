@@ -245,7 +245,7 @@
                                                             </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="print-customer-modal.print()">Print</button>
+                                                        <a class="btn btn-info" href="{{ action('PrintController@customerDetails',[$customer->cus_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
@@ -260,7 +260,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <a class="btn btn-info" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                    <a class="btn btn-info" href="{{ action('PrintController@allcustomerDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
             </div>
         </div>
