@@ -10,12 +10,10 @@ class ProductController extends Controller
     //
     public function manage()
     {
-        // $modules = DB::table('modules')
-        // ->where('mod_active','=','1')
-        // ->orderBy('mod_name')
-        // ->get();
+        $products = DB::table('products')
+        ->get();
 
-        return view('admin.products.manage');
+        return view('admin.products.manage',compact('products'));
     }
     
     // public function saveuser(Request $request)
