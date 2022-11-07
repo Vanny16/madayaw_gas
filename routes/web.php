@@ -29,6 +29,7 @@ Route::group(['prefix' => 'customer'], function()
     Route::get('deactivate-customer/{cus_id}', 'CustomerController@deactivateCustomer');
     Route::get('reactivate-customer/{cus_id}', 'CustomerController@reactivateCustomer');
 
+    Route::post('search-customer', 'CustomerController@searchCustomer');
     Route::post('create-customer', 'CustomerController@createCustomer');
     Route::post('edit_customer/{cus_id}', 'CustomerController@editCustomer');
 
