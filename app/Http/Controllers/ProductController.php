@@ -17,6 +17,12 @@ class ProductController extends Controller
         return view('admin.products.manage',compact('products'));
     }
     
+    public function addProduct(Request $request)
+    {
+        
+
+        return redirect()->action('ProductController@manage');
+    }
     // public function saveuser(Request $request)
     // {
     //     $usr_full_name = $request->usr_fullname;
