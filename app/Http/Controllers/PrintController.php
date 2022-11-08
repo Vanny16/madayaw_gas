@@ -25,5 +25,39 @@ class PrintController extends Controller
         return view('admin.print.customer', compact('customer_details'));
     }
 
+    public function allsupplierDetails()
+    {
+        $all_supplier_details = DB::table('suppliers')
+        ->get();
+
+        return view('admin.print.supplier', compact('all_supplier_details'));
+    }
+
+    public function supplierDetails($sup_uuid)
+    {
+        $supplier_details = DB::table('suppliers')
+        ->where('sup_uuid', '=', $cus_uuid)
+        ->get();
+
+        return view('admin.print.supplier', compact('supplier_details'));
+    }
+
+    public function allproductDetails()
+    {
+        $all_product_details = DB::table('products')
+        ->get();
+
+        return view('admin.print.product', compact('all_product_details'));
+    }
+
+    public function productDetails($prd_id)
+    {
+        $product_details = DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->get();
+
+        return view('admin.print.product', compact('product_details'));
+    }
+
 
 }

@@ -60,7 +60,7 @@
                 <div class="col-md-12 mb-3"> 
                     <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Product</a>
 
-                    <a class="btn btn-info col-md-1 col-12 float-right" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                    <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allproductDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
 
                 <div class="col-md-12"> 
