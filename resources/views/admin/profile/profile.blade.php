@@ -33,17 +33,13 @@
                         <div class="card-body box-profile">
 							<div class="text-center">
 								<a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-									
-										<img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture" />
-								
-										<img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture" />
-								
+									<img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture" />
 								</a>
 							</div>
 							<div class="text-center">
 								 <p class="text-muted text-center"><em><small>(upload)</small></em></p>
+								<h3 class="profile-username text-center">{{ session('usr_full_name') }}</h3>
 							</div>
-                            
                         </div>
                     </div>
       
@@ -52,8 +48,8 @@
                             <h3 class="card-title">Contact Details</h3>
                         </div>
                         <div class="card-body">
-                            <strong><i class="fa fa-phone mr-1"></i> Mobile</strong>
-                            <p class="text-muted"></p>
+							<strong><i class="fa fa-map-marker mr-1"></i> Address</strong>
+                            <p class="text-muted">{{ $user_details->usr_address }}</p>
                             <hr>
 							<a class="btn btn-warning btn-block" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
                         </div>
@@ -70,19 +66,19 @@
 										<div class="form-group row">
 											<label for="emp_last_name" class="col-sm-2 col-form-label">Full Name</label>
 											<div class="col-sm-10">
-												<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{}}" placeholder="Full Name" required disabled/>
+												<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{$user_details->usr_full_name }}" placeholder="Full Name" required disabled/>
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
 											<div class="col-sm-10">
-												<input type="text" class="form-control" id="usr_address" name="usr_address" value="" placeholder="Address" required disabled/>
+												<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" required disabled/>
 											</div>
 										</div>
                                         <div class="form-group row">
 											<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
 											<div class="col-sm-10">
-												<input type="text" class="form-control" id="usr_name" name="usr_name" value="" placeholder="Address" required disabled/>
+												<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" required disabled/>
 											</div>
 										</div>
 										<div class="form-group row">

@@ -175,7 +175,25 @@ class UserController extends Controller
     public function profile()
     {
         $user_details = DB::table('users')
-        ->where('user_id', '=', session('user_id'))
+        ->where('usr_id', '=', session('usr_id'))
+        ->first();
+
+        return view('admin.profile.profile', compact('user_details'));
+    }
+
+    public function saveProfile()
+    {
+        $user_details = DB::table('users')
+        ->where('usr_id', '=', session('user_id'))
+        ->get();
+
+        return view('admin.profile.profile', compact('user_details'));
+    }
+
+    public function savePassword()
+    {
+        $user_details = DB::table('users')
+        ->where('usr_id', '=', session('user_id'))
         ->get();
 
         return view('admin.profile.profile', compact('user_details'));
