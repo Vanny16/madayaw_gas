@@ -85,7 +85,7 @@ class UserController extends Controller
                 'usr_uuid' => generateuuid(),
                 'usr_full_name' => $usr_full_name,
                 'usr_name' => $usr_name,
-                'usr_password' => $usr_password,
+                'usr_password' => md5($usr_password),
                 'usr_address' => $usr_address,
                 'typ_id' => $typ_id
             ]);
@@ -139,7 +139,7 @@ class UserController extends Controller
             'usr_full_name' => $usr_full_name,
             'usr_address' => $usr_address,
             'typ_id' => $typ_id,
-            'usr_password' => $usr_password
+            'usr_password' => md5($usr_password)
         ]);
         }
         
@@ -190,12 +190,36 @@ class UserController extends Controller
         return view('admin.profile.profile', compact('user_details'));
     }
 
-    public function savePassword()
+    public function savePassword(Request $request)
     {
-        $user_details = DB::table('users')
-        ->where('usr_id', '=', session('user_id'))
-        ->get();
+        $usr_password = $request->usr_password;
+        $new_password = $request->new_password;
+        $new_password2 = $request->new_password2;
+        $usr_uuid = $request->usr_uuid;
+       
+        $users = DB::table('users')
+        ->where('usr_uuid','=',$usr_uuid)
+        ->first();
 
-        return view('admin.profile.profile', compact('user_details'));
+        $stored_password = $users->usr_password;
+
+        if(md5($usr_password) == $stored_password){
+            if($new_password == $new_password2){
+
+                DB::table('users')
+                ->where('usr_uuid','=',$usr_uuid)
+                ->update([
+                    'usr_password' => md5($new_password)
+                ]);
+
+                session()->flash('successMessage', 'User password successfully updated.');
+            }else{
+                session()->flash('errorMessage', 'New password does not match.');
+            }
+        }else{
+            session()->flash('errorMessage', 'Incorrect old password entered.');
+        }
+
+        return redirect()->action('UserController@profile');
     }
 }
