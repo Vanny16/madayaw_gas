@@ -10,7 +10,12 @@ class LoginController extends Controller
 {
     public function login()
     {
-        return view('login.main');
+        if(session('usr_id') != null){
+            return redirect()->action('MainController@home');
+        }
+        else{
+            return view('login.main');
+        }
     }
 
     public function validateUser(Request $request)
