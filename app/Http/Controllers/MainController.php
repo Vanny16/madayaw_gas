@@ -10,7 +10,11 @@ class MainController extends Controller
 {
     public function home()
     {
-        return view('admin.main'); 
+        if(session('typ_id') == null){
+            return redirect()->action('LoginController@login');
+        }
+        else{
+            return view('admin.main'); 
+        }
     }
-
 }
