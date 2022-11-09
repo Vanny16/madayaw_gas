@@ -39,11 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
-                                            @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Product Name" value="{{ $search_string }}" required/>
-                                            @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Product Name" required/>
-                                            @endif
+                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name" required/>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -84,7 +80,7 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-products">
                                     <tr>
                                         <td>   
                                             Botin
@@ -205,5 +201,17 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#search_products").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-products tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 @endsection
