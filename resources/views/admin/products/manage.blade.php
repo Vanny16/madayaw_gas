@@ -153,7 +153,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="{{ action('ProductController@productaddQuantity') }}">
+                                                            <form method="POST" action="{{ action('ProductController@addQuantity') }}">
                                                             {{ csrf_field() }} 
                                                                 <div class="modal-body">
                                                                     <div class="row">
@@ -176,7 +176,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}"  hidden/>    
@@ -187,7 +186,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                         </tr> 
                                     @endforeach
                                 @endif

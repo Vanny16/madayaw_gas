@@ -52,7 +52,7 @@ Route::group(['prefix' => 'product'], function()
     Route::get('manage', 'ProductController@manage');
 
     Route::post('add-product', 'ProductController@createProduct');
-    Route::post('add-quantity', 'ProductController@productaddQuantity');
+    Route::post('add-quantity', 'ProductController@addQuantity');
 });
 
 Route::group(['prefix' => 'supplier'], function()

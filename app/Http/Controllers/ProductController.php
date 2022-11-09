@@ -59,7 +59,7 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
 
-    public function productaddQuantity(Request $request)
+    public function addQuantity(Request $request)
     {
         $prd_id = $request->prd_id;
 
@@ -82,25 +82,6 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
     
-    // public function productEdit(Request $request)
-    // {
-    //     $prd_name = $request->prd_name;
-    //     $prd_description = $request->prd_description;
-    //     $prd_sku = $request->prd_sku;
-    //     $sup_id = $request->sup_id;
-
-    //     DB::table('products')
-    //     ->insert([
-    //         'prd_name' => $prd_name,
-    //         'prd_description' => $prd_description,
-    //         'prd_sku' => $prd_sku,
-    //         'sup_id' => $sup_id,
-    //     ]);
-
-    //     session()->flash('successMessage','New product has been added');
-    //     return redirect()->action('ProductController@manage');
-    // }
-
     public function productStatus($prd_sku)
     {
         DB::table('users')
