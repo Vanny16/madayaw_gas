@@ -25,6 +25,7 @@ class LoginController extends Controller
 
         $users = DB::table('users')
         ->join('accounts','accounts.acc_id','=','users.acc_id')
+        ->join('user_types','user_types.typ_id','=','users.typ_id')
         ->where('usr_name','=',$username)
         ->where('usr_password','=',$password)
         //->where('password','=',md5($password)) COMMENTED FOR TESTING
@@ -34,8 +35,9 @@ class LoginController extends Controller
         {
             $users = DB::table('users')
             ->join('accounts','accounts.acc_id','=','users.acc_id')
+            ->join('user_types','user_types.typ_id','=','users.typ_id')
             ->where('usr_name','=',$username)
-            ->where('password','=',md5($password))
+            ->where('usr_password','=',md5($password))
             ->first();
         }
 
@@ -54,6 +56,7 @@ class LoginController extends Controller
                     session(['usr_address' => $users->usr_address]);
                     session(['usr_image' => $users->usr_image]);
                     session(['typ_id' => $users->typ_id]);
+                    session(['typ_name' => $users->typ_name]);
 
                     return redirect()->action('MainController@home');
                 }

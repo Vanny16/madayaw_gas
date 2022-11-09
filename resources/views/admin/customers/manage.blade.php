@@ -192,7 +192,7 @@
 
                                         <!--Edit Customer Modal -->
                                         <div class="modal fade" id="edit-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-dialog modal-md" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
@@ -204,6 +204,18 @@
                                                     {{ csrf_field() }} 
                                                         <div class="modal-body">
                                                             <div class="row">
+                                                                <div class="col-12 text-center">
+                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                    </a>
+                                                                    <div class="col-12 text-center mb-4">
+                                                                        <a href="javascript:void(0);" class="">
+                                                                            <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
+                                                                            <input type="file" class="custom-file-input" id="choose_file" hidden>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <label for="cus_name">Full Name <span style="color:red">*</span></label>
@@ -283,7 +295,7 @@
 
 <!-- Customer Modal -->
 <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
@@ -295,6 +307,18 @@
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-12 text-center">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                            </a>
+                            <div class="col-12 text-center mb-4">
+                                <a href="javascript:void(0);" class="">
+                                    <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
+                                    <input type="file" class="custom-file-input" id="choose_file" hidden>
+                                </a>
+                            </div>
+                        </div>
+                                
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="cus_name">Full Name <span style="color:red">*</span></label>
@@ -336,6 +360,10 @@ $(document).ready(function(){
             });
         });
     });
+
+$('#btn_choose_file').click(function(){
+    $('#choose_file').click();
+});
 
 </script>
 @endsection
