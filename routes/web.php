@@ -71,6 +71,6 @@ Route::group(['prefix' => 'print'], function()
     Route::get('supplier/{pay_uuid}', 'PrintController@supplierDetails');
     Route::get('supplier', 'PrintController@allsupplierDetails');
 
-    Route::get('supplier/{pay_uuid}', 'PrintController@productDetails');
-    Route::get('supplier', 'PrintController@allproductDetails');
+    Route::get('product/{pay_uuid}', 'PrintController@productDetails');
+    Route::get('product', 'PrintController@allproductDetails');
 });
