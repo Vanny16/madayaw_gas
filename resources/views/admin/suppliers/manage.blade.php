@@ -235,7 +235,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--Customer-Profile Modal -->
+                                            <!--Supplier-Profile Modal -->
                                             <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-md" role="document">
                                                     <div class="modal-content">
