@@ -156,7 +156,7 @@ class UserController extends Controller
         ]);
 
         session()->flash('successMessage','User deleted');
-            return redirect()->action('UserController@user');
+        return redirect()->action('UserController@user');
     }
 
     public function reactivateUser($usr_id)
@@ -168,7 +168,7 @@ class UserController extends Controller
         ]);
 
         session()->flash('successMessage','User reactivated');
-            return redirect()->action('UserController@user');
+        return redirect()->action('UserController@user');
     }
 
     //USER SCREEN FOR PROFILE EDITS

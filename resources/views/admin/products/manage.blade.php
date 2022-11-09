@@ -76,9 +76,11 @@
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
-                                        <th>Description</th>
                                         <th>SKU</th>
+                                        <th>Description</th>
                                         <th>Quantity</th>
+                                        <th>Notes</th>
+                                        <th>Supplier</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,6 +93,12 @@
                                         </td>
                                         <td>
                                             BTNUSUH0987009
+                                        </td>
+                                        <td>
+                                            100000
+                                        </td>
+                                        <td>
+                                            100000
                                         </td>
                                         <td>
                                             100000
@@ -126,28 +134,20 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="prod_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prod_name" placeholder="Enter Product Name" value="" required/>
+                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
                             </div>
-
                             <div class="form-group">
-                                <label for="prod_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prod_description" placeholder="Enter Description" value="" required/>
+                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
                             </div>
-
                             <div class="form-group">
-                                <label for="prod_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prod_sku" placeholder="Enter SKU" value="" required/>
+                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
                             </div>
-
                             <div class="form-group">
-                                <label for="prod_quantity">Quantity <span style="color:red">*</span></label>
-                                <input type="number" class="form-control" name="prod_quantity" placeholder="Enter Quantity" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Notes <span style="color:red">*</span></label>
-                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" required></textarea>
+                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_id" placeholder="Enter SKU" value="" required/>
                             </div>
                         </div>
                     </div>
