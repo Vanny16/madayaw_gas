@@ -105,8 +105,12 @@
                                     <tr>
                                         <td>
                                             <div class="user-panel">
-                                                <div class="image">
-                                                    <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="30px">
+                                                <div class="image"> 
+                                                    @if($customer->cus_image <> '')
+                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $employee->cus_image) }}" alt="User profile picture" />
+                                                    @else
+                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
+                                                    @endif    
                                                 </div>
                                             </div>
                                         </td>
@@ -200,13 +204,17 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form method="POST" action="{{ action('CustomerController@editCustomer',[$customer->cus_id])}}">
+                                                    <form method="POST" action="{{ action('CustomerController@editCustomer',[$customer->cus_id])}}" enctype="multipart/form-data">
                                                     {{ csrf_field() }} 
                                                         <div class="modal-body">
                                                             <div class="row">
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                        @if($customer->cus_image <> '')
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $employee->cus_image) }}" alt="User profile picture" />
+                                                                        @else
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
+                                                                        @endif    
                                                                     </a>
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
@@ -369,6 +377,10 @@ $('#btn_edit_choose_file').click(function(){
     $('#edit_choose_file').click();
 });
 
+$(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
 
 </script>
 @endsection

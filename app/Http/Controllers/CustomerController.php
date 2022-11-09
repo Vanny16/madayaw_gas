@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use Validator;
 
 class CustomerController extends Controller
 {
@@ -114,6 +115,36 @@ class CustomerController extends Controller
             'cus_contact' => $cus_contact,
             'cus_notes' => $cus_notes
         ]);
+
+        //IMAGE UPLOAD SECTION
+        $file = $request->file('cus_image');
+        $validator = Validator::make( 
+            [
+                'file' => $file,
+                'extension' => strtolower($file->getClientOriginalExtension()),
+            ],
+            [
+                'file' => 'required',
+                'file' => 'max:3072', //3MB
+                'extension' => 'required|in:jpg,png,gif',
+            ]
+        );
+        
+        if ($validator->fails()) {
+            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+
+        Storage::disk('local')->put('/images/customers/' . $fileName, fopen($file, 'r+'));
+
+        DB::table('customers')
+        ->where('cus_id','=',$request->cus_id)
+        ->update([
+            'cus_image' => $fileName,
+        ]);  
+
         
         session()->flash('successMessage','Customer details updated.');
         return redirect()->action('CustomerController@manage');
