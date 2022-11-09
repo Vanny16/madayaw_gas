@@ -128,11 +128,11 @@
                                             <td>-</td>
                                         @endif
                                         @if($customer->cus_notes)
-                                        <td>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a>
-                                        </td>
+                                            <td>
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a>
+                                            </td>
                                         @else
-                                        <td>-</td>
+                                            <td>-</td>
                                         @endif
                                         @if($customer->cus_active == 0)
                                             <td>

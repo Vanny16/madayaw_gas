@@ -75,89 +75,102 @@
                                         <th>Description</th>
                                         <th>SKU</th>
                                         <th>Quantity</th>
-                                        <th>Notes</th>
                                         <th>Supplier</th>
                                         <th width="120px"></th>
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbl-products">
-                                    <tr>
-                                        <td>   
-                                            Botin
-                                        </td>
-                                        <td>
-                                            Gas Can
-                                        </td>
-                                        <td>
-                                            BTNUSUH0987009
-                                        </td>
-                                        <td>
-                                            100000
-                                        </td>
-                                        <td>
-                                            100000
-                                        </td>
-                                        <td>
-                                            100000
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-supplier-modal-"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit</a></li>
-                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print</a></li>
-                                                        <li><a class="ml-3 text-secondary" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-"><i class="fa fa-trash mr-2" aria-hidden="true"></i>Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
+                                <tbody>
+                                @if(isset($products))
+                                    @foreach($products as $product)
+                                        <tr>
+                                            @if($product->prd_name)
+                                                <td>   
+                                                    {{$product->prd_name}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($product->prd_description)
+                                                <td>   
+                                                    {{$product->prd_description}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($product->prd_sku)
+                                                <td>   
+                                                    {{$product->prd_sku}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($product->prd_quantity)
+                                                <td>   
+                                                    {{$product->prd_quantity}} pc/s
+                                                </td>
+                                            @else
+                                                <td>0</td>
+                                            @endif
+                                            @if($product->sup_name)
+                                                <td>   
+                                                    {{$product->sup_name}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                                <td>
+                                                    <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                </td>
 
-                                        <!-- Stockin Modal -->
-                                        <div class="modal fade" id="product-stockin-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-md" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form method="POST" action="">
-                                                    {{ csrf_field() }} 
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" readonly required/>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" readonly required/>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="prd_sku">Quantity <span style="color:red">*</span></label>
-                                                                        <input type="number" class="form-control" name="prd_sku" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
-                                                                    </div>
-                                                                </div>
+                                                <!-- Stockin Modal -->
+                                                <div class="modal fade" id="product-stockin-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
-                                                            
+                                                            <form method="POST" action="{{ action('ProductController@productaddQuantity') }}">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
+                                                                                <input type="number" class="form-control" name="prd_quantity" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}"  hidden/>    
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                        </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                    </tr> 
+                                        </tr> 
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -179,7 +192,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{ action('ProductController@productAdd') }}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -198,7 +211,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_id" placeholder="Enter SKU" value="" required/>
+                                <select class="form-control" id="suppliers" name="sup_id" required>
+                                    @foreach($suppliers as $supplier)
+                                        <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                    @endforeach   
+                                </select> 
                             </div>
                         </div>
                     </div>
