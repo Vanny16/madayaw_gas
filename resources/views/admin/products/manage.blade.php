@@ -41,6 +41,22 @@
                                             <label for="search_string">Find Product</label>
                                                 <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name" required/>
                                         </div>
+
+                                        <div class="col-md-2">
+                                            <label for="filter_status">Status</label>
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
+                                                {{-- @foreach($statuses as $status)
+                                                    @if($status == $default_status) 
+                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                    @else
+                                                        <option value="{{ $status }}">{{ $status }}</option>
+                                                    @endif
+                                                @endforeach   --}}
+                                                <option value="">All</option>
+                                                <option value="">Active</option>
+                                                <option value="">Inactive</option>
+                                            </select> 
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
