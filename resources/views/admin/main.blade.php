@@ -34,15 +34,14 @@
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
                         </div>
-                        <div class="card-body">
+
+						<div class="card-body">
                             <div class="timeline">
                                 <div class="time-label">
-                                    <span class="bg-danger"><i class="fa fa-bullhorn"></i> News and Announcements</span>
-                                    @if(session('mod_news') == '1')  
-                                        <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createNews"><i class="fa fa-comment"></i> Compose</button>
-                                    @endif
+                                    <span class="text-gray ml-4"><i class="fa fa-thumbtack"></i></span>
+									<button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createNews"><i class="fa fa-pen mr-2"></i>Compose</button>
                                 </div>
-								<div>
+								<!-- <div>
 									<i class="fas fa-newspaper bg-blue"></i>
 									<div class="timeline-item">
 										<span class="time"><i class="fas fa-clock"></i> </span>
@@ -82,7 +81,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
                             </div>
                         </div>
                     </div>
@@ -130,6 +129,50 @@
 
             </div>
 	</section>
+
+	<div class="modal fade" id="createNews">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Compose Announcement</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<form action="" method="POST" enctype="multipart/form-data">
+				{{ csrf_field() }}
+					<div class="modal-body">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<label for="nws_title">Title <span style="color:red;">*</span></label>
+									<input type="text" class="form-control" id="nws_title" name="nws_title" placeholder="Title" value="" required>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<label for="nws_content">Message Content <span style="color:red;">*</span></label>
+									<textarea class="form-control" id="nws_content" name="nws_content" rows="4"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-3"> 
+									<label for="nws_image">Image</label>
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" id="nws_image" name="nws_image" value="" aria-describedby="inputGroupFileAddon01">
+										<label class="custom-file-label" for="nws_image">Choose file</label>
+									</div>
+									<small id="fileHelp" class="form-text text-muted">Please upload a valid image file in jpg or png format. Size of image should not be more than 1MB.</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary"><span class="fas fa-save"></span> Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 <script>
     $(".custom-file-input").on("change", function() {
