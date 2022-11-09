@@ -41,9 +41,25 @@
                                             <label for="search_string">Find Supplier</label>
                                                 <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name" required/>
                                         </div>
+
+                                        <div class="col-md-2">
+                                            <label for="filter_status">Status</label>
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
+                                                {{-- @foreach($statuses as $status)
+                                                    @if($status == $default_status) 
+                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                    @else
+                                                        <option value="{{ $status }}">{{ $status }}</option>
+                                                    @endif
+                                                @endforeach   --}}
+                                                <option value="">All</option>
+                                                <option value="">Active</option>
+                                                <option value="">Inactive</option>
+                                            </select> 
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-12 mt-2">
                                             <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
                                         </div>
                                     </div>
@@ -54,9 +70,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3"> 
-                
-                    <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#supplier-modal"><i class="fas fa-plus"></i> New Supplier</a>
-                
+                    <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#supplier-modal"><i class="fas fa-plus"></i> New Supplier</a>
                     <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allsupplierDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
 
@@ -235,7 +249,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--Customer-Profile Modal -->
+                                            <!--Supplier-Profile Modal -->
                                             <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-md" role="document">
                                                     <div class="modal-content">
