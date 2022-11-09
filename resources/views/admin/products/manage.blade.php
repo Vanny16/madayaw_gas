@@ -135,13 +135,64 @@
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
                                                                 @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                 @endif
                                                                 <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </td>
+
+                                                <!-- Edit Products Modal -->
+                                                <div class="modal fade" id="edit-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ action('ProductController@createProduct') }}">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                                                                <select class="form-control" id="suppliers" name="sup_id" required>
+                                                                                    @foreach($suppliers as $supplier)
+                                                                                        <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                    @endforeach   
+                                                                                </select> 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <hr/>
+                                                                    
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <!-- Stockin Modal -->
                                                 <div class="modal fade" id="product-stockin-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
