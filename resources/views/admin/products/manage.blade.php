@@ -39,11 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
-                                            @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Product Name" value="{{ $search_string }}" required/>
-                                            @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Product Name" required/>
-                                            @endif
+                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name" required/>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -76,14 +72,15 @@
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
-                                        <th>SKU</th>
                                         <th>Description</th>
+                                        <th>SKU</th>
                                         <th>Quantity</th>
                                         <th>Notes</th>
                                         <th>Supplier</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-products">
                                     <tr>
                                         <td>   
                                             Botin
@@ -104,8 +101,49 @@
                                             100000
                                         </td>
                                         <td>
-                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
                                         </td>
+
+                                        <!-- Stockin Modal -->
+                                        <div class="modal fade" id="product-stockin-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST" action="">
+                                                    {{ csrf_field() }} 
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" readonly required/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" readonly required/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="prd_sku">Quantity <span style="color:red">*</span></label>
+                                                                        <input type="number" class="form-control" name="prd_sku" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </tr> 
                                 </tbody>
                             </table>
@@ -165,5 +203,15 @@
 </div>
 
 
+<script>
+    $(document).ready(function(){
+        $("#search_products").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-products tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 @endsection

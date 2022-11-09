@@ -237,6 +237,7 @@
                                                                 </div>
                                                         </div>
                                                         <div class="modal-footer">
+                                                            <a class="btn btn-info" href="{{ action('PrintController@supplierDetails',[$supplier->sup_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
