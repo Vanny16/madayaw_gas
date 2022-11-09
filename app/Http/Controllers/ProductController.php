@@ -82,15 +82,27 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
     
-    public function productStatus($prd_sku)
+    public function deactivateProduct($prd_id)
     {
-        DB::table('users')
-        ->where('usr_id', '=', $usr_id)
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
         ->update([
-            'usr_active' => 0
+            'prd_active' => 0
         ]);
 
-        session()->flash('successMessage','New product has been added');
+        session()->flash('successMessage','Product deactivated');
+        return redirect()->action('ProductController@manage');
+    }
+
+    public function reactivateProduct($prd_id)
+    {
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->update([
+            'prd_active' => 1
+        ]);
+
+        session()->flash('successMessage','Product activated');
         return redirect()->action('ProductController@manage');
     }
 }

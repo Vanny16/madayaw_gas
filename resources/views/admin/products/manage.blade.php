@@ -124,9 +124,12 @@
                                                     <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
                                                 </td>
                                                 <td>
+                                                    @if($product->prd_active == 1) 
                                                     <span class="badge badge-success">Active</span>
-                                                    @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                                                    <a class="fa fa-toggle-on" type="button" href="" aria-hidden="true"></a>
+                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                    @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -158,17 +161,17 @@
                                                                 <div class="modal-body">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <div class="form-group">
+                                                                        <div class="form-group">
                                                                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
+                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -178,11 +181,12 @@
                                                                                     @endforeach   
                                                                                 </select> 
                                                                             </div>
+                                                                            {{--<div class="form-group">
+                                                                                <label for="prd_sku">Quantity <span style="color:red">*</span></label>
+                                                                                <input type="number" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                                                            </div>--}}
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                    <hr/>
-                                                                    
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -251,7 +255,7 @@
     </section>
 </div>
 
-<!-- Products Modal -->
+<!-- Create Modal -->
 <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
