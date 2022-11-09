@@ -77,7 +77,8 @@
                                         <th>Quantity</th>
                                         <th>Notes</th>
                                         <th>Supplier</th>
-                                        <th></th>
+                                        <th width="120px"></th>
+                                        <th width="100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
@@ -102,6 +103,18 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-supplier-modal-"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit</a></li>
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print</a></li>
+                                                        <li><a class="ml-3 text-secondary" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-"><i class="fa fa-trash mr-2" aria-hidden="true"></i>Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </td>
 
                                         <!-- Stockin Modal -->
