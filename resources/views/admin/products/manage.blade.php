@@ -81,24 +81,95 @@
                                         <th>Quantity</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>   
-                                            Botin
-                                        </td>
-                                        <td>
-                                            Gas Can
-                                        </td>
-                                        <td>
-                                            BTNUSUH0987009
-                                        </td>
-                                        <td>
-                                            100000
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
-                                        </td>
-                                    </tr> 
+                                <tbody id="tbl-product">
+                                @if(isset($products))
+                                    @foreach($products as $product)
+                                        <tr>
+                                            <td>   
+                                                {{$product->prd_name}}
+                                            </td>
+                                            <td>
+                                                {{$product->prd_description}}
+                                            </td>
+                                            <td>
+                                                {{$product->prd_sku}}
+                                            </td>
+                                            <td>
+                                                100000
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-success">Active</span>
+                                                <a class="fa fa-toggle-on" type="button" href="" aria-hidden="true"></a>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        <ul class="dropdown-menu">
+                                                        
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                    
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <!--Edit Products Modal -->
+                                            <div class="modal fade" id="edit-product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="">
+                                                        {{ csrf_field() }} 
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="prod_name">Product Name <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="prod_name" placeholder="Enter Product Name" value="{{$product->prd_name}}" required/>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="prod_description">Description <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="prod_description" placeholder="Enter Description" value="{{$product->prd_description}}" required/>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="prod_sku">SKU <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="prod_sku" placeholder="Enter SKU" value="{{$product->prd_sku}}" required/>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="prod_quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="number" class="form-control" name="prod_quantity" placeholder="Enter Quantity" value="" required/>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <hr/>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>                       
+                                    @endforeach
+                                @endif 
                                 </tbody>
                             </table>
                         </div>
@@ -163,5 +234,7 @@
         </div>
     </div>
 </div>
+
+
 
 @endsection
