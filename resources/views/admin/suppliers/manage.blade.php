@@ -39,11 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Supplier</label>
-                                            @if(isset($search_string))
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" value="{{ $search_string }}" required/>
-                                            @else
-                                                <input type="text" class="form-control" name="search_string" placeholder="Name" required/>
-                                            @endif
+                                                <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name" required/>
                                         </div>
                                     </div>
                                     <div class="row">
