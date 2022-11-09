@@ -12,9 +12,15 @@ class ProductController extends Controller
     public function manage()
     {
         $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->get();
 
-        return view('admin.products.manage',compact('products'));
+        $suppliers = DB::table('suppliers')
+        ->get();
+        
+        // dd($suppliers);
+        return view('admin.products.manage',compact('products','suppliers'));
+
     }
     
     public function productAdd(Request $request)
@@ -33,6 +39,29 @@ class ProductController extends Controller
         ]);
 
         session()->flash('successMessage','New product has been added');
+        return redirect()->action('ProductController@manage');
+    }
+
+    public function productaddQuantity(Request $request)
+    {
+        $prd_id = $request->prd_id;
+
+        $quantity = DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->get();
+        
+        // dd($prd_id);
+        $prd_quantity = (float)$quantity[0]->prd_quantity + (float)$request->prd_quantity;
+
+        // dd($prd_quantity);
+
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->update([
+            'prd_quantity' => (float)$prd_quantity,
+        ]);
+        
+        session()->flash('successMessage','Quantity added has been added');
         return redirect()->action('ProductController@manage');
     }
     
