@@ -222,4 +222,38 @@ class UserController extends Controller
 
         return redirect()->action('UserController@profile');
     }
+
+    public function uploadAvatar(Request $request)
+    {
+        $file = $request->file('usr_image');
+        $validator = Validator::make( 
+            [
+                'file' => $file,
+                'extension' => strtolower($file->getClientOriginalExtension()),
+            ],
+            [
+                'file' => 'required',
+                'file' => 'max:3072', //3MB
+                'extension' => 'required|in:jpg,png,gif',
+            ]
+        );
+        
+        if ($validator->fails()) {
+            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+
+        Storage::disk('local')->put('/images/users/' . $fileName, fopen($file, 'r+'));
+
+        DB::table('users')
+        ->where('usr_id','=',$request->usr_id)
+        ->update([
+            'usr_image' => $fileName,
+        ]);  
+
+        session()->flash('successMessage', 'Profile photo has been uploaded.');
+        return redirect()->action('UserController@main');
+    }
 }
