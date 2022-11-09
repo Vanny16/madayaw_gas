@@ -106,4 +106,38 @@ class SupplierController extends Controller
         session()->flash('successMessage','Supplier reactivated.');
             return redirect()->action('SupplierController@manage');
     }
+
+    public function searchSupplier(Request $request)
+    {
+        $search_string = $request->search_string;
+        $typ_id = $request->filter_type;
+
+        $user_types = DB::table('user_types')
+        ->get();
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+        $usr_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('suppliers')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('sup_name','LIKE', $search_string . '%');
+
+        if($typ_id != 0){
+            $query = $query->where('typ_id', '=', $typ_id);
+        }
+
+        if($sup_active != 2){
+            $query = $query->where('sup_active', '=', $sup_active);
+        }
+
+        $suppliers = $query->orderBy('sup_name')->get(); 
+        
+        return view('admin.supplier.manage',compact('suppliers','user_types','typ_id','statuses','default_status'));  
+    }
 }
