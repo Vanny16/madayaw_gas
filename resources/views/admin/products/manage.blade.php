@@ -77,10 +77,11 @@
                                         <th>Quantity</th>
                                         <th>Supplier</th>
                                         <th width="120px"></th>
+                                        <th width="120px"></th>
                                         <th width="100px"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbl-products">
                                 @if(isset($products))
                                     @foreach($products as $product)
                                         <tr>
@@ -121,6 +122,25 @@
                                             @endif
                                                 <td>
                                                     <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-success">Active</span>
+                                                    @if(session('typ_id') == '1' || session('typ_id') == '2') 
+                                                    <a class="fa fa-toggle-on" type="button" href="" aria-hidden="true"></a>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                            <ul class="dropdown-menu">
+                                                                @if(session('typ_id') == '1' || session('typ_id') == '2')
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                @endif
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </td>
 
                                                 <!-- Stockin Modal -->
