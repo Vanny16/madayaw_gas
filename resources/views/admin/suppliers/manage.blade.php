@@ -86,11 +86,7 @@
                                         @foreach($suppliers as $supplier)
                                         <tr>
                                             <td>
-                                                <div class="user-panel">
-                                                    <div class="image">
-                                                        <img src="{{ asset('img/suppliers/default.png') }}" class="img-circle elevation-2" alt="Supplier Image" height="30px">
-                                                    </div>
-                                                </div>
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
                                             </td>
                                             <td>   
                                                 {{ $supplier->sup_name }}
@@ -236,6 +232,31 @@
                                                             <a class="btn btn-info" href="{{ action('PrintController@supplierDetails',[$supplier->sup_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Customer-Profile Modal -->
+                                            <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Supplier Profile</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-12 text-center">
+                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
                                                     </div>
                                                 </div>
                                             </div>
