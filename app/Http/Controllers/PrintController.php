@@ -50,14 +50,4 @@ class PrintController extends Controller
         return view('admin.print.product', compact('all_product_details'));
     }
 
-    public function productDetails($prd_id)
-    {
-        $product_details = DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->get();
-
-        return view('admin.print.product', compact('product_details'));
-    }
-
-
 }
