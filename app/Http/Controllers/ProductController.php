@@ -51,19 +51,35 @@ class ProductController extends Controller
         session()->flash('successMessage','Product details updated.');
         return redirect()->action('ProductController@manage');
     }
-    // public function saveuser(Request $request)
-    // {
-    //     $usr_full_name = $request->usr_fullname;
-    //     $usr_name = $request->usr_name;
-    //     $usr_password = $request->usr_password;
+    
+    public function productEdit(Request $request)
+    {
+        $prd_name = $request->prd_name;
+        $prd_description = $request->prd_description;
+        $prd_sku = $request->prd_sku;
+        $sup_id = $request->sup_id;
 
-    //     $usr_id = DB::table('users')
-    //     ->insert([
-    //         'acc_id' => session('acc_id')
-    //         'usr_full_name' => $usr_full_name
-    //         'usr_name' => $usr_name
-    //         'usr_password' => $usr_password
+        DB::table('products')
+        ->insert([
+            'prd_name' => $prd_name,
+            'prd_description' => $prd_description,
+            'prd_sku' => $prd_sku,
+            'sup_id' => $sup_id,
+        ]);
 
-    //     ]);
-    // }
+        session()->flash('successMessage','New product has been added');
+        return redirect()->action('ProductController@manage');
+    }
+
+    public function productStatus($prd_sku)
+    {
+        DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->update([
+            'usr_active' => 0
+        ]);
+
+        session()->flash('successMessage','New product has been added');
+        return redirect()->action('ProductController@manage');
+    }
 }

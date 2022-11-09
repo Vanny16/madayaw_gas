@@ -173,7 +173,7 @@
 
                                                 <!--Edit User Modal-->
                                                 <div class="modal fade" id="edit-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Edit User Info</h5>
@@ -201,7 +201,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row" style="box-shadow: 0 0 2px black; padding: 10px;">
-                                                                        <div class="col-md-2">
+                                                                        <div class="col-md-12">
                                                                             <label for="typ_id">User Type<span style="color:red;">*</span></label>
                                                                                 <select class="form-control" name="typ_id" required>
                                                                                 @foreach($user_types as $user_type)
@@ -213,13 +213,13 @@
                                                                                 @endforeach
                                                                             </select> 
                                                                         </div>
-                                                                        <div class="col-md-5">
+                                                                        <div class="col-md-12">
                                                                             <div class="form-group">
                                                                                 <label for="usr_name">Username <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="usr_name" value="{{ $user->usr_name }}" readonly/>
                                                                             </div>
                                                                         </div>    
-                                                                        <div class="col-md-5">
+                                                                        <div class="col-md-12">
                                                                             <div class="form-group">
                                                                                 <label for="usr_password">Reset Password <span style="color:red">*</span></label>
                                                                                 <input type="password" class="form-control" name="usr_password" id="usr_password" value=""/>
@@ -248,7 +248,7 @@
             
             <!--Create User Modal-->
             <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Create New User</h5>
@@ -259,6 +259,22 @@
                         <form method="POST" action=" {{ action('UserController@createUser') }} ">
                         {{ csrf_field() }} 
                             <div class="modal-body">
+
+
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                    </a>
+                                    </div>
+                                    <div class="col-12 text-center mb-4">
+                                        <a href="javascript:void(0);" class="">
+                                            <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
+                                            <input type="file" class="custom-file-input" id="choose_file" hidden>
+                                        </a>
+                                    </div>
+                                </div>
+
                                 <div class="row mb-2" style="box-shadow: 0 0 2px black; padding: 10px;">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -275,7 +291,7 @@
                                     </div>
                                 </div>
                                 <div class="row" style="box-shadow: 0 0 2px black; padding: 10px;">
-                                    <div class="col-md-2">
+                                    <div class="col-md-12">
                                         <label for="typ_id">User Type<span style="color:red;">*</span></label>
                                         <select class="form-control" name="typ_id" required>
                                             <option value="1" selected>Admin</option>
@@ -283,13 +299,13 @@
                                             <option value="3">Observer</option>
                                         </select> 
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_name">Username <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="usr_name" placeholder="Enter Username" value="{{ old('usr_name') }}" required/>
                                         </div>
                                     </div>    
-                                    <div class="col-md-5">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="usr_password">Password <span style="color:red">*</span></label>
                                             <input type="password" class="form-control" name="usr_password" placeholder="Enter Password" value="{{ old('usr_password') }}" required/>
@@ -313,13 +329,17 @@
 <script>
 
 $(document).ready(function(){
-        $("#search-users").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#tbl-users tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+    $("#search-users").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tbl-users tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+});
+
+$('#btn_choose_file').click(function(){
+    $('#choose_file').click();
+});
 
 </script>
 
