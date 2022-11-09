@@ -32,33 +32,6 @@
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-warehouse"></i> Find Supplier</h3>
                         </div>
-                        <form class="form-horizontal" method="POST" action="{{ action('SupplierController@searchSupplier') }}">
-                        {{ csrf_field() }} 
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="search_string">Find Customer</label>
-                                        @if(isset($search_string))
-                                            <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..." value="{{ $search_string }}"/>
-                                        @else
-                                            <input id="search_customers" type="text" class="form-control" name="search_string" placeholder="Search ..."/>
-                                        @endif
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="filter_status">Status</label>
-                                        <select class="form-control" id="filter_status" name="filter_status" required>
-                                            @foreach($statuses as $status)
-                                                @if($status == $default_status)
-                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
-                                                @else
-                                                    <option value="{{ $status }}">{{ $status }}</option>
-                                                @endif
-                                            @endforeach   
-                                        </select> 
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                         <div class="card-body">
                             <form class="form-horizontal" method="GET" action="">
                             {{ csrf_field() }} 
