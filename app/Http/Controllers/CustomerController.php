@@ -118,6 +118,8 @@ class CustomerController extends Controller
 
         //IMAGE UPLOAD SECTION
         $file = $request->file('cus_image');
+
+        dd($file);
         $validator = Validator::make( 
             [
                 'file' => $file,

@@ -8,7 +8,6 @@ use DB;
 
 class ProductController extends Controller
 {
-    //
     public function manage()
     {
         $products = DB::table('products')
@@ -28,12 +27,14 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $sup_id = $request->sup_id;
 
-        $usr_id = DB::table('products')
+        DB::table('products')
         ->insert([
-        'prd_id' => session('prd_id'),
+        'prd_name'=> $prd_name,
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku, 
+        'sup_id' => $sup_id
         ]);
 
         session()->flash('successMessage','Product has been added');
@@ -81,24 +82,24 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
     
-    public function productEdit(Request $request)
-    {
-        $prd_name = $request->prd_name;
-        $prd_description = $request->prd_description;
-        $prd_sku = $request->prd_sku;
-        $sup_id = $request->sup_id;
+    // public function productEdit(Request $request)
+    // {
+    //     $prd_name = $request->prd_name;
+    //     $prd_description = $request->prd_description;
+    //     $prd_sku = $request->prd_sku;
+    //     $sup_id = $request->sup_id;
 
-        DB::table('products')
-        ->insert([
-            'prd_name' => $prd_name,
-            'prd_description' => $prd_description,
-            'prd_sku' => $prd_sku,
-            'sup_id' => $sup_id,
-        ]);
+    //     DB::table('products')
+    //     ->insert([
+    //         'prd_name' => $prd_name,
+    //         'prd_description' => $prd_description,
+    //         'prd_sku' => $prd_sku,
+    //         'sup_id' => $sup_id,
+    //     ]);
 
-        session()->flash('successMessage','New product has been added');
-        return redirect()->action('ProductController@manage');
-    }
+    //     session()->flash('successMessage','New product has been added');
+    //     return redirect()->action('ProductController@manage');
+    // }
 
     public function productStatus($prd_sku)
     {
