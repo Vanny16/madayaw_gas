@@ -103,16 +103,8 @@
                                 @if(isset($customers))
                                     @foreach($customers as $customer)
                                     <tr>
-                                        <td>
-                                            <div class="user-panel">
-                                                <div class="image"> 
-                                                    @if($customer->cus_image <> '')
-                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $employee->cus_image) }}" alt="User profile picture" />
-                                                    @else
-                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
-                                                    @endif    
-                                                </div>
-                                            </div>
+                                         <td>
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
                                         </td>
                                         <td>   
                                             {{ $customer->cus_name }}
@@ -263,28 +255,54 @@
                                                 <div class="modal-content">
                                                     
                                                     <div class="modal-body">
-                                                            <div class="col-12">
-                                                                <div class="row">
-                                                                    <div class="col-md-2 col-12 mb-3 text-center">
-                                                                        <div class="image">
-                                                                            <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="100vh">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-md-10 col-12">
-                                                                        <h3><strong style="text-transform:uppercase;">{{ $customer->cus_name }}</strong></h3>
-                                                                        <i class="text-default">
-                                                                            {{ $customer->cus_address }} <br>
-                                                                            {{ $customer->cus_contact }}
-                                                                        </i>
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-md-2 col-12 mb-3 text-center">
+                                                                    <div class="image">
+                                                                        <img src="{{ asset('img/customers/default.png') }}" class="img-circle elevation-2" alt="Customer Image" height="100vh">
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="col-md-10 col-12">
+                                                                    <h3><strong style="text-transform:uppercase;">{{ $customer->cus_name }}</strong></h3>
+                                                                    <i class="text-default">
+                                                                        {{ $customer->cus_address }} <br>
+                                                                        {{ $customer->cus_contact }}
+                                                                    </i>
+                                                                </div>
                                                             </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <a class="btn btn-info" href="{{ action('PrintController@customerDetails',[$customer->cus_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--Customer-Profile Modal -->
+                                        <div class="modal fade" id="img-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Customer Profile</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-12 text-center">
+                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
