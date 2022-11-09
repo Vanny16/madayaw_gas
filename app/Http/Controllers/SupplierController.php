@@ -14,6 +14,7 @@ class SupplierController extends Controller
         $suppliers = DB::table('suppliers')
         ->get();
 
+        // dd($suppliers);
         return view('admin.suppliers.manage',compact('suppliers'));
     }
     
