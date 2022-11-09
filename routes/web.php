@@ -64,6 +64,7 @@ Route::group(['prefix' => 'supplier'], function()
     
     Route::post('create-supplier', 'SupplierController@createSupplier');
     Route::post('edit-supplier/{sup_id}', 'SupplierController@editSupplier');
+    Route::post('search-supplier', 'SupplierController@searchSupplier');
 });
 
 Route::group(['prefix' => 'print'], function()
