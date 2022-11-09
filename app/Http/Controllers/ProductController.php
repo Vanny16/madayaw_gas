@@ -41,6 +41,32 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
 
+    public function searchProduct(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+        $prd_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('products')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('prd_name','LIKE', $search_string . '%');
+
+        if($cus_active != 2){
+            $query = $query->where('prd_active', '=', $prd_active);
+        }
+
+        $productss = $query->orderBy('prd_name')->get(); 
+
+        return view('admin.products.manage', compact('$products','prd_active', 'statuses', 'default_status'));
+    }
+
     public function editProduct(Request $request)
     {
         $prd_name = $request->prd_name;
