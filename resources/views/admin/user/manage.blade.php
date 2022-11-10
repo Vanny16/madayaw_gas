@@ -228,7 +228,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <input type="text" class="form-control" name="usr_uuid" value="{{ $product->usr_uuid }}"  hidden/> 
+                                                                    <input type="text" class="form-control" name="usr_uuid" value="{{ $user->usr_uuid }}"  hidden/> 
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
