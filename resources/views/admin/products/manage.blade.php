@@ -194,10 +194,14 @@
                                                                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                                                                 <select class="form-control" id="suppliers" name="sup_id" required>
                                                                                     @foreach($suppliers as $supplier)
-                                                                                        @if($product->sup_id == $supplier->sup_id)
-                                                                                        <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
+                                                                                        @if($supplier->sup_active == 0)
+                                                                                            @continue
                                                                                         @else
-                                                                                        <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                            @if($product->sup_id == $supplier->sup_id)
+                                                                                                <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
+                                                                                            @else
+                                                                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                            @endif
                                                                                         @endif
                                                                                     @endforeach   
                                                                                 </select> 
@@ -308,7 +312,11 @@
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                 <select class="form-control" id="suppliers" name="sup_id" required>
                                     @foreach($suppliers as $supplier)
-                                        <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                        @if($supplier->sup_active == 0)
+                                            @continue
+                                        @else
+                                            <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                        @endif
                                     @endforeach   
                                 </select> 
                             </div>
