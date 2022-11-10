@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status">
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
                                                 @foreach($statuses as $status)
                                                     @if($status == $default_status) 
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
@@ -173,7 +173,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="{{ action('ProductController@createProduct') }}">
+                                                            <form method="POST" action="{{ action('ProductController@editProduct') }}">
                                                             {{ csrf_field() }} 
                                                                 <div class="modal-body">
                                                                     <div class="row">
