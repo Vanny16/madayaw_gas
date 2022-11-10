@@ -33,28 +33,25 @@
                             <h3 class="card-title"><i class="fas fa-warehouse"></i> Find Supplier</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="GET" action="">
+                            <form class="form-horizontal" method="POST" action="{{ action('SupplierController@searchSupplier') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Supplier</label>
-                                                <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name">
+                                                <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name"/>
                                         </div>
 
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status" required>
-                                                {{-- @foreach($statuses as $status)
+                                            <select class="form-control" id="filter_status" name="filter_status">
+                                                @foreach($statuses as $status)
                                                     @if($status == $default_status) 
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
                                                     @else
                                                         <option value="{{ $status }}">{{ $status }}</option>
                                                     @endif
-                                                @endforeach   --}}
-                                                <option value="">All</option>
-                                                <option value="">Active</option>
-                                                <option value="">Inactive</option>
+                                                @endforeach
                                             </select> 
                                         </div>
                                     </div>
