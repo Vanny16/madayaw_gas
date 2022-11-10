@@ -66,23 +66,25 @@ class CustomerController extends Controller
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
+        $cus_uuid = $request->cus_uuid;
 
-        $check_uuid = DB::table('customers')
-        ->where('cus_id', '=', $cus_id)
-        ->where('cus_uuid', '=', null)
-        ->get();
+        // $check_uuid = DB::table('customers')
+        // ->where('cus_id', '=', $cus_id)
+        // ->where('cus_uuid', '=', null)
+        // ->get();
 
-        if($check_uuid != null)
-        {
-            DB::table('customers')
-            ->where('cus_id', '=', $cus_id)
-            ->update([
-                'cus_uuid' => generateuuid()
-            ]);
-        }
+        // if($check_uuid != null)
+        // {
+        //     DB::table('customers')
+        //     ->where('cus_id', '=', $cus_id)
+        //     ->update([
+        //         'cus_uuid' => generateuuid()
+        //     ]);
+        // }
 
         $check_cus_name = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
+        ->where('cus_uuid', '<>', $cus_uuid)
         ->where('cus_name','=', $cus_name)
         ->first();
 

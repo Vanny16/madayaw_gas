@@ -214,6 +214,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
+                                                                    <input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> 
                                                                     <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}" hidden/>        
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>

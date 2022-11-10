@@ -50,7 +50,7 @@ class UserController extends Controller
             return redirect()->action('UserController@user');
             
         }
-        
+
         DB::table('users')
         ->insert([
             'acc_id' => session('acc_id'),
@@ -73,40 +73,40 @@ class UserController extends Controller
         $usr_address = $request->usr_address;
         $usr_password = $request->usr_password;
 
-        $check_uuid = DB::table('users')
-        ->where('usr_id', '=', $usr_id)
-        ->where('usr_uuid', '=', null)
-        ->get();
+        // $check_uuid = DB::table('users')
+        // ->where('usr_id', '=', $usr_id)
+        // ->where('usr_uuid', '=', null)
+        // ->get();
 
-        if($check_uuid != null)
+        // if($check_uuid != null)
+        // {
+        //     DB::table('users')
+        //     ->where('usr_id', '=', $usr_id)
+        //     ->update([
+        //         'usr_uuid' => generateuuid()
+        //     ]);
+        // }
+        
+        if($usr_password == null)
         {
             DB::table('users')
             ->where('usr_id', '=', $usr_id)
             ->update([
-                'usr_uuid' => generateuuid()
+                'usr_full_name' => $usr_full_name,
+                'usr_address' => $usr_address,
+                'typ_id' => $typ_id
             ]);
-        }
-        
-        if($usr_password == null)
-        {
-        DB::table('users')
-        ->where('usr_id', '=', $usr_id)
-        ->update([
-            'usr_full_name' => $usr_full_name,
-            'usr_address' => $usr_address,
-            'typ_id' => $typ_id
-        ]);
         }
         else
         {
-        DB::table('users')
-        ->where('usr_id', '=', $usr_id)
-        ->update([
-            'usr_full_name' => $usr_full_name,
-            'usr_address' => $usr_address,
-            'typ_id' => $typ_id,
-            'usr_password' => md5($usr_password)
-        ]);
+            DB::table('users')
+            ->where('usr_id', '=', $usr_id)
+            ->update([
+                'usr_full_name' => $usr_full_name,
+                'usr_address' => $usr_address,
+                'typ_id' => $typ_id,
+                'usr_password' => md5($usr_password)
+            ]);
         }
         
         session()->flash('successMessage','User details updated');

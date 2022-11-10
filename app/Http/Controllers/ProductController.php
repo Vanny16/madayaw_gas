@@ -52,6 +52,7 @@ class ProductController extends Controller
         ->insert([
         'prd_name'=> $prd_name,
         'acc_id' => session('acc_id'),
+        'prd_uuid' => generateuuid(),
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku, 
         'sup_id' => $sup_id
@@ -68,9 +69,25 @@ class ProductController extends Controller
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
         $sup_id = $request->sup_id;
+        $prd_uuid = $request->prd_uuid;
+
+        // $check_uuid = DB::table('products')
+        // ->where('prd_id', '=', $prd_id)
+        // ->where('prd_uuid', '=', null)
+        // ->get();
+
+        // if($check_uuid != null)
+        // {
+        //     DB::table('products')
+        //     ->where('prd_id', '=', $prd_id)
+        //     ->update([
+        //         'prd_uuid' => generateuuid()
+        //     ]);
+        // }
 
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_uuid', '<>', $prd_uuid)
         ->where('prd_sku','=',$prd_sku)
         ->first();
 
