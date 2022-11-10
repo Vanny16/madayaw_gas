@@ -65,8 +65,10 @@ class ProductController extends Controller
 
         $query = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('acc_id','=',session('acc_id'))
+        ->where('products.acc_id','=',session('acc_id'))
         ->where('prd_name','LIKE', $search_string . '%');
+
+        // dd($search_string);
 
         if($prd_active != 2){
             $query = $query->where('prd_active', '=', $prd_active);
@@ -76,6 +78,9 @@ class ProductController extends Controller
 
         $suppliers = DB::table('suppliers')
         ->get();
+
+        // dd($p);
+
 
         return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
