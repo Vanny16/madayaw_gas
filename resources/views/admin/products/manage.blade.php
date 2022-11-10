@@ -295,7 +295,7 @@
                                                                     </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_id]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                                                <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_sku]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>

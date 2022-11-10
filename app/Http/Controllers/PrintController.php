@@ -36,17 +36,17 @@ class PrintController extends Controller
     public function supplierDetails($sup_uuid)
     {
         $supplier_details = DB::table('suppliers')
-        ->where('sup_uuid', '=', $cus_uuid)
+        ->where('sup_uuid', '=', $sup_uuid)
         ->get();
 
         return view('admin.print.supplier', compact('supplier_details'));
     }
 
     
-    public function productDetails($prd_id)
+    public function productDetails($prd_sku)
     {
         $product_details = DB::table('products')
-        ->where('prd_id', '=', $sup_uuid)
+        ->where('prd_sku', '=', $prd_sku)
         ->get();
 
         return view('admin.print.product', compact('product_details'));

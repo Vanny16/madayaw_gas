@@ -59,7 +59,8 @@
                         <tr>
                             <td>{{$product_detail->prd_name}}</td>
                             <td>{{$product_detail->prd_description}}</td>
-                            <td>{{$product_detail->prd_SKU}}</td>
+                            <td>{{$product_detail->prd_sku}}</td>
+                            <td>{{$product_detail->prd_quantity}} pc/s</td>
                         </tr> 
                         @endforeach
                     </tbody>
