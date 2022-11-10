@@ -40,7 +40,7 @@ class ProductController extends Controller
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_sku','=',$prd_sku)
-        ->get();
+        ->first();
 
         if($sku_checker != null)
         {
