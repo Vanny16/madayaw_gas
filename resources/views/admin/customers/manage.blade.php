@@ -87,7 +87,7 @@
                         <div id="cus-toolbar" class="border bg-light" style="overflow-x:auto;" hidden>
                             <form action="" class="form-inline">
                                 <div class="ml-4 mt-2 mb-2">
-                                    <a href="" class="text-danger"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
+                                    <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#discount-modal"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
                                 </div>
                             </form>
                         </div>
@@ -388,6 +388,25 @@
         </div>
     </div>
 </div>
+
+<!--Discount Modal -->
+<div class="modal fade" id="discount-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Apply Discount
+            </div>
+            <div class="modal-body">
+                    <input type="text" placeholder="Enter Discount %" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="1" maxlength="3"/>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" href=""><i class="fa fa-gift"></i> Apply</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
 $(document).ready(function(){
