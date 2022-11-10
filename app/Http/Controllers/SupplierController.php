@@ -14,8 +14,15 @@ class SupplierController extends Controller
         $suppliers = DB::table('suppliers')
         ->get();
 
-        // dd($suppliers);
-        return view('admin.suppliers.manage',compact('suppliers'));
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+
+        return view('admin.suppliers.manage',compact('suppliers', 'statuses','default_status'));
     }
     
     public function createSupplier(Request $request)
@@ -50,7 +57,8 @@ class SupplierController extends Controller
             return redirect()->action('SupplierController@manage');
         }
     }
-    public function editSuppplier(Request $request, $sup_id)
+    
+    public function editSupplier(Request $request, $sup_id)
     {
         $sup_name = $request->sup_name;
         $sup_address = $request->sup_address;
@@ -109,35 +117,49 @@ class SupplierController extends Controller
 
     public function searchSupplier(Request $request)
     {
-        $search_string = $request->search_string;
-        $typ_id = $request->filter_type;
+        // $filter_status = $request->filter_status;
 
-        $user_types = DB::table('user_types')
-        ->get();
+        // $statuses = array(
+        //     1 => 'All',
+        //     2 => 'Active',
+        //     3 => 'Inactive'
+        // );
 
-        $statuses = array(
-            0 => 'Inactive',
-            1 => 'Active',
-            2 => 'All'
-        );
+        // $default_status = '0';
 
-        $default_status = $request->filter_status;
-        $usr_active = array_search($request->filter_status, $statuses);
+        // $sup_active = array_search($request->filter_status, $statuses);
 
-        $query = DB::table('suppliers')
-        ->where('acc_id','=',session('acc_id'))
-        ->where('sup_name','LIKE', $search_string . '%');
+        // // // $search_string = $request->search_string;
+        // // $filter_status = $request->filter_status;
+        // // $sup_active = array_search($request->filter_status, $statuses);
 
-        if($typ_id != 0){
-            $query = $query->where('typ_id', '=', $typ_id);
-        }
+        // $query = DB::table('suppliers')
+        // ->where('sup_active','=', '0');
 
-        if($sup_active != 2){
-            $query = $query->where('sup_active', '=', $sup_active);
-        }
-
-        $suppliers = $query->orderBy('sup_name')->get(); 
+        // // dd(compact($query));
         
-        return view('admin.supplier.manage',compact('suppliers','user_types','typ_id','statuses','default_status'));  
+        // // return view('admin.suppliers.manage',compact('query','statuses','default_status'));  
+
+        // // $statuses = array(
+        // //     0 => 'Inactive',
+        // //     1 => 'Active',
+        // //     2 => 'All'
+        // // );
+
+        // // $default_status = '0';
+
+        // // $default_status = $request->filter_status;
+        // // $sup_active = array_search($request->filter_status, $statuses);
+
+        // // $query = DB::table('suppliers')
+        // // ->where('acc_id','=',session('acc_id'));
+
+        // // if($sup_active != 2){
+        // //     $query = $query->where('sup_active', '=', $sup_active);
+        // // }
+
+        // // $suppliers = $query->orderBy('sup_name')->get(); 
+
+        // return view('admin.suppliers.manage', compact('query','sup_active', 'statuses', 'default_status'));
     }
 }
