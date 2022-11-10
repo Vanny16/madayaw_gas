@@ -210,6 +210,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
+                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}"/>        
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>

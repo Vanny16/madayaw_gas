@@ -54,6 +54,7 @@ Route::group(['prefix' => 'product'], function()
     Route::get('reactivate-product/{prd_id}', 'ProductController@reactivateProduct');
 
     Route::post('search-user', 'ProductController@searchProduct');
+    Route::post('edit-product', 'ProductController@editProduct');
     Route::post('add-product', 'ProductController@createProduct');
     Route::post('add-quantity', 'ProductController@addQuantity');
     
