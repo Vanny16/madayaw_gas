@@ -39,12 +39,12 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Supplier</label>
-                                                <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name" required/>
+                                                <input type="text" class="form-control" id="search_suppliers" name="search_string" placeholder="Name"/>
                                         </div>
 
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status" required>
+                                            <select class="form-control" id="filter_status" name="filter_status">
                                                 {{-- @foreach($statuses as $status)
                                                     @if($status == $default_status) 
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>

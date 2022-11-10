@@ -50,7 +50,8 @@ class SupplierController extends Controller
             return redirect()->action('SupplierController@manage');
         }
     }
-    public function editSuppplier(Request $request, $sup_id)
+    
+    public function editSupplier(Request $request, $sup_id)
     {
         $sup_name = $request->sup_name;
         $sup_address = $request->sup_address;
