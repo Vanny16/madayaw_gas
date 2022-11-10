@@ -39,7 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
-                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name" required/>
+                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name"/>
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
