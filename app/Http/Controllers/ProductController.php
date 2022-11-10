@@ -10,6 +10,14 @@ class ProductController extends Controller
 {
     public function manage()
     {
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->get();
@@ -18,7 +26,7 @@ class ProductController extends Controller
         ->get();
         
         // dd($suppliers);
-        return view('admin.products.manage',compact('products','suppliers'));
+        return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers'));
 
     }
     
@@ -52,19 +60,24 @@ class ProductController extends Controller
         );
 
         $default_status = $request->filter_status;
+
         $prd_active = array_search($request->filter_status, $statuses);
 
         $query = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('acc_id','=',session('acc_id'))
         ->where('prd_name','LIKE', $search_string . '%');
 
-        if($cus_active != 2){
+        if($prd_active != 2){
             $query = $query->where('prd_active', '=', $prd_active);
         }
 
-        $productss = $query->orderBy('prd_name')->get(); 
+        $products = $query->orderBy('prd_name')->get(); 
 
-        return view('admin.products.manage', compact('$products','prd_active', 'statuses', 'default_status'));
+        $suppliers = DB::table('suppliers')
+        ->get();
+
+        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
 
     public function editProduct(Request $request)
