@@ -223,7 +223,7 @@
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
                                                                             <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' hidden>
+                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' value="{{ old('cus_image') }}" hidden>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -252,6 +252,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
+                                                        <input type="text" class="form-control" name="cus_uuid" value="{{ $product->cus_uuid }}"  hidden/> 
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                         </div>

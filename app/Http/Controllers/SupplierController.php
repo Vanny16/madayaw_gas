@@ -64,23 +64,25 @@ class SupplierController extends Controller
         $sup_address = $request->sup_address;
         $sup_contact = $request->sup_contact;
         $sup_notes = $request->sup_notes;
+        $sup_uuid = $request->sup_uuid;
 
-        $check_uuid = DB::table('suppliers')
-        ->where('sup_id', '=', $sup_id)
-        ->where('sup_uuid', '=', null)
-        ->get();
+        // $check_uuid = DB::table('suppliers')
+        // ->where('sup_id', '=', $sup_id)
+        // ->where('sup_uuid', '=', null)
+        // ->get();
 
-        if($check_uuid != null)
-        {
-            DB::table('suppliers')
-            ->where('sup_id', '=', $sup_id)
-            ->update([
-                'sup_uuid' => generateuuid()
-            ]);
-        }
+        // if($check_uuid != null)
+        // {
+        //     DB::table('suppliers')
+        //     ->where('sup_id', '=', $sup_id)
+        //     ->update([
+        //         'sup_uuid' => generateuuid()
+        //     ]);
+        // }
 
         $check_sup_name = DB::table('suppliers')
         ->where('acc_id', '=', session('acc_id'))
+        ->where('sup_uuid', '<>', $sup_uuid)
         ->where('sup_name','=', $sup_name)
         ->first();
 
