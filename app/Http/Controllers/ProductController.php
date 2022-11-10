@@ -69,6 +69,17 @@ class ProductController extends Controller
         $prd_sku = $request->prd_sku;
         $sup_id = $request->sup_id;
 
+        $sku_checker = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_sku','=',$prd_sku)
+        ->first();
+
+        if($sku_checker != null)
+        {
+            session()->flash('errorMessage','Product with this SKU already exists');
+            return redirect()->action('ProductController@manage');
+        }
+
         DB::table('products')
         ->where('prd_id', '=', $prd_id)
         ->update([

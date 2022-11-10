@@ -81,6 +81,17 @@ class CustomerController extends Controller
             ]);
         }
 
+        $check_cus_name = DB::table('customers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('cus_name','=', $cus_name)
+        ->first();
+
+        if($check_cus_name != null)
+        {
+            session()->flash('errorMessage','Customer name is already existing');
+            return redirect()->action('CustomerController@manage');
+        }
+
         DB::table('customers')
         ->where('cus_id', '=', $cus_id)
         ->update([

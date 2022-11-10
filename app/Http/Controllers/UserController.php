@@ -44,27 +44,26 @@ class UserController extends Controller
         ->where('usr_name','=', $usr_name)
         ->first();
 
-        if($check_usr_name == null)
-        {
-            DB::table('users')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_uuid' => generateuuid(),
-                'usr_full_name' => $usr_full_name,
-                'usr_name' => $usr_name,
-                'usr_password' => md5($usr_password),
-                'usr_address' => $usr_address,
-                'typ_id' => $typ_id
-            ]);
-
-            session()->flash('successMessage','New user has been added');
-            return redirect()->action('UserController@user');
-        }
-        else
+        if($check_usr_name != null)
         {
             session()->flash('errorMessage','Username already taken');
             return redirect()->action('UserController@user');
+            
         }
+        
+        DB::table('users')
+        ->insert([
+            'acc_id' => session('acc_id'),
+            'usr_uuid' => generateuuid(),
+            'usr_full_name' => $usr_full_name,
+            'usr_name' => $usr_name,
+            'usr_password' => md5($usr_password),
+            'usr_address' => $usr_address,
+            'typ_id' => $typ_id
+        ]);
+
+        session()->flash('successMessage','New user has been added');
+        return redirect()->action('UserController@user');
     }
 
     public function editUser(Request $request, $usr_id)

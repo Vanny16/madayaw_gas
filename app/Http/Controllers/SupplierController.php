@@ -79,6 +79,17 @@ class SupplierController extends Controller
             ]);
         }
 
+        $check_sup_name = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('sup_name','=', $sup_name)
+        ->first();
+
+        if($check_sup_name != null)
+        {
+            session()->flash('errorMessage','Supplier already exist');
+            return redirect()->action('SupplierController@manage');
+        }
+
         DB::table('suppliers')
         ->where('sup_id', '=', $sup_id)
         ->update([
