@@ -28,32 +28,6 @@ class CustomerController extends Controller
         return view('admin.customers.manage',compact('customers','statuses','default_status'));
     }
     
-    public function searchCustomer(Request $request)
-    {
-        $search_string = $request->search_string;
-
-        $statuses = array(
-            0 => 'Inactive',
-            1 => 'Active',
-            2 => 'All'
-        );
-
-        $default_status = $request->filter_status;
-        $cus_active = array_search($request->filter_status, $statuses);
-
-        $query = DB::table('customers')
-        ->where('acc_id','=',session('acc_id'))
-        ->where('cus_name','LIKE', $search_string . '%');
-
-        if($cus_active != 2){
-            $query = $query->where('cus_active', '=', $cus_active);
-        }
-
-        $customers = $query->orderBy('cus_name')->get(); 
-
-        return view('admin.customers.manage', compact('customers', 'statuses', 'default_status'));
-    }
-
     public function createCustomer(Request $request)
     {
         $cus_name = $request->cus_name;
@@ -70,23 +44,21 @@ class CustomerController extends Controller
             session()->flash('errorMessage','Customer name is already existing');
             return redirect()->action('CustomerController@manage');
         }
-        else
-        {
-            $usr_id = DB::table('customers')
-            ->insert([
-            'acc_id' => session('acc_id'),
-            'cus_uuid' => generateuuid(),
-            'cus_name' => $cus_name, 
-            'cus_address' => $cus_address,
-            'cus_contact' => $cus_contact,
-            'cus_notes' => $cus_notes
-            ]);
 
-            session()->flash('successMessage','New customer has been added');
-            return redirect()->action('CustomerController@manage');
-        }
+        $usr_id = DB::table('customers')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'cus_uuid' => generateuuid(),
+        'cus_name' => $cus_name, 
+        'cus_address' => $cus_address,
+        'cus_contact' => $cus_contact,
+        'cus_notes' => $cus_notes
+        ]);
+
+        session()->flash('successMessage','New customer has been added');
+        return redirect()->action('CustomerController@manage');
     }
-    
+
     public function editCustomer(Request $request, $cus_id)
     {
         $cus_name = $request->cus_name;
@@ -175,4 +147,31 @@ class CustomerController extends Controller
         session()->flash('successMessage','Customer reactivated.');
             return redirect()->action('CustomerController@manage');
     }
+    
+    public function searchCustomer(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+        $cus_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('customers')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('cus_name','LIKE', $search_string . '%');
+
+        if($cus_active != 2){
+            $query = $query->where('cus_active', '=', $cus_active);
+        }
+
+        $customers = $query->orderBy('cus_name')->get(); 
+
+        return view('admin.customers.manage', compact('customers', 'statuses', 'default_status'));
+    }
+
 }

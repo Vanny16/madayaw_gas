@@ -41,21 +41,20 @@ class SupplierController extends Controller
             session()->flash('errorMessage','Supplier already exist');
             return redirect()->action('SupplierController@manage');
         }
-        else
-        {
-            $usr_id = DB::table('suppliers')
-            ->insert([
-            'sup_id' => session('sup_id'),
-            'sup_uuid' => generateuuid(),
-            'sup_name' => $sup_name, 
-            'sup_address' => $sup_address,
-            'sup_contact' => $sup_contact,
-            'sup_notes' => $sup_notes
-            ]);
+        
+        $usr_id = DB::table('suppliers')
+        ->insert([
+        'sup_id' => session('sup_id'),
+        'acc_id' => session('acc_id'),
+        'sup_uuid' => generateuuid(),
+        'sup_name' => $sup_name, 
+        'sup_address' => $sup_address,
+        'sup_contact' => $sup_contact,
+        'sup_notes' => $sup_notes
+        ]);
 
-            session()->flash('successMessage','Supplier has been added');
-            return redirect()->action('SupplierController@manage');
-        }
+        session()->flash('successMessage','Supplier has been added');
+        return redirect()->action('SupplierController@manage');
     }
     
     public function editSupplier(Request $request, $sup_id)
