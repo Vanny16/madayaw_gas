@@ -217,7 +217,6 @@
                                                 </div>
                                             </div>
     
-    
                                             <!--Print Modal -->
                                             <div class="modal fade" id="print-supplier-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
@@ -249,6 +248,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             <!--Supplier-Profile Modal -->
                                             <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-md" role="document">
@@ -259,22 +259,21 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-12 text-center">
-                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
-                                                                        </a>
-                                                                    </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-12 text-center">
+                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-    
                                         </tr>
                                         @endforeach
                                     @endif
@@ -282,8 +281,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>  
                 </div>
             </div>
         </section>
