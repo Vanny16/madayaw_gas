@@ -51,7 +51,7 @@ class CustomerController extends Controller
 
         $customers = $query->orderBy('cus_name')->get(); 
 
-        return view('admin.customers.manage', compact('customers','cus_active', 'statuses', 'default_status'));
+        return view('admin.customers.manage', compact('customers', 'statuses', 'default_status'));
     }
 
     public function createCustomer(Request $request)
