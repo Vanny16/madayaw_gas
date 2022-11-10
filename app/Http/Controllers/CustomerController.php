@@ -44,21 +44,19 @@ class CustomerController extends Controller
             session()->flash('errorMessage','Customer name is already existing');
             return redirect()->action('CustomerController@manage');
         }
-        else
-        {
-            $usr_id = DB::table('customers')
-            ->insert([
-            'acc_id' => session('acc_id'),
-            'cus_uuid' => generateuuid(),
-            'cus_name' => $cus_name, 
-            'cus_address' => $cus_address,
-            'cus_contact' => $cus_contact,
-            'cus_notes' => $cus_notes
-            ]);
 
-            session()->flash('successMessage','New customer has been added');
-            return redirect()->action('CustomerController@manage');
-        }
+        $usr_id = DB::table('customers')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'cus_uuid' => generateuuid(),
+        'cus_name' => $cus_name, 
+        'cus_address' => $cus_address,
+        'cus_contact' => $cus_contact,
+        'cus_notes' => $cus_notes
+        ]);
+
+        session()->flash('successMessage','New customer has been added');
+        return redirect()->action('CustomerController@manage');
     }
 
     public function editCustomer(Request $request, $cus_id)
