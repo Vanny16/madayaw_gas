@@ -201,7 +201,7 @@
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
                                                                         @if($customer->cus_image <> '')
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $employee->cus_image) }}" alt="User profile picture" />
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $customer->cus_image) }}" alt="User profile picture" />
                                                                         @else
                                                                             <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
                                                                         @endif    
@@ -209,7 +209,7 @@
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
                                                                             <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" hidden>
+                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' hidden>
                                                                         </a>
                                                                     </div>
                                                                 </div>

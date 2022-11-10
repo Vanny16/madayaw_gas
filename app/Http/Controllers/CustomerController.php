@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use DB;
 use Validator;
@@ -118,7 +119,7 @@ class CustomerController extends Controller
 
         //IMAGE UPLOAD SECTION
         $file = $request->file('cus_image');
-        
+
         $validator = Validator::make( 
             [
                 'file' => $file,
@@ -136,7 +137,7 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+        $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
         Storage::disk('local')->put('/images/customers/' . $fileName, fopen($file, 'r+'));
 
