@@ -121,7 +121,9 @@
                                                 <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$supplier->sup_id}}"><i class="fa fa-eye"></i></a>
                                             </td>
                                             @else
-                                            <td>-</td>
+                                            <td>
+                                                <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
+                                            </td>
                                             @endif
                                             @if($supplier->sup_active == 0)
                                                 <td>
