@@ -227,7 +227,7 @@
                                                                     <div class="row">
                                                                         <div class="col-md-2 col-12">
                                                                             <div class="image">
-                                                                                <img src="{{ asset('img/suppliers/default.png') }}" class="img-circle elevation-2" alt="Supplier Image" height="100vh">
+                                                                                <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="70px">
                                                                             </div>
                                                                         </div>
         
@@ -263,7 +263,7 @@
                                                             <div class="row">
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
+                                                                        <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="150px">
                                                                     </a>
                                                                 </div>
                                                             </div>

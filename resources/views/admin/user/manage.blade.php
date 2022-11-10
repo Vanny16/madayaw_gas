@@ -113,7 +113,7 @@
                                         @foreach($users as $user)
                                             <tr>
                                                 <td>
-                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px">
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-user-modal-{{$user->usr_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
                                                 </td>
                                                 <td>
                                                     {{ $user->usr_full_name }}
@@ -232,6 +232,31 @@
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
                                                             </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--User-Profile Modal -->
+                                                <div class="modal fade" id="img-user-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">User Profile</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-12 text-center">
+                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                            <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="150px">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
