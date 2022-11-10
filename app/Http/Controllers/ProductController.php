@@ -86,13 +86,15 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $sup_id = $request->sup_id;
 
         DB::table('products')
         ->where('prd_id', '=', $prd_id)
         ->update([
             'prd_name' => $prd_name,
             'prd_description' => $prd_description,
-            'prd_sku' => $prd_sku
+            'prd_sku' => $prd_sku,
+            'sup_id' => $sup_id
         ]);
         
         session()->flash('successMessage','Product details updated.');
