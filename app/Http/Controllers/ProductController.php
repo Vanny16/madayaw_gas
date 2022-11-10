@@ -82,6 +82,7 @@ class ProductController extends Controller
 
     public function editProduct(Request $request)
     {
+        $prd_id = $request->prd_id;
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;

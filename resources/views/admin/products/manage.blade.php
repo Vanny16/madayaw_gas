@@ -40,10 +40,11 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
                                                 <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name">
+                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name"/>
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status">
+                                            <select class="form-control" id="filter_status" name="filter_status" required>
                                                 @foreach($statuses as $status)
                                                     @if($status == $default_status) 
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
@@ -173,7 +174,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form method="POST" action="{{ action('ProductController@createProduct') }}">
+                                                            <form method="POST" action="{{ action('ProductController@editProduct') }}">
                                                             {{ csrf_field() }} 
                                                                 <div class="modal-body">
                                                                     <div class="row">
@@ -210,6 +211,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
+                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}" hidden/>        
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
