@@ -85,17 +85,17 @@
                             </div>
                         </div>
                         <div id="cus-toolbar" class="border bg-light" hidden>
-                                <div class="row ml-2 mt-2 mb-2">
-                                    <form action="" class="col-md-12 form-inline">
-                                        <div class="col-md-1">
-                                            <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#discount-modal"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
-                                        </div>
+                            <div class="row ml-2 mt-2 mb-2">
+                                <form action="" class="col-md-12 form-inline">
+                                    <div class="col-md-1">
+                                        <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#discount-modal"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
+                                    </div>
 
-                                        <div class="col-md-2">
-                                            <a href="javascript:void(0)" class="text-gray"><i class="fa fa-undo fa-sm"></i> Remove Discount</a>
-                                        </div>
-                                    </form>
-                                </div>
+                                    <div class="col-md-2">
+                                        <a href="javascript:void(0)" class="text-gray"><i class="fa fa-undo fa-sm"></i> Remove Discount</a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
@@ -229,7 +229,7 @@
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
                                                                             <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' value="{{ old('cus_image') }}" hidden>
+                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' hidden>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -258,7 +258,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                        <input type="text" class="form-control" name="cus_uuid" value="{{ $product->cus_uuid }}"  hidden/> 
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                         </div>
