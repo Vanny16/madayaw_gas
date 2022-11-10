@@ -49,42 +49,6 @@ class ProductController extends Controller
         return redirect()->action('ProductController@manage');
     }
 
-    public function searchProduct(Request $request)
-    {
-        $search_string = $request->search_string;
-
-        $statuses = array(
-            0 => 'Inactive',
-            1 => 'Active',
-            2 => 'All'
-        );
-
-        $default_status = $request->filter_status;
-
-        $prd_active = array_search($request->filter_status, $statuses);
-
-        $query = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id','=',session('acc_id'))
-        ->where('prd_name','LIKE', $search_string . '%');
-
-        // dd($search_string);
-
-        if($prd_active != 2){
-            $query = $query->where('prd_active', '=', $prd_active);
-        }
-
-        $products = $query->orderBy('prd_name')->get(); 
-
-        $suppliers = DB::table('suppliers')
-        ->get();
-
-        // dd($p);
-
-
-        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
-    }
-
     public function editProduct(Request $request)
     {
         $prd_id = $request->prd_id;
@@ -151,5 +115,41 @@ class ProductController extends Controller
 
         session()->flash('successMessage','Product activated');
         return redirect()->action('ProductController@manage');
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+
+        $prd_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id','=',session('acc_id'))
+        ->where('prd_name','LIKE', $search_string . '%');
+
+        // dd($search_string);
+
+        if($prd_active != 2){
+            $query = $query->where('prd_active', '=', $prd_active);
+        }
+
+        $products = $query->orderBy('prd_name')->get(); 
+
+        $suppliers = DB::table('suppliers')
+        ->get();
+
+        // dd($p);
+
+
+        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
 }

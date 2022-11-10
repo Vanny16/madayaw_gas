@@ -31,40 +31,6 @@ class UserController extends Controller
         return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));
     }
 
-    public function searchUser(Request $request)
-    {
-        $search_string = $request->search_string;
-        $typ_id = $request->filter_type;
-
-        $user_types = DB::table('user_types')
-        ->get();
-
-        $statuses = array(
-            0 => 'Inactive',
-            1 => 'Active',
-            2 => 'All'
-        );
-
-        $default_status = $request->filter_status;
-        $usr_active = array_search($request->filter_status, $statuses);
-
-        $query = DB::table('users')
-        ->where('acc_id','=',session('acc_id'))
-        ->where('usr_full_name','LIKE', $search_string . '%');
-
-        if($typ_id != 0){
-            $query = $query->where('typ_id', '=', $typ_id);
-        }
-
-        if($usr_active != 2){
-            $query = $query->where('usr_active', '=', $usr_active);
-        }
-
-        $users = $query->orderBy('usr_full_name')->get(); 
-        
-        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));  
-    }
-
     public function createUser(Request $request)
     {
         $usr_full_name = $request->usr_full_name;
@@ -169,6 +135,40 @@ class UserController extends Controller
 
         session()->flash('successMessage','User reactivated');
         return redirect()->action('UserController@user');
+    }
+
+    public function searchUser(Request $request)
+    {
+        $search_string = $request->search_string;
+        $typ_id = $request->filter_type;
+
+        $user_types = DB::table('user_types')
+        ->get();
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+        $usr_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('users')
+        ->where('acc_id','=',session('acc_id'))
+        ->where('usr_full_name','LIKE', $search_string . '%');
+
+        if($typ_id != 0){
+            $query = $query->where('typ_id', '=', $typ_id);
+        }
+
+        if($usr_active != 2){
+            $query = $query->where('usr_active', '=', $usr_active);
+        }
+
+        $users = $query->orderBy('usr_full_name')->get(); 
+        
+        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));  
     }
 
     //USER SCREEN FOR PROFILE EDITS
