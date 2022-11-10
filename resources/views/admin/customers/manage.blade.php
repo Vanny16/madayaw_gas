@@ -229,7 +229,7 @@
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
                                                                             <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' aria-describedby="inputGroupFileAddon01" hidden>
+                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" hidden>
                                                                         </a>
                                                                     </div>
                                                                 </div>
