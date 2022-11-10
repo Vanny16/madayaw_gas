@@ -33,7 +33,7 @@
                             <h3 class="card-title"><i class="fas fa-box-open"></i> Find Product</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="">
+                            <form class="form-horizontal" method="POST" action="{{ action('ProductController@searchProduct') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
@@ -41,20 +41,19 @@
                                             <label for="search_string">Find Product</label>
                                                 <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name" required/>
                                         </div>
-
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status" required>
-                                                {{-- @foreach($statuses as $status)
+                                            <select class="form-control" id="filter_status" name="filter_status">
+                                                @foreach($statuses as $status)
                                                     @if($status == $default_status) 
                                                         <option value="{{ $status }}" selected>{{ $status }}</option>
                                                     @else
                                                         <option value="{{ $status }}">{{ $status }}</option>
                                                     @endif
-                                                @endforeach   --}}
-                                                <option value="">All</option>
+                                                @endforeach   
+                                                {{--<option value="">All</option>
                                                 <option value="">Active</option>
-                                                <option value="">Inactive</option>
+                                                <option value="">Inactive</option>--}}
                                             </select> 
                                         </div>
                                     </div>

@@ -64,6 +64,7 @@ class ProductController extends Controller
         $prd_active = array_search($request->filter_status, $statuses);
 
         $query = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('acc_id','=',session('acc_id'))
         ->where('prd_name','LIKE', $search_string . '%');
 
@@ -73,7 +74,10 @@ class ProductController extends Controller
 
         $products = $query->orderBy('prd_name')->get(); 
 
-        return view('admin.products.manage', compact( 'statuses', 'default_status', '$products','prd_active'));
+        $suppliers = DB::table('suppliers')
+        ->get();
+
+        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
 
     public function editProduct(Request $request)
