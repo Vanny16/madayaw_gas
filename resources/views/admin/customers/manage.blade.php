@@ -84,12 +84,21 @@
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
                         </div>
+                        <div id="cus-toolbar" class="border bg-light" style="overflow-x:auto;" hidden>
+                            <form action="" class="form-inline">
+                                <div class="ml-4 mt-2 mb-2">
+                                    <a href="" class="text-danger"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
+                                </div>
+                            </form>
+                        </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
+                                        <th width="20px">
+                                            <input type="checkbox" id="customer_select_all"></th>
                                         <th width="50px"></th>
-                                        <th>Customer Name</th>
+                                        <th>Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
                                         <th>Notes</th>
@@ -103,6 +112,9 @@
                                 @if(isset($customers))
                                     @foreach($customers as $customer)
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" class="customer_select" name="customer_select">
+                                        </td>
                                          <td>
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
                                         </td>
@@ -379,13 +391,13 @@
 <script>
 
 $(document).ready(function(){
-        $("#search_customers").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#tbl-customers tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+    $("#search_customers").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tbl-customers tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+});
 
 $('#btn_choose_file').click(function(){
     $('#choose_file').click();
@@ -398,6 +410,44 @@ $('#btn_edit_choose_file').click(function(){
 $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();
     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
+
+$(document).ready(function() {
+    $("#customer_select_all").change(function() {
+        if (this.checked) {
+            $(".customer_select").each(function() {
+                this.checked=true;
+            $("#cus-toolbar").prop("hidden", false);
+            });
+        } else {
+            $(".customer_select").each(function() {
+                this.checked=false;
+                $("#cus-toolbar").prop("hidden", true);
+            });
+        }
+    });
+
+    $(".customer_select").click(function () {
+        if ($(this).is(":checked")) {
+            var isAllChecked = 0;
+
+            $(".customer_select").each(function() {
+                if (!this.checked){
+                    isAllChecked = 1;
+                    $("#cus-toolbar").prop("hidden", false);
+                }
+            });
+
+            if (isAllChecked == 0) {
+                $("#customer_select_all").prop("checked", true);
+                $("#cus-toolbar").prop("hidden", false);
+            }     
+        }
+        else {
+            $("#customer_select_all").prop("checked", false);
+        }
+    });
 });
 
 </script>
