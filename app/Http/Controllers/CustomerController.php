@@ -36,6 +36,7 @@ class CustomerController extends Controller
         $cus_notes = $request->cus_notes;
 
         $check_cus_name = DB::table('customers')
+        ->where('acc_id', '=', session('acc_id'))
         ->where('cus_name','=', $cus_name)
         ->first();
 

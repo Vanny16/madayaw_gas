@@ -40,6 +40,7 @@ class UserController extends Controller
         $typ_id = $request->typ_id;
 
         $check_usr_name = DB::table('users')
+        ->where('acc_id', '=', session('acc_id'))
         ->where('usr_name','=', $usr_name)
         ->first();
 

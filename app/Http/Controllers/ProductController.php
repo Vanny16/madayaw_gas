@@ -38,6 +38,7 @@ class ProductController extends Controller
         $sup_id = $request->sup_id;
 
         $sku_checker = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
         ->where('prd_sku','=',$prd_sku)
         ->get();
 

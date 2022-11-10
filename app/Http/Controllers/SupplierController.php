@@ -33,6 +33,7 @@ class SupplierController extends Controller
         $sup_notes = $request->sup_notes;
 
         $check_sup_name = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
         ->where('sup_name','=', $sup_name)
         ->first();
 
@@ -41,7 +42,7 @@ class SupplierController extends Controller
             session()->flash('errorMessage','Supplier already exist');
             return redirect()->action('SupplierController@manage');
         }
-        
+
         $usr_id = DB::table('suppliers')
         ->insert([
         'sup_id' => session('sup_id'),
