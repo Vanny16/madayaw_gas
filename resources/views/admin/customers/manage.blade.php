@@ -404,7 +404,7 @@
                 Apply Discount
             </div>
             <div class="modal-body">
-                    <input type="text" placeholder="Enter Discount %" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="1" maxlength="3"/>
+                    <input type="number" placeholder="Enter Discount %" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
             </div>
             <div class="modal-footer">
                 <a class="btn btn-info" href=""><i class="fa fa-gift"></i> Apply</a>
