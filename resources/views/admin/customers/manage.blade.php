@@ -289,18 +289,18 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-12 text-center">
-                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
-                                                                    </a>
-                                                                </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-12 text-center">
+                                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="150px">
+                                                                </a>
                                                             </div>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

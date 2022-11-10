@@ -40,7 +40,6 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
                                                 <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name">
-                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name"/>
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
@@ -158,7 +157,7 @@
                                                             @if(session('typ_id') == '1' || session('typ_id') == '2')
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                             @endif
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                         </ul>
                                                     </div>
                                                 @endif
@@ -261,6 +260,40 @@
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
                                                             </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Print Modal -->
+                                                <div class="modal fade" id="print-product-modal-{{$product->prd_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            
+                                                            <div class="modal-body">
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+                                                                            <div class="col-md-2 col-12">
+                                                                                <div class="image">
+                                                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="70px">
+                                                                                </div>
+                                                                            </div>
+            
+                                                                            <div class="col-md-10 col-12">
+                                                                                <h3><strong style="text-transform:uppercase;">{{ $product->prd_name }}</strong></h3>
+                                                                                <i class="text-default">
+                                                                                    {{ $product->prd_description }} <br>
+                                                                                    {{ $product->prd_sku }} <br>
+                                                                                    {{ $product->prd_quantity }} <br>
+                                                                                    {{ $product->sup_name }}
+                                                                                </i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a class="btn btn-info" href="{{ action('PrintController@supplierDetails',[$supplier->sup_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
