@@ -117,35 +117,35 @@ class CustomerController extends Controller
         ]);
 
         //IMAGE UPLOAD SECTION
-        $file = $request->file('cus_image');
+        // $file = $request->file('cus_image');
 
-        dd($file);
-        $validator = Validator::make( 
-            [
-                'file' => $file,
-                'extension' => strtolower($file->getClientOriginalExtension()),
-            ],
-            [
-                'file' => 'required',
-                'file' => 'max:3072', //3MB
-                'extension' => 'required|in:jpg,png,gif',
-            ]
-        );
+        // dd($file);
+        // $validator = Validator::make( 
+        //     [
+        //         'file' => $file,
+        //         'extension' => strtolower($file->getClientOriginalExtension()),
+        //     ],
+        //     [
+        //         'file' => 'required',
+        //         'file' => 'max:3072', //3MB
+        //         'extension' => 'required|in:jpg,png,gif',
+        //     ]
+        // );
         
-        if ($validator->fails()) {
-            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // if ($validator->fails()) {
+        //     session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
 
-        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+        // $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
 
-        Storage::disk('local')->put('/images/customers/' . $fileName, fopen($file, 'r+'));
+        // Storage::disk('local')->put('/images/customers/' . $fileName, fopen($file, 'r+'));
 
-        DB::table('customers')
-        ->where('cus_id','=',$request->cus_id)
-        ->update([
-            'cus_image' => $fileName,
-        ]);  
+        // DB::table('customers')
+        // ->where('cus_id','=',$request->cus_id)
+        // ->update([
+        //     'cus_image' => $fileName,
+        // ]);  
 
         
         session()->flash('successMessage','Customer details updated.');
