@@ -61,8 +61,9 @@ class CustomerController extends Controller
         return redirect()->action('CustomerController@manage');
     }
 
-    public function editCustomer(Request $request, $cus_id)
+    public function editCustomer(Request $request)
     {
+        $cus_id = $request->cus_id;
         $cus_name = $request->cus_name;
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
@@ -119,8 +120,6 @@ class CustomerController extends Controller
             ]
         );
         
-        // dd($validator);
-
         if ($validator->fails()) {
             session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
             return redirect()->back()->withErrors($validator)->withInput();
@@ -128,9 +127,10 @@ class CustomerController extends Controller
 
         $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
-        // dd(fopen($file,'r+'));
-
-        Storage::disk('local')->put('/img/customers/' . $fileName, fopen($file, 'r+'));
+        // dd($request->cus_id);
+        
+        Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+        
 
         DB::table('customers')
         ->where('cus_id','=',$cus_id)

@@ -123,9 +123,9 @@
                                         </td>
                                          <td>
                                         @if($customer->cus_image <> '')
-                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="User profile picture" />
+                                            <img class="img-fluid img-circle" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" />
                                         @else
-                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="User profile picture" />
+                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" />
                                         @endif    
                                         </td>
                                         <td>   
