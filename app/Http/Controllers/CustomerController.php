@@ -110,24 +110,24 @@ class CustomerController extends Controller
         {
             $file = $request->file('cus_image');
 
-            $validator = Validator::make( 
-                [
-                    'file' => $file,
-                    'extension' => strtolower($file->getClientOriginalExtension()),
-                ],
-                [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
-                    'extension' => 'required|in:jpg,png,gif',
-                ]
-            );
-            
-            // dd($validator);
+        $validator = Validator::make( 
+            [
+                'file' => $file,
+                'extension' => strtolower($file->getClientOriginalExtension()),
+            ],
+            [
+                'file' => 'required',
+                'file' => 'max:3072', //3MB
+                'extension' => 'required|in:jpg,png,gif',
+            ]
+        );
+        
+        // dd($validator);
 
-            if ($validator->fails()) {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+        if ($validator->fails()) {
+            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
             $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
