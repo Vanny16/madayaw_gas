@@ -106,8 +106,8 @@ class CustomerController extends Controller
         ]);
 
         //IMAGE UPLOAD SECTION
-        if($request->file('cus_image'))
-        {
+    if($request->file('cus_image'))
+    {
             $file = $request->file('cus_image');
 
         $validator = Validator::make( 
@@ -122,18 +122,18 @@ class CustomerController extends Controller
             ]
         );
         
-        // dd($validator);
+        // dd(public_path());
 
         if ($validator->fails()) {
             session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-            $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
+        $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
         // dd(fopen($file,'r+'));
 
-        Storage::disk('local')->put('/img/customers/' . $fileName, fopen($file, 'r+'));
+        Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
 
         DB::table('customers')
         ->where('cus_id','=',$cus_id)
@@ -141,7 +141,7 @@ class CustomerController extends Controller
             'cus_image' => $fileName,
         ]);  
 
-        
+    }   
         session()->flash('successMessage','Customer details updated.');
         return redirect()->action('CustomerController@manage');
     }
