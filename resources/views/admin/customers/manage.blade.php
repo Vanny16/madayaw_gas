@@ -226,11 +226,11 @@
                                                                             <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
                                                                         @endif    
                                                                     </a>
-                                                                    <div class="col-12 text-center mb-4">
-                                                                        <a href="javascript:void(0);" class="">
-                                                                            <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" hidden>
-                                                                        </a>
+                                                                    <div class="modal-body">
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input" id="emp_image" name="emp_image" value="{{ old('emp_image') }}" aria-describedby="inputGroupFileAddon01" required>
+                                                                            <label class="custom-file-label" for="emp_image">Choose file</label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 

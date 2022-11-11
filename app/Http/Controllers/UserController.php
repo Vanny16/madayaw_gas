@@ -256,4 +256,39 @@ class UserController extends Controller
         session()->flash('successMessage', 'Profile photo has been uploaded.');
         return redirect()->action('UserController@main');
     }
+
+    // public function uploadAvatar(Request $request)
+    // {
+    //     $file = $request->file('emp_image');
+    //     $validator = Validator::make( 
+    //         [
+    //             'file' => $file,
+    //             'extension' => strtolower($file->getClientOriginalExtension()),
+    //         ],
+    //         [
+    //             'file' => 'required',
+    //             'file' => 'max:3072', //3MB
+    //             'extension' => 'required|in:jpg,png,gif',
+    //         ]
+    //     );
+        
+    //     if ($validator->fails()) {
+    //         session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+
+    //     $fileName = $request->emp_id . '.' . $file->getClientOriginalExtension();
+
+    //     Storage::disk('local')->put('/images/employees/' . $fileName, fopen($file, 'r+'));
+
+    //     DB::table('employees')
+    //     ->where('emp_id','=',$request->emp_id)
+    //     ->update([
+    //         'emp_image' => $fileName,
+    //     ]);  
+
+    //     session()->flash('successMessage', 'Profile photo has been uploaded.');
+    //     return redirect()->action('UserController@main');
+    // }
+
 }
