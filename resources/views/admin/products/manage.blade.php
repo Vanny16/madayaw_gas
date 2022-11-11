@@ -87,9 +87,9 @@
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
-                                        <th>Description</th>
                                         <th>SKU</th>
                                         <th>Quantity</th>
+                                        <th>Description</th>
                                         <th>Supplier</th>
                                         <th width="120px"></th>
                                         <th width="120px"></th>
@@ -107,13 +107,6 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            @if($product->prd_description)
-                                                <td>   
-                                                    {{$product->prd_description}}
-                                                </td>
-                                            @else
-                                                <td>-</td>
-                                            @endif
                                             @if($product->prd_sku)
                                                 <td>   
                                                     {{$product->prd_sku}}
@@ -123,10 +116,17 @@
                                             @endif
                                             @if($product->prd_quantity)
                                                 <td>   
-                                                    {{$product->prd_quantity}} pc/s
+                                                    {{$product->prd_quantity}}
                                                 </td>
                                             @else
                                                 <td>0</td>
+                                            @endif
+                                            @if($product->prd_description)
+                                                <td>   
+                                                    {{$product->prd_description}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
                                             @endif
                                             @if($product->sup_name)
                                                 <td>   
@@ -183,12 +183,12 @@
                                                                                 <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}"/>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly/>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -336,16 +336,16 @@
                                 <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
-                            </div>
-                            <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
                             </div>
                             <div class="form-group">
+                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                            </div>
+                            <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                <select class="form-control" id="suppliers" name="sup_id" required>
+                                <select class="form-control" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
                                     @foreach($suppliers as $supplier)
                                         @if($supplier->sup_active == 0)
                                             @continue

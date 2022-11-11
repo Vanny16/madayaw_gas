@@ -26,6 +26,36 @@
             </div>
 
 			<div class="row">
+				<div class="col-md-9"> 
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title text-info"><i class="fa fa-bolt"></i> Quick Access</h3>
+                        </div>
+
+						<div class="card-body bg-light">
+							<div class="row justify-content-center p-1 text-white">
+								<!-- <div class="col-3 bg-info border border-light rounded">
+									<button class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-box-open"></i></button><br><small>Products</small>
+								</div>
+								<div class="col-3 bg-info border border-light rounded">
+									<button class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-warehouse"></i></button><br><small>Suppliers</small>
+								</div>
+								<div class="col-3 bg-info border border-light rounded">
+									<button class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-address-card"></i></button><br><small>Users</small>
+								</div>
+								<div class="col-3 bg-info border border-light rounded">
+									<button class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-users"></i></button><br><small>Customers</small>
+								</div> -->
+
+								<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-box-open"></i></a>
+								<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-warehouse"></i></a>
+								<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-address-card"></i></a>
+								<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-users"></i></a><br>
+							</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-9"> 
                     <div class="card">
                         <div class="card-header">
