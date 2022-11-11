@@ -106,31 +106,34 @@ class CustomerController extends Controller
         ]);
 
         //IMAGE UPLOAD SECTION
-        $file = $request->file('cus_image');
+        if($request->file('cus_image'))
+        {
+            $file = $request->file('cus_image');
 
-        $validator = Validator::make( 
-            [
-                'file' => $file,
-                'extension' => strtolower($file->getClientOriginalExtension()),
-            ],
-            [
-                'file' => 'required',
-                'file' => 'max:3072', //3MB
-                'extension' => 'required|in:jpg,png,gif',
-            ]
-        );
-        
-        if ($validator->fails()) {
-            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd($validator);
 
-        $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
+            if ($validator->fails()) {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
-        // dd($request->cus_id);
-        
-        Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
-        
+            $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
+
+        // dd(fopen($file,'r+'));
+
+        Storage::disk('local')->put('/img/customers/' . $fileName, fopen($file, 'r+'));
 
         DB::table('customers')
         ->where('cus_id','=',$cus_id)
