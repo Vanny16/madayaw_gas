@@ -73,19 +73,19 @@ class UserController extends Controller
         $usr_address = $request->usr_address;
         $usr_password = $request->usr_password;
 
-        // $check_uuid = DB::table('users')
-        // ->where('usr_id', '=', $usr_id)
-        // ->where('usr_uuid', '=', null)
-        // ->get();
+        $check_uuid = DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->where('usr_uuid', '=', null)
+        ->get();
 
-        // if($check_uuid != null)
-        // {
-        //     DB::table('users')
-        //     ->where('usr_id', '=', $usr_id)
-        //     ->update([
-        //         'usr_uuid' => generateuuid()
-        //     ]);
-        // }
+        if($check_uuid != null)
+        {
+            DB::table('users')
+            ->where('usr_id', '=', $usr_id)
+            ->update([
+                'usr_uuid' => generateuuid()
+            ]);
+        }
         
         if($usr_password == null)
         {

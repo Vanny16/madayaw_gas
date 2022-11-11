@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use DB;
-use Validator;
 
 class CustomerController extends Controller
 {
@@ -25,6 +25,7 @@ class CustomerController extends Controller
         ->where('acc_id', '=',session('acc_id'))
         ->get();
 
+        // dd($customers);
         return view('admin.customers.manage',compact('customers','statuses','default_status'));
     }
     
@@ -118,17 +119,21 @@ class CustomerController extends Controller
             ]
         );
         
+        // dd($validator);
+
         if ($validator->fails()) {
             session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+        $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
-        Storage::disk('local')->put('/images/customers/' . $fileName, fopen($file, 'r+'));
+        // dd(fopen($file,'r+'));
+
+        Storage::disk('local')->put('/img/customers/' . $fileName, fopen($file, 'r+'));
 
         DB::table('customers')
-        ->where('cus_id','=',$request->cus_id)
+        ->where('cus_id','=',$cus_id)
         ->update([
             'cus_image' => $fileName,
         ]);  
