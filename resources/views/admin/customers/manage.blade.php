@@ -122,7 +122,11 @@
                                             <input type="checkbox" class="customer_select" name="customer_select">
                                         </td>
                                          <td>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
+                                        @if($customer->cus_image <> '')
+                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="User profile picture" />
+                                        @else
+                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="User profile picture" />
+                                        @endif    
                                         </td>
                                         <td>   
                                             {{ $customer->cus_name }}
@@ -227,10 +231,13 @@
                                                                         @endif    
                                                                     </a>
                                                                     <div class="col-12 text-center mb-4">
-                                                                        <a href="javascript:void(0);" class="">
+                                                                        <a href="javascript:void(0);" class="" hidden>
                                                                             <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                                                            <input type="file" class="custom-file-input" id="edit_choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" hidden>
                                                                         </a>
+                                                                        <div class="custom-file">
+                                                                            <label class="custom-file-label" for="cus_image">Choose file</label>
+                                                                            <input type="file" class="custom-file-input" id="cus_image" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" >
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
@@ -425,13 +432,13 @@ $(document).ready(function(){
     });
 });
 
-$('#btn_choose_file').click(function(){
-    $('#choose_file').click();
-});
+// $('#btn_choose_file').click(function(){
+//     $('#choose_file').click();
+// });
 
-$('#btn_edit_choose_file').click(function(){
-    $('#edit_choose_file').click();
-});
+// $('#btn_edit_choose_file').click(function(){
+//     $('#edit_choose_file').click();
+// });
 
 $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();
