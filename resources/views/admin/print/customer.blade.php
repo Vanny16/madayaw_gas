@@ -20,7 +20,7 @@
                 @if(isset($all_customer_details))
                     <thead>
                         <tr>
-                            <th width="200px">Customer Name</th>
+                            <th width="500px">Customer Name</th>
                             <th>Contact #</th>
                             <th width="500px">Address</th>
                             <th width="500px">Notes</th>
@@ -54,8 +54,8 @@
                 @elseif(isset($customer_details))
                     <thead>
                         <tr>
-                            <th width="200px">Customer Name</th>
-                            <th>Contact #</th>
+                            <th width="500px">Customer Name</th>
+                            <th width="500px">Contact #</th>
                             <th>Address</th>
                             <th width="500px">Notes</th>
                             <th>Status</th>

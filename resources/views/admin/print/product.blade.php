@@ -20,7 +20,7 @@
                 @if(isset($all_product_details))
                     <thead>
                         <tr>
-                            <th width="200px">Prodcut Name</th>
+                            <th width="500px">Product Name</th>
                             <th>Description</th>
                             <th>SKU</th>
                             <th width="500px">Quantity</th>
