@@ -165,7 +165,7 @@
 
                                                 <!-- Edit Products Modal -->
                                                 <div class="modal fade" id="edit-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
@@ -184,11 +184,15 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly/>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                                                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -318,7 +322,7 @@
 
 <!-- Create Modal -->
 <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
@@ -344,22 +348,75 @@
                                 <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
                             </div>
                             <div class="form-group">
+                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                            </div>
+                            <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                <select class="form-control" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
-                                    @foreach($suppliers as $supplier)
-                                        @if($supplier->sup_active == 0)
-                                            @continue
-                                        @else
-                                            <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
-                                        @endif
-                                    @endforeach   
-                                </select> 
+                                <div class="form-inline">
+                                    <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
+                                        @foreach($suppliers as $supplier)
+                                            @if($supplier->sup_active == 0)
+                                                @continue
+                                            @else
+                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                            @endif
+                                        @endforeach   
+                                    </select> 
+                                    <!-- <div class="col-md-1 col-12">&nbsp;</div> -->
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
                     <hr/>
                     
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Supplier Modal -->
+<div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('SupplierController@createSupplier')}}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_address">Address <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_contact">Contact <span style="color:red">*</span></label>
+                                <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_notes">Notes</label>
+                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
