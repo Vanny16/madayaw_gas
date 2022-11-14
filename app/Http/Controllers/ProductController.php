@@ -113,15 +113,13 @@ class ProductController extends Controller
     public function addQuantity(Request $request)
     {
         $prd_id = $request->prd_id;
+        $stockin_qty = (float)$request->prd_quantity;
 
         $quantity = DB::table('products')
         ->where('prd_id', '=', $prd_id)
-        ->get();
+        ->first();
         
-        // dd($prd_id);
-        $prd_quantity = (float)$quantity[0]->prd_quantity + (float)$request->prd_quantity;
-
-        // dd($prd_quantity);
+        $prd_quantity = (float)$quantity->prd_quantity + $stockin_qty;
 
         DB::table('products')
         ->where('prd_id', '=', $prd_id)
@@ -129,6 +127,8 @@ class ProductController extends Controller
             'prd_quantity' => (float)$prd_quantity,
         ]);
         
+        record_stockin($prd_id, $stockin_qty);
+
         session()->flash('successMessage','Quantity added has been added');
         return redirect()->action('ProductController@manage');
     }
