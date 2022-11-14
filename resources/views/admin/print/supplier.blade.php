@@ -22,7 +22,7 @@
                         <tr>
                             <th width="200px">Customer Name</th>
                             <th>Contact #</th>
-                            <th>Address</th>
+                            <th width="500px">Address</th>
                             <th width="500px">Status</th>
                             <th>Notes</th>
                             <th width="20px"></th>
