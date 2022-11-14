@@ -366,7 +366,7 @@
                             <div class="col-12 text-center mb-4">
                                 <a href="javascript:void(0);" class="">
                                     <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                    <input type="file" class="custom-file-input" id="choose_file" hidden>
+                                    <input type="file" class="custom-file-input" id="choose_file" name="cus_image" hidden>
                                 </a>
                             </div>
                         </div>
@@ -432,13 +432,13 @@ $(document).ready(function(){
     });
 });
 
-// $('#btn_choose_file').click(function(){
-//     $('#choose_file').click();
-// });
+$('#btn_choose_file').click(function(){
+    $('#choose_file').click();
+});
 
-// $('#btn_edit_choose_file').click(function(){
-//     $('#edit_choose_file').click();
-// });
+$('#btn_edit_choose_file').click(function(){
+    $('#edit_choose_file').click();
+});
 
 $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();
