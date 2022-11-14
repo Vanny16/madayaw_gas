@@ -225,9 +225,9 @@
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
                                                                         @if($customer->cus_image <> '')
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $customer->cus_image) }}" alt="User profile picture" />
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" height="150px">
                                                                         @else
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="User profile picture" />
+                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="{{ $customer->cus_image }}" height="150px">
                                                                         @endif    
                                                                     </a>
                                                                     <div class="col-12 text-center mb-4">
@@ -309,7 +309,7 @@
 
                                         <!--Customer-Profile Modal -->
                                         <div class="modal fade" id="img-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-md" role="document">
+                                            <div class="modal-dialog modal-sm" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Customer Profile</h5>
@@ -321,7 +321,7 @@
                                                         <div class="row">
                                                             <div class="col-12 text-center">
                                                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                    <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" class="img-circle elevation-2" alt="{{ $customer->cus_image }}" height="150px">
+                                                                    <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" height="150px">
                                                                 </a>
                                                             </div>
                                                         </div>
