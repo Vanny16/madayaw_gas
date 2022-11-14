@@ -273,31 +273,25 @@
                                                     </div>
                                                 </div>
 
-                                                <!--Print Modal -->
-                                                <div class="modal fade" id="print-product-modal-{{$product->prd_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
+                                                <!-- Print-Product Modal -->
+                                                <div class="modal fade" id="print-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
-                                                            
                                                             <div class="modal-body">
-                                                                    <div class="col-12">
-                                                                        <div class="row">
-                                                                            <div class="col-md-2 col-12">
-                                                                                <div class="image">
-                                                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="70px">
-                                                                                </div>
-                                                                            </div>
-            
-                                                                            <div class="col-md-10 col-12">
-                                                                                <h3><strong style="text-transform:uppercase;">{{ $product->prd_name }}</strong></h3>
-                                                                                <i class="text-default">
-                                                                                    {{ $product->prd_description }} <br>
-                                                                                    {{ $product->prd_sku }} <br>
-                                                                                    {{ $product->prd_quantity }} <br>
-                                                                                    {{ $product->sup_name }}
-                                                                                </i>
-                                                                            </div>
-                                                                        </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-10 col-12">
+                                                                        <h3><strong style="text-transform:uppercase;">{{ $product->prd_name }}</strong></h3> 
+                                                                        <i class="text-default">
+                                                                            {{ $product->prd_description }}
+                                                                            <br>
+                                                                            {{ $product->prd_sku }} 
+                                                                            <br>
+                                                                            {{ $product->prd_quantity }}
+                                                                            <br>
+                                                                            {{ $product->sup_name }}
+                                                                        </i>
                                                                     </div>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_sku]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
@@ -306,6 +300,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                         </tr> 
                                     @endforeach
                                 @endif
