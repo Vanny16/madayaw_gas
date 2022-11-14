@@ -256,5 +256,4 @@ class UserController extends Controller
         session()->flash('successMessage', 'Profile photo has been uploaded.');
         return redirect()->action('UserController@main');
     }
-    
 }

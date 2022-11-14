@@ -26,7 +26,7 @@
             </div>
 
 			<div class="row">
-				<div class="col-md-9"> 
+				{{-- <div class="col-md-9"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title text-info"><i class="fa fa-bolt"></i> Quick Access</h3>
@@ -54,7 +54,7 @@
 							</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="col-md-9"> 
                     <div class="card">
