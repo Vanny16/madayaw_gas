@@ -123,7 +123,7 @@
                                         </td>
                                          <td>
                                         @if($customer->cus_image <> '')
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" />
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" />
                                         @else
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" />
                                         @endif    
@@ -224,11 +224,11 @@
                                                             <div class="row">
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        @if($customer->cus_image <> '')
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" height="150px">
-                                                                        @else
-                                                                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('images/customers/default.png') }}" alt="{{ $customer->cus_image }}" height="150px">
-                                                                        @endif    
+                                                                    @if($customer->cus_image <> '')
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" height="150px"/>
+                                                                    @else
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" />
+                                                                    @endif
                                                                     </a>
                                                                     <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="" hidden>
@@ -309,25 +309,20 @@
 
                                         <!--Customer-Profile Modal -->
                                         <div class="modal fade" id="img-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Customer Profile</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <div class="modal-body">
+                                                        
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
-                                                    </div>
-                                                    <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-12 text-center">
                                                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                    <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" height="150px">
+                                                                    <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" max-height="480px" max-width="480px">
                                                                 </a>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
