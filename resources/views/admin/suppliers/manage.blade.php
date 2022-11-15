@@ -97,8 +97,12 @@
                                         @foreach($suppliers as $supplier)
                                         <tr>
                                             <td>
-                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
-                                            </td>
+                                                @if($supplier->sup_image <> '')
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                @else
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                @endif
+                                            </td>                                              
                                             <td>   
                                                 {{ $supplier->sup_name }}
                                             </td>
@@ -180,7 +184,7 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}">
+                                                        <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}" enctype="multipart/form-data">
                                                         {{ csrf_field() }} 
                                                             <div class="modal-body">
                                                                 <div class="row">
@@ -280,7 +284,7 @@
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
                                                                         @if($supplier->sup_image <> '')
-                                                                            <img src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplie->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            <img src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
                                                                         @else
                                                                         <img src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
                                                                         @endif
