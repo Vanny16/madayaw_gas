@@ -56,7 +56,7 @@
                         <tr>
                             <th width="500px">Customer Name</th>
                             <th width="500px">Contact #</th>
-                            <th>Address</th>
+                            <th width="500px">Address</th>
                             <th width="500px">Notes</th>
                             <th>Status</th>
                             <th width="20px"></th>
