@@ -205,33 +205,36 @@ class ProductController extends Controller
         ->where('sup_name','=', $sup_name)
         ->first();
 
+        $prodValues = array(
+            $request->sup_prd_name,
+            $request->sup_prd_sku,
+            $request->sup_prd_description,
+            $request->sup_prd_reorder,
+            $request->sup_name,
+            'show'
+        );
+
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');
-            return redirect()->action('SupplierController@manage');
+        }
+        else{
+            $usr_id = DB::table('suppliers')
+            ->insert([
+            'sup_id' => session('sup_id'),
+            'acc_id' => session('acc_id'),
+            'sup_uuid' => generateuuid(),
+            'sup_name' => $sup_name, 
+            'sup_address' => $sup_address,
+            'sup_contact' => $sup_contact,
+            'sup_notes' => $sup_notes
+            ]);
+
+            session()->flash('successMessage','Supplier has been added');
+            session()->flash('getProdValues', array( $prodValues));
         }
 
-        $usr_id = DB::table('suppliers')
-        ->insert([
-        'sup_id' => session('sup_id'),
-        'acc_id' => session('acc_id'),
-        'sup_uuid' => generateuuid(),
-        'sup_name' => $sup_name, 
-        'sup_address' => $sup_address,
-        'sup_contact' => $sup_contact,
-        'sup_notes' => $sup_notes
-        ]);
-
-        $new_supplier = DB::table('suppliers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->select('sup_id')
-        ->orderBy('sup_id','desc')
-        ->first(); 
-
-        session()->flash('successMessage','Supplier has been added');
-        return redirect()->back('ProductController@manage');
-
-        // return response()->json(['id' => $new_supplier]); 
+        return redirect()->action('ProductController@manage');
     }
 
     public function test(Request $request)
