@@ -87,7 +87,7 @@ class SupplierController extends Controller
     
             $fileName = $sup_id->sup_id . '.' . $file->getClientOriginalExtension();
     
-            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+            Storage::disk('local')->put('img/suppliers/' . $fileName, fopen($file, 'r+'));
 
             DB::table('suppliers')
             ->where('sup_id','=',$sup_id->sup_id)
@@ -170,7 +170,7 @@ class SupplierController extends Controller
     
             $fileName = $sup_id . '.' . $file->getClientOriginalExtension();
     
-            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+            Storage::disk('local')->put('img/suppliers/' . $fileName, fopen($file, 'r+'));
 
             DB::table('suppliers')
             ->where('sup_id','=',$sup_id)
