@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 Use DB;
 
@@ -141,43 +142,10 @@ class SupplierController extends Controller
             'sup_contact' => $sup_contact,
             'sup_notes' => $sup_notes
         ]);
-
-         //IMAGE UPLOAD 
-         if($request->file('sup_image'))
-         {
-             $file = $request->file('sup_image');
- 
-             $validator = Validator::make( 
-                 [
-                     'file' => $file,
-                     'extension' => strtolower($file->getClientOriginalExtension()),
-                 ],
-                 [
-                     'file' => 'required',
-                     'file' => 'max:3072', //3MB
-                     'extension' => 'required|in:jpg,png,gif',
-                 ]
-             );
-
-             if ($validator->fails()) 
-             {
-                 session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                 return redirect()->back()->withErrors($validator)->withInput();
-             }
-     
-             $fileName = $request->sup_id . '.' . $file->getClientOriginalExtension();
-     
-             Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
- 
-             DB::table('suppliers')
-             ->where('sup_id','=',$request->sup_id)
-             ->update([
-                 'sup_image' => $fileName,
-             ]);  
-         }
         
-        session()->flash('successMessage','Supplier details updated.');
-        return redirect()->action('SupplierController@manage');
+            session()->flash('successMessage','Supplier details updated.');
+            return redirect()->action('SupplierController@manage');
+        }
     }
     public function deactivateSupplier($sup_id)
     {

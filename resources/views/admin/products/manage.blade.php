@@ -323,8 +323,24 @@
 </div>
 
 <!-- Create Modal -->
-<div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+
+@if(session('getProdValues'))
+    @php($prd_name = Session::get('getProdValues')[0][0])
+    @php($prd_sku = Session::get('getProdValues')[0][1])
+    @php($prd_description = Session::get('getProdValues')[0][2])
+    @php($prd_reorder = Session::get('getProdValues')[0][3])
+    @php($sup_name = Session::get('getProdValues')[0][4])
+    @php($state = Session::get('getProdValues')[0][5])
+@else
+    @php($prd_name = '')
+    @php($prd_sku = '')
+    @php($prd_description = '')
+    @php($prd_reorder = '')
+    @php($sup_name = '')
+    @php($state = '')
+@endif
+<div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
@@ -339,19 +355,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
+                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="{{ $prd_name }}" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
+                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="{{ $prd_description }}" required/>
                             </div>
                             <div class="form-group">
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
                             </div>
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -361,11 +377,16 @@
                                             @if($supplier->sup_active == 0)
                                                 @continue
                                             @else
-                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                @if($sup_name == $supplier->sup_name )
+                                                    @php($selected = "selected")
+                                                @else
+                                                    @php($selected = "")
+                                                @endif
+                                                <option value="{{ $supplier->sup_id }}" {{ $selected }}>{{ $supplier->sup_name }}</option>
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -423,11 +444,15 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
+                
+                <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
+                <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
+                <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
             </form>
         </div>
     </div>
 </div>
-
 
 <script>
     $(document).ready(function(){
@@ -462,6 +487,19 @@
 
     });
     
+</script>
+<script>
+    
+    $(document).ready(function(){
+        $("#product-modal").modal('{{$state}}');
+    });
+
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+    }
 </script>
 
 @endsection
