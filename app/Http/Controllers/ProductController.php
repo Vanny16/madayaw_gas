@@ -192,4 +192,50 @@ class ProductController extends Controller
 
         return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
+
+    public function createSupplier(Request $request)
+    {
+        $sup_name = $request->sup_name;
+        $sup_address = $request->sup_address;
+        $sup_contact = $request->sup_contact;
+        $sup_notes = $request->sup_notes;
+
+        $check_sup_name = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('sup_name','=', $sup_name)
+        ->first();
+
+        if($check_sup_name != null)
+        {
+            session()->flash('errorMessage','Supplier already exist');
+            return redirect()->action('SupplierController@manage');
+        }
+
+        $usr_id = DB::table('suppliers')
+        ->insert([
+        'sup_id' => session('sup_id'),
+        'acc_id' => session('acc_id'),
+        'sup_uuid' => generateuuid(),
+        'sup_name' => $sup_name, 
+        'sup_address' => $sup_address,
+        'sup_contact' => $sup_contact,
+        'sup_notes' => $sup_notes
+        ]);
+
+        $new_supplier = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->select('sup_id')
+        ->orderBy('sup_id','desc')
+        ->first(); 
+
+        session()->flash('successMessage','Supplier has been added');
+        return redirect()->back('ProductController@manage');
+
+        // return response()->json(['id' => $new_supplier]); 
+    }
+
+    public function test(Request $request)
+    {
+        return redirect()->action('ProductController@manage');
+    }
 }
