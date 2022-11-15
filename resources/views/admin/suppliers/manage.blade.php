@@ -269,25 +269,24 @@
                                             
                                             <!--Supplier-Profile Modal -->
                                             <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-md" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Supplier Profile</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content bg-gray">
+                                                        <div class="modal-body">
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
-                                                        </div>
-                                                        <div class="modal-body">
+                                                        
                                                             <div class="row">
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="150px">
+                                                                        @if($supplier->sup_image <> '')
+                                                                            <img src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplie->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                        @else
+                                                                        <img src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                        @endif
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
