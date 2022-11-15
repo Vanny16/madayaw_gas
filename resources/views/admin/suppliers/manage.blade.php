@@ -310,7 +310,7 @@
     
     <!-- Supplier Modal -->
     <div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
@@ -322,6 +322,17 @@
                 {{ csrf_field() }} 
                     <div class="modal-body">
                         <div class="row">
+                            <div class="col-12 text-center">
+                                <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                <div class="col-12 text-center mb-4">
+                                <a href="javascript:void(0);" class="">
+                                    <label class="btn btn-transparent btn-file">
+                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                        <input type="file" class="custom-file-input" id="choose_file" name='sup_image' value="{{ old('sup_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                    </label>
+                                </a>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
@@ -356,13 +367,18 @@
     <script>
     
     $(document).ready(function(){
-            $("#search_suppliers").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#tbl-suppliers tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+        $("#search_suppliers").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-suppliers tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    });
     
     </script>
     @endsection
