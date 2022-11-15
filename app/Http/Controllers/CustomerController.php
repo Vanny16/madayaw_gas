@@ -64,13 +64,13 @@ class CustomerController extends Controller
         ]);
 
         //IMAGE UPLOAD 
-        $cus_id = DB::table('customers')
-        ->select('cus_id')
-        ->orderBy('cus_id', 'desc')
-        ->first();
-
         if($request->file('cus_image'))
         {
+            $cus_id = DB::table('customers')
+            ->select('cus_id')
+            ->orderBy('cus_id', 'desc')
+            ->first();
+    
             $file = $request->file('cus_image');
 
             $validator = Validator::make( 
