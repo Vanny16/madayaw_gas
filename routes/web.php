@@ -52,7 +52,9 @@ Route::group(['prefix' => 'product'], function()
     Route::get('manage', 'ProductController@manage');
     Route::get('deactivate-product/{prd_id}', 'ProductController@deactivateProduct');
     Route::get('reactivate-product/{prd_id}', 'ProductController@reactivateProduct');
+    // Route::post('test', 'ProductController@test');
 
+    Route::post('create-supplier', 'ProductController@createSupplier');
     Route::post('search-user', 'ProductController@searchProduct');
     Route::post('edit-product', 'ProductController@editProduct');
     Route::post('add-product', 'ProductController@createProduct');

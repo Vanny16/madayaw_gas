@@ -22,4 +22,9 @@ function record_stockin($prd_id, $quantity)
         'log_quantity' => $quantity
     ]); 
 }
+
+function flash_message()
+{
+    session()->flash('successMessage','test successful');
+}
 ?>

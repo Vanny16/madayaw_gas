@@ -99,7 +99,12 @@
                                 <tbody id="tbl-products">
                                 @if(isset($products))
                                     @foreach($products as $product)
-                                        <tr>
+                                        @if($product->prd_quantity < $product->prd_reorder_point)
+                                            @php($reorder_indicator = "table-danger" )
+                                        @else
+                                            @php($reorder_indicator = "")
+                                        @endif
+                                        <tr class="{{ $reorder_indicator }}">
                                             @if($product->prd_name)
                                                 <td>   
                                                     {{$product->prd_name}}
@@ -114,13 +119,16 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            @if($product->prd_quantity)
-                                                <td>   
-                                                    {{$product->prd_quantity}}
-                                                </td>
-                                            @else
-                                                <td>0</td>
-                                            @endif
+                                            <td>   
+                                                {{$product->prd_quantity}}
+                                                @if($reorder_indicator != "") 
+                                                    @if($product->prd_quantity == 0)
+                                                        |<span class="badge badge-danger">Restock now</span>
+                                                    @elseif($product->prd_quantity < $product->prd_reorder_point)
+                                                        |<span class="badge badge-warning">Request for restock</span>
+                                                    @endif
+                                                @endif
+                                            </td>
                                             @if($product->prd_description)
                                                 <td>   
                                                     {{$product->prd_description}}
@@ -192,7 +200,7 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                                                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                                                                <input type="text" class="form-control" name="prd_reorder" value="{{ $product->prd_reorder_point }}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -300,7 +308,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                         </tr> 
                                     @endforeach
                                 @endif
@@ -358,7 +365,6 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <!-- <div class="col-md-1 col-12">&nbsp;</div> -->
                                     <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
@@ -376,7 +382,7 @@
     </div>
 </div>
 
-<!-- Supplier Modal -->
+<!-- Add Supplier Modal -->
 <div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -386,7 +392,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('SupplierController@createSupplier')}}">
+            <form method="POST" id="form-add" action="{{ action('ProductController@createSupplier')}}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -431,7 +437,31 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+        // $('#form-add').submit(function( event ) {
+        //     event.preventDefault();
+        //     $.ajax({
+        //         url: '{{ url('create-supplier') }}',
+        //         type: 'POST',
+        //         data: $('#form-add').serialize(), // Remember that you need to have your csrf token included
+        //         dataType: 'json',
+        //         success: function( _response ){
+        //             // Handle your response..
+
+        //             $('#supplier-modal').modal('hide');
+        //             $(".suppliers").val(2).change();
+        //             {! flash_message() !}
+        //         },
+        //         error: function( _response ){
+        //             // Handle error
+        //             // {! flash_message() !}
+        //             $('#supplier-modal').modal('hide');
+        //         }
+        //     });
+        // });
+
     });
+    
 </script>
 
 @endsection
