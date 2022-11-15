@@ -360,12 +360,12 @@
                         <div class="col-12 text-center">
                                 <img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                             <div class="col-12 text-center mb-4">
-                                <a href="javascript:void(0);" class="">
-                                    <label class="btn btn-transparent btn-file">
-                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                        <input type="file" class="custom-file-input" id="choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                    </label>
-                                </a>
+                            <a href="javascript:void(0);" class="">
+                                <label class="btn btn-transparent btn-file">
+                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                    <input type="file" class="custom-file-input" id="choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                </label>
+                            </a>
                             </div>
                         </div>
 
