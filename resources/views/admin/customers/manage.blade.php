@@ -123,9 +123,9 @@
                                         </td>
                                          <td>
                                         @if($customer->cus_image <> '')
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" />
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
                                         @else
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" />
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
                                         @endif    
                                         </td>
                                         <td>   
@@ -222,25 +222,28 @@
                                                     {{ csrf_field() }} 
                                                         <div class="modal-body">
                                                             <div class="row">
+
                                                                 <div class="col-12 text-center">
-                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                    @if($customer->cus_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" height="150px"/>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" />
-                                                                    @endif
+                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal" height="150px" width="150px">
+                                                                        @if($customer->cus_image <> '')
+                                                                            <img class="img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                        @else
+                                                                            <img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                        @endif
                                                                     </a>
                                                                     <div class="col-12 text-center mb-4">
-                                                                        <a href="javascript:void(0);" class="" hidden>
-                                                                            <i id="btn_edit_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
+                                                                        <a href="javascript:void(0);" class="">
+                                                                            <label class="btn btn-transparent btn-file">
+                                                                                <i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                <input type="file" class="custom-file-input" id="cus_image" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                            </label>
+
                                                                         </a>
-                                                                        <div class="custom-file">
-                                                                            <label class="custom-file-label" for="cus_image">Choose file</label>
-                                                                            <input type="file" class="custom-file-input" id="cus_image" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" >
-                                                                        </div>
                                                                     </div>
                                                                 </div>
 
+
+                                                                
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <label for="cus_name">Full Name <span style="color:red">*</span></label>
@@ -248,7 +251,7 @@
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label for="cus_address">Address <span style="color:red">*</span></label>
+                                                                        <label for="cus_address">Address <span style="color:red">*</span></label> 
                                                                         <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="{{$customer->cus_address}}" required/>
                                                                     </div>
 
@@ -310,16 +313,20 @@
                                         <!--Customer-Profile Modal -->
                                         <div class="modal fade" id="img-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
+                                                <div class="modal-content bg-gray">
                                                     <div class="modal-body">
                                                         
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                         <div class="row">
                                                             <div class="col-12 text-center">
                                                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                    <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" max-height="480px" max-width="480px">
+                                                                    @if($customer->cus_image <> '')
+                                                                        <img src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                    @else
+                                                                    <img src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}"  alt="{{ $customer->cus_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                    @endif
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -355,17 +362,16 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 text-center">
-                            <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
-                            </a>
+                                <img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                             <div class="col-12 text-center mb-4">
-                                <a href="javascript:void(0);" class="">
-                                    <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                    <input type="file" class="custom-file-input" id="choose_file" name="cus_image" hidden>
-                                </a>
+                                <label class="btn btn-transparent btn-file">
+                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                    <input type="file" class="custom-file-input" id="choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                </label>
                             </div>
                         </div>
-                                
+
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="cus_name">Full Name <span style="color:red">*</span></label>
@@ -398,6 +404,7 @@
     </div>
 </div>
 
+
 <!--Discount Modal -->
 <div class="modal fade" id="discount-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
@@ -425,14 +432,6 @@ $(document).ready(function(){
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
-});
-
-$('#btn_choose_file').click(function(){
-    $('#choose_file').click();
-});
-
-$('#btn_edit_choose_file').click(function(){
-    $('#edit_choose_file').click();
 });
 
 $(".custom-file-input").on("change", function() {
