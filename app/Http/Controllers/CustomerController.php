@@ -25,7 +25,13 @@ class CustomerController extends Controller
         ->where('acc_id', '=',session('acc_id'))
         ->get();
 
-        // dd($customers);
+        $cus_id = DB::table('customers')
+            ->select('cus_id')
+            ->orderBy('cus_id', 'desc')
+            ->first();
+
+        // dd(gettype($cus_id));
+        
         return view('admin.customers.manage',compact('customers','statuses','default_status'));
     }
     
@@ -56,6 +62,48 @@ class CustomerController extends Controller
         'cus_contact' => $cus_contact,
         'cus_notes' => $cus_notes
         ]);
+
+        //IMAGE UPLOAD 
+        $cus_id = DB::table('customers')
+        ->select('cus_id')
+        ->orderBy('cus_id', 'desc')
+        ->first();
+
+        if($request->file('cus_image'))
+        {
+            $file = $request->file('cus_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $cus_id->cus_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('customers')
+            ->where('cus_id','=',$cus_id->cus_id)
+            ->update([
+                'cus_image' => $fileName,
+            ]);  
+    
+        }   
 
         session()->flash('successMessage','New customer has been added');
         return redirect()->action('CustomerController@manage');
@@ -106,42 +154,42 @@ class CustomerController extends Controller
         ]);
 
         //IMAGE UPLOAD SECTION
-    if($request->file('cus_image'))
-    {
+        if($request->file('cus_image'))
+        {
             $file = $request->file('cus_image');
+            
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
 
-        $validator = Validator::make( 
-            [
-                'file' => $file,
-                'extension' => strtolower($file->getClientOriginalExtension()),
-            ],
-            [
-                'file' => 'required',
-                'file' => 'max:3072', //3MB
-                'extension' => 'required|in:jpg,png,gif',
-            ]
-        );
-        
-        // dd(public_path());
+            if ($validator->fails()) {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
-        if ($validator->fails()) {
-            session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+            $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
 
-        $fileName = $request->cus_id . '.' . $file->getClientOriginalExtension();
+            // dd(fopen($file,'r+'));
 
-        // dd(fopen($file,'r+'));
+            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
 
-        Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+            DB::table('customers')
+            ->where('cus_id','=',$cus_id)
+            ->update([
+                'cus_image' => $fileName,
+            ]);  
 
-        DB::table('customers')
-        ->where('cus_id','=',$cus_id)
-        ->update([
-            'cus_image' => $fileName,
-        ]);  
-
-    }   
+        }   
         session()->flash('successMessage','Customer details updated.');
         return redirect()->action('CustomerController@manage');
     }

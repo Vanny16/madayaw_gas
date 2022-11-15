@@ -37,10 +37,12 @@
 											<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture" style="width:50%"/>
 										</a>
 									</div>
-									<div class="col-12 text-center mb-3">
+									<div class="col-12 text-center mb-4">
 										<a href="javascript:void(0);" class="">
-											<i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-											<input type="file" class="custom-file-input" id="choose_file" hidden>
+											<label class="btn btn-transparent btn-file">
+												<i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+												<input type="file" class="custom-file-input" id="usr_image" name='usr_image' value="{{ old('usr_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+											</label>
 										</a>
 									</div>
 									<div class="col-12 text-center mb-3">
