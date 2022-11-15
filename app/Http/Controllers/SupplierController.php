@@ -102,9 +102,46 @@ class SupplierController extends Controller
             'sup_contact' => $sup_contact,
             'sup_notes' => $sup_notes
         ]);
+
+        //Image UPLOAD SECTION
+        if($request->file('sup_image'))
+        {
+            $file = $request->file('sup_image');
+            
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
+
+            if ($validator->fails()) {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $fileName = $request->sup_id . '.' . $file->getClientOriginalExtension();
+
+            // dd(fopen($file,'r+'));
+
+            Storage::disk('local')->put('img/users/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('suppliers')
+            ->where('sup_id','=',$sup_id)
+            ->update([
+                'sup_image' => $fileName,
+            ]);  
         
-        session()->flash('successMessage','Supplier details updated.');
-        return redirect()->action('SupplierController@manage');
+            session()->flash('successMessage','Supplier details updated.');
+            return redirect()->action('SupplierController@manage');
+        }
     }
     public function deactivateSupplier($sup_id)
     {
