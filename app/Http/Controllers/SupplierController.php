@@ -145,8 +145,9 @@ class SupplierController extends Controller
         
             session()->flash('successMessage','Supplier details updated.');
             return redirect()->action('SupplierController@manage');
-        }
+        
     }
+    
     public function deactivateSupplier($sup_id)
     {
         DB::table('suppliers')
