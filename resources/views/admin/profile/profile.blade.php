@@ -51,7 +51,7 @@
 										</form>
 									</div>
 									<div class="col-12 text-center mb-3">
-										<h3 class="profile-username text-center"><strong>{{ session('usr_full_name') }}</strong></h3>
+										<h3 class="profile-username text-center"><strong>{{ $user_details->usr_full_name }}</strong></h3>
 										<i>{{ session('typ_name') }}</i>
 									</div>
 								</div>
@@ -73,21 +73,21 @@
 												</div>
 											</div>
 											<div class="form-group row">
-												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
-												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
-												</div>
-											</div>
-											<div class="form-group row">
 												<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
 												<div class="col-sm-10">
 													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" required disabled/>
 												</div>
 											</div>
 											<div class="form-group row">
+												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
+												</div>
+											</div>
+											<div class="form-group row">
 												<div class="offset-lg-2 col-12">
-													<a class="btn btn-warning col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
-													<button type="submit" class="btn btn-success col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
+													<button type="submit" class="btn btn-info col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
+													<a class="btn btn-transparent col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
 													<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
 												</div>
 											</div>
