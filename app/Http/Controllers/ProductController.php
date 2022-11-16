@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use DB;
 
@@ -56,9 +58,49 @@ class ProductController extends Controller
         'prd_uuid' => generateuuid(),
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku,
-        'prd_reorder' => $prd_reorder, 
+        'prd_reorder_point' => $prd_reorder, 
         'sup_id' => $sup_id
         ]);
+
+        if($request->file('prd_image'))
+        {
+            $prd_id = DB::table('products')
+            ->select('prd_id')
+            ->orderBy('prd_id', 'desc')
+            ->first();
+
+            $file = $request->file('prd_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $prd_id->prd_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/products/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('products')
+            ->where('prd_id','=',$prd_id->prd_id)
+            ->update([
+                'prd_image' => $fileName,
+            ]);  
+        }
 
         session()->flash('successMessage','Product has been added');
         return redirect()->action('ProductController@manage');
@@ -106,10 +148,44 @@ class ProductController extends Controller
             'prd_name' => $prd_name,
             'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
-            'prd_reorder' => $prd_reorder, 
+            'prd_reorder_point' => $prd_reorder, 
             'sup_id' => $sup_id
         ]);
-        
+
+        if($request->file('prd_image'))
+        {
+            $file = $request->file('prd_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $request->prd_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/products/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('products')
+            ->where('prd_id','=',$request->prd_id)
+            ->update([
+                'prd_image' => $fileName,
+            ]);  
+        }
         session()->flash('successMessage','Product details updated.');
         return redirect()->action('ProductController@manage');
     }
