@@ -484,29 +484,6 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-
-        // $('#form-add').submit(function( event ) {
-        //     event.preventDefault();
-        //     $.ajax({
-        //         url: '{{ url('create-supplier') }}',
-        //         type: 'POST',
-        //         data: $('#form-add').serialize(), // Remember that you need to have your csrf token included
-        //         dataType: 'json',
-        //         success: function( _response ){
-        //             // Handle your response..
-
-        //             $('#supplier-modal').modal('hide');
-        //             $(".suppliers").val(2).change();
-        //             {! flash_message() !}
-        //         },
-        //         error: function( _response ){
-        //             // Handle error
-        //             // {! flash_message() !}
-        //             $('#supplier-modal').modal('hide');
-        //         }
-        //     });
-        // });
-
     });
     
 </script>
