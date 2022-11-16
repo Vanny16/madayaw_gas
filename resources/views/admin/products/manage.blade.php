@@ -105,6 +105,13 @@
                                             @php($reorder_indicator = "")
                                         @endif
                                         <tr class="{{ $reorder_indicator }}">
+                                            <td>
+                                                @if($product->prd_image <> '')
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/suppliers/' . $product->prd_image) }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                @else
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                @endif
+                                            </td>   
                                             @if($product->prd_name)
                                                 <td>   
                                                     {{$product->prd_name}}
@@ -315,6 +322,30 @@
                                                             <div class="modal-footer">
                                                                 <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_sku]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Product-Profile Modal -->
+                                                <div class="modal fade" id="img-product-modal-{{$product->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content bg-transparent">
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            
+                                                                <div class="row">
+                                                                    <div class="col-12 text-center">
+                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                            @if($supplier->sup_image <> '')
+                                                                                <img src="{{ asset('img/suppliers/' . $product->prd_image) }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @else
+                                                                            <img src="{{ asset('img/suppliers/default.png') }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @endif
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
