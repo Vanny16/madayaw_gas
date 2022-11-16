@@ -86,6 +86,7 @@
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
+                                        <th width="50px"></th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
                                         <th>Quantity</th>
