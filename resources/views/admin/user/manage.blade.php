@@ -285,22 +285,6 @@
                         <form method="POST" action=" {{ action('UserController@createUser') }} ">
                         {{ csrf_field() }} 
                             <div class="modal-body">
-
-
-                            <div class="row mt-3">
-                                <div class="col-12 text-center">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture"/>
-                                    </a>
-                                    </div>
-                                    <div class="col-12 text-center mb-4">
-                                        <a href="javascript:void(0);" class="">
-                                            <i id="btn_choose_file" class="fa fa-solid fa-camera"> <small>Upload Photo</small></i>
-                                            <input type="file" class="custom-file-input" id="choose_file" hidden>
-                                        </a>
-                                    </div>
-                                </div>
-
                                 <div class="row mb-2" style="box-shadow: 0 0 2px black; padding: 10px;">
                                     <div class="col-md-12">
                                         <div class="form-group">
