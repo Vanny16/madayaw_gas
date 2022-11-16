@@ -33,17 +33,17 @@
 							<div class="card-body box-profile">
 								<div class="row mt-3">
 									<div class="col-12 text-center">
-										<a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-											<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture" style="width:50%"/>
-										</a>
+										<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture" style="width:50%"/>
 									</div>
 									<div class="col-12 text-center mb-4">
-										<a href="javascript:void(0);" class="">
+										<form id="uploadAvatarForm" class="form-horizontal" method="POST" action="{{ action('UserController@uploadAvatar') }}">
 											<label class="btn btn-transparent btn-file">
 												<i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-												<input type="file" class="custom-file-input" id="usr_image" name='usr_image' value="{{ old('usr_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+												<input type="file" id="usr_image" name="usr_image" style="display: none;" onchange="form.submit()">
+												<input type="submit" id="s" name="usr_image" >
+												
 											</label>
-										</a>
+										</form>
 									</div>
 									<div class="col-12 text-center mb-3">
 										<h3 class="profile-username text-center"><strong>{{ session('usr_full_name') }}</strong></h3>
@@ -239,9 +239,9 @@
 			$('#choose_file').click();
 		});
 
-		document.getElementById("usr_image").onchange = function() {
-			alert(this.value);
-			// document.getElementById("form").submit();
-		};
+		// document.getElementById("usr_image").onchange = function() {
+		// 	// alert(document.getElementById("usr_image").value);
+		// 	document.getElementById("form").submit();
+		// };
 	</script>
 @endsection

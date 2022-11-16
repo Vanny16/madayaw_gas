@@ -225,6 +225,8 @@ class UserController extends Controller
 
     public function uploadAvatar(Request $request)
     {
+        dd("he");
+        dd($request->file('usr_image'));
         $file = $request->file('usr_image');
         $validator = Validator::make( 
             [
