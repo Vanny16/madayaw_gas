@@ -239,7 +239,7 @@
                                                 <!--User-Profile Modal -->
                                                 <div class="modal fade" id="img-user-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-md" role="document">
-                                                        <div class="modal-content">
+                                                        <div class="modal-content bg-transparent">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">User Profile</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

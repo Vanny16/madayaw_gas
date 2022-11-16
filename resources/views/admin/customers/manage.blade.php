@@ -123,8 +123,8 @@
                                         </td>
                                          <td>
                                         @if($customer->cus_image <> '')
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
-                                        @else
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                        @else</a>
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
                                         @endif    
                                         </td>
@@ -309,7 +309,7 @@
                                         <!--Customer-Profile Modal -->
                                         <div class="modal fade" id="img-customer-modal-{{$customer->cus_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content bg-gray">
+                                                <div class="modal-content bg-transparent">
                                                     <div class="modal-body">
                                                         
                                                         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">

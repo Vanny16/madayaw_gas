@@ -98,9 +98,9 @@
                                         <tr>
                                             <td>
                                                 @if($supplier->sup_image <> '')
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @else
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @endif
                                             </td>                                              
                                             <td>   
@@ -274,7 +274,7 @@
                                             <!--Supplier-Profile Modal -->
                                             <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content bg-gray">
+                                                    <div class="modal-content bg-transparent">
                                                         <div class="modal-body">
                                                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
