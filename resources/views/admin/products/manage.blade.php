@@ -109,7 +109,7 @@
                                                 @if($product->prd_image <> '')
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/suppliers/' . $product->prd_image) }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @else
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @endif
                                             </td>   
                                             @if($product->prd_name)
