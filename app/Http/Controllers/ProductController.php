@@ -35,6 +35,7 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
 
         $sku_checker = DB::table('products')
@@ -54,7 +55,8 @@ class ProductController extends Controller
         'acc_id' => session('acc_id'),
         'prd_uuid' => generateuuid(),
         'prd_description' => $prd_description,
-        'prd_sku' => $prd_sku, 
+        'prd_sku' => $prd_sku,
+        'prd_reorder' => $prd_reorder, 
         'sup_id' => $sup_id
         ]);
 
@@ -68,6 +70,7 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
 
@@ -103,6 +106,7 @@ class ProductController extends Controller
             'prd_name' => $prd_name,
             'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
+            'prd_reorder' => $prd_reorder, 
             'sup_id' => $sup_id
         ]);
         
@@ -187,9 +191,6 @@ class ProductController extends Controller
         $suppliers = DB::table('suppliers')
         ->get();
 
-        // dd($p);
-
-
         return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
     }
 
@@ -234,11 +235,6 @@ class ProductController extends Controller
             session()->flash('getProdValues', array( $prodValues));
         }
 
-        return redirect()->action('ProductController@manage');
-    }
-
-    public function test(Request $request)
-    {
         return redirect()->action('ProductController@manage');
     }
 }
