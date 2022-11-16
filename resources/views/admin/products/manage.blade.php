@@ -326,6 +326,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <!--Product-Profile Modal -->
                                                 <div class="modal fade" id="img-product-modal-{{$product->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg" role="document">
