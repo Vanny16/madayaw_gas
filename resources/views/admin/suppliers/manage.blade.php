@@ -284,9 +284,9 @@
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
                                                                         @if($supplier->sup_image <> '')
-                                                                            <img src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            <img src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
                                                                         @else
-                                                                        <img src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                        <img src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
                                                                         @endif
                                                                     </a>
                                                                 </div>

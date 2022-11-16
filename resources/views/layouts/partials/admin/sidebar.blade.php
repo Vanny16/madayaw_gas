@@ -11,10 +11,10 @@
         {{-- Sidebar user panel (optional) --}}
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                @if(session('emp_image') <> '')
-                    <img src="{{ asset('images/employees/' . session('emp_image')) }}" class="img-circle elevation-2" alt="User Image">
+                @if(session('usr_image') <> '')
+                    <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
                 @else
-                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px">
+                    <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
                 @endif
             </div>
             <div class="info">

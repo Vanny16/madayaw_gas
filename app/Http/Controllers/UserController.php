@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use DB;
 
@@ -223,10 +225,9 @@ class UserController extends Controller
         return redirect()->action('UserController@profile');
     }
 
-    public function uploadAvatar(Request $request)
+    public function uploadAvatar(Request $request, $usr_id)
     {
-        dd("he");
-        dd($request->file('usr_image'));
+        // dd($request->usr_image->getClientOriginalName());
         $file = $request->file('usr_image');
         $validator = Validator::make( 
             [
@@ -245,17 +246,19 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $fileName = $request->usr_id . '.' . $file->getClientOriginalExtension();
+        $fileName = $usr_id . '.' . $file->getClientOriginalExtension();
 
-        Storage::disk('local')->put('/images/users/' . $fileName, fopen($file, 'r+'));
+        Storage::disk('local')->put('/img/users/' . $fileName, fopen($file, 'r+'));
 
         DB::table('users')
-        ->where('usr_id','=',$request->usr_id)
+        ->where('usr_id','=',$usr_id)
         ->update([
             'usr_image' => $fileName,
         ]);  
 
+        session(['usr_image' => $usr_id .'.'. $request->usr_image->getClientOriginalExtension()]);
+
         session()->flash('successMessage', 'Profile photo has been uploaded.');
-        return redirect()->action('UserController@main');
+        return redirect()->action('UserController@profile');
     }
 }

@@ -33,15 +33,20 @@
 							<div class="card-body box-profile">
 								<div class="row mt-3">
 									<div class="col-12 text-center">
-										<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="User profile picture" style="width:50%"/>
+										<a href="javascript:void(0)" data-toggle="modal" data-target="#img-user-modal">
+											@if(session('usr_image') <> '')
+												<img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:200px; max-width:200px; min-height:200px; min-width:200px; object-fit:cover;"/>
+											@else
+												<img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:200px; max-width:200px; min-height:200px; min-width:200px; object-fit:cover;"/>
+											@endif
+										</a>
 									</div>
 									<div class="col-12 text-center mb-4">
-										<form id="uploadAvatarForm" class="form-horizontal" method="POST" action="{{ action('UserController@uploadAvatar') }}">
+										<form id="uploadAvatarForm" class="form-horizontal" method="POST" action="{{ action('UserController@uploadAvatar', [session('usr_id')]) }}" enctype="multipart/form-data">
+										@csrf
 											<label class="btn btn-transparent btn-file">
-												<i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-												<input type="file" id="usr_image" name="usr_image" style="display: none;" onchange="form.submit()">
-												<input type="submit" id="s" name="usr_image" >
-												
+												<i class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                            	<input type="file" class="custom-file-input" id="usr_image" name='usr_image' value="{{ old('usr_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;" onchange="form.submit()">
 											</label>
 										</form>
 									</div>
@@ -97,33 +102,6 @@
 		</section>
 	</div>
 
-	<!-- {{-- <div id="avatarUploadModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Upload Profile Photo</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-				<form method="POST" action="{{-- action('UserController@uploadAvatar') --}}" enctype="multipart/form-data">
-				{{ csrf_field() }} 
-					<div class="modal-body">
-						<label for="emp_image">Attach File</label>
-						<div class="custom-file">
-							<input type="file" class="custom-file-input" id="emp_image" name="emp_image" value="{{ old('emp_image') }}" aria-describedby="inputGroupFileAddon01" required>
-							<label class="custom-file-label" for="emp_image">Choose file</label>
-						</div>
-						<small id="fileHelp" class="form-text text-muted">Please upload a valid file in jpg, png, or gif format. Size of image should not be more than 3MB.</small>
-					</div>
-					<div class="modal-footer">
-						<input type="hidden" name="usr_id" value="$user_details->usr_id">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
-					</div>
-				</form>
-			</div>
-		</div>
-	</div> --}} -->
-
 	<div id="changePasswordModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -166,6 +144,31 @@
 				</form>
 			</div>
 		</div>
+	</div>
+
+	<!--User-Profile Modal -->
+	<div class="modal fade" id="img-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content bg-transparent">
+				<div class="modal-body">
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				
+					<div class="row">
+						<div class="col-12 text-center">
+							<a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+								@if(session('usr_image') <> '')
+									<img src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+								@else
+									<img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:200px; max-width:200px; min-height:200px; min-width:200px; object-fit:cover;"/>
+								@endif
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>				
 	</div>
 
 
@@ -238,6 +241,12 @@
 		$('#btn_choose_file').click(function(){
 			$('#choose_file').click();
 		});
+
+		
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
 
 		// document.getElementById("usr_image").onchange = function() {
 		// 	// alert(document.getElementById("usr_image").value);

@@ -45,7 +45,7 @@ Route::group(['prefix' => 'user'], function()
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
     Route::post('edit-user/{usr_id}', 'UserController@editUser');
-    Route::post('upload-avatar', 'UserController@uploadAvatar');
+    Route::post('upload-avatar/{usr_id}', 'UserController@uploadAvatar');
 });
 
 Route::group(['prefix' => 'product'], function()

@@ -113,7 +113,11 @@
                                         @foreach($users as $user)
                                             <tr>
                                                 <td>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-user-modal-{{$user->usr_id}}"><img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="30px"></a>
+                                                @if($user->usr_image <> '')
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-user-modal-{{$user->usr_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . $user->usr_image) }}" alt="{{ $user->usr_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                @else
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-user-modal-{{$user->usr_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="{{ $user->usr_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                @endif
                                                 </td>
                                                 <td>
                                                     {{ $user->usr_full_name }}
@@ -238,28 +242,25 @@
                                                 </div>
                                                 <!--User-Profile Modal -->
                                                 <div class="modal fade" id="img-user-modal-{{$user->usr_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-dialog modal-lg" role="document">
                                                         <div class="modal-content bg-transparent">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">User Profile</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
-                                                            </div>
-                                                            <div class="modal-body">
+                                                            
                                                                 <div class="row">
                                                                     <div class="col-12 text-center">
-                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                            <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="150px">
-                                                                        </a>
+                                                                        @if($user->usr_image <> '')
+                                                                            <img src="{{ asset('img/users/' . $user->usr_image) }}" alt="{{ $user->usr_image }}"  style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                        @else
+                                                                        <img src="{{ asset('img/users/default.png') }}" alt="{{ $user->usr_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </div>				
                                                 </div>
                                             </tr>
                                             @endif
