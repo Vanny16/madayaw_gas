@@ -238,5 +238,10 @@
 		$('#btn_choose_file').click(function(){
 			$('#choose_file').click();
 		});
+
+		document.getElementById("usr_image").onchange = function() {
+			alert(this.value);
+			// document.getElementById("form").submit();
+		};
 	</script>
 @endsection
