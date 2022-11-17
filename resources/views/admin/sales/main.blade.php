@@ -264,10 +264,10 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal"><i class="fa fa-plus"></i></button></td>
+                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal-{{$product->prd_id}}"><i class="fa fa-plus"></i></button></td>
                                 
                                             <!-- Order Details Modal -->
-                                            <div class="modal fade" id="order-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="order-details-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-md" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
