@@ -138,7 +138,7 @@
                                 </table>
 
                                 <div class="col-12 mb-3">
-                                    <button type="button" class="btn btn-info form-control col-md-1 col-12" href="" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-print"></i> Print</button>
+                                    <a class="btn btn-info form-control col-md-1 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a></button>
                                     <button type="button" class="btn btn-default form-control col-md-2 col-12" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                                 </div>
                             </div>
