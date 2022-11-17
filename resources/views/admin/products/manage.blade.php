@@ -128,7 +128,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="text-align: center">   
                                                 {{$product->prd_quantity}}
                                                 <br>
