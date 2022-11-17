@@ -89,6 +89,7 @@
                                         <th width="50px"></th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
+                                        <th>Price</th>
                                         <th style="text-align: center">Quantity</th>
                                         <th>Description</th>
                                         <th>Supplier</th>
@@ -127,6 +128,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
+                                            <td>-</td>
                                             <td style="text-align: center">   
                                                 {{$product->prd_quantity}}
                                                 <br>
