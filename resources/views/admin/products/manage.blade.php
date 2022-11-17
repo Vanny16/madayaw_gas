@@ -217,6 +217,10 @@
                                                                                 <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
                                                                             </div>
                                                                             <div class="form-group">
+                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_price" value=""/>
+                                                                            </div>
+                                                                            <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
                                                                             </div>
@@ -284,7 +288,11 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly required/>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_price" value="" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
@@ -418,6 +426,10 @@
                             <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
