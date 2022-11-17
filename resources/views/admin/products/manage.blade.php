@@ -128,7 +128,9 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td>-</td>
+                                            <td>
+                                                {{$product->prd_price}}
+                                            </td>
                                             <td style="text-align: center">   
                                                 {{$product->prd_quantity}}
                                                 <br>
@@ -218,7 +220,7 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_price" value=""/>
+                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -292,7 +294,7 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_price" value="" required/>
+                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
@@ -382,13 +384,15 @@
 @if(session('getProdValues'))
     @php($prd_name = Session::get('getProdValues')[0][0])
     @php($prd_sku = Session::get('getProdValues')[0][1])
-    @php($prd_description = Session::get('getProdValues')[0][2])
-    @php($prd_reorder = Session::get('getProdValues')[0][3])
-    @php($sup_name = Session::get('getProdValues')[0][4])
-    @php($state = Session::get('getProdValues')[0][5])
+    @php($prd_price = Session::get('getProdValues')[0][2])
+    @php($prd_description = Session::get('getProdValues')[0][3])
+    @php($prd_reorder = Session::get('getProdValues')[0][4])
+    @php($sup_name = Session::get('getProdValues')[0][5])
+    @php($state = Session::get('getProdValues')[0][6])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
+    @php($prd_price = '')
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
@@ -429,7 +433,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" required/>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>

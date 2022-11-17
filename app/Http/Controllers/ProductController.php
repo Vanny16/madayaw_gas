@@ -37,6 +37,7 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_price = $request->prd_price;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
 
@@ -58,6 +59,7 @@ class ProductController extends Controller
         'prd_uuid' => generateuuid(),
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku,
+        'prd_price' => $prd_price,
         'prd_reorder_point' => $prd_reorder, 
         'sup_id' => $sup_id
         ]);
@@ -112,6 +114,7 @@ class ProductController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_price = $request->prd_price;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
@@ -148,6 +151,7 @@ class ProductController extends Controller
             'prd_name' => $prd_name,
             'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
+            'prd_price' => $prd_price,
             'prd_reorder_point' => $prd_reorder, 
             'sup_id' => $sup_id
         ]);
