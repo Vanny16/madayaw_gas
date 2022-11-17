@@ -294,11 +294,11 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price}}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
-                                                                                <input type="number" class="form-control" name="prd_quantity" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                                                                <input type="number" class="form-control" name="prd_quantity" placeholder="Enter Quantity" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -433,7 +433,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" required/>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -441,7 +441,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
                             </div>
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
