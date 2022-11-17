@@ -235,7 +235,7 @@
                                                                         <a href="javascript:void(0);" class="">
                                                                             <label class="btn btn-transparent btn-file">
                                                                                 <i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                                                                <input type="file" class="custom-file-input" id="cus_image" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                <input type="file" class="custom-file-input" id="cus_image" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;" onchange="form.submit()">
                                                                             </label>
                                                                         </a>
                                                                     </div>
