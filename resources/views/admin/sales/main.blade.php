@@ -306,7 +306,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal">Cancel</button>
+                                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal-{{$product->prd_id}}">Cancel</button>
                                                                 <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add</button>
                                                             </div>
                                                         </form>
