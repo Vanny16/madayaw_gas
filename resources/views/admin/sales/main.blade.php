@@ -19,7 +19,7 @@
 
     <section class="content">
         <div class="container-fluid">
-
+ 
             <div class="row">
                 <div class="col-md-12">
                     @include('layouts.partials.alert')
@@ -240,61 +240,82 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
-                                    <tr>
-                                        <td>Bodoy</td>
-                                        <td>100.00</td>
-                                        <td>32</td>
-                                        <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal"><i class="fa fa-plus"></i></button></td>
-                             
-                                        <!-- Order Details Modal -->
-                                        <div class="modal fade" id="order-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-md" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
-                                                    </div>
-                                                    <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
-                                                    {{ csrf_field() }} 
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label for="cus_name">Product <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="cus_name" value="" required readonly/>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
-                                                                    </div>
+                                    @if(isset($products))
+                                        @foreach($products as $product)
+                                        <tr>
+                                            @if($product->prd_name)
+                                                <td>   
+                                                    {{$product->prd_name}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($product->prd_price)
+                                                <td>   
+                                                {{$product->prd_price}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            @if($product->prd_quantity)
+                                                <td>   
+                                                {{$product->prd_quantity}}
+                                                </td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal"><i class="fa fa-plus"></i></button></td>
+                                
+                                            <!-- Order Details Modal -->
+                                            <div class="modal fade" id="order-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
+                                                        </div>
+                                                        <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
+                                                        {{ csrf_field() }} 
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="form-group">
+                                                                            <label for="cus_name">Product <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="prd_name" value="{{$product->prd_name}}" required readonly/>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="cus_address">Price <span style="color:red">*</span></label>
+                                                                            <input type="number" class="form-control" name="prd_price" value="{{$product->prd_price}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="cus_address">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="number" class="form-control" name="prd_quantity" value="{{$product->prd_quantity}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                        </div>
 
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Discount <span style="color:red">*</span></label>
-                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Total Amount <span style="color:red">*</span></label>
-                                                                        <input type="text" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required readonly></input>
+                                                                        <div class="form-group">
+                                                                            <label for="cus_address">Discount <span style="color:red">*</span></label>
+                                                                            <input type="number" class="form-control" name="temp_discount" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="cus_address">Total Amount <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="temp_total" value="" onkeypress="return isNumberKey(this, event);" required readonly></input>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add</button>
-                                                        </div>
-                                                    </form>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                    </tr>
+                                        </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

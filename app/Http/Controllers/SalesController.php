@@ -13,7 +13,11 @@ class SalesController extends Controller
     //
     public function main()
     {
-        return view('admin.sales.main');
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->get();
+        
+        return view('admin.sales.main', compact('products'));
     }
     
 }
