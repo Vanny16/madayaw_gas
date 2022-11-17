@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="col-12 mb-3">
-                        <button type="button" class="btn btn-info form-control col-md-2 col-12" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        <button type="button" class="btn btn-info form-control col-md-2 col-12" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -82,7 +82,7 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbl-products">
+                                    <tbody>
                                         <tr>
                                             <td>Bosdik</td>
                                             <td>BHJ09809</td>
@@ -116,7 +116,7 @@
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
                                 <table class="table table-sm table-borderless text-left">
-                                    <tbody id="tbl-products">
+                                    <tbody>
                                         <tr>
                                             <td>Gross Total</td>
                                             <td>200.00</td>
@@ -214,6 +214,100 @@
     </div>
 </div>
 
+<!-- Order Modal -->
+<div class="modal fade" id="order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-shopping-cart"></i> Select Products</h5>
+            </div>
+            <div class="col-12 mt-2"> 
+                <small><i class="fa fa-sm fa-search ml-2"></i> Search Product</small>
+                <input id="search_products" type="text" class="form-control col-md-12 col-12 mt-2 bg-light" name="search_string" placeholder="Search ..."/>
+            </div>
+            <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12" style="overflow-x:auto;">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Stocks</th>
+                                        <th width="70px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+                                    <tr>
+                                        <td>Bodoy</td>
+                                        <td>100.00</td>
+                                        <td>32</td>
+                                        <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal"><i class="fa fa-plus"></i></button></td>
+                             
+                                        <!-- Order Details Modal -->
+                                        <div class="modal fade" id="order-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-md" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
+                                                    </div>
+                                                    <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
+                                                    {{ csrf_field() }} 
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="cus_name">Product <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="cus_name" value="" required readonly/>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label for="cus_address">Price <span style="color:red">*</span></label>
+                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label for="cus_address">Quantity <span style="color:red">*</span></label>
+                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="cus_address">Discount <span style="color:red">*</span></label>
+                                                                        <input type="number" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label for="cus_address">Total Amount <span style="color:red">*</span></label>
+                                                                        <input type="text" name="cus_contact" class="form-control" onkeypress="return isNumberKey(this, event);" required readonly></input>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Done</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
     //get new date from timestamp in data-start attr
@@ -229,6 +323,14 @@
     };
     func();
 
+    $(document).ready(function(){
+        $("#search_products").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-products tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
 </script>
 
 @endsection
