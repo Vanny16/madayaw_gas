@@ -16,6 +16,7 @@ class SalesController extends Controller
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->get();
+        // dd(compact('products'));
         
         return view('admin.sales.main', compact('products'));
     }

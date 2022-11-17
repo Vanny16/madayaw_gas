@@ -75,24 +75,21 @@
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
-                                            <th>SKU</th>
                                             <th>Price</th>
                                             <th>Quantity</th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tbl-cart">
                                         <tr>
                                             <td>Bosdik</td>
-                                            <td>BHJ09809</td>
                                             <td>100.00</td>
                                             <td>2</td>
                                             <td>200.00</td>
                                             <td><a href="javascript:void()"><i class="fa fa-trash text-warning"></i></a></td>
                                         </tr>
                                         <tr class="text-info">
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td><strong>Total</strong></td>
@@ -229,11 +226,11 @@
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-12" style="overflow-x:auto;">
+                        <div class="col-12" style="height:350px; overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>Product Name</th>
+                                        <th>Product</th>
                                         <th>Price</th>
                                         <th>Stocks</th>
                                         <th width="70px"></th>
@@ -264,52 +261,52 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order-details-modal-{{$product->prd_id}}"><i class="fa fa-plus"></i></button></td>
+                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}"><i class="fa fa-plus"></i></button></td>
                                 
                                             <!-- Order Details Modal -->
-                                            <div class="modal fade" id="order-details-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="order_details_modal{{$product->prd_id}}" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-md" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
                                                         </div>
-                                                        <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
+                                                        <!-- <form method="POST" action="" enctype="multipart/form-data">
+                                                        {{ csrf_field() }}  -->
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-12">
                                                                         <div class="form-group">
                                                                             <label for="cus_name">Product <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_name" value="{{$product->prd_name}}" required readonly/>
+                                                                            <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" name="prd_name" value="{{$product->prd_name}}" required readonly/>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" name="prd_price" value="{{$product->prd_price}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" name="prd_price" value="{{$product->prd_price}}" onkeypress="return isNumberKey(this, event);" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" name="prd_quantity" value="{{$product->prd_quantity}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" name="prd_quantity" value="{{$product->prd_quantity}}" onkeypress="return isNumberKey(this, event);" required></input>
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Discount <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" name="temp_discount" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" name="temp_discount" placeholder="0.00" onkeypress="return isNumberKey(this, event);"></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Total Amount <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="temp_total" value="" onkeypress="return isNumberKey(this, event);" required readonly></input>
+                                                                            <input type="text" class="form-control" name="temp_total" value="" onkeypress="return isNumberKey(this, event);" readonly></input>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order-details-modal-{{$product->prd_id}}">Cancel</button>
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add</button>
+                                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
+                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
                                                             </div>
-                                                        </form>
+                                                        <!-- </form> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,6 +349,27 @@
             });
         });
     });
+
+    function addToCart(prd_name, prd_price, prd_quantity, modal) {
+
+        var subtotal = prd_price * prd_quantity;
+
+        var table = document.getElementById("tbl-cart");
+        var row = table.insertRow(0);
+        row.insertCell(0).innerHTML = prd_name;
+        row.insertCell(1).innerHTML = prd_price;
+        row.insertCell(2).innerHTML = prd_quantity;
+        row.insertCell(3).innerHTML = subtotal;
+        row.insertCell(4).innerHTML = "<a href='javascript:void()'><i class='fa fa-trash text-warning'></i></a>";
+
+        modal.hidden = true;
+
+
+    }
+
+    function removeFromCart() {
+        document.getElementById("tbl-cart").deleteRow(0);
+    } 
 </script>
 
 @endsection
