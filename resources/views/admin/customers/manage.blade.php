@@ -30,7 +30,7 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-user"></i> Find Customer</h3>
+                            <h3 class="card-title"><i class="fas fa-search"></i> Find Customer</h3>
                         </div>
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="{{ action('CustomerController@searchCustomer') }}">
@@ -79,7 +79,7 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-users"></i> Customers</h3>
+                            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Customers</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>

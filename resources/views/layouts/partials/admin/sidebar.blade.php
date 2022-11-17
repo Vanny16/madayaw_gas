@@ -11,7 +11,7 @@
         {{-- Sidebar user panel (optional) --}}
         <a href="{{ action('UserController@profile')}}" class="d-block"> 
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
+                <div class="image text-center">
                     @if(session('usr_image') <> '')
                         <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
                     @else
@@ -19,7 +19,8 @@
                     @endif
                 </div>
                 <div class="info">
-                    {{ session('usr_full_name') }}
+                    {{ session('usr_full_name') }}<br>
+                    <small><i>{{-- session('typ_name') --}}</i></small>
                 </div>
             </div>
         </a>
@@ -52,10 +53,10 @@
                 <li class="nav-header">SALES</li>
                 
                 <li class="nav-item">
-                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-money-bill"></i>
+                    <a href="{{ action('SalesController@main') }}" class="nav-link">
+                        <i class="nav-icon fas fa-cash-register"></i>
                         <p>
-                            Point Of Sale
+                            Point of Sale
                         </p>
                     </a>
                 </li>
