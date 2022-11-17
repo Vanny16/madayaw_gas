@@ -71,22 +71,22 @@
                                     <span class="text-gray ml-4"><i class="fa fa-thumbtack"></i></span>
 									<button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createNews"><i class="fa fa-pen mr-2"></i>Compose</button>
                                 </div>
-								<!-- <div>
+								<div>
 									<i class="fas fa-newspaper bg-blue"></i>
 									<div class="timeline-item">
-										<span class="time"><i class="fas fa-clock"></i> </span>
-										<h3 class="timeline-header"></h3>
+										<span class="time"><i class="fas fa-clock"></i> 6 days ago</span>
+										<h3 class="timeline-header"><strong>Japanese Bb</strong></h3>
 										<div class="timeline-body">
-											
-												<div class="thumbnail">
-													<a href="">
-														<img src="" alt="" style="width:100%">
-													</a>
-													<div class="caption">
-														<p></p>
-													</div>
+											<div class="thumbnail">
+												<div class="caption ml-3 mt-3">
+													<p>Karika, the Xabara of Momo Tribe.</p>
 												</div>
-												<p></p>
+												<div class="col-12 text-center">
+													<a href="{{-- asset('images/news/' . $news_item->nws_image) --}}">
+														<img src="{{ asset('img/users/2.jpg') }}" alt="ss" style="width:50%"/>
+													</a>
+												</div>
+											</div>
 										</div>
 										<div class="timeline-footer">
 												{{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i> Delete</button> --}}
@@ -111,7 +111,7 @@
 											</div>
 										</div>
 									</div>
-								</div> -->
+								</div>
                             </div>
                         </div>
                     </div>

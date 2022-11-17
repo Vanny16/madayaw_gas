@@ -51,7 +51,7 @@
 										</form>
 									</div>
 									<div class="col-12 text-center mb-3">
-										<h3 class="profile-username text-center"><strong>{{ session('usr_full_name') }}</strong></h3>
+										<h3 class="profile-username text-center"><strong>{{ $user_details->usr_full_name }}</strong></h3>
 										<i>{{ session('typ_name') }}</i>
 									</div>
 								</div>
@@ -73,21 +73,21 @@
 												</div>
 											</div>
 											<div class="form-group row">
-												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
-												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
-												</div>
-											</div>
-											<div class="form-group row">
 												<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
 												<div class="col-sm-10">
 													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" required disabled/>
 												</div>
 											</div>
 											<div class="form-group row">
+												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
+												</div>
+											</div>
+											<div class="form-group row">
 												<div class="offset-lg-2 col-12">
-													<a class="btn btn-warning col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
-													<button type="submit" class="btn btn-success col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
+													<button type="submit" class="btn btn-info col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
+													<a class="btn btn-transparent col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
 													<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
 												</div>
 											</div>
@@ -109,7 +109,7 @@
 					<h4 class="modal-title">Change Password</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<form method="POST" action="{{-- action('UserController@savePassword') --}}">
+				<form method="POST" action="{{ action('UserController@savePassword') }}">
 				{{ csrf_field() }} 
 					<div class="modal-body">
 						<div class="col-md-12">
@@ -137,7 +137,7 @@
 
 					</div>
 					<div class="modal-footer">
-						<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
+						<input type="hidden" name="usr_uuid" value="{{ $user_details->usr_uuid }}">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
 					</div>
@@ -180,63 +180,63 @@
 	</script>
 
 	<script>
-		var myInput = document.getElementById("new_password");
-		var letter = document.getElementById("letter");
-		var capital = document.getElementById("capital");
-		var number = document.getElementById("number");
-		var length = document.getElementById("length");
+		// var myInput = document.getElementById("new_password");
+		// var letter = document.getElementById("letter");
+		// var capital = document.getElementById("capital");
+		// var number = document.getElementById("number");
+		// var length = document.getElementById("length");
 
-		// When the user clicks on the password field, show the message box
-		myInput.onfocus = function() {
-			document.getElementById("message").style.display = "block";
-		}
+		// // When the user clicks on the password field, show the message box
+		// myInput.onfocus = function() {
+		// 	document.getElementById("message").style.display = "block";
+		// }
 
-		// When the user clicks outside of the password field, hide the message box
-		myInput.onblur = function() {
-			document.getElementById("message").style.display = "none";
-		}
+		// // When the user clicks outside of the password field, hide the message box
+		// myInput.onblur = function() {
+		// 	document.getElementById("message").style.display = "none";
+		// }
 
 		// When the user starts to type something inside the password field
-		myInput.onkeyup = function() {
-		// Validate lowercase letters
-			var lowerCaseLetters = /[a-z]/g;
-			if(myInput.value.match(lowerCaseLetters)) {  
-				letter.classList.remove("invalid");
-				letter.classList.add("valid");
-			} else {
-				letter.classList.remove("valid");
-				letter.classList.add("invalid");
-			}
+		// myInput.onkeyup = function() {
+		// // Validate lowercase letters
+		// 	var lowerCaseLetters = /[a-z]/g;
+		// 	if(myInput.value.match(lowerCaseLetters)) {  
+		// 		letter.classList.remove("invalid");
+		// 		letter.classList.add("valid");
+		// 	} else {
+		// 		letter.classList.remove("valid");
+		// 		letter.classList.add("invalid");
+		// 	}
 			
-			// Validate capital letters
-			var upperCaseLetters = /[A-Z]/g;
-			if(myInput.value.match(upperCaseLetters)) {  
-				capital.classList.remove("invalid");
-				capital.classList.add("valid");
-			} else {
-				capital.classList.remove("valid");
-				capital.classList.add("invalid");
-			}
+		// 	// Validate capital letters
+		// 	var upperCaseLetters = /[A-Z]/g;
+		// 	if(myInput.value.match(upperCaseLetters)) {  
+		// 		capital.classList.remove("invalid");
+		// 		capital.classList.add("valid");
+		// 	} else {
+		// 		capital.classList.remove("valid");
+		// 		capital.classList.add("invalid");
+		// 	}
 
-			// Validate numbers
-			var numbers = /[0-9]/g;
-			if(myInput.value.match(numbers)) {  
-				number.classList.remove("invalid");
-				number.classList.add("valid");
-			} else {
-				number.classList.remove("valid");
-				number.classList.add("invalid");
-			}
+		// 	// Validate numbers
+		// 	var numbers = /[0-9]/g;
+		// 	if(myInput.value.match(numbers)) {  
+		// 		number.classList.remove("invalid");
+		// 		number.classList.add("valid");
+		// 	} else {
+		// 		number.classList.remove("valid");
+		// 		number.classList.add("invalid");
+		// 	}
 			
-			// Validate length
-			if(myInput.value.length >= 8) {
-				length.classList.remove("invalid");
-				length.classList.add("valid");
-			} else {
-				length.classList.remove("valid");
-				length.classList.add("invalid");
-			}
-		}
+		// 	// Validate length
+		// 	if(myInput.value.length >= 8) {
+		// 		length.classList.remove("invalid");
+		// 		length.classList.add("valid");
+		// 	} else {
+		// 		length.classList.remove("valid");
+		// 		length.classList.add("invalid");
+		// 	}
+		// }
 
 		$('#btn_choose_file').click(function(){
 			$('#choose_file').click();

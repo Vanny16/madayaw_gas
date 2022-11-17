@@ -180,6 +180,7 @@ class UserController extends Controller
         ->where('usr_id', '=', session('usr_id'))
         ->first();
 
+        // dd($user_details);
         return view('admin.profile.profile', compact('user_details'));
     }
 
@@ -189,7 +190,7 @@ class UserController extends Controller
         ->where('usr_id', '=', session('user_id'))
         ->get();
 
-        return view('admin.profile.profile', compact('user_details'));
+        return redirect()->action();
     }
 
     public function savePassword(Request $request)
@@ -198,7 +199,7 @@ class UserController extends Controller
         $new_password = $request->new_password;
         $new_password2 = $request->new_password2;
         $usr_uuid = $request->usr_uuid;
-       
+
         $users = DB::table('users')
         ->where('usr_uuid','=',$usr_uuid)
         ->first();
@@ -219,7 +220,7 @@ class UserController extends Controller
                 session()->flash('errorMessage', 'New password does not match.');
             }
         }else{
-            session()->flash('errorMessage', 'Incorrect old password entered.');
+            session()->flash('errorMessage', 'Incorrect password entered.');
         }
 
         return redirect()->action('UserController@profile');
