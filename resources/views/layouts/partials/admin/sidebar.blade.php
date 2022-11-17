@@ -9,18 +9,20 @@
     {{-- Sidebar  --}}
     <div class="sidebar">
         {{-- Sidebar user panel (optional) --}}
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                @if(session('usr_image') <> '')
-                    <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
-                @else
-                    <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
-                @endif
+        <a href="{{ action('UserController@profile')}}" class="d-block"> 
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    @if(session('usr_image') <> '')
+                        <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
+                    @else
+                        <img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:35px; max-width:35px; min-height:35px; min-width:35px; object-fit:cover;"/>
+                    @endif
+                </div>
+                <div class="info">
+                    {{ session('usr_full_name') }}
+                </div>
             </div>
-            <div class="info">
-                <a href="{{ action('UserController@profile')}}" class="d-block"> {{ session('usr_full_name') }}</a>
-            </div>
-        </div>
+        </a>
 
         {{-- Sidebar Menu --}}
         <nav class="mt-2">
@@ -46,7 +48,20 @@
                     </a>
                 </li>
                 --}}
+
+                <li class="nav-header">SALES</li>
                 
+                <li class="nav-item">
+                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-money-bill"></i>
+                        <p>
+                            Point Of Sale
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-header">INVENTORY</li>
+
                 <li class="nav-item">
                     <a href="{{ action('ProductController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-box-open"></i>
@@ -64,11 +79,13 @@
                         </p>
                     </a>
                 </li>
+                
+                <li class="nav-header">ACCOUNTS</li>
 
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>Accounts Manager <i class="right fas fa-angle-left"></i></p>
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Manage Accounts <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
 
@@ -91,7 +108,6 @@
                         </li>
                     </ul>
                 </li>
-
 
             </ul>
         </nav>
