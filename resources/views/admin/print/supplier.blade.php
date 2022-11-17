@@ -9,9 +9,9 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_supplier_details))    
-            <h3 class="card-title"><i class="fas fa-users"></i> Suppliers Records</h3>
+            <h3 class="card-title"><i class="fas fa-warehouse"></i> Suppliers Records</h3>
             @else
-            <h3 class="card-title"><i class="fas fa-users"></i> Suppliers Records</h3>
+            <h3 class="card-title"><i class="fas fa-warehouse"></i> Suppliers Records</h3>
             @endif
         </div>
             <div class="card-body">

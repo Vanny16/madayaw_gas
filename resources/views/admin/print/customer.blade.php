@@ -9,9 +9,9 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_customer_details))    
-            <h3 class="card-title"><i class="fas fa-users"></i> Customer Records</h3>
+            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Customer Records</h3>
             @else
-            <h3 class="card-title"><i class="fas fa-users"></i> Customer Record</h3>
+            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Customer Record</h3>
             @endif
         </div>
             <div class="card-body">
