@@ -60,4 +60,12 @@ class PrintController extends Controller
         return view('admin.print.product', compact('all_product_details'));
     }
 
+    public function allsaleDetails()
+    {
+        $all_sale_details = DB::table('sales')
+        ->get();
+
+        return view('admin.print.main', compact('all_sale_details'));
+    }
+
 }
