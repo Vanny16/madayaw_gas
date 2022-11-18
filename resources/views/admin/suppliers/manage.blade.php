@@ -98,9 +98,9 @@
                                         <tr>
                                             <td>
                                                 @if($supplier->sup_image <> '')
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
                                                 @else
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-supplier-modal-{{$supplier->sup_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
                                                 @endif
                                             </td>                                              
                                             <td>   
@@ -189,20 +189,14 @@
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-12 text-center">
-                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal" height="150px" width="150px">
-                                                                            @if($supplier->sup_image <> '')
-                                                                                <img class="img-circle elevation-2" src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                                                                            @else
-                                                                                <img class="img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                                                                            @endif
-                                                                        </a>
+                                                                            <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{-- $supplier->sup_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                                                         <div class="col-12 text-center mb-4">
-                                                                            <a href="javascript:void(0);" class="">
-                                                                                <label class="btn btn-transparent btn-file">
-                                                                                    <i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                                                                    <input type="file" class="custom-file-input" id="sup_image" name='sup_image' value="{{ old('sup_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                                                                </label>
-                                                                            </a>
+                                                                        <a href="javascript:void(0);" class="">
+                                                                            <label class="btn btn-transparent btn-file">
+                                                                                <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                <input type="file" class="custom-file-input" id="choose_file" name='sup_image' value="{{-- old('sup_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                            </label>
+                                                                        </a>
                                                                         </div>
                                                                     </div>
                                                             
@@ -325,9 +319,9 @@
                             <div class="col-12 text-center">
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal" height="150px" width="150px">
                                     @if($supplier->sup_image <> '')
-                                        <img class="img-circle elevation-2" src="{{ asset('img/users/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                        <img class="img-circle elevation-2" src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                     @else
-                                        <img class="img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                        <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                     @endif
                                 </a>
                                 <div class="col-12 text-center mb-4">
