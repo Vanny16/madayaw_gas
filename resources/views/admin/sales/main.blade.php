@@ -278,17 +278,17 @@
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Discount <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
@@ -346,11 +346,17 @@
         });
     });
 
-    function getTotal(prd_price, prd_quantity, temp_discount_id, txt_sub_total){
+    function getTotal(prd_price_id, prd_quantity_id, temp_discount_id, txt_sub_total){
+        var prd_price = document.getElementById(prd_price_id).value;
+        var prd_quantity = document.getElementById(prd_quantity_id).value;
         var temp_discount = document.getElementById(temp_discount_id).value;
 
         if(prd_price == "" || prd_price < 1){
             document.getElementById(temp_discount_id).value = "0.00";
+        }
+        if(prd_quantity == "" || prd_quantity < 1){
+            alert("Quantity cannot be zero");
+            document.getElementById(prd_quantity_id).value = "1";
         }
 
         var sub_total = (prd_price * prd_quantity) - temp_discount;
@@ -401,7 +407,10 @@
         var total = document.getElementById("lbl_total").innerHTML;
         total = parseFloat(total) - sub_total;
         document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("tbl-cart").deleteRow(row);
+        // document.getElementById("tbl-cart").deleteRow(row.id);
+
+        var deleteRow = document.getElementById(row.id);
+	    row.parentElement.removeChild(deleteRow); 
     } 
 
     
