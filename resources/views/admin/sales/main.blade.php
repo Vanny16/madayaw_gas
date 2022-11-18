@@ -39,15 +39,21 @@
                                     <label>Customer Name</label>
 
                                     <select class="form-control col-md-7 col-12" name="client_id" required="">
-                                        <option value="-1">-NOT SPECIFIED-</option>
-                                        <option value="0">-WALK IN-</option>
-                                        <option value="97">Abiera Analou Dagpin </option>
-                                        <option value="121">Abrio Ivy </option>
-                                        <option value="98">Patnalag Nepenthe </option>     
-                                        <option value="98">Ztnalag Nepenthe </option>                       
+                                                <option value="-1">-NOT SPECIFIED-</option>
+                                                <option value="0">-WALK IN-</option>
+                                        @if(isset($customers))
+                                            @foreach($customers as $customer)
+                                                @if(session('new_client') == $customer->cus_name )
+                                                    @php($selected = "selected")
+                                                @else
+                                                    @php($selected = "")
+                                                @endif
+                                                <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
+                                            @endforeach
+                                        @endif            
                                     </select>
 
-                                    <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Client</button>
+                                    <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
                                 </div>
 
                                 <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
@@ -159,7 +165,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">

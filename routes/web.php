@@ -23,19 +23,6 @@ Route::group(['prefix' => 'home'], function()
     Route::get('main', 'MainController@home');
 });
 
-Route::group(['prefix' => 'customer'], function()
-{
-    Route::get('manage', 'CustomerController@manage');
-    Route::get('deactivate-customer/{cus_id}', 'CustomerController@deactivateCustomer');
-    Route::get('reactivate-customer/{cus_id}', 'CustomerController@reactivateCustomer');
-
-    Route::post('search-customer', 'CustomerController@searchCustomer');
-    Route::post('create-customer', 'CustomerController@createCustomer');
-    Route::post('edit-customer/{cus_id}', 'CustomerController@editCustomer');
-    
-
-});
-
 Route::group(['prefix' => 'user'], function()
 {
     Route::get('main', 'UserController@user');
@@ -48,6 +35,19 @@ Route::group(['prefix' => 'user'], function()
     Route::post('edit-user/{usr_id}', 'UserController@editUser');
     Route::post('upload-avatar/{usr_id}', 'UserController@uploadAvatar');
     Route::post('user-password', 'UserController@savePassword');
+});
+
+Route::group(['prefix' => 'customer'], function()
+{
+    Route::get('manage', 'CustomerController@manage');
+    Route::get('deactivate-customer/{cus_id}', 'CustomerController@deactivateCustomer');
+    Route::get('reactivate-customer/{cus_id}', 'CustomerController@reactivateCustomer');
+
+    Route::post('search-customer', 'CustomerController@searchCustomer');
+    Route::post('create-customer', 'CustomerController@createCustomer');
+    Route::post('edit-customer/{cus_id}', 'CustomerController@editCustomer');
+    
+
 });
 
 Route::group(['prefix' => 'product'], function()
@@ -94,4 +94,5 @@ Route::group(['prefix' => 'print'], function()
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
+    Route::post('create-customer', 'SalesController@createCustomer');
 });
