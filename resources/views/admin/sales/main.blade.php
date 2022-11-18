@@ -61,8 +61,8 @@
                         </div>
                     </div>
 
-                    <div class="col-12 mb-3">
-                        <button type="button" class="btn btn-info form-control col-md-2 col-12" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                    <div class="col-md-2 col-12 mb-3">
+                        <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -98,8 +98,8 @@
                         </div>
                     </div>
                     
-                    <div class="col-12 mb-3">
-                        <button type="button" class="btn btn-success form-control col-md-2 col-12" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
+                    <div class="col-md-2 col-12 mb-3">
+                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
                     </div>
 
                     <div class="card">
@@ -287,7 +287,7 @@
                                                                         </div>
 
                                                                         <div class="form-group">
-                                                                            <label for="cus_address">Discount <span style="color:red">*</span></label>
+                                                                            <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
                                                                             <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
@@ -352,6 +352,7 @@
         var temp_discount = document.getElementById(temp_discount_id).value;
 
         if(prd_price == "" || prd_price < 1){
+            document.getElementById(prd_price_id).value = "0.00";
             document.getElementById(temp_discount_id).value = "0.00";
         }
         if(prd_quantity == "" || prd_quantity < 1){
