@@ -257,7 +257,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)"><i class="fa fa-plus"></i></button></td>
+                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)"><i class="fa fa-plus"></i></button></td>
                                 
                                             <!-- Order Details Modal -->
                                             <div class="modal fade" id="order_details_modal{{$product->prd_id}}" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
