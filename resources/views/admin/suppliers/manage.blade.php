@@ -141,15 +141,19 @@
                                                 </td>
                                             @endif
                                             <td>
+                                            @if($supplier->sup_active == 0)
+                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                            @else
                                                 <div class="dropdown">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    <ul class="dropdown-menu">
+                                                        @if(session('typ_id') == '1' || session('typ_id') == '2')
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        @endif
+                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-supplier-modal-{{$supplier->sup_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                    </ul>
                                                 </div>
+                                            @endif 
                                             </td>
                                         
                                             <!--Notes Modal -->

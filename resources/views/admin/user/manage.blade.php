@@ -140,37 +140,30 @@
                                                 @if($user->usr_active == 0)
                                                     <td>
                                                         <span class="badge badge-danger">Inactive</span>
-                                                        @if(session('typ_id') == '1')
+                                                        @if(session('typ_id') == '1' || session('type_id') == '2')
                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('UserController@reactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                         @endif
                                                     </td>
-                                                    @if(session('typ_id') == '1')
-                                                    <td>
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                                    </td>
-                                                    @endif
-                                                @elseif($user->usr_active == 1)
-                                                    @if($user->usr_id == session('usr_id'))
-                                                        <td>
-                                                            <span class="badge badge-success">Active</span>
-                                                        </td>
-                                                    @else
+                                                @else
                                                     <td>
                                                         <span class="badge badge-success">Active</span>
-                                                        @if(session('typ_id') == '1')
+                                                        @if(session('typ_id') == '1' || session('type_id' == '2'))
                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                         @endif
                                                     </td>
-                                                    @endif
-                                                @if(session('typ_id') == '1')
+                                                @endif
+                                               
                                                 <td>
+                                                @if($user->usr_active == 0)
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                @else   
                                                     <div class="dropdown">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                            </ul>
-                                                        </div>
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        <ul class="dropdown-menu">
+                                                        @if(session('typ_id') == '1')
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                        @endif
+                                                        </ul>
                                                     </div>
                                                 </td>
                                                 @endif
@@ -263,7 +256,6 @@
                                                     </div>				
                                                 </div>
                                             </tr>
-                                            @endif
                                         @endforeach
                                     @endif
                                 </tbody>
