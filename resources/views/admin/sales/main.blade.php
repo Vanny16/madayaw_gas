@@ -39,15 +39,21 @@
                                     <label>Customer Name</label>
 
                                     <select class="form-control col-md-7 col-12" name="client_id" required="">
-                                        <option value="-1">-NOT SPECIFIED-</option>
-                                        <option value="0">-WALK IN-</option>
-                                        <option value="97">Abiera Analou Dagpin </option>
-                                        <option value="121">Abrio Ivy </option>
-                                        <option value="98">Patnalag Nepenthe </option>     
-                                        <option value="98">Ztnalag Nepenthe </option>                       
+                                                <option value="-1">-NOT SPECIFIED-</option>
+                                                <option value="0">-WALK IN-</option>
+                                        @if(isset($customers))
+                                            @foreach($customers as $customer)
+                                                @if(session('new_client') == $customer->cus_name )
+                                                    @php($selected = "selected")
+                                                @else
+                                                    @php($selected = "")
+                                                @endif
+                                                <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
+                                            @endforeach
+                                        @endif            
                                     </select>
 
-                                    <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Client</button>
+                                    <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
                                 </div>
 
                                 <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
@@ -61,8 +67,8 @@
                         </div>
                     </div>
 
-                    <div class="col-12 mb-3">
-                        <button type="button" class="btn btn-info form-control col-md-2 col-12" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                    <div class="col-md-2 col-12 mb-3">
+                        <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -98,8 +104,8 @@
                         </div>
                     </div>
                     
-                    <div class="col-12 mb-3">
-                        <button type="button" class="btn btn-success form-control col-md-2 col-12" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
+                    <div class="col-md-2 col-12 mb-3">
+                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
                     </div>
 
                     <div class="card">
@@ -159,7 +165,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -287,7 +293,7 @@
                                                                         </div>
 
                                                                         <div class="form-group">
-                                                                            <label for="cus_address">Discount <span style="color:red">*</span></label>
+                                                                            <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
                                                                             <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
@@ -352,6 +358,7 @@
         var temp_discount = document.getElementById(temp_discount_id).value;
 
         if(prd_price == "" || prd_price < 1){
+            document.getElementById(prd_price_id).value = "0.00";
             document.getElementById(temp_discount_id).value = "0.00";
         }
         if(prd_quantity == "" || prd_quantity < 1){
