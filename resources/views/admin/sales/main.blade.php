@@ -77,17 +77,17 @@
                                             <th>Product Name</th>
                                             <th>Price</th>
                                             <th>Quantity</th>
+                                            <th>Discount</th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
                                         <tr class="bg-gray">
-                                            <td colspan="5"></td>
+                                            <td colspan="6"></td>
                                         </tr>
                                         <tr class="text-info">
-                                            <td></td>
-                                            <td></td>
+                                            <td colspan="3"></td>
                                             <td><strong>Total</strong></td>
                                             <td><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
                                             <td></td>
@@ -257,7 +257,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}"><i class="fa fa-plus"></i></button></td>
+                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)"><i class="fa fa-plus"></i></button></td>
                                 
                                             <!-- Order Details Modal -->
                                             <div class="modal fade" id="order_details_modal{{$product->prd_id}}" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -278,17 +278,17 @@
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Discount <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="temp_discount" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);"></input>
+                                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
@@ -300,7 +300,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
                                                             </div>
                                                         <!-- </form> -->
                                                     </div>
@@ -316,7 +316,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Done</button>
+                    <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
                 </div>
             </form>
         </div>
@@ -346,39 +346,71 @@
         });
     });
 
-    
-    // $(document).ready(function(){
-    //     $("#prd_price").on("keyup", function() {
-    //         $("#prd_total") = $(this) * $("#prd_quantity");
-    //     });
-    // });
+    function getTotal(prd_price_id, prd_quantity_id, temp_discount_id, txt_sub_total){
+        var prd_price = document.getElementById(prd_price_id).value;
+        var prd_quantity = document.getElementById(prd_quantity_id).value;
+        var temp_discount = document.getElementById(temp_discount_id).value;
 
-    function getTotal(prd_price, prd_quantity, temp_discount, txt_sub_total){
-        alert(temp_discount);
+        if(prd_price == "" || prd_price < 1){
+            document.getElementById(temp_discount_id).value = "0.00";
+        }
+        if(prd_quantity == "" || prd_quantity < 1){
+            alert("Quantity cannot be zero");
+            document.getElementById(prd_quantity_id).value = "1";
+        }
+
         var sub_total = (prd_price * prd_quantity) - temp_discount;
-
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
-    function addToCart(prd_name, prd_price, prd_quantity, modal) {
-
-        var subtotal = prd_price * prd_quantity;
-        var total = total + subtotal;
-
-        var table = document.getElementById("tbl-cart");
-        var row = table.insertRow(0);
-        row.insertCell(0).innerHTML = prd_name;
-        row.insertCell(1).innerHTML = prd_price;
-        row.insertCell(2).innerHTML = prd_quantity;
-        row.insertCell(3).innerHTML = subtotal.toFixed(2);
-        row.insertCell(4).innerHTML = "<a href='javascript:void()'><i class='fa fa-trash text-warning'></i></a>";
+    function addToCart(prd_name, prd_price, prd_quantity, temp_discount, modal) {
+        if(prd_quantity != "" || prd_quantity > 0){
+            //Calculations
+            var total = document.getElementById("lbl_total").innerHTML;
+            var sub_total = (prd_price * prd_quantity) - temp_discount;
+            total = parseFloat(total) + sub_total;
+            
+            // Setter For Price
+            if(prd_price == "" || prd_price < 1){
+                prd_price = "<small class='bg-warning badge'>Free</small>";
+            }
+            else{
+                prd_price = parseFloat(prd_price).toFixed(2)
+            }
+            
+            // Setter For Discount
+            if(temp_discount == ""){
+                temp_discount = 0.00;
+            }
+            
+            var table = document.getElementById("tbl-cart");
+            var row_count = (table.rows.length) - 2;
+            var row = table.insertRow(0);
+            row.id = "row"+row_count;
+            row.insertCell(0).innerHTML = prd_name;
+            row.insertCell(1).innerHTML = prd_price;
+            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
+            row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(4).innerHTML = sub_total.toFixed(2);
+            row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            modal.hidden = true;
+        }
+        else{
+            alert("Please input quantity");
+        }
         
-        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        modal.hidden = true;
     }
 
-    function removeFromCart() {
-        document.getElementById("tbl-cart").deleteRow(0);
+    function removeFromCart(row, sub_total) {
+        var total = document.getElementById("lbl_total").innerHTML;
+        total = parseFloat(total) - sub_total;
+        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+        // document.getElementById("tbl-cart").deleteRow(row.id);
+
+        var deleteRow = document.getElementById(row.id);
+	    row.parentElement.removeChild(deleteRow); 
     } 
 
     

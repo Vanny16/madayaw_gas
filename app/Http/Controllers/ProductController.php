@@ -309,7 +309,7 @@ class ProductController extends Controller
         $prodValues = array(
             $request->sup_prd_name,
             $request->sup_prd_sku,
-            $request->prd_price,
+            $request->sup_prd_price,
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
