@@ -14,12 +14,14 @@ function generateuuid()
 
 function record_stockin($prd_id, $quantity)
 {
-    DB::table('stockin_logs')  
+    DB::table('quantity_logs')  
     ->insert([ 
         'acc_id' => session('acc_id'),
-        'log_date' => DB::raw('CURRENT_TIMESTAMP'), 
         'prd_id' => $prd_id,
-        'log_quantity' => $quantity
+        'usr_id' => session('usr_id'),
+        'log_quantity' => $quantity,
+        'log_datetime' => DB::raw('CURRENT_TIMESTAMP') 
+        
     ]); 
 }
 

@@ -118,6 +118,7 @@ class ProductController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
+        $prd_quantity = (float)$request->prd_quantity;
 
         // $check_uuid = DB::table('products')
         // ->where('prd_id', '=', $prd_id)
@@ -143,6 +144,25 @@ class ProductController extends Controller
         {
             session()->flash('errorMessage','Product with this SKU already exists');
             return redirect()->action('ProductController@manage');
+        }
+
+        $qty_checker = DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->select('prd_quantity')
+        ->first();
+
+        if($qty_checker->prd_quantity > $prd_quantity)
+        {
+            $subtracted_qty = $qty_checker->prd_quantity - $prd_quantity;
+            (float)$prd_quantity = "-" . $subtracted_qty;
+            
+            DB::table('products')
+            ->where('prd_id', '=', $prd_id)
+            ->update([
+                'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
+            ]);
+            
+            record_stockin($prd_id, $prd_quantity);
         }
 
         DB::table('products')
