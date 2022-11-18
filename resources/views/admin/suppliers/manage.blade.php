@@ -183,6 +183,29 @@
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
+
+                                                            <div class="col-12 text-center">
+                                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal" height="150px" width="150px">
+                                                                    @if($supplier->sup_image <> '')
+                                                                        <img class="img-circle elevation-2" src="{{ asset('img/users/' . session('sup_image')) }}" alt="{{ session('sup_image') }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                    @else
+                                                                        <img class="img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="Supplier Image" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                    @endif
+                                                                </a>
+
+                                                                <form id="uploadAvatarForm" class="form-horizontal" method="POST" action="{{ action('SupplierController@uploadAvatar', [session('sup_id')]) }}" enctype="multipart/form-data">
+
+                                                                    <div class="col-12 text-center mb-4">
+                                                                        <a href="javascript:void(0);" class="">
+                                                                            <label class="btn btn-transparent btn-file">
+                                                                                <i id="btn_edit_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                <input type="file" class="custom-file-input" id="sup_image" name='sup_image' value="{{ old('sup_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;" onchange="form.submit()">
+                                                                            </label>
+                                                                        </a>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+
                                                         </div>
                                                         <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}" enctype="multipart/form-data">
                                                         {{ csrf_field() }} 
@@ -381,5 +404,14 @@
             });
         });
     
+    $('#btn_choose_file').click(function(){
+        $('#choose_file').click();
+    });
+
+    
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
     </script>
     @endsection
