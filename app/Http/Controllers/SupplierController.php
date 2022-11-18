@@ -144,6 +144,41 @@ class SupplierController extends Controller
             'sup_notes' => $sup_notes
         ]);
         
+        //IMAGE UPLOAD 
+        if($request->file('sup_image'))
+        {
+            $file = $request->file('sup_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+            
+            // dd(public_path());
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $sup_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/suppliers/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('suppliers')
+            ->where('sup_id','=',$sup_id)
+            ->update([
+                'sup_image' => $fileName,
+            ]);
+        }  
 
         session()->flash('successMessage','Supplier details updated.');
         return redirect()->action('SupplierController@manage');
@@ -198,45 +233,4 @@ class SupplierController extends Controller
 
         return view('admin.suppliers.manage', compact('suppliers', 'statuses', 'default_status'));
     }
-
-    public function uploadAvatar(Request $request, $sup_id)
-    {
-        $file = $request->file('sup_image');
-
-            $validator = Validator::make( 
-                [
-                    'file' => $file,
-                    'extension' => strtolower($file->getClientOriginalExtension()),
-                ],
-                [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
-                    'extension' => 'required|in:jpg,png,gif',
-                ]
-            );
-            
-            // dd(public_path());
-    
-            if ($validator->fails()) 
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-    
-            $fileName = $sup_id . '.' . $file->getClientOriginalExtension();
-    
-            Storage::disk('local')->put('img/suppliers/' . $fileName, fopen($file, 'r+'));
-
-            DB::table('suppliers')
-            ->where('sup_id','=',$sup_id)
-            ->update([
-                'sup_image' => $fileName,
-            ]);
-
-            session()->flash('successMessage','Supplier photo has been uploaded.');
-            return redirect()->action('SupplierController@manage');
-        }  
-
-      
 }
-
