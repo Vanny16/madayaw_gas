@@ -211,7 +211,7 @@
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-12 text-center">
-                                                                            <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $customer->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                            <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                                                         <div class="col-12 text-center mb-4">
                                                                         <a href="javascript:void(0);" class="">
                                                                             <label class="btn btn-transparent btn-file">
@@ -350,7 +350,7 @@
                                             </div>
 
                                             <!--Product-Profile Modal -->
-                                            <div class="modal fade" id="img-product-modal-{{$product->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="img-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content bg-transparent">
                                                         <div class="modal-body">
@@ -361,7 +361,7 @@
                                                             <div class="row">
                                                                 <div class="col-12 text-center">
                                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        @if($supplier->sup_image <> '')
+                                                                        @if($product->prd_image <> '')
                                                                             <img src="{{ asset('img/products/' . $product->prd_image) }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
                                                                         @else
                                                                         <img src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
@@ -420,7 +420,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 text-center">
-                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $customer->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                             <div class="col-12 text-center mb-4">
                             <a href="javascript:void(0);" class="">
                                 <label class="btn btn-transparent btn-file">
