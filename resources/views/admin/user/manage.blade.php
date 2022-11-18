@@ -110,7 +110,7 @@
                                 </thead>
                                 <tbody id="tbl-users">
                                     @if(isset($users))
-                                        @foreach($users as $user)
+                                    @foreach($users as $user)
                                             <tr>
                                                 <td>
                                                 @if($user->usr_image <> '')
@@ -147,10 +147,10 @@
                                                 @else
                                                     <td>
                                                         <span class="badge badge-success">Active</span>
-                                                        @if(session('typ_id') == '1' || session('type_id' == '2'))
+                                                        @if(session('typ_id') == '1' || session('type_id') == '2')
                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('UserController@deactivateUser',[$user->usr_id]) }}" aria-hidden="true"></a>
                                                         @endif
-                                                    </td>
+                                                    </td> 
                                                 @endif
                                                
                                                 <td>
