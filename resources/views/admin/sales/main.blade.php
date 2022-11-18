@@ -401,7 +401,7 @@
         var total = document.getElementById("lbl_total").innerHTML;
         total = parseFloat(total) - sub_total;
         document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("tbl-cart").delete(row);
+        document.getElementById("tbl-cart").deleteRow(row);
     } 
 
     
