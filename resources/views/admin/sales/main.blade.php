@@ -82,18 +82,14 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
-                                        <tr>
-                                            <td>Bosdik</td>
-                                            <td>100.00</td>
-                                            <td>2</td>
-                                            <td>200.00</td>
-                                            <td><a href="javascript:void()"><i class="fa fa-trash text-warning"></i></a></td>
+                                        <tr class="bg-gray">
+                                            <td colspan="5"></td>
                                         </tr>
                                         <tr class="text-info">
                                             <td></td>
                                             <td></td>
                                             <td><strong>Total</strong></td>
-                                            <td><strong>200.00</strong></td>
+                                            <td><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
                                             <td></td>
                                         </tr>
                                     </tbody>
@@ -277,27 +273,27 @@
                                                                     <div class="col-12">
                                                                         <div class="form-group">
                                                                             <label for="cus_name">Product <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" name="prd_name" value="{{$product->prd_name}}" required readonly/>
+                                                                            <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" value="{{$product->prd_name}}" required readonly/>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" name="prd_price" value="{{$product->prd_price}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" required></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" name="prd_quantity" value="{{$product->prd_quantity}}" onkeypress="return isNumberKey(this, event);" required></input>
+                                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" required></input>
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Discount <span style="color:red">*</span></label>
-                                                                            <input type="number" class="form-control" name="temp_discount" placeholder="0.00" onkeypress="return isNumberKey(this, event);"></input>
+                                                                            <input type="number" class="form-control" id="temp_discount" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);"></input>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
                                                                             <label for="cus_address">Total Amount <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="temp_total" value="" onkeypress="return isNumberKey(this, event);" readonly></input>
+                                                                            <input type="text" class="form-control" id="sub_total{{$product->prd_id}}" value="0.00" onkeypress="return isNumberKey(this, event);" readonly></input>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -350,26 +346,42 @@
         });
     });
 
+    
+    // $(document).ready(function(){
+    //     $("#prd_price").on("keyup", function() {
+    //         $("#prd_total") = $(this) * $("#prd_quantity");
+    //     });
+    // });
+
+    function getTotal(prd_price, prd_quantity, temp_discount, txt_sub_total){
+        alert(temp_discount);
+        var sub_total = (prd_price * prd_quantity) - temp_discount;
+
+        document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
+    }
+
     function addToCart(prd_name, prd_price, prd_quantity, modal) {
 
         var subtotal = prd_price * prd_quantity;
+        var total = total + subtotal;
 
         var table = document.getElementById("tbl-cart");
         var row = table.insertRow(0);
         row.insertCell(0).innerHTML = prd_name;
         row.insertCell(1).innerHTML = prd_price;
         row.insertCell(2).innerHTML = prd_quantity;
-        row.insertCell(3).innerHTML = subtotal;
+        row.insertCell(3).innerHTML = subtotal.toFixed(2);
         row.insertCell(4).innerHTML = "<a href='javascript:void()'><i class='fa fa-trash text-warning'></i></a>";
-
+        
+        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
         modal.hidden = true;
-
-
     }
 
     function removeFromCart() {
         document.getElementById("tbl-cart").deleteRow(0);
     } 
+
+    
 </script>
 
 @endsection
