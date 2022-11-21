@@ -52,6 +52,7 @@
 
                 <li class="nav-header">SALES</li>
                 
+                @if(session('typ_id') != '3')
                 <li class="nav-item">
                     <a href="{{ action('SalesController@main') }}" class="nav-link">
                         <i class="nav-icon fas fa-cash-register"></i>
@@ -60,9 +61,10 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
                 <li class="nav-item">
-                    <a href="{{ action('SalesController@main') }}" class="nav-link">
+                    <a href="{{-- action('SalesController@main') --}}" class="nav-link">
                         <i class="nav-icon fa fa-bar-chart"></i>
                         <p>
                             Sales Reports

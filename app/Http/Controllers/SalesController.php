@@ -23,9 +23,9 @@ class SalesController extends Controller
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
+        ->orderBy('cus_name')
         ->get();
 
-        
         return view('admin.sales.main', compact('products', 'customers'));
     }
 
