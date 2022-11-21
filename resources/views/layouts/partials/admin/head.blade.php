@@ -1,11 +1,10 @@
-<title>Madayaw Gas | HRIS</title>
+<title>Madayaw Gas</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Infinit Human Resource Information System">
 <meta name="author" content="Infinit Solutions">
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 
 <script src="https://kit.fontawesome.com/98ae61a98f.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{{ asset('bootstrap/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
