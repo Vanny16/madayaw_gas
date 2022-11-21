@@ -59,23 +59,24 @@
 						</div>
 					</div>
 
+					<!--User-saveProfile Modal -->
 					<div class="col-md-9">
 						<div class="card">
 							<div class="card-body">
 								<div class="tab-content">
 									<div class="active tab-pane" id="personal">
-										<form class="form-horizontal" method="POST" action="{{-- action('UserController@savePersonal') --}}">
+										<form class="form-horizontal" method="POST" action="{{ action('UserController@saveProfile', [$user_details->usr_id]) }}">
 										{{ csrf_field() }} 
 											<div class="form-group row">
 												<label for="emp_last_name" class="col-sm-2 col-form-label">Full Name</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{$user_details->usr_full_name }}" placeholder="Full Name" required disabled/>
+													<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{$user_details->usr_full_name }}" placeholder="Full Name" readonly/>
 												</div>
 											</div>
 											<div class="form-group row">
 												<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" required disabled/>
+													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" readonly/>
 												</div>
 											</div>
 											<div class="form-group row">
@@ -102,74 +103,7 @@
 		</section>
 	</div>
 
-	<div id="changePasswordModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Change Password</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-				<form method="POST" action="{{ action('UserController@savePassword') }}">
-				{{ csrf_field() }} 
-					<div class="modal-body">
-						<div class="col-md-12">
-							<label for="usr_password">Old Password <span style="color:red;">*</span></label>
-							<input type="password" class="form-control" name="usr_password" id="emp_password" placeholder="Old Password" required/>
-						</div>
-						<div class="col-md-12">
-							<label for="new_password">New Password <span style="color:red;">*</span></label>
-							<input type="password" class="form-control" name="new_password" id="new_password" placeholder="Retype Password" required>
-						</div>
-						<div class="col-md-12">
-							<label for="new_password2">Retype Password <span style="color:red;">*</span></label>
-							<input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="Retype Password" required/>
-						</div>
 
-						<div class="col-md-12" id="message">
-							<div class="alert alert-warning">
-								<small><strong><span class="fa fa-info-circle"></span></strong> A strong password must contain the following:</small>
-							</div>
-							<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-							<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-							<p id="number" class="invalid">A <b>number</b></p>
-							<p id="length" class="invalid">Minimum <b>8 characters</b></p>
-						</div>
-
-					</div>
-					<div class="modal-footer">
-						<input type="hidden" name="usr_uuid" value="{{ $user_details->usr_uuid }}">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-	<!--User-Profile Modal -->
-	<div class="modal fade" id="img-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content bg-transparent">
-				<div class="modal-body">
-					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				
-					<div class="row">
-						<div class="col-12 text-center">
-							<a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-								@if(session('usr_image') <> '')
-									<img src="{{ asset('img/users/' . session('usr_image')) }}" alt="{{ session('usr_image') }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
-								@else
-									<img class="img-fluid img-circle elevation-2" src="{{ asset('img/users/default.png') }}" alt="User Image" style="max-height:200px; max-width:200px; min-height:200px; min-width:200px; object-fit:cover;"/>
-								@endif
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>				
-	</div>
 
 
 	<script>
