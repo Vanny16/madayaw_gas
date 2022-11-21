@@ -87,6 +87,7 @@ class UserController extends Controller
             ->update([
                 'usr_uuid' => generateuuid()
             ]);
+            session(['usr_full_name' => $request->usr_full_name]);
         }
         
         if($usr_password == null)
@@ -98,6 +99,7 @@ class UserController extends Controller
                 'usr_address' => $usr_address,
                 'typ_id' => $typ_id
             ]);
+            session(['usr_full_name' => $request->usr_full_name]);
         }
         else
         {
@@ -109,6 +111,7 @@ class UserController extends Controller
                 'typ_id' => $typ_id,
                 'usr_password' => md5($usr_password)
             ]);
+            session(['usr_full_name' => $request->usr_full_name]);
         }
         
         session()->flash('successMessage','User details updated');
@@ -184,14 +187,35 @@ class UserController extends Controller
         return view('admin.profile.profile', compact('user_details'));
     }
 
-    public function saveProfile()
+    public function saveProfile(Request $request, $usr_id)
     {
-        $user_details = DB::table('users')
-        ->where('usr_id', '=', session('user_id'))
+        $typ_id = (int)$request->typ_id;
+        $usr_address = $request->usr_address;
+
+        $check_uuid = DB::table('users')
+        ->where('usr_id', '=', $usr_id)
+        ->where('usr_uuid', '=', null)
         ->get();
 
-        return redirect()->action();
+        $user_details = DB::table('users')
+            ->where('usr_id', '=', $usr_id)
+            ->update([
+                'usr_address' => $usr_address     
+            ]);
+           
+        if($user_details != null)
+        {
+            DB::table('users')
+            ->where('usr_id', '=', $usr_id)
+            ->update([
+                'usr_uuid' => generateuuid()
+            ]);
+
+        }
+        session()->flash('successMessage', 'Changes has been updated!');
+        return redirect()->action('UserController@profile');
     }
+
 
     public function savePassword(Request $request)
     {
