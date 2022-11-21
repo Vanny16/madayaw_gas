@@ -154,7 +154,7 @@
                                                 @endif
                                                
                                                 <td>
-                                                @if($user->usr_active == 0)
+                                                @if($user->usr_active == 0) 
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                                 @else   
                                                     <div class="dropdown">
