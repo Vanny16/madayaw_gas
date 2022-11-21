@@ -155,18 +155,21 @@
                                                
                                                 <td>
                                                 @if($user->usr_active == 0)
-                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    @if(session('typ_id') != '1')
+                                                    @else
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    @endif
                                                 @else   
                                                     @if(session('typ_id') != '1')
                                                     @else
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                        <ul class="dropdown-menu">
-                                                        @if(session('typ_id') == '1')
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                        @endif
-                                                        </ul>
-                                                    </div>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                            <ul class="dropdown-menu">
+                                                            @if(session('typ_id') == '1')
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-modal-{{$user->usr_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                            @endif
+                                                            </ul>
+                                                        </div>
                                                     @endif
                                                 </td>
                                                 @endif
