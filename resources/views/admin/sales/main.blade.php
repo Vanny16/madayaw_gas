@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -89,13 +89,13 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
-                                        <tr class="bg-gray">
+                                        <tr class="bg-gray" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
-                                        <tr class="text-info">
+                                        <tr class="text-success bg-light">
                                             <td colspan="3"></td>
-                                            <td><strong>Total</strong></td>
-                                            <td><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td class="text-success"><strong>Total</strong></td>
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
                                             <td></td>
                                         </tr>
                                     </tbody>
@@ -104,8 +104,13 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
+                    <div class="row">
+                        <div class="col-md-2 col-12 mb-3">
+                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
+                        </div>
+                        <div class="col-md-2 col-12 mb-3">
+                            <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -140,8 +145,8 @@
                                 </table>
 
                                 <div class="col-12 mb-3">
-                                    <a class="btn btn-info form-control col-md-1 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a></button>
-                                    <button type="button" class="btn btn-default form-control col-md-2 col-12" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-ban"></i> Void Transaction</button>
+                                    <a class="btn btn-default text-info form-control col-md-1 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                    <a class="btn btn-info form-control col-md-2 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-check"></i> Finish Transaction</a>
                                 </div>
                             </div>
                         </div>
@@ -326,6 +331,26 @@
     </div>
 </div>
 
+<!-- Void Transaction Modal -->
+<div class="modal fade" id="void-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-danger">
+                <h5 class="modal-title"><i class="fa fa-exclamation mr-2 text-danger"> </i>Warning</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    Are you sure you want to end the transaction?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>Void Transaction</a>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     //get new date from timestamp in data-start attr
     var freshTime = new Date(parseInt($("#current-time-now").attr("data-start"))*1000);
@@ -353,17 +378,18 @@
         var prd_price = document.getElementById(prd_price_id).value;
         var prd_quantity = document.getElementById(prd_quantity_id).value;
         var temp_discount = document.getElementById(temp_discount_id).value;
+        var sub_total = (prd_price * prd_quantity) - temp_discount;
 
         if(prd_price == "" || prd_price < 1){
             document.getElementById(prd_price_id).value = "0.00";
             document.getElementById(temp_discount_id).value = "0.00";
+            sub_total = 0;
         }
         if(prd_quantity == "" || prd_quantity < 1){
             alert("Quantity cannot be zero");
             document.getElementById(prd_quantity_id).value = "1";
         }
 
-        var sub_total = (prd_price * prd_quantity) - temp_discount;
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
@@ -400,6 +426,8 @@
             
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
+            
+            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
         }
         else{
             alert("Please input quantity");

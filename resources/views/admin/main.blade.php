@@ -75,15 +75,15 @@
 									<i class="fas fa-newspaper bg-blue"></i>
 									<div class="timeline-item">
 										<span class="time"><i class="fas fa-clock"></i> 6 days ago</span>
-										<h3 class="timeline-header"><strong>Japanese Bb</strong></h3>
+										<h3 class="timeline-header"><strong>Welcome</strong></h3>
 										<div class="timeline-body">
 											<div class="thumbnail">
 												<div class="caption ml-3 mt-3">
-													<p>Karika, the Xabara of Momo Tribe.</p>
+													<p>Hello, everyone!.</p>
 												</div>
 												<div class="col-12 text-center">
 													<a href="{{-- asset('images/news/' . $news_item->nws_image) --}}">
-														<img src="{{ asset('img/users/2.jpg') }}" alt="ss" style="width:50%"/>
+														<img src="{{ asset('img/landing/logo-1.png') }}" alt="ss" style="width:50%"/>
 													</a>
 												</div>
 											</div>
