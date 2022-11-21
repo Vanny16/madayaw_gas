@@ -113,44 +113,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Transaction Summary</h3>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row">
-                                <table class="table table-sm table-borderless text-left">
-                                    <tbody>
-                                        <tr>
-                                            <td>Gross Total</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Payable</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Paid</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Balance</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <div class="col-12 mb-3">
-                                    <a class="btn btn-default text-info form-control col-md-1 col-12 mb-2" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
-                                    <a class="btn btn-info form-control col-md-2 col-12 mb-2" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-check"></i> Finish Transaction</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!--   -->
 
                 </div>
             </div>
@@ -381,6 +344,51 @@
     </div>
 </div>
 
+<!-- Receipt Modal -->
+<div class="modal fade" id="receipt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-info">
+                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table class="table table-sm table-borderless text-left">
+                            <tbody>
+                                <tr>
+                                    <td>Gross Total</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td>0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Payable</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Paid</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td>0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-info"><i class="fa fa-print mr-1"> </i>Print</a>
+                <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-check mr-1"> </i> Finish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     //get new date from timestamp in data-start attr
     var freshTime = new Date(parseInt($("#current-time-now").attr("data-start"))*1000);
@@ -473,7 +481,11 @@
 
         var deleteRow = document.getElementById(row.id);
 	    row.parentElement.removeChild(deleteRow); 
-    } 
+    }
+
+    $(document).ready(function(){
+        $("#receipt-modal").modal('hide');
+    });
 
     
 </script>
