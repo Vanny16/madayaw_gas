@@ -38,18 +38,8 @@
                         </p>
                     </a>
                 </li>
-
-                {{--
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-calendar-alt"></i>
-                        <p>
-                            Calendar 
-                        </p>
-                    </a>
-                </li>
-                --}}
-
+                
+                @if(session('typ_id') == 1 || session('typ_id') == 2)
                 <li class="nav-header">SALES</li>
                 
                 <li class="nav-item">
@@ -60,6 +50,7 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
                 <li class="nav-header">INVENTORY</li>
 
