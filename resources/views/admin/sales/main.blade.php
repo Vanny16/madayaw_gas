@@ -89,13 +89,13 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
-                                        <tr class="bg-gray">
+                                        <tr class="bg-gray" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
-                                        <tr class="text-info">
+                                        <tr class="text-info bg-light">
                                             <td colspan="3"></td>
-                                            <td><strong>Total</strong></td>
-                                            <td><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td class="text-info"><strong>Total</strong></td>
+                                            <td class="text-info"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
                                             <td></td>
                                         </tr>
                                     </tbody>

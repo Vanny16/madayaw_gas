@@ -61,6 +61,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ action('SalesController@main') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bar-chart"></i>
+                        <p>
+                            Sales Reports
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">INVENTORY</li>
 
                 <li class="nav-item">
