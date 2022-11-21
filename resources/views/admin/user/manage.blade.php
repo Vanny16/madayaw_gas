@@ -157,6 +157,8 @@
                                                 @if($user->usr_active == 0)
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                                 @else   
+                                                    @if(session('typ_id') != '1')
+                                                    @else
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
@@ -165,6 +167,7 @@
                                                         @endif
                                                         </ul>
                                                     </div>
+                                                    @endif
                                                 </td>
                                                 @endif
 
