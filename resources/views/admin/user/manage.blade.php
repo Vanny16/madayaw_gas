@@ -154,8 +154,11 @@
                                                 @endif
                                                
                                                 <td>
-                                                @if($user->usr_active == 0) 
+                                                @if($user->usr_active == 0)
+                                                    @if(session('typ_id') != '1')
+                                                    @else
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    @endif
                                                 @else   
                                                     @if(session('typ_id') != '1')
                                                     @else
