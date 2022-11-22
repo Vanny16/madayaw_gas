@@ -59,6 +59,50 @@
 						</div>
 					</div>
 
+					<div id="changePasswordModal" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Change Password</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<form method="POST" action="{{ action('UserController@savePassword') }}">
+								{{ csrf_field() }} 
+									<div class="modal-body">
+										<div class="col-md-12">
+											<label for="usr_password">Old Password <span style="color:red;">*</span></label>
+											<input type="password" class="form-control" name="usr_password" id="emp_password" placeholder="Old Password" required/>
+										</div>
+										<div class="col-md-12">
+											<label for="new_password">New Password <span style="color:red;">*</span></label>
+											<input type="password" class="form-control" name="new_password" id="new_password" placeholder="Retype Password" required>
+										</div>
+										<div class="col-md-12">
+											<label for="new_password2">Retype Password <span style="color:red;">*</span></label>
+											<input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="Retype Password" required/>
+										</div>
+
+										<div class="col-md-12" id="message">
+											<div class="alert alert-warning">
+												<small><strong><span class="fa fa-info-circle"></span></strong> A strong password must contain the following:</small>
+											</div>
+											<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+											<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+											<p id="number" class="invalid">A <b>number</b></p>
+											<p id="length" class="invalid">Minimum <b>8 characters</b></p>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<input type="hidden" name="usr_uuid" value="{{ $user_details->usr_uuid }}">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button> 
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
 					<!--User-saveProfile Modal -->
 					<div class="col-md-9">
 						<div class="card">
