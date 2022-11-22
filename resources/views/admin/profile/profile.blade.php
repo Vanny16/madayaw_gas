@@ -132,7 +132,7 @@
 											<div class="form-group row">
 												<div class="offset-lg-2 col-12">
 													<button type="submit" class="btn btn-info col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
-													<a class="btn btn-transparent col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
+													<a class="btn btn-default text-info col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
 													<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
 												</div>
 											</div>
