@@ -89,10 +89,10 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
-                                        <tr class="bg-gray" height="1px">
+                                        <tr class="bg-light" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
-                                        <tr class="text-success bg-light">
+                                        <tr class="text-success bg-white">
                                             <td colspan="3"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
@@ -106,51 +106,14 @@
                     
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#supplier-modal"><i class="fa fa-money-bill-wave"></i> Receive Payment</button>
+                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal"><i class="fa fa-wallet"></i> Receive Payment</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Transaction Summary</h3>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row">
-                                <table class="table table-sm table-borderless text-left">
-                                    <tbody>
-                                        <tr>
-                                            <td>Gross Total</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Payable</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Paid</td>
-                                            <td>200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Balance</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <div class="col-12 mb-3">
-                                    <a class="btn btn-default text-info form-control col-md-1 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
-                                    <a class="btn btn-info form-control col-md-2 col-12" href="{{ action('PrintController@allsaleDetails') }}" target="_BLANK"><i class="fa fa-check"></i> Finish Transaction</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!--   -->
 
                 </div>
             </div>
@@ -351,6 +314,81 @@
     </div>
 </div>
 
+<!-- Payment Modal -->
+<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-success">
+                <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
+                    {{ csrf_field() }} 
+                        <div class="form-group">
+                            <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
+                            <input type="text" name="cus_contact" class="form-control" required readonly></input>
+                        </div>
+                        <div class="form-group">
+                            <label for="cus_address">Received Amount <span style="color:red">*</span></label>
+                            <input type="text" name="cus_contact" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
+                <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Receipt Modal -->
+<div class="modal fade" id="receipt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-info">
+                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table class="table table-sm table-borderless text-left">
+                            <tbody>
+                                <tr>
+                                    <td>Gross Total</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td>0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Payable</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Paid</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td>0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-info"><i class="fa fa-print mr-1"> </i>Print</a>
+                <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-check mr-1"> </i> Finish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     //get new date from timestamp in data-start attr
     var freshTime = new Date(parseInt($("#current-time-now").attr("data-start"))*1000);
@@ -443,7 +481,11 @@
 
         var deleteRow = document.getElementById(row.id);
 	    row.parentElement.removeChild(deleteRow); 
-    } 
+    }
+
+    $(document).ready(function(){
+        $("#receipt-modal").modal('hide');
+    });
 
     
 </script>
