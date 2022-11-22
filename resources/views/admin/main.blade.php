@@ -90,7 +90,7 @@
 										</div>
 										<div class="timeline-footer">
 												{{-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i> Delete</button> --}}
-												{{--<a style="color:#dc3545;" href="javascript:void(0)" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i></a>--}}
+												<a style="color:#dc3545;" href="javascript:void(0)" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i></a>
 										
 										</div>
 									</div>
