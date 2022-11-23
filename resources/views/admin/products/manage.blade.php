@@ -94,7 +94,7 @@
                                         <th style="text-align: center">Quantity</th>
                                         <th>Description</th>
                                         <th>Supplier</th>
-                                        <th width="120px"></th>
+                                        <th width="150px"></th>
                                         <th width="120px"></th>
                                         <th width="100px"></th>
                                     </tr>
