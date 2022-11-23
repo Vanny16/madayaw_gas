@@ -21,8 +21,9 @@
                     <thead>
                         <tr>
                             <th width="500px">Product Name</th>
-                            <th>Description</th>
                             <th>SKU</th>
+                            <th width="350px">Status</th>
+                            <th>Description</th>
                             <th width="500px">Quantity</th>
                             <th width="20px"></th>
                         </tr>
@@ -34,8 +35,9 @@
                         @foreach($all_product_details as $all_product_detail)
                         <tr>
                             <td>{{$all_product_detail->prd_name}}</td>
-                            <td>{{$all_product_detail->prd_description}}</td>
                             <td>{{$all_product_detail->prd_sku}}</td>
+                            <td>{{$all_product_detail->prd_sku}}</td>
+                            <td>{{$all_product_detail->prd_description}}</td>
                             <td>{{$all_product_detail->prd_quantity}}</td>
                         </tr> 
                         @endforeach
@@ -45,8 +47,9 @@
                     <thead>
                         <tr>
                             <th width="200px">Product Name</th>
-                            <th>Description</th>
                             <th>SKU</th>
+                            <th width="350px">Status</th>
+                            <th>Description</th>
                             <th width="500px">Quantity</th>
                             <th width="20px"></th>
                         </tr>
@@ -58,8 +61,9 @@
                         @foreach($product_details as $product_detail)
                         <tr>
                             <td>{{$product_detail->prd_name}}</td>
-                            <td>{{$product_detail->prd_description}}</td>
                             <td>{{$product_detail->prd_sku}}</td>
+                            <td>{{$product_detail->prd_sku}}</td>
+                            <td>{{$product_detail->prd_description}}</td>
                             <td>{{$product_detail->prd_quantity}} pc/s</td>
                         </tr> 
                         @endforeach

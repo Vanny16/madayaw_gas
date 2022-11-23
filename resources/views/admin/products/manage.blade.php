@@ -86,9 +86,10 @@
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
-                                        <th width="50px"></th>
+                                        <th width="100px"></th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
+                                        <th>Status</th>
                                         <th>Price</th>
                                         <th style="text-align: center">Quantity</th>
                                         <th>Description</th>
@@ -128,6 +129,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
+                                                <td>Leakers</td>
                                             @if($product->prd_price === null)
                                                 <td>
                                                     0.00
