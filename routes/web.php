@@ -57,6 +57,7 @@ Route::group(['prefix' => 'customer'], function()
 Route::group(['prefix' => 'product'], function()
 {
     Route::get('tank', 'ProductController@tank');
+    Route::get('production', 'ProductController@production');
     Route::get('manage', 'ProductController@manage');
     Route::get('deactivate-product/{prd_id}', 'ProductController@deactivateProduct');
     Route::get('reactivate-product/{prd_id}', 'ProductController@reactivateProduct');

@@ -13,24 +13,12 @@ class ProductController extends Controller
        
     public function tank()
     {
-        $statuses = array(
-            1 => 'All',
-            2 => 'Active',
-            3 => 'Inactive'
-        );
+        return view('admin.products.tank');
+    }
 
-        $default_status = '0';
-
-        $products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->get();
-
-        $suppliers = DB::table('suppliers')
-        ->get();
-        
-        // dd($suppliers);
-        return view('admin.products.tank',compact('statuses', 'default_status', 'products', 'suppliers'));
-
+    public function production()
+    {
+        return view('admin.products.production');
     }
     
     public function manage()
