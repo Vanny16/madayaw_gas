@@ -39,7 +39,6 @@
                     </a>
                 </li>
                 
-                @if(session('typ_id') == 1 || session('typ_id') == 2)
                 <li class="nav-header">SALES</li>
                 
                 @if(session('typ_id') != '3')
