@@ -233,6 +233,10 @@
                                                                             <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
                                                                         </div>
                                                                         <div class="form-group">
+                                                                            <label for="prd_sku">Status <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="sts_name" value=""/>
+                                                                        </div>
+                                                                        <div class="form-group">
                                                                             <label for="prd_price">Price <span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                         </div>
