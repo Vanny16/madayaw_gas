@@ -64,14 +64,23 @@
                 @if(session('typ_id') == '1')
                     <li class="nav-header">INVENTORY</li>
 
-                    <li class="nav-item">
-                        <a href="{{ action('ProductController@manage') }}" class="nav-link">
-                            <i class="nav-icon fas fa-box-open"></i>
-                            <p>
-                                Products
-                            </p>
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a href="{{ action('ProductController@tank') }}" class="nav-link">
+                        <i class="nav-icon fa fa-gas-pump"></i>
+                        <p>
+                            Tank
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p>
+                            Products
+                        </p>
+                    </a>
+                </li>
 
                     <li class="nav-item">
                         <a href="{{ action('SupplierController@manage') }}" class="nav-link">
