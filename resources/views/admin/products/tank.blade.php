@@ -123,9 +123,9 @@
                                 <div class="col-7">
                                     <small class="text-success">Opening Operations</small>
                                 </div>
-                                <div class="col-5 text-right text-white">
+                                <!-- <div class="col-5 text-right text-white">
                                     <a class="btn btn-success btn-sm"><i class="fa fa-play mr-1"></i> Start</a>
-                                </div>
+                                </div> -->
                             </div>
                             <table class="table table-hover table-condensed">
                                 <thead>
