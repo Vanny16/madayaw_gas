@@ -10,6 +10,29 @@ use DB;
 
 class ProductController extends Controller
 {
+       
+    public function tank()
+    {
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->get();
+
+        $suppliers = DB::table('suppliers')
+        ->get();
+        
+        // dd($suppliers);
+        return view('admin.products.tank',compact('statuses', 'default_status', 'products', 'suppliers'));
+
+    }
+    
     public function manage()
     {
         $statuses = array(
@@ -31,7 +54,7 @@ class ProductController extends Controller
         return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers'));
 
     }
-    
+
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;
