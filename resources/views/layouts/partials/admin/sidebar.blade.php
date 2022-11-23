@@ -61,54 +61,57 @@
                     </a>
                 </li>
 
-                <li class="nav-header">INVENTORY</li>
+                @if(session('typ_id') == '1')
+                    <li class="nav-header">INVENTORY</li>
 
-                <li class="nav-item">
-                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-box-open"></i>
-                        <p>
-                            Products
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ action('ProductController@manage') }}" class="nav-link">
+                            <i class="nav-icon fas fa-box-open"></i>
+                            <p>
+                                Products
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('SupplierController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-warehouse"></i>
-                        <p>
-                            Suppliers 
-                        </p>
-                    </a>
-                </li>
-                
-                <li class="nav-header">ACCOUNTS</li>
+                    <li class="nav-item">
+                        <a href="{{ action('SupplierController@manage') }}" class="nav-link">
+                            <i class="nav-icon fas fa-warehouse"></i>
+                            <p>
+                                Suppliers 
+                            </p>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="nav-header">ACCOUNTS</li>
 
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>Manage Accounts <i class="right fas fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>Manage Accounts <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
 
-                        <li class="nav-item">
-                            <a href="{{ action('UserController@user') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Users
-                                </p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ action('UserController@user') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ action('CustomerController@manage') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Customers
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <li class="nav-item">
+                                <a href="{{ action('CustomerController@manage') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Customers
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
             </ul>
         </nav>

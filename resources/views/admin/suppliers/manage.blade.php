@@ -26,6 +26,8 @@
                 </div>
             </div>
             
+            
+            @if(session('typ_id') == '1')
             <div class="row">
                 <div class="col-md-12"> 
                     <div class="card">
@@ -155,147 +157,147 @@
                                                 </div>
                                             @endif 
                                             </td>
-                                        
-                                            <!--Notes Modal -->
-                                            <div class="modal fade" id="notes-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Notes</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                                <div class="col-md-12">
-                                                                    {{ $supplier->sup_notes }}
-                                                                </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-    
-                                            <!--Edit Supplier Modal -->
-                                            <div class="modal fade" id="edit-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-md" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
+                                            
+                                                <!--Notes Modal -->
+                                                <div class="modal fade" id="notes-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Notes</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
                                                             <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-12 text-center">
-                                                                            <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{-- $supplier->sup_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                                                                        <div class="col-12 text-center mb-4">
-                                                                        <a href="javascript:void(0);" class="">
-                                                                            <label class="btn btn-transparent btn-file">
-                                                                                <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                                                                <input type="file" class="custom-file-input" id="choose_file" name='sup_image' value="{{-- old('sup_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                                                            </label>
-                                                                        </a>
-                                                                        </div>
-                                                                    </div>
-                                                            
                                                                     <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="sup_name">Suppliers Name <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="{{$supplier->sup_name}}" required/>
-                                                                        </div>
-        
-                                                                        <div class="form-group">
-                                                                            <label for="sup_address">Address <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="{{$supplier->sup_address}}" required/>
-                                                                        </div>
-        
-                                                                        <div class="form-group">
-                                                                            <label for="sup_contact">Contact <span style="color:red">*</span></label>
-                                                                            <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" value="{{$supplier->sup_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
-                                                                        </div>
-        
-                                                                        <div class="form-group">
-                                                                            <label for="sup_notes">Notes</label>
-                                                                            <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control" >{{$supplier->sup_notes}}</textarea>
-                                                                        </div>
+                                                                        {{ $supplier->sup_notes }}
                                                                     </div>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <input type="text" class="form-control" name="sup_uuid" value="{{ $supplier->sup_uuid }}"  hidden/> 
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-    
-                                            <!--Print Modal -->
-                                            <div class="modal fade" id="print-supplier-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        
-                                                        <div class="modal-body">
-                                                                <div class="col-12">
+        
+                                                <!--Edit Supplier Modal -->
+                                                <div class="modal fade" id="edit-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ action('SupplierController@editSupplier',[$supplier->sup_id])}}" enctype="multipart/form-data">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
                                                                     <div class="row">
-                                                                        <div class="col-md-2 col-12">
-                                                                            <div class="image">
-                                                                                <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="70px">
+                                                                        <div class="col-12 text-center">
+                                                                                <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{-- $supplier->sup_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                            <div class="col-12 text-center mb-4">
+                                                                            <a href="javascript:void(0);" class="">
+                                                                                <label class="btn btn-transparent btn-file">
+                                                                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                    <input type="file" class="custom-file-input" id="choose_file" name='sup_image' value="{{-- old('sup_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                </label>
+                                                                            </a>
                                                                             </div>
                                                                         </div>
-        
-                                                                        <div class="col-md-10 col-12">
-                                                                            <h3><strong style="text-transform:uppercase;">{{ $supplier->sup_name }}</strong></h3>
-                                                                            <i class="text-default">
-                                                                                {{ $supplier->sup_address }} <br>
-                                                                                {{ $supplier->sup_contact }}
-                                                                            </i>
+                                                                
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="sup_name">Suppliers Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="{{$supplier->sup_name}}" required/>
+                                                                            </div>
+            
+                                                                            <div class="form-group">
+                                                                                <label for="sup_address">Address <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="{{$supplier->sup_address}}" required/>
+                                                                            </div>
+            
+                                                                            <div class="form-group">
+                                                                                <label for="sup_contact">Contact <span style="color:red">*</span></label>
+                                                                                <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" value="{{$supplier->sup_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                                                                            </div>
+            
+                                                                            <div class="form-group">
+                                                                                <label for="sup_notes">Notes</label>
+                                                                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control" >{{$supplier->sup_notes}}</textarea>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <a class="btn btn-info" href="{{ action('PrintController@supplierDetails',[$supplier->sup_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <div class="modal-footer">
+                                                                    <input type="text" class="form-control" name="sup_uuid" value="{{ $supplier->sup_uuid }}"  hidden/> 
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+        
+                                                <!--Print Modal -->
+                                                <div class="modal fade" id="print-supplier-modal-{{$supplier->sup_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            
+                                                            <div class="modal-body">
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+                                                                            <div class="col-md-2 col-12">
+                                                                                <div class="image">
+                                                                                    <img src="{{ asset('img/users/default.png') }}" class="img-circle elevation-2" alt="User Image" height="70px">
+                                                                                </div>
+                                                                            </div>
+            
+                                                                            <div class="col-md-10 col-12">
+                                                                                <h3><strong style="text-transform:uppercase;">{{ $supplier->sup_name }}</strong></h3>
+                                                                                <i class="text-default">
+                                                                                    {{ $supplier->sup_address }} <br>
+                                                                                    {{ $supplier->sup_contact }}
+                                                                                </i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a class="btn btn-info" href="{{ action('PrintController@supplierDetails',[$supplier->sup_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             
-                                            <!--Supplier-Profile Modal -->
-                                            <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content bg-gray">
-                                                        <div class="modal-body">
-                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        
-                                                            <div class="row">
-                                                                <div class="col-12 text-center">
-                                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                        @if($supplier->sup_image <> '')
-                                                                            <img src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
-                                                                        @else
-                                                                        <img src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
-                                                                        @endif
-                                                                    </a>
+                                                <!--Supplier-Profile Modal -->
+                                                <div class="modal fade" id="img-supplier-modal-{{$supplier->sup_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content bg-gray">
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            
+                                                                <div class="row">
+                                                                    <div class="col-12 text-center">
+                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                            @if($supplier->sup_image <> '')
+                                                                                <img src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @else
+                                                                            <img src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}"  alt="{{ $supplier->sup_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @endif
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </tr>
-                                        @endforeach
-                                    @endif
+                                            </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -367,6 +369,7 @@
                 </form>
             </div>
         </div>
+        @endif
     </div>
     <script>
     
