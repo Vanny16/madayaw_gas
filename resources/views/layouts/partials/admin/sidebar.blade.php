@@ -83,7 +83,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('ProductController@tank') }}" class="nav-link">
+                    <a href="{{ action('ProductionController@tank') }}" class="nav-link">
                         <i class="nav-icon fa fa-gas-pump"></i>
                         <p>
                             Tank
@@ -92,7 +92,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('ProductController@production') }}" class="nav-link">
+                    <a href="{{ action('ProductionController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-pallet"></i>
                         <p>
                             Production
