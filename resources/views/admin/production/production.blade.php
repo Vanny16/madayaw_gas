@@ -68,40 +68,6 @@
                                                     </ul>
                                                 </div>
                                             </td>
-
-                                             <!--Seal Stock-in Modal -->
-                                             <div class="modal fade" id="seal-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-sm" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Stock-in</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                            
-                                                                    <div class="col-md-12">
-
-                                                                        <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
-                                                                        </div>
-    
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </tr>
                                         
                                         <tr>
@@ -117,40 +83,6 @@
                                                     </ul>
                                                 </div>
                                             </td>
-
-                                            <!--Valve Stock-in Modal -->
-                                            <div class="modal fade" id="valve-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-sm" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Stock-in</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                            
-                                                                    <div class="col-md-12">
-
-                                                                        <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
-                                                                        </div>
-    
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </tr>
                                         
                                         <tr>
@@ -238,40 +170,6 @@
                                                                 </div>
                                                                 <hr/>
                                                                 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--Crate Stock-in Modal -->
-                                            <div class="modal fade" id="crate-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-sm" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Stock-in</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                            
-                                                                    <div class="col-md-12">
-
-                                                                        <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
-                                                                        </div>
-    
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
