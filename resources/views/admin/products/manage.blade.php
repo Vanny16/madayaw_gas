@@ -457,13 +457,26 @@
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
                                 <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
                             </div>
+                         
                             <div class="form-group">
-                                <label for="prd_refill">Refillable<span style="color:red">*</span></label>
-                                <select class="form-control col-md-12" id="refillable">
-                                    <option value="">YES</option>
-                                    <option value="">NO</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="prd_refill">For Production<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="for-production">
+                                            <option value="">YES</option>
+                                            <option value="">NO</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="prd_refill">Refillable<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="refillable">
+                                            <option value="">YES</option>
+                                            <option value="">NO</option>
+                                        </select>
+                                    </div>
+                                </div>  
                             </div>
+                         
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                 <div class="form-inline">
