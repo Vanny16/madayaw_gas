@@ -303,13 +303,13 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
@@ -349,8 +349,8 @@
                                                                     <div class="col-md-12">
 
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
     
                                                                     </div>
@@ -421,8 +421,8 @@
                                                                     <div class="col-md-12">
 
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
     
                                                                     </div>
@@ -496,13 +496,13 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
 
                                                                         <div class="form-group">
@@ -581,13 +581,13 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
 
                                                                         <div class="form-group">
@@ -665,13 +665,13 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
                                                                         
                                                                         <div class="form-group">
