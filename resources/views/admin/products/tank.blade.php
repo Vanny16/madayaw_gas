@@ -131,12 +131,12 @@
 
                                                                     <div class="form-group">
                                                                         <label for="capacity">Capacity <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="capacity" placeholder="Stocks" value="" required/>
+                                                                        <input type="text" class="form-control" name="capacity" placeholder="Capacity" value="" required/>
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="remaining">Remaining <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="sup_address" placeholder="Stocks" value="" required/>
+                                                                        <input type="text" class="form-control" name="sup_address" placeholder="Remaining" value="" required/>
                                                                     </div>
 
                                                                 </div>
