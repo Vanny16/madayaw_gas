@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="col-md-12 mb-3">
-                    <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
+                    <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#add-tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
                 </div>
 
                 <div class="col-md-8"> 
@@ -91,7 +91,7 @@
                                         <td>5000 kgs</td>
                                         <td>3210 kgs &nbsp;
                                             
-                                        <a class="btn btn-default btn-sm text-danger" disabled><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
+                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#refill-modal" disabled><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                         </td>
                                         <td>
                                             <div class="dropdown">
@@ -102,6 +102,88 @@
                                                 </ul>
                                             </div>
                                         </td>
+
+                                        <!--Add Raw-Materials Modal -->
+                                        <div class="modal fade" id="add-tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Add New Tank</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST" action="" enctype="multipart/form-data">
+                                                    {{ csrf_field() }} 
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                        
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="tank_name">Tank Name <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="tank_name" placeholder="Tank Name" value="" required/>
+                                                                    </div>
+    
+                                                                    <div class="form-group">
+                                                                        <label for="type">Type <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="type" placeholder="Type" value="" required/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="capacity">Capacity <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="capacity" placeholder="Stocks" value="" required/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="remaining">Remaining <span style="color:red">*</span></label>
+                                                                        <input type="text" class="form-control" name="sup_address" placeholder="Stocks" value="" required/>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--Refill Modal -->
+                                        <div class="modal fade" id="refill-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Refill Tank</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="" enctype="multipart/form-data">
+                                                        {{ csrf_field() }} 
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                            
+                                                                    <div class="col-md-12">
+
+                                                                        <div class="form-group">
+                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                        </div>
+    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </tr>
                                 </tbody>
                             </table>
