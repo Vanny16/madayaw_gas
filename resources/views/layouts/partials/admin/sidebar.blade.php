@@ -7,7 +7,7 @@
     </a>
 
     {{-- Sidebar  --}}
-    <div class="sidebar">
+    <div class="sidebar" style="overflow: auto;">
         {{-- Sidebar user panel (optional) --}}
         <a href="{{ action('UserController@profile')}}" class="d-block"> 
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -102,32 +102,24 @@
                     
                 <li class="nav-header">ACCOUNTS</li>
 
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>Manage Accounts <i class="right fas fa-angle-left"></i></p>
+                <li class="nav-item">
+                    <a href="{{ action('UserController@user') }}" class="nav-link">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Users
+                        </p>
                     </a>
-                    <ul class="nav nav-treeview">
-
-                        <li class="nav-item">
-                            <a href="{{ action('UserController@user') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Users
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ action('CustomerController@manage') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Customers
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('CustomerController@manage') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user-tag"></i>
+                        <p>
+                            Customers
+                        </p>
+                    </a>
+                </li>
+
                 @endif
 
             </ul>
