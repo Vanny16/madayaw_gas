@@ -13,7 +13,7 @@
                 @include('layouts.partials.admin.controlsidebar')
             @else
                 <script type="text/javascript">
-                    window.location = "{{ url()->previous() }}";
+                    window.location = "/";
                 </script>
             @endif
         </div>
