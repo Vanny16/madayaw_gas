@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
 
 class ProductionController extends Controller
 {
 
     public function manage()
     {
-        return view('admin.production.production');
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->get();
+
+        $suppliers = DB::table('suppliers')
+        ->get();
+        
+        // dd($suppliers);
+        return view('admin.production.production',compact('products', 'suppliers'));
     }
 
     //PRODUCTION

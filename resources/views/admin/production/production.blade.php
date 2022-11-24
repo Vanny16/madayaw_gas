@@ -40,7 +40,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fas fa-list"></i> Raw Materials</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#raw-materials-modal"><i class="fas fa-plus"></i> Add New Item</button>
+                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New Item</button>
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -98,87 +98,6 @@
                                                     </ul>
                                                 </div>
                                             </td>
-
-                                            <!--Add Raw-Materials Modal -->
-                                            <div class="modal fade show" id="raw-materials-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-md show" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Raw Materials</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                                                            <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
-                                                                        </div>
-                                                                    
-                                                                        <div class="form-group">
-                                                                            <div class="row">
-                                                                                <div class="col-md-6">
-                                                                                    <label for="prd_refill">For Production<span style="color:red">*</span></label>
-                                                                                    <select class="form-control col-md-12" id="for-production">
-                                                                                        <option value="">YES</option>
-                                                                                        <option value="">NO</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <label for="prd_refill">Refillable<span style="color:red">*</span></label>
-                                                                                    <select class="form-control col-md-12" id="refillable">
-                                                                                        <option value="">YES</option>
-                                                                                        <option value="">NO</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>  
-                                                                        </div>
-                                                                    
-                                                                        <div class="form-group">
-                                                                            <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                                                            <div class="form-inline">
-                                                                                <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
-                                                                                  
-                                                                                            <option value=""></option>
-                                                                                  
-                                                                                </select> 
-                                                                                <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <hr/>
-                                                                
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -191,7 +110,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fas fa-filter"></i> Empty Canisters</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#empty-canisters-modal"><i class="fas fa-plus"></i> Add New Item</button>
+                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New Item</button>
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -219,87 +138,6 @@
                                                     </ul>
                                                 </div>
                                             </td>
-
-                                            <!--Add Empty-Canisters Modal -->
-                                            <div class="modal fade show" id="empty-canisters-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-md show" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Empty Canisters</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} 
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                                                            <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
-                                                                        </div>
-                                                                    
-                                                                        <div class="form-group">
-                                                                            <div class="row">
-                                                                                <div class="col-md-6">
-                                                                                    <label for="prd_refill">For Production<span style="color:red">*</span></label>
-                                                                                    <select class="form-control col-md-12" id="for-production">
-                                                                                        <option value="">YES</option>
-                                                                                        <option value="">NO</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <label for="prd_refill">Refillable<span style="color:red">*</span></label>
-                                                                                    <select class="form-control col-md-12" id="refillable">
-                                                                                        <option value="">YES</option>
-                                                                                        <option value="">NO</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>  
-                                                                        </div>
-                                                                    
-                                                                        <div class="form-group">
-                                                                            <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                                                            <div class="form-inline">
-                                                                                <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
-                                                                                  
-                                                                                            <option value=""></option>
-                                                                                  
-                                                                                </select> 
-                                                                                <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <hr/>
-                                                                
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <!--Return/Add Empty Cans Modal -->
                                             <div class="modal fade" id="return-add-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -742,6 +580,123 @@
             </div>
         </div>
     </section>
+</div>
+
+<!-- Create Product Modal -->
+@if(session('getProdValues'))
+    @php($prd_name = Session::get('getProdValues')[0][0])
+    @php($prd_sku = Session::get('getProdValues')[0][1])
+    @php($prd_price = Session::get('getProdValues')[0][2])
+    @php($prd_description = Session::get('getProdValues')[0][3])
+    @php($prd_reorder = Session::get('getProdValues')[0][4])
+    @php($sup_name = Session::get('getProdValues')[0][5])
+    @php($state = Session::get('getProdValues')[0][6])
+@else
+    @php($prd_name = '')
+    @php($prd_sku = '')
+    @php($prd_price = '')
+    @php($prd_description = '')
+    @php($prd_reorder = '')
+    @php($sup_name = '')
+    @php($state = '')
+@endif
+<div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md show" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                            <div class="col-12 text-center mb-4">
+                            <a href="javascript:void(0);" class="">
+                                <label class="btn btn-transparent btn-file">
+                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                </label>
+                            </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="{{ $prd_name }}" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="{{ $prd_description }}" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
+                            </div>
+                         
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="prd_refill">For Production<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="for-production">
+                                            <option value="">YES</option>
+                                            <option value="">NO</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="prd_refill">Refillable<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="refillable">
+                                            <option value="">YES</option>
+                                            <option value="">NO</option>
+                                        </select>
+                                    </div>
+                                </div>  
+                            </div>
+                         
+                            <div class="form-group">
+                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                <div class="form-inline">
+                                    <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
+                                        @foreach($suppliers as $supplier)
+                                            @if($supplier->sup_active == 0)
+                                                @continue
+                                            @else
+                                                @if($sup_name == $supplier->sup_name )
+                                                    @php($selected = "selected")
+                                                @else
+                                                    @php($selected = "")
+                                                @endif
+                                                <option value="{{ $supplier->sup_id }}" {{ $selected }}>{{ $supplier->sup_name }}</option>
+                                            @endif
+                                        @endforeach   
+                                    </select> 
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection
