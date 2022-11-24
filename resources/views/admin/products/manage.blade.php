@@ -89,10 +89,10 @@
                                         <th width="100px"></th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
-                                        <th>Status</th>
                                         <th>Price</th>
                                         <th style="text-align: center">Quantity</th>
                                         <th>Description</th>
+                                        <th>Refillable</th>
                                         <th>Supplier</th>
                                         <th width="150px"></th>
                                         <th width="120px"></th>
@@ -129,7 +129,6 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                                <td>Leakers</td>
                                             @if($product->prd_price === null)
                                                 <td>
                                                     0.00
@@ -157,6 +156,7 @@
                                             @else
                                                 <td>-</td>
                                             @endif
+                                            <td>Yes</td>
                                             @if($product->sup_name)
                                                 <td>   
                                                     {{$product->sup_name}}
@@ -456,6 +456,13 @@
                             <div class="form-group">
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
                                 <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_refill">Refillable<span style="color:red">*</span></label>
+                                <select class="form-control col-md-12" id="refillable">
+                                    <option value="">YES</option>
+                                    <option value="">NO</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
