@@ -10,17 +10,6 @@ use DB;
 
 class ProductController extends Controller
 {
-       
-    public function tank()
-    {
-        return view('admin.products.tank');
-    }
-
-    public function production()
-    {
-        return view('admin.products.production');
-    }
-    
     public function manage()
     {
         $statuses = array(
