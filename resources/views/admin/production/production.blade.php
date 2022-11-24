@@ -184,15 +184,22 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Name <span style="color:red">*</span></label>
+                                                                            <label for="name">Name <span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" name="sup_name" placeholder="Item Name" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Stocks <span style="color:red">*</span></label>
+                                                                            <label for="stocks">Stocks <span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" name="sup_address" placeholder="Stocks" value="" required/>
                                                                         </div>
-    
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="production">For Production<span style="color:red">*</span></label>
+                                                                            <select class="form-control col-md-12" id="for-production">
+                                                                                <option value="">YES</option>
+                                                                                <option value="">NO</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -296,15 +303,22 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
-    
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="production">For Production<span style="color:red">*</span></label>
+                                                                            <select class="form-control col-md-12" id="for-production">
+                                                                                <option value="">YES</option>
+                                                                                <option value="">NO</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -335,8 +349,8 @@
                                                                     <div class="col-md-12">
 
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
     
                                                                     </div>
@@ -407,8 +421,8 @@
                                                                     <div class="col-md-12">
 
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
     
                                                                     </div>
@@ -482,15 +496,22 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
-    
+
+                                                                        <div class="form-group">
+                                                                            <label for="production">For Production<span style="color:red">*</span></label>
+                                                                            <select class="form-control col-md-12" id="for-production">
+                                                                                <option value="">YES</option>
+                                                                                <option value="">NO</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -560,15 +581,22 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
-    
+
+                                                                        <div class="form-group">
+                                                                            <label for="production">For Production<span style="color:red">*</span></label>
+                                                                            <select class="form-control col-md-12" id="for-production">
+                                                                                <option value="">YES</option>
+                                                                                <option value="">NO</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -637,15 +665,22 @@
                                                             
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label for="sup_name">Canister <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_name" placeholder="Canister" value="" required/>
+                                                                            <label for="canister">Canister <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
                                                                         </div>
         
                                                                         <div class="form-group">
-                                                                            <label for="sup_address">Quantity <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="sup_address" placeholder="Quantity" value="" required/>
+                                                                            <label for="quantity">Quantity <span style="color:red">*</span></label>
+                                                                            <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
                                                                         </div>
-    
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label for="production">For Production<span style="color:red">*</span></label>
+                                                                            <select class="form-control col-md-12" id="for-production">
+                                                                                <option value="">YES</option>
+                                                                                <option value="">NO</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
