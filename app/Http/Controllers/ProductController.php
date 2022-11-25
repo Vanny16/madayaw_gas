@@ -313,14 +313,14 @@ class ProductController extends Controller
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
-            $request->is_production,
-            $request->is_refillable,
+            $request->sup_prd_is_production,
+            $request->sup_prd_is_refillable,
             'show'
         );
-        dd($request->is_production);
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');
+            session()->flash('getProdValues', array( $prodValues));
         }
         else{
             $usr_id = DB::table('suppliers')

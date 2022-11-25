@@ -474,8 +474,8 @@
                                             @php($is_select_production = "")
                                             @php($is_not_production = "selected")
                                         @endif
-                                            <option value="1" {{ $is_select_production }}>YES</option>
                                             <option value="0" {{ $is_not_production }}>NO</option>
+                                            <option value="1" {{ $is_select_production }}>YES</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -488,8 +488,8 @@
                                             @php($is_select_refillable = "")
                                             @php($is_not_refillable = "selected")
                                         @endif
-                                            <option value="1" {{ $is_select_refillable }}>YES</option>
                                             <option value="0" {{ $is_not_refillable }}>NO</option>
+                                            <option value="1" {{ $is_select_refillable }}>YES</option>
                                         </select>
                                     </div>
                                 </div>  
@@ -512,7 +512,7 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value, is_production.value, is_refillable.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value, is_production.selectedIndex, is_refillable.selectedIndex)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -575,8 +575,8 @@
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
                 <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
                 <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
-                <input type="text" id="is_production" name="is_production" value="" hidden/>
-                <input type="text" id="is_refillable" name="is_refillable" value="" hidden/>
+                <input type="text" id="sup_prd_is_production" name="sup_prd_is_production" value="" hidden/>
+                <input type="text" id="sup_prd_is_refillable" name="sup_prd_is_refillable" value="" hidden/>
             </form>
         </div>
     </div>
@@ -608,8 +608,8 @@
         document.getElementById('sup_prd_sku').value = prd_sku;
         document.getElementById('sup_prd_description').value = prd_description;
         document.getElementById('sup_prd_reorder').value = prd_reorder;
-        document.getElementById('is_production').text = is_production;
-        document.getElementById('is_refillable').text = is_refillable;
+        document.getElementById('sup_prd_is_production').value = is_production;
+        document.getElementById('sup_prd_is_refillable').value = is_refillable;
     }
 </script>
 
