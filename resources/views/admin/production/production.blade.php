@@ -699,4 +699,55 @@
     </div>
 </div>
 
+<!-- Add Supplier Modal -->
+<div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" id="form-add" action="{{ action('ProductController@createSupplier')}}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_address">Address <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_contact">Contact <span style="color:red">*</span></label>
+                                <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sup_notes">Notes</label>
+                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+                
+                <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
+                <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
+                <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection

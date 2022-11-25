@@ -561,7 +561,7 @@
         </div>
     </div>
 </div>
-
+ 
 <script>
     $(document).ready(function(){
         $("#search_products").on("keyup", function() {
