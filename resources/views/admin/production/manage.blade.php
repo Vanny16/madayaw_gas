@@ -121,7 +121,7 @@
                     <div class="col-md-12"> 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-fill-drip"></i> Canister Filling</h3>
+                                <h3 class="card-title"><i class="fas fa-fill-drip"></i> Filled Canisters</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
@@ -133,6 +133,7 @@
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
+                                            <th></th>
                                             <th width="50px"></th>
                                         </tr>
                                     </thead>
@@ -143,6 +144,7 @@
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_quantity}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#canister-filling-modal-{{$canister->prd_id}}" disabled><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#canister-filling-modal-{{$canister->prd_id}}" disabled><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Return Leakers</a></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
