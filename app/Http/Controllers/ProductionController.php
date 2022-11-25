@@ -129,12 +129,17 @@ class ProductionController extends Controller
     {
         $prd_id = $request->prd_id;
         $prd_quantity = $request->quantity;
-        $flag = $request->flag;
+        $flag = $request->stockin_flag;
         
         $quantity = DB::table('products')
         ->where('prd_id', '=', $prd_id)
         ->first();
         
+        //FLAGS
+        // 1 = quantity raw materials / filled canisters
+        // 2 = empty goods
+        // 3 = leakers
+        // 4 = 
         if($flag == 1)
         {
             $prd_quantity = (float)$quantity->prd_quantity + $prd_quantity;
@@ -145,7 +150,7 @@ class ProductionController extends Controller
                 'prd_quantity' => (float)$prd_quantity
             ]);  
         }
-        if($flag == 2)
+        elseif($flag == 2)
         {
             $prd_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
             
@@ -159,26 +164,6 @@ class ProductionController extends Controller
         session()->flash('successMessage','Raw materials added');
         return redirect()->action('ProductionController@manage');
     }  
-
-    //LEAKERS
-    public function addLeakers()
-    {
-
-    }
-
-    //REVALVING
-    public function addRevalving()
-    {
-        
-    }
-
-    //SCRAP
-    public function addScrap()
-    {
-        
-    }
-
-    
 
     //TANK CONTROLLER
     public function tank()

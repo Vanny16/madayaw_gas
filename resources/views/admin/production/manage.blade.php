@@ -99,7 +99,7 @@
                                                 <tr>
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_empty_goods}}</td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#return-add-modal-{{$canister->prd_id}}" disabled><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -544,8 +544,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" class="form-control" id="set_stockin_flag" name="set_stockin_flag" value="" hidden/>
-                    <input type="text" class="form-control" id="set_prd_id" name="set_prd_id" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
+                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="" hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
