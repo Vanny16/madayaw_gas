@@ -313,8 +313,8 @@ class ProductController extends Controller
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
-            $request->sup_prd_is_production,
-            $request->sup_prd_is_refillable,
+            // $request->sup_prd_is_production,
+            // $request->sup_prd_is_refillable,
             'show'
         );
         if($check_sup_name != null)
