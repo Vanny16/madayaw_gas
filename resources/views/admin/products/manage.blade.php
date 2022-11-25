@@ -402,7 +402,9 @@
     @php($prd_description = Session::get('getProdValues')[0][3])
     @php($prd_reorder = Session::get('getProdValues')[0][4])
     @php($sup_name = Session::get('getProdValues')[0][5])
-    @php($state = Session::get('getProdValues')[0][6])
+    @php($is_production = Session::get('getProdValues')[0][6])
+    @php($is_refillable = Session::get('getProdValues')[0][7])
+    @php($state = Session::get('getProdValues')[0][8])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
@@ -410,6 +412,8 @@
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
+    @php($is_production = '')
+    @php($is_refillable = '')
     @php($state = '')
 @endif
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -461,17 +465,31 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="prd_refill">For Production<span style="color:red">*</span></label>
-                                        <select class="form-control col-md-12" id="for-production">
-                                            <option value="">YES</option>
-                                            <option value="">NO</option>
+                                        <label>For Production<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="is_production">
+                                        @if($is_production == 1)
+                                            @php($is_select_production = "selected")
+                                            @php($is_not_production = "")
+                                        @else
+                                            @php($is_select_production = "")
+                                            @php($is_not_production = "selected")
+                                        @endif
+                                            <option value="1" {{ $is_select_production }}>YES</option>
+                                            <option value="0" {{ $is_not_production }}>NO</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="prd_refill">Refillable<span style="color:red">*</span></label>
-                                        <select class="form-control col-md-12" id="refillable">
-                                            <option value="">YES</option>
-                                            <option value="">NO</option>
+                                        <label>Refillable<span style="color:red">*</span></label>
+                                        <select class="form-control col-md-12" id="is_refillable">
+                                        @if($is_refillable == 1)
+                                            @php($is_select_refillable = "selected")
+                                            @php($is_not_refillable = "")
+                                        @else
+                                            @php($is_select_refillable = "")
+                                            @php($is_not_refillable = "selected")
+                                        @endif
+                                            <option value="1" {{ $is_select_refillable }}>YES</option>
+                                            <option value="0" {{ $is_not_refillable }}>NO</option>
                                         </select>
                                     </div>
                                 </div>  
@@ -494,7 +512,7 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value, is_production.value, is_refillable.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -557,6 +575,8 @@
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
                 <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
                 <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
+                <input type="text" id="is_production" name="is_production" value="" hidden/>
+                <input type="text" id="is_refillable" name="is_refillable" value="" hidden/>
             </form>
         </div>
     </div>
@@ -583,11 +603,13 @@
         $("#product-modal").modal('{{$state}}');
     });
 
-    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
         document.getElementById('sup_prd_name').value = prd_name;
         document.getElementById('sup_prd_sku').value = prd_sku;
         document.getElementById('sup_prd_description').value = prd_description;
         document.getElementById('sup_prd_reorder').value = prd_reorder;
+        document.getElementById('is_production').text = is_production;
+        document.getElementById('is_refillable').text = is_refillable;
     }
 </script>
 
