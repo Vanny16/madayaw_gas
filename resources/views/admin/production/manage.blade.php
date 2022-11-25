@@ -56,7 +56,7 @@
                                                 <tr>
                                                     <td>{{$raw_material->prd_name}}</td>
                                                     <td>{{$raw_material->prd_quantity}}</td>
-                                                    <td> <button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{ $raw_material->prd_id }}, 1)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</button></td>
+                                                    <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 1)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -67,38 +67,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!-- Add Raw Materials Modal -->
-                                                <div class="modal fade" id="add-raw-modal-{{$raw_material->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-sm" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Add Raw Materials</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Amount to add <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="quantity" placeholder="Quantity" required/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="text" class="form-control" name="flag" value="1" hidden/>
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{$raw_material->prd_id}}" hidden/>
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -142,39 +110,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!--Return/Add Empty Cans Modal -->
-                                                <div class="modal fade" id="return-add-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-sm" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Return/Add Empty Cans</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Amount to Add <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="text" class="form-control" name="flag" value="2" hidden/>
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{$canister->prd_id}}" hidden/>
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -218,41 +153,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!--Stock-in Canister-Filling Modal -->
-                                                <div class="modal fade" id="canister-filling-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-sm" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Stock-in Filled Cans</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                
-                                                                        <div class="col-md-12">
-
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="text" class="form-control" name="flag" value="1" hidden/>
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{$canister->prd_id}}" hidden/>
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -299,50 +199,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!--Add Leakers Modal -->
-                                                    <div class="modal fade" id="leakers-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-sm" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Leakers</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="" enctype="multipart/form-data">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="canister">Canister <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
-                                                                            </div>
-            
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
-                                                                            </div>
-
-                                                                            <div class="form-group">
-                                                                                <label for="production">For Production<span style="color:red">*</span></label>
-                                                                                <select class="form-control col-md-12" id="for-production">
-                                                                                    <option value="">YES</option>
-                                                                                    <option value="">NO</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif
                                             
@@ -390,50 +246,6 @@
                                                 </tr>
                                             @endforeach
                                         @endif
-                                        <!--Add For-Revalving Modal -->
-                                        <div class="modal fade" id="for-revalving-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-sm" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">For Revalving</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form method="POST" action="" enctype="multipart/form-data">
-                                                    {{ csrf_field() }} 
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                        
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label for="canister">Canister <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
-                                                                    </div>
-    
-                                                                    <div class="form-group">
-                                                                        <label for="quantity">Quantity <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label for="production">For Production<span style="color:red">*</span></label>
-                                                                        <select class="form-control col-md-12" id="for-production">
-                                                                            <option value="">YES</option>
-                                                                            <option value="">NO</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </tbody>
                                 </table>
                             </div>
@@ -476,50 +288,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!--Add Scrap Modal -->
-                                                <div class="modal fade" id="scrap-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-sm" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Empty Canisters</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="" enctype="multipart/form-data">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="canister">Canister <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="canister" placeholder="Canister" value="" required/>
-                                                                            </div>
-            
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="" required/>
-                                                                            </div>
-                                                                            
-                                                                            <div class="form-group">
-                                                                                <label for="production">For Production<span style="color:red">*</span></label>
-                                                                                <select class="form-control col-md-12" id="for-production">
-                                                                                    <option value="">YES</option>
-                                                                                    <option value="">NO</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif 
                                     </tbody>
@@ -753,12 +521,12 @@
     </div>
 </div>
 
-<!-- Add Raw Materials Modal -->
+<!-- Add Quantity Modal -->
 <div class="modal fade" id="add-quantity-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Raw Materials</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Quantity</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -776,8 +544,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" class="form-control" id="set_flag" name="set_flag" value="" hidden/>
-                    <input type="text" class="form-control" id="set_prd_id" name="set_prd_id" value="" hidden/>
+                    <input type="text" class="form-control" id="set_flag" name="set_flag" value="" />
+                    <input type="text" class="form-control" id="set_prd_id" name="set_prd_id" value="" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -789,10 +557,8 @@
 
 <script>
     function stockIn(prd_id, flag){
-        document.getElementById('set_prd_id').value = prd_name;
+        document.getElementById('set_prd_id').value = prd_id;
         document.getElementById('set_flag').value = flag;
-    
-        alert("hi");
     }
 </script>
 
