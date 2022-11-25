@@ -544,8 +544,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" class="form-control" id="set_flag" name="set_flag" value="" />
-                    <input type="text" class="form-control" id="set_prd_id" name="set_prd_id" value="" />
+                    <input type="text" class="form-control" id="set_stockin_flag" name="set_stockin_flag" value="" hidden/>
+                    <input type="text" class="form-control" id="set_prd_id" name="set_prd_id" value="" hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -558,7 +558,7 @@
 <script>
     function stockIn(prd_id, flag){
         document.getElementById('set_prd_id').value = prd_id;
-        document.getElementById('set_flag').value = flag;
+        document.getElementById('set_stockin_flag').value = flag;
     }
 </script>
 
