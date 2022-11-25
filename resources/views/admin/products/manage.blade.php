@@ -402,9 +402,9 @@
     @php($prd_description = Session::get('getProdValues')[0][3])
     @php($prd_reorder = Session::get('getProdValues')[0][4])
     @php($sup_name = Session::get('getProdValues')[0][5])
-    @php($is_production = Session::get('getProdValues')[0][6])
-    @php($is_refillable = Session::get('getProdValues')[0][7])
-    @php($state = Session::get('getProdValues')[0][8])
+    {{--@php($is_production = Session::get('getProdValues')[0][6])
+    @php($is_refillable = Session::get('getProdValues')[0][7])--}}
+    @php($state = Session::get('getProdValues')[0][6])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
@@ -412,8 +412,8 @@
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
-    @php($is_production = '')
-    @php($is_refillable = '')
+    {{--@php($is_production = '')
+    @php($is_refillable = '')--}}
     @php($state = '')
 @endif
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -462,7 +462,7 @@
                                 <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
                             </div>
                          
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>For Production<span style="color:red">*</span></label>
@@ -493,7 +493,7 @@
                                         </select>
                                     </div>
                                 </div>  
-                            </div>
+                            </div> --}}
                          
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
@@ -512,7 +512,7 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value, is_production.selectedIndex, is_refillable.selectedIndex)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -575,8 +575,8 @@
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
                 <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
                 <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
-                <input type="text" id="sup_prd_is_production" name="sup_prd_is_production" value="" hidden/>
-                <input type="text" id="sup_prd_is_refillable" name="sup_prd_is_refillable" value="" hidden/>
+                <!-- <input type="text" id="sup_prd_is_production" name="sup_prd_is_production" value="" hidden/>
+                <input type="text" id="sup_prd_is_refillable" name="sup_prd_is_refillable" value="" hidden/> -->
             </form>
         </div>
     </div>
@@ -603,7 +603,7 @@
         $("#product-modal").modal('{{$state}}');
     });
 
-    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
         document.getElementById('sup_prd_name').value = prd_name;
         document.getElementById('sup_prd_sku').value = prd_sku;
         document.getElementById('sup_prd_description').value = prd_description;
@@ -611,6 +611,15 @@
         document.getElementById('sup_prd_is_production').value = is_production;
         document.getElementById('sup_prd_is_refillable').value = is_refillable;
     }
+
+    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
+    //     document.getElementById('sup_prd_name').value = prd_name;
+    //     document.getElementById('sup_prd_sku').value = prd_sku;
+    //     document.getElementById('sup_prd_description').value = prd_description;
+    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
+    //     document.getElementById('sup_prd_is_production').value = is_production;
+    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    // }
 </script>
 
 @endsection
