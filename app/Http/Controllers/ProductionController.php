@@ -178,8 +178,8 @@ class ProductionController extends Controller
         if($flag == 1)
         {
             //RAW MATERIALS CHECKER
-            $materials_checker = DB::table('products')
-            ->where('')
+            // $materials_checker = DB::table('products')
+            // ->where('');
 
             //ADD QUANTITY TO FILLED 
             $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
