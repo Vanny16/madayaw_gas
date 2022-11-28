@@ -36,7 +36,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fas fa-list"></i> Raw Materials</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New Item</button>
+                                    <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addRaw(0)"><i class="fas fa-plus"></i> Add New Item</button>
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                                 <tr>
                                                     <td>{{$raw_material->prd_name}}</td>
                                                     <td>{{$raw_material->prd_quantity}}</td>
-                                                    <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 1)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
+                                                    <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -143,8 +143,8 @@
                                                 <tr>
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_quantity}}</td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#canister-filling-modal-{{$canister->prd_id}}" disabled><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#canister-filling-modal-{{$canister->prd_id}}" disabled><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Return Leakers</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Return Leakers</a></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -168,7 +168,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="far fa-circle"></i> Leakers</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>
+                                    {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -189,8 +189,8 @@
                                                 <tr>
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_leakers}}</td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-info" disabled><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalve</a></td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-info" disabled><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrap</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalve</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrap</a></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -215,7 +215,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="far fa-circle"></i> For Revalving</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#for-revalving-modal"><i class="fas fa-plus"></i> Add Item</button>
+                                {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#for-revalving-modal"><i class="fas fa-plus"></i> Add Item</button>--}}
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="far fa-circle"></i> Scrap</h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal"><i class="fas fa-plus"></i> Add Item</button>
+                                {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal"><i class="fas fa-plus"></i> Add Item</button>--}}
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
                             </div>
@@ -400,7 +400,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('ProductionController@createProduct') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -463,6 +463,7 @@
                     
                 </div>
                 <div class="modal-footer">
+                    <input type="text" class="form-control" id="set_addraw_flag" name="addraw_flag" value="" hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -558,6 +559,10 @@
 
 
 <script>
+    function addRaw(prd_id, flag){
+        document.getElementById('set_addraw_flag').value = prd_id;
+    }
+
     function stockIn(prd_id, flag){
         document.getElementById('set_prd_id').value = prd_id;
         document.getElementById('set_stockin_flag').value = flag;
