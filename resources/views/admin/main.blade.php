@@ -29,47 +29,15 @@
 				<div class="col-md-8">
 					<div class="col-md-12"> 
 						<div class="card">
-							<div class="card-header bg-dark">
-								<h3 class="card-title"><i class="fa fa-bolt"></i> Quick Access</h3>
+							<div class="card-header">
+								<h3 class="card-title"><i class="fa fa-bolt"></i> Quick Buttons</h3>
 							</div>
 
 							<div class="card-body bg-light">
-								<div class="row justify-content-center p-1 text-white">
-									
+								<div class="row">
 									<div class="col-12 text-white mb-3">
-										<a class="btn btn-success btn-sm col-md-2 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
+										<a class="btn btn-success col-md-3 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
 									</div>
-										
-									<!-- <div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('SalesController@main') }}" class="btn btn-info" width="100vw" height="100vh"><i class="nav-icon fas fa-cash-register"></i></a></button><br><small>Point of Sale</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('ProductController@manage') }}" class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-box-open"></i></a></button><br><small>Products</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('SupplierController@manage') }}" class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-warehouse"></i></a></button><br><small>Suppliers</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('SalesController@main') }}" class="btn btn-info" width="100vw" height="100vh"><i class="nav-icon fa fa-bar-chart"></i></a></button><br><small>Sales Report</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('ProductionController@tank') }}" class="btn btn-info" width="100vw" height="100vh"><i class="nav-icon fa fa-gas-pump"></i></a></button><br><small>Tank</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('ProductionController@manage') }}" class="btn btn-info" width="100vw" height="100vh"><i class="nav-icon fas fa-pallet"></i></a></button><br><small>Production</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('UserController@user') }}" class="btn btn-info" width="100vw" height="100vh"><i class="fa fa-id-card"></i></a></button><br><small>Users</small>
-									</div>
-									<div class="col-3 bg-info border border-light rounded">
-										<a href="{{ action('CustomerController@manage') }}" class="btn btn-info" width="100vw" height="100vh"><i class="nav-icon fas fa-user-tag"></i></a></button><br><small>Customers</small>
-									</div>
-									
-									<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-box-open"></i></a>
-									<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-warehouse"></i></a>
-									<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-address-card"></i></a>
-									<a class="btn btn-info rounded-circle mr-1" width="100vw" height="100vh"><i class="fa fa-users"></i></a><br> -->
-
 								</div>
 							</div>
 						</div>

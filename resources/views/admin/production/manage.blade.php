@@ -26,7 +26,7 @@
             
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    <a class="btn btn-success btn-sm col-md-2 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
+                    <a class="btn btn-success col-md-2 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
                 </div>
             </div>
             <div class="row">
