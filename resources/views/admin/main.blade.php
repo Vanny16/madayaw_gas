@@ -37,7 +37,7 @@
 								<div class="row justify-content-center p-1 text-white">
 									
 									<div class="col-12 text-white mb-3">
-										<a class="btn btn-success btn-sm"><i class="fa fa-play mr-1"></i> Start Production</a>
+										<a class="btn btn-success btn-sm col-md-2 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
 									</div>
 										
 									<!-- <div class="col-3 bg-info border border-light rounded">
