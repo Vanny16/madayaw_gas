@@ -106,8 +106,6 @@ Route::group(['prefix' => 'production'], function()
     Route::get('tank', 'ProductionController@tank');
     Route::get('manage', 'ProductionController@manage');
     
-    // Route::post('add-production', 'ProductionController@rawQuantity'); FOR ADD PRODUCT
+    Route::post('add-empty-goods', 'ProductionController@createProduct');
     Route::post('add-quantity', 'ProductionController@addQuantity');
-    Route::post('add-empty-goods', 'ProductionController@addEmptyGoods');
-    Route::post('add-filled-canisters', 'ProductionController@addFilled');
 });

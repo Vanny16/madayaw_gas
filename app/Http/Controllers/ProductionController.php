@@ -44,7 +44,6 @@ class ProductionController extends Controller
 
     }
 
-    //RAW MATERIALS
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;
@@ -52,9 +51,8 @@ class ProductionController extends Controller
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
         $prd_reorder = $request->prd_reorder;
-        $prd_is_production = $request->prd_is_production;
-        $prd_is_refillable = $request->prd_is_refillable;
         $sup_id = $request->sup_id;
+        $flag = $request->addraw_flag;
 
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
@@ -67,6 +65,12 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
 
+        //FLAGS
+        // 0 = quantity raw materials
+        // 1 = empty goods
+
+        if($flag == 0)
+        {
         DB::table('products')
         ->insert([
         'prd_name'=> $prd_name,
@@ -76,10 +80,27 @@ class ProductionController extends Controller
         'prd_sku' => $prd_sku,
         'prd_price' => $prd_price,
         'prd_reorder_point' => $prd_reorder,
-        'prd_is_production' => $prd_is_production,
-        'prd_is_refillable' => $prd_is_refillable,
+        'prd_for_production' => 1,
+        'prd_is_refillable' => 0,
         'sup_id' => $sup_id
         ]);
+        }
+        elseif($flag == 1)
+        {
+        DB::table('products')
+        ->insert([
+        'prd_name'=> $prd_name,
+        'acc_id' => session('acc_id'),
+        'prd_uuid' => generateuuid(),
+        'prd_description' => $prd_description,
+        'prd_sku' => $prd_sku,
+        'prd_price' => $prd_price,
+        'prd_reorder_point' => $prd_reorder,
+        'prd_for_production' => 1,
+        'prd_is_refillable' => 1,
+        'sup_id' => $sup_id
+        ]);
+        }
 
         if($request->file('prd_image'))
         {
@@ -129,56 +150,130 @@ class ProductionController extends Controller
     {
         $prd_id = $request->prd_id;
         $prd_quantity = $request->quantity;
-        $flag = $request->flag;
+        $flag = $request->stockin_flag;
         
         $quantity = DB::table('products')
         ->where('prd_id', '=', $prd_id)
         ->first();
         
-        if($flag == 1)
+        //FLAGS
+        // 0 = quantity raw materials
+        // 1 = filled canisters
+        // 2 = empty goods
+        // 3 = leakers
+        // 4 = revalve
+        // 5 = scrap
+
+        if($flag == 0)
         {
-            $prd_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+            //ADD QUANTITY TO RAW MATERIALS
+            $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
 
             DB::table('products')
             ->where('prd_id','=',$prd_id)
             ->update([
-                'prd_quantity' => (float)$prd_quantity
+                'prd_quantity' => (float)$new_quantity
             ]);  
         }
-        if($flag == 2)
+        if($flag == 1)
         {
-            $prd_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
+            //RAW MATERIALS CHECKER
+            // $materials_checker = DB::table('products')
+            // ->where('');
+
+            //ADD QUANTITY TO FILLED 
+            $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_quantity' => (float)$new_quantity
+            ]);  
+
+            //SUBTRACT FROM RAW MATERIALS
+            $new_caps = (float)$quantity->prd_quantity + $prd_quantity;
+
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_quantity' => (float)$new_quantity
+            ]);  
+        }
+        elseif($flag == 2)
+        {
+            //ADD QUANTITY TO EMPTY GOODS
+            $new_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
             
             DB::table('products')
             ->where('prd_id','=',$prd_id)
             ->update([
-                'prd_empty_goods' => (float)$prd_quantity
+                'prd_empty_goods' => (float)$new_quantity
+            ]);  
+        }
+        elseif($flag == 3)
+        {
+            //ADD QUANTITY TO LEAKERS FILLED CANISTERS
+            $new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
+            
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_leakers' => (float)$new_quantity
+            ]);  
+
+            //ADD QUANTITY TO REVALVING FROM LEAKERS
+            $new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
+            
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_leakers' => (float)$new_quantity
+            ]);  
+        }
+        elseif($flag == 4)
+        {
+            //ADD QUANTITY TO REVALVING FROM LEAKERS
+            $new_quantity = (float)$quantity->prd_for_revalving + $prd_quantity;
+            
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_for_revalving' => (float)$new_quantity
+            ]);  
+
+            //SUBTRACT QUANTITY FROM LEAKERS
+            $new_quantity = (float)$quantity->prd_leakers - $prd_quantity;
+
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_leakers' => (float)$new_quantity
+            ]);  
+        }
+        elseif($flag == 5)
+        {
+            //ADD QUANTITY TO SCRAPS FROM LEAKERS
+            $new_quantity = (float)$quantity->prd_scraps + $prd_quantity;
+            
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_scraps' => (float)$new_quantity
+            ]);  
+
+            //SUBTRACT QUANTITY FROM LEAKERS
+            $new_quantity = (float)$quantity->prd_leakers - $prd_quantity;
+
+            DB::table('products')
+            ->where('prd_id','=',$prd_id)
+            ->update([
+                'prd_leakers' => (float)$new_quantity
             ]);  
         }
 
         session()->flash('successMessage','Raw materials added');
         return redirect()->action('ProductionController@manage');
     }  
-
-    //LEAKERS
-    public function addLeakers()
-    {
-
-    }
-
-    //REVALVING
-    public function addRevalving()
-    {
-        
-    }
-
-    //SCRAP
-    public function addScrap()
-    {
-        
-    }
-
-    
 
     //TANK CONTROLLER
     public function tank()
