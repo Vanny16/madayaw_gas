@@ -16,17 +16,20 @@ class ProductionController extends Controller
     {
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','0')
         ->get();
-
+        // dd($raw_materials);
         $canisters = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
 
         $suppliers = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
         ->get();
         
         // dd($suppliers);
@@ -105,6 +108,7 @@ class ProductionController extends Controller
         if($request->file('prd_image'))
         {
             $prd_id = DB::table('products')
+            ->where('acc_id', '=', session('acc_id'))
             ->select('prd_id')
             ->orderBy('prd_id', 'desc')
             ->first();
@@ -136,6 +140,7 @@ class ProductionController extends Controller
             Storage::disk('local')->put('img/products/' . $fileName, fopen($file, 'r+'));
 
             DB::table('products')
+            ->where('acc_id', '=', session('acc_id'))
             ->where('prd_id','=',$prd_id->prd_id)
             ->update([
                 'prd_image' => $fileName,
@@ -153,9 +158,17 @@ class ProductionController extends Controller
         $flag = $request->stockin_flag;
         
         $quantity = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id', '=', $prd_id)
         ->first();
         
+        $raw_materials = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->get();
+
         //FLAGS
         // 0 = quantity raw materials
         // 1 = filled canisters
@@ -177,27 +190,31 @@ class ProductionController extends Controller
         }
         if($flag == 1)
         {
-            //RAW MATERIALS CHECKER
-            // $materials_checker = DB::table('products')
-            // ->where('');
+            if(check_materials())
+            {
+                //ADD QUANTITY TO FILLED 
+                $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
 
-            //ADD QUANTITY TO FILLED 
-            $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                DB::table('products')
+                ->where('prd_id','=',$prd_id)
+                ->update([
+                    'prd_quantity' => (float)$new_quantity
+                ]);  
 
-            DB::table('products')
-            ->where('prd_id','=',$prd_id)
-            ->update([
-                'prd_quantity' => (float)$new_quantity
-            ]);  
+                //SUBTRACT FROM RAW MATERIALS
+                $new_caps = (float)$quantity->prd_quantity + $prd_quantity;
 
-            //SUBTRACT FROM RAW MATERIALS
-            $new_caps = (float)$quantity->prd_quantity + $prd_quantity;
-
-            DB::table('products')
-            ->where('prd_id','=',$prd_id)
-            ->update([
-                'prd_quantity' => (float)$new_quantity
-            ]);  
+                DB::table('products')
+                ->where('prd_id','=',$prd_id)
+                ->update([
+                    'prd_quantity' => (float)$new_quantity
+                ]);  
+            } 
+            else
+            {
+                session()->flash('errorMessage','Raw materials insufficient');
+                return redirect()->action('ProductionController@manage');
+            }
         }
         elseif($flag == 2)
         {

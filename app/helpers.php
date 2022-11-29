@@ -25,8 +25,30 @@ function record_stockin($prd_id, $quantity)
     ]); 
 }
 
-function flash_message()
+function check_materials($flag)
 {
-    session()->flash('successMessage','test successful');
+    $raw_materials = DB::table('products')
+    ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+    ->where('products.acc_id', '=', session('acc_id'))
+    ->where('prd_for_production','=','1')
+    ->where('prd_is_refillable','=','0')
+    ->get();
+    // dd($raw_materials);
+
+    if($flag == 0)
+    {
+
+    }
+    elseif($flag == 1)
+    foreach ($raw_materials as $raw_material){
+
+        if($raw_material->prd_quantity != 0){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 ?>

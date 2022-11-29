@@ -53,9 +53,23 @@
                                     <tbody id="tbl-raw_materials">
                                         @if(isset($raw_materials))
                                             @foreach($raw_materials as $raw_material)
-                                                <tr>
+                                                @if($raw_material->prd_quantity < $raw_material->prd_reorder_point)
+                                                    @php($reorder_indicator = "table-danger" )
+                                                @else
+                                                    @php($reorder_indicator = "")
+                                                @endif
+                                                <tr class="{{ $reorder_indicator }}">
                                                     <td>{{$raw_material->prd_name}}</td>
-                                                    <td>{{$raw_material->prd_quantity}}</td>
+                                                    <td>{{$raw_material->prd_quantity}}
+                                                        <br>
+                                                        @if($reorder_indicator != "") 
+                                                            @if($raw_material->prd_quantity == 0)
+                                                                <span class="badge badge-danger">Restock now</span>
+                                                            @elseif($raw_material->prd_quantity < $raw_material->prd_reorder_point)
+                                                                <span class="badge badge-warning">Request for restock</span>
+                                                            @endif
+                                                        @endif
+                                                    </td>
                                                     <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                     <td>
                                                         <div class="dropdown">
@@ -540,8 +554,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="quantity">Amount to add <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="quantity" name="quantity" placeholder="Quantity" required/>
+                                <label for="quantity"id="lbl-add">Amount to add <span style="color:red">*</span></label>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" required/>
+                                <div id="crate">
+                                    <label for="quantity" id="lbl-crate">Crate<span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate-quantity" name="quantity" placeholder="Quantity" required/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -566,6 +585,22 @@
     function stockIn(prd_id, flag){
         document.getElementById('set_prd_id').value = prd_id;
         document.getElementById('set_stockin_flag').value = flag;
+
+        $(window).ready(function(){    
+            if(flag === 0){
+                alert('test');
+                $("#add-quantity-modal").find("#lbl-add").show();
+                $("#add-quantity-modal").find("#lbl-loose").hide();
+                $("#add-quantity-modal").find("#lbl-crate").hide();
+                $("#add-quantity-modal").find("#crate-quantity").hide();
+            }else{
+                alert('testy');
+                $("#add-quantity-modal").find("#lbl-add").hide();
+                $("#add-quantity-modal").find("#lbl-loose").show();
+                $("#add-quantity-modal").find("#lbl-crate").show();
+                $("#add-quantity-modal").find("#crate-quantity").show();
+            }
+        });
     }
 </script>
 

@@ -21,10 +21,12 @@ class ProductController extends Controller
         $default_status = '0';
 
         $products = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->get();
 
         $suppliers = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
         ->get();
         
         // dd($suppliers);
