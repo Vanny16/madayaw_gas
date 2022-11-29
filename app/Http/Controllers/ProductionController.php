@@ -160,50 +160,6 @@ class ProductionController extends Controller
         return redirect()->action('ProductionController@manage');
     }  
 
-    // //EMPTY CANISTERS
-    // public function addEmptyGoods(Request $request)
-    // {
-    //     $prd_id = $request->prd_id;
-    //     $prd_quantity = $request->quantity;
-
-    //     $quantity = DB::table('products')
-    //     ->where('prd_id', '=', $prd_id)
-    //     ->first();
-        
-    //     $prd_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
-
-    //     DB::table('products')
-    //     ->where('prd_id','=',$prd_id)
-    //     ->update([
-    //         'prd_empty_goods' => (float)$prd_quantity
-    //     ]);  
-
-    //     session()->flash('successMessage','Empty Canisters added');
-    //     return redirect()->action('ProductionController@manage');
-    // }   
-
-    // //CANISTER FILLING
-    // public function addFilled(Request $request)
-    // {
-    //     $prd_id = $request->prd_id;
-    //     $prd_quantity = $request->quantity;
-
-    //     $quantity = DB::table('products')
-    //     ->where('prd_id', '=', $prd_id)
-    //     ->first();
-        
-    //     $prd_quantity = (float)$quantity->prd_quantity + $prd_quantity;
-
-    //     DB::table('products')
-    //     ->where('prd_id','=',$prd_id)
-    //     ->update([
-    //         'prd_quantity' => (float)$prd_quantity,
-    //     ]);  
-
-    //     session()->flash('successMessage','Canister '. $quantity->prd_name .' added');
-    //     return redirect()->action('ProductionController@manage');
-    // }   
-
     //LEAKERS
     public function addLeakers()
     {
