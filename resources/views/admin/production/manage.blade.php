@@ -44,6 +44,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Name</th>
                                             <th>Stocks</th>
                                             <th></th>
@@ -59,6 +60,13 @@
                                                     @php($reorder_indicator = "")
                                                 @endif
                                                 <tr class="{{ $reorder_indicator }}">
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$raw_material->prd_name}}</td>
                                                     <td>{{$raw_material->prd_quantity}}
                                                         <br>
@@ -101,6 +109,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -111,6 +120,13 @@
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
                                                 <tr>
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_empty_goods}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
@@ -143,6 +159,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -154,6 +171,13 @@
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
                                                 <tr>
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_quantity}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
@@ -188,6 +212,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -199,6 +224,13 @@
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
                                                 <tr>
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_leakers}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalve</a></td>
@@ -225,6 +257,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -235,6 +268,13 @@
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
                                                 <tr>
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_for_revalving}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-info" disabled><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Send somewhere</a></td>
@@ -259,6 +299,7 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th width="50px"></th>
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -269,6 +310,13 @@
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
                                                 <tr>
+                                                    <td>
+                                                        @if($raw_material->prd_image <> '')
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                        @endif
+                                                    </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_scraps}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Send somewhere</a></td>
