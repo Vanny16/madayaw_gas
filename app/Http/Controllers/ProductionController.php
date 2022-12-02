@@ -28,12 +28,17 @@ class ProductionController extends Controller
         ->where('prd_is_refillable','=','1')
         ->get();
 
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->get();
+
         $suppliers = DB::table('suppliers')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
         
         // dd($suppliers);
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'suppliers'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers'));
     }
 
     //PRODUCTION

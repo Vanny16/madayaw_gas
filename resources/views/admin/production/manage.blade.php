@@ -121,7 +121,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>
-                                                        @if($raw_material->prd_image <> '')
+                                                        @if($canister->prd_image <> '')
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                         @else
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
@@ -134,7 +134,7 @@
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal" onclick="editItem(0)"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal" onclick="editItem({{$canister->prd_id}})"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                 <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
@@ -172,7 +172,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>
-                                                        @if($raw_material->prd_image <> '')
+                                                        @if($canister->prd_image <> '')
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                         @else
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
@@ -225,7 +225,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>
-                                                        @if($raw_material->prd_image <> '')
+                                                        @if($canister->prd_image <> '')
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                         @else
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
@@ -269,7 +269,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>
-                                                        @if($raw_material->prd_image <> '')
+                                                        @if($canister->prd_image <> '')
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                         @else
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
@@ -311,7 +311,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>
-                                                        @if($raw_material->prd_image <> '')
+                                                        @if($canister->prd_image <> '')
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                         @else
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
@@ -612,54 +612,50 @@
                         <div class="col-md-12">
                         <div class="form-group">
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}"/>
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_name" value=""/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_sku">Status <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sts_name" value=""/>
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_sku" value=""/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_price" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                             </div>
                             <div class="form-group">
                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_quantity" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_description" value="" />
                             </div>
                             <div class="form-group">
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_reorder" value="{{ $product->prd_reorder_point }}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                <input type="text" class="form-control" id="set_prd_name" name="prd_reorder" value="" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
                             </div>
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                 <select class="form-control" id="suppliers" name="sup_id" required>
-                                    @foreach($suppliers as $supplier)
+                                    {{--@foreach($suppliers as $supplier)
                                         @if($supplier->sup_active == 0)
                                             @continue
                                         @else
-                                            @if($product->sup_id == $supplier->sup_id)
+                                            @if($products->sup_id == $supplier->sup_id)--}}
                                                 <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
-                                            @else
+                                            {{--@else
                                                 <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
                                             @endif
                                         @endif
-                                    @endforeach   
+                                    @endforeach  --}}
                                 </select> 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> 
-                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}" hidden/>        
+                    <input type="text" class="form-control" name="prd_uuid" value=""  hidden/> 
+                    <input type="text" class="form-control" name="prd_id" value="" hidden/>        
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -669,12 +665,12 @@
 </div>
 
 <script>
-    function addItem(flag){
+    function addItem(prd_id){
         document.getElementById('set_add_flag').value = flag;
     }
 
-    function editItem(flag){
-        document.getElementById('set_edit_flag').value = flag;
+    function editItem(prd_id){
+        document.getElementById('set_prd_name').value = $canisters[prd_id]->prd_name;
     }
 
     function stockIn(prd_id, flag){

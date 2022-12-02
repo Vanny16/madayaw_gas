@@ -461,40 +461,6 @@
                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
                                 <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
                             </div>
-                         
-                            {{-- <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>For Production<span style="color:red">*</span></label>
-                                        <select class="form-control col-md-12" id="is_production">
-                                        @if($is_production == 1)
-                                            @php($is_select_production = "selected")
-                                            @php($is_not_production = "")
-                                        @else
-                                            @php($is_select_production = "")
-                                            @php($is_not_production = "selected")
-                                        @endif
-                                            <option value="0" {{ $is_not_production }}>NO</option>
-                                            <option value="1" {{ $is_select_production }}>YES</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Refillable<span style="color:red">*</span></label>
-                                        <select class="form-control col-md-12" id="is_refillable">
-                                        @if($is_refillable == 1)
-                                            @php($is_select_refillable = "selected")
-                                            @php($is_not_refillable = "")
-                                        @else
-                                            @php($is_select_refillable = "")
-                                            @php($is_not_refillable = "selected")
-                                        @endif
-                                            <option value="0" {{ $is_not_refillable }}>NO</option>
-                                            <option value="1" {{ $is_select_refillable }}>YES</option>
-                                        </select>
-                                    </div>
-                                </div>  
-                            </div> --}}
-                         
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                 <div class="form-inline">
