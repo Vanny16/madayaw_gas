@@ -421,7 +421,7 @@ class ProductionController extends Controller
             ]);  
         }
         session()->flash('successMessage','Product details updated.');
-        return redirect()->action('ProductController@manage');
+        return redirect()->action('ProductionController@manage');
     }
 
     //TANK CONTROLLER

@@ -83,12 +83,92 @@
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-raw-modal-{{$raw_material->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                 <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
                                                 </tr>
+
+                                                <!-- Edit Products Modal -->
+                                                <div class="modal fade" id="edit-raw-modal-{{$raw_material->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ action('ProductionController@editItem') }}" enctype="multipart/form-data">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-12 text-center">
+                                                                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                            <div class="col-12 text-center mb-4">
+                                                                            <a href="javascript:void(0);" class="">
+                                                                                <label class="btn btn-transparent btn-file">
+                                                                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                </label>
+                                                                            </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_name" name="prd_name" value="{{$raw_material->prd_name}}"/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_sku" name="prd_sku" value="{{$raw_material->prd_sku}}"/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$raw_material->prd_quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$raw_material->prd_description}}" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_reorder" name="prd_reorder" value="{{$raw_material->prd_reorder_point}}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                                                                <select class="form-control" id="suppliers" name="sup_id" required>
+                                                                                    @foreach($suppliers as $supplier)
+                                                                                        @if($supplier->sup_active == 0)
+                                                                                            @continue
+                                                                                        @else
+                                                                                            @if($raw_material->sup_id == $supplier->sup_id)
+                                                                                                <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
+                                                                                            @else
+                                                                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </select> 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$raw_material->prd_uuid}}" hidden/>
+                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$raw_material->prd_id}}" hidden/>        
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -129,17 +209,108 @@
                                                     </td>   
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_empty_goods}}</td>
-                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
+                                                    <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
+                                                        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal" onclick="editItem({{$canister->prd_id}})"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal"
+                                                                    onclick="editItem(
+                                                                    {{$canister->prd_id}},
+                                                                    {{$canister->prd_name}},
+                                                                    {{$canister->prd_sku}},
+                                                                    {{$canister->prd_price}},
+                                                                    {{$canister->prd_quantity}},
+                                                                    {{$canister->prd_description}},
+                                                                    {{$canister->prd_reorder_point}},
+                                                                    {{$canister->sup_id}}
+                                                                    )">
+                                                                    <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                 <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <!-- Edit Products Modal -->
+                                                <div class="modal fade" id="edit-raw-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ action('ProductionController@editItem') }}" enctype="multipart/form-data">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-12 text-center">
+                                                                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                            <div class="col-12 text-center mb-4">
+                                                                            <a href="javascript:void(0);" class="">
+                                                                                <label class="btn btn-transparent btn-file">
+                                                                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                </label>
+                                                                            </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_name" name="prd_name" value="{{$canister->prd_name}}"/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_sku" name="prd_sku" value="{{$canister->prd_sku}}"/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$canister->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$canister->prd_quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$canister->prd_description}}" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" id="set_prd_reorder" name="prd_reorder" value="{{$canister->prd_reorder_point}}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                                                                <select class="form-control" id="suppliers" name="sup_id" required>
+                                                                                    @foreach($suppliers as $supplier)
+                                                                                        @if($supplier->sup_active == 0)
+                                                                                            @continue
+                                                                                        @else
+                                                                                            @if($canister->sup_id == $supplier->sup_id)
+                                                                                                <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
+                                                                                            @else
+                                                                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </select> 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>        
+                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -584,94 +755,22 @@
     </div>
 </div>
 
-<!-- Edit Products Modal -->
-<div class="modal fade" id="edit-product-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="{{ action('ProductionController@editItem') }}" enctype="multipart/form-data">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                            <div class="col-12 text-center mb-4">
-                            <a href="javascript:void(0);" class="">
-                                <label class="btn btn-transparent btn-file">
-                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                </label>
-                            </a>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                        <div class="form-group">
-                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_name" value=""/>
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_sku" value=""/>
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_price" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_quantity" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_description" value="" />
-                            </div>
-                            <div class="form-group">
-                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="set_prd_name" name="prd_reorder" value="" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                <select class="form-control" id="suppliers" name="sup_id" required>
-                                    {{--@foreach($suppliers as $supplier)
-                                        @if($supplier->sup_active == 0)
-                                            @continue
-                                        @else
-                                            @if($products->sup_id == $supplier->sup_id)--}}
-                                                <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
-                                            {{--@else
-                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
-                                            @endif
-                                        @endif
-                                    @endforeach  --}}
-                                </select> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="text" class="form-control" name="prd_uuid" value=""  hidden/> 
-                    <input type="text" class="form-control" name="prd_id" value="" hidden/>        
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <script>
     function addItem(prd_id){
         document.getElementById('set_add_flag').value = flag;
     }
 
-    function editItem(prd_id){
-        document.getElementById('set_prd_name').value = $canisters[prd_id]->prd_name;
-    }
+    // function editItem(prd_id, prd_name, prd_sku, prd_price, prd_quantity, prd_description, prd_reorder_point, sup_id){
+    //     alert(prd_id);
+    //     document.getElementById('set_prd_id').value = prd_id;
+    //     document.getElementById('set_prd_name').value = prd_name;
+    //     // document.getElementById('set_prd_sku').value = prd_sku;
+    //     // document.getElementById('set_prd_price').value = prd_price;
+    //     // document.getElementById('set_prd_quantity').value = prd_quantity;
+    //     // document.getElementById('set_prd_description').value = prd_description;
+    //     // document.getElementById('set_prd_reorder').value = prd_reorder_point;
+    //     // document.getElementById('set_sup_id').value = sup_id;
+    // }
 
     function stockIn(prd_id, flag){
         document.getElementById('set_prd_id').value = prd_id;
