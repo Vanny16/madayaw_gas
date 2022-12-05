@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8"> 
+                <div class="col-md-7"> 
                     <div class="col-md-12"> 
                         <div class="card">
                             <div class="card-header">
@@ -500,64 +500,146 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4"> 
+
+                <div class="col-md-5"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
+                            <h3 class="card-title"><i class="fas fa-clock"></i> Daily Production Summary</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
                         </div>
-                        <!-- Opening -->
+                        <div class="col-12 mt-3 text-center">
+                            <small class="mr-3"><?php echo date(" F d, Y"); ?></small>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <th width="50%"></th>
+                                    <th width="50%"></th>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Start Time:</td>
+                                    <td class="text-left text-success"><strong>6:00 AM</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">End Time:</td>
+                                    <td class="text-left text-danger">3:00 PM</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Canisters -->
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row mb-3">
-                                <div class="col-7">
-                                    <small class="text-success">Opening Operations</small>
+                                <div class="col-12 text-center bg-info">
+                                    <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
                                 </div>
                             </div>
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
-                                        <th width="50px">#</th>
-                                        <th>Tank Name</th>
-                                        <th>Time Start</th>
-                                        <th>Tank Opening</th>
+                                        <th>Canister</th>
+                                        <th>MR</th>
+                                        <th>MS</th>
+                                        <th>Botin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i>Empty</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i>Filled</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i>Leakers</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i>For Revalving</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i>Scrap</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="row mb-3 mt-5">
+                                <div class="col-12 text-center bg-info">
+                                    <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
+                                </div>
+                            </div>
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Stock Status</th>
+                                        <th>MR</th>
+                                        <th>MS</th>
+                                        <th>Botin</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
                                     <tr>
-                                        <td class="text-danger">1</td>
-                                        <td>Tank 1</td>
-                                        <td>6:00 AM</td>
-                                        <td>5000 kgs</td>
+                                        <td><i>Opening Stocks</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i>Closing Stocks</i></td>
+                                        <td>200</td>
+                                        <td>200</td>
+                                        <td>200</td>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <hr>
-                        <!-- Closing -->
+
+                        <!-- Tank -->
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row mb-3">
-                                <div class="col-8">
-                                    <small class="text-danger">Closing Operations</small>
+                                <div class="col-12 text-center bg-info">
+                                    <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
                                 </div>
                             </div>
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
-                                        <th width="50px">#</th>
                                         <th>Tank Name</th>
-                                        <th>Time End</th>
+                                        <th>Tank Opening</th>
                                         <th>Tank Closing</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbl-products">
+                                <tbody>
                                     <tr>
-                                        <td class="text-danger">1</td>
                                         <td>Tank 1</td>
-                                        <td>3:00 PM</td>
-                                        <td>2567 kgs</td>
+                                        <td>5000 kgs</td>
+                                        <td>2345 kgs</td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tank 2</td>
+                                        <td>5000 kgs</td>
+                                        <td>2245 kgs</td>
                                         </td>
                                     </tr>
                                 </tbody>
