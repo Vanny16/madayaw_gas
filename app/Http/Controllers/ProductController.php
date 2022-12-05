@@ -21,8 +21,8 @@ class ProductController extends Controller
         $default_status = '0';
 
         $products = DB::table('products')
-        ->where('acc_id', '=', session('acc_id'))
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
         ->get();
 
         $suppliers = DB::table('suppliers')
@@ -63,6 +63,8 @@ class ProductController extends Controller
         'prd_sku' => $prd_sku,
         'prd_price' => $prd_price,
         'prd_reorder_point' => $prd_reorder, 
+        'prd_for_production' => 1,
+        'prd_is_refillable' => 1,
         'sup_id' => $sup_id
         ]);
 

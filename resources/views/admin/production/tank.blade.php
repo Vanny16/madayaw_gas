@@ -112,7 +112,7 @@
                 <div class="col-md-4"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clock"></i> Operations</h3>
+                            <h3 class="card-title"><i class="fas fa-clock"></i> Tank Operation</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>

@@ -108,4 +108,5 @@ Route::group(['prefix' => 'production'], function()
     
     Route::post('add-empty-goods', 'ProductionController@createProduct');
     Route::post('add-quantity', 'ProductionController@addQuantity');
+    Route::post('edit-product', 'ProductionController@editItem');
 });
