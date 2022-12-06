@@ -34,6 +34,7 @@ function check_materials($flag, $qty, $prd_id)
         ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','0')
+        ->where('prd_active','<>','0')    
         ->get();
     
         foreach ($raw_materials as $raw_material)
@@ -108,6 +109,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','0')
+        ->where('prd_active','<>','0')
         ->get();
 
         for($x = 0 ; sizeOf($raw_materials) - 1 >= $x ; $x++)

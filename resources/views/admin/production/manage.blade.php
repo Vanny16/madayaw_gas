@@ -81,8 +81,13 @@
                                                     </td>
                                                     <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                     <td>
-                                                        <span class="badge badge-success">Active</span>
-                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                        @if($raw_material->prd_active == 0)
+                                                            <span class="badge badge-danger">Inactive</span>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                        @else
+                                                            <span class="badge badge-success">Active</span>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">

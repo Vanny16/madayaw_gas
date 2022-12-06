@@ -424,6 +424,38 @@ class ProductionController extends Controller
         return redirect()->action('ProductionController@manage');
     }
 
+    //ACTIVATION CONTROLLER
+    public function activateProduct($prd_uuid)
+    {
+        $active_checker = DB::table('products')
+        ->where('prd_uuid','=',$prd_uuid)
+        ->first();
+
+        // dd($active_checker);
+        if($active_checker->prd_active == 0)
+        {
+            DB::table('products')
+            ->where('prd_uuid', '=', $prd_uuid)
+            ->update([
+                'prd_active' => 1
+            ]);    
+
+            session()->flash('successMessage','Product reactivated');
+            return redirect()->action('ProductionController@manage');
+        }
+        else
+        {
+            DB::table('products')
+            ->where('prd_uuid', '=', $prd_uuid)
+            ->update([
+                'prd_active' => 0
+            ]);
+
+            session()->flash('successMessage','Product deactivated');
+            return redirect()->action('ProductionController@manage');
+        }
+    }
+
     //TANK CONTROLLER
     public function tank()
     {
