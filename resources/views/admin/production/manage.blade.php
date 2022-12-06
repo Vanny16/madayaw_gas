@@ -396,7 +396,6 @@
                                             <th>Quantity</th>
                                             <th></th>
                                             <th></th>
-                                            <th width="50px"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-products">
@@ -439,7 +438,6 @@
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
-                                            <th width="50px"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-products">
@@ -481,7 +479,6 @@
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
-                                            <th width="50px"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-products">
