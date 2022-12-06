@@ -159,7 +159,7 @@ class ProductionController extends Controller
     //ADD QUANTITY FOR ITEMS
     public function addQuantity(Request $request)
     {
-        $prd_id = $request->prd_id;
+        $prd_id = $request->stockin_prd_id;
         (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         
@@ -182,7 +182,7 @@ class ProductionController extends Controller
         // 3 = leakers
         // 4 = revalve
         // 5 = scrap
-
+        
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS

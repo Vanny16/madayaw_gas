@@ -215,7 +215,7 @@
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal"
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-empty-modal-{{$canister->prd_id}}"
                                                                     onclick="editItem(
                                                                     {{$canister->prd_id}},
                                                                     {{$canister->prd_name}},
@@ -227,13 +227,13 @@
                                                                     {{$canister->sup_id}}
                                                                     )">
                                                                     <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-empty-modal-{{$canister->prd_id}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <!-- Edit Products Modal -->
-                                                <div class="modal fade" id="edit-raw-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal fade" id="edit-empty-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -828,7 +828,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
-                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -838,7 +838,7 @@
 </div>
 
 <script>
-    function addItem(prd_id){
+    function addItem(flag){
         document.getElementById('set_add_flag').value = flag;
     }
 
@@ -855,9 +855,9 @@
     // }
 
     function stockIn(prd_id, flag){
-        document.getElementById('set_prd_id').value = prd_id;
+        document.getElementById('set_stockin_id').value = prd_id;
         document.getElementById('set_stockin_flag').value = flag;
-
+        
         if(flag === 0){
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
