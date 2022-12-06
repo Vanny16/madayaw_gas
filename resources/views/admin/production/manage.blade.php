@@ -215,7 +215,7 @@
                                                     <td>{{$canister->prd_name}}</td>
                                                     <td>{{$canister->prd_empty_goods}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
-                                                        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
+                                                        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> New / Return Empty Cans</a></td>
                                                     <td>
                                                         <span class="badge badge-success">Active</span>
                                                         <a class="fa fa-toggle-on" type="button" href="{{-- action('ProductController@deactivateProduct',[$product->prd_id])--}}" aria-hidden="true"></a>
@@ -522,11 +522,11 @@
                                 </tr>
                                 <tr>
                                     <td class="text-right">Start Time:</td>
-                                    <td class="text-left text-success"><strong>6:00 AM</strong></td>
+                                    <td class="text-left text-success">6:00 AM</td>
                                 </tr>
                                 <tr>
                                     <td class="text-right">End Time:</td>
-                                    <td class="text-left text-danger">3:00 PM</td>
+                                    <td class="text-left text-danger">--:--</td>
                                 </tr>
                             </table>
                         </div>
@@ -635,13 +635,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Tank 1</td>
+                                        <td><i>Tank 1</i></td>
                                         <td>5000 kgs</td>
                                         <td>2345 kgs</td>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Tank 2</td>
+                                        <td><i>Tank 2</i></td>
                                         <td>5000 kgs</td>
                                         <td>2245 kgs</td>
                                         </td>
