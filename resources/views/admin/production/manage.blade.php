@@ -82,14 +82,13 @@
                                                     <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                     <td>
                                                         <span class="badge badge-success">Active</span>
-                                                        <a class="fa fa-toggle-on" type="button" href="{{-- action('ProductController@deactivateProduct',[$product->prd_id])--}}" aria-hidden="true"></a>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                             <ul class="dropdown-menu">
                                                                 <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-raw-modal-{{$raw_material->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -237,7 +236,6 @@
                                                                     {{$canister->sup_id}}
                                                                     )">
                                                                     <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-empty-modal-{{$canister->prd_id}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -419,7 +417,6 @@
                                                 </tr>
                                             @endforeach
                                         @endif
-                                            
                                     </tbody>
                                 </table>
                             </div>
