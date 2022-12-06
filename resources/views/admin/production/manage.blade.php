@@ -48,6 +48,7 @@
                                             <th>Name</th>
                                             <th>Stocks</th>
                                             <th></th>
+                                            <th></th>
                                             <th width="50px"></th>
                                         </tr>
                                     </thead>
@@ -79,6 +80,10 @@
                                                         @endif
                                                     </td>
                                                     <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
+                                                    <td>
+                                                        <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{-- action('ProductController@deactivateProduct',[$product->prd_id])--}}" aria-hidden="true"></a>
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -193,6 +198,7 @@
                                             <th>Canister</th>
                                             <th>Quantity</th>
                                             <th></th>
+                                            <th></th>
                                             <th width="50px"></th>
                                         </tr>
                                     </thead>
@@ -211,6 +217,10 @@
                                                     <td>{{$canister->prd_empty_goods}}</td>
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                         <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in</a></td>
+                                                    <td>
+                                                        <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{-- action('ProductController@deactivateProduct',[$product->prd_id])--}}" aria-hidden="true"></a>
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown">
                                                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
