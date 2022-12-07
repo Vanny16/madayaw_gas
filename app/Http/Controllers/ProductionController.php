@@ -16,7 +16,7 @@ class ProductionController extends Controller
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','0')
         ->get();
-        // dd($raw_materials);
+        
         $canisters = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -34,20 +34,37 @@ class ProductionController extends Controller
         ->get();
 
         $pdn_flag = check_production_date();
-
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers'));
+        // dd($pdn_flag);
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag'));
     }
 
     //PRODUCTION
-    public function toggleProduction()
+    public function toggleProduction()//$pdn_flag)
     {
-        DB::table('production_logs')
-        ->insert([
-            'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP') 
-        ]);
+        $pdn_flag = check_production_date();
+        
+        if($pdn_flag)
+        {
+            DB::table('production_logs')
+            ->insert([
+                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+                'pdn_action' => 1
+            ]);
 
-        session()->flash('successMessage','Production started!');
-        return redirect()->action('ProductionController@manage');
+            session()->flash('successMessage','Production started!');
+            return redirect()->action('ProductionController@manage');
+        }
+        else
+        {
+            DB::table('production_logs')
+            ->insert([
+                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+                'pdn_action' => 0 
+            ]);
+
+            session()->flash('successMessage','Production ended!');
+            return redirect()->action('ProductionController@manage');
+        }
     }
 
     public function stopProduction()

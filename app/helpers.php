@@ -4,10 +4,26 @@ function check_production_date()
     $production_logs = DB::table('production_logs')
     ->orderBy('pdn_id', 'desc')
     ->first();
-    
-    $d = $production_logs->pdn_datetime;
-    
-    return (date('Y-m-d',strtotime($d)) == date("Y-m-d"));
+
+    if($production_logs->pdn_action == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    // if(date('Y-m-d',strtotime($production_logs[0]->pdn_datetime)) != date("Y-m-d"))
+    // {
+    //     return true;
+    // }
+    // else
+    // {
+    //     if(date('Y-m-d',strtotime($production_logs[1]->pdn_datetime)) == date("Y-m-d"))
+    //     {  
+    //     }
+    // }
+    // return (date('Y-m-d',strtotime($production_logs->pdn_datetime)) != date("Y-m-d"));
 }
 
 function generateuuid()
