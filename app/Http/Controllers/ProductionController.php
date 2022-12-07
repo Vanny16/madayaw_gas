@@ -8,10 +8,6 @@ use DB;
 
 class ProductionController extends Controller
 {
-//    private $_quantity = DB::table('products')
-//         ->where('prd_id', '=', $prd_id)
-//         ->first();
-
     public function manage()
     {
         $raw_materials = DB::table('products')
@@ -36,8 +32,9 @@ class ProductionController extends Controller
         $suppliers = DB::table('suppliers')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
-        
-        // dd($suppliers);
+
+        $pdn_flag = check_production_date();
+
         return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers'));
     }
 

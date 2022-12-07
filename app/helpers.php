@@ -1,4 +1,15 @@
 <?php
+function check_production_date()
+{
+    $production_logs = DB::table('production_logs')
+    ->orderBy('pdn_id', 'desc')
+    ->first();
+    
+    $d = $production_logs->pdn_datetime;
+    
+    return (date('Y-m-d',strtotime($d)) == date("Y-m-d"));
+}
+
 function generateuuid()
 { 
     $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
