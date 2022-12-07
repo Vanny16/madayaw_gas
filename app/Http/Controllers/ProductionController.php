@@ -42,9 +42,15 @@ class ProductionController extends Controller
     }
 
     //PRODUCTION
-    public function startProduction()
+    public function toggleProduction()
     {
+        DB::table('production_logs')
+        ->insert([
+            'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP') 
+        ]);
 
+        session()->flash('successMessage','Production started!');
+        return redirect()->action('ProductionController@manage');
     }
 
     public function stopProduction()
@@ -163,6 +169,8 @@ class ProductionController extends Controller
         (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         
+        record_stockin($prd_id, $prd_quantity);
+
         $quantity = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id', '=', $prd_id)

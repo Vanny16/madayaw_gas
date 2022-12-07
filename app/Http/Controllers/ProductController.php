@@ -166,7 +166,7 @@ class ProductController extends Controller
                 'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
             ]);
             
-            record_stockin($prd_id, $prd_quantity);
+            record_stockin($prd_id, $prd_quantity);//, 1);
         }
 
         DB::table('products')

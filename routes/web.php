@@ -105,6 +105,7 @@ Route::group(['prefix' => 'production'], function()
 {
     Route::get('tank', 'ProductionController@tank');
     Route::get('manage', 'ProductionController@manage');
+    Route::get('toggle', 'ProductionController@toggleProduction');
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
     
     Route::post('add-empty-goods', 'ProductionController@createProduct');

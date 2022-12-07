@@ -26,7 +26,7 @@
             
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    <a class="btn btn-success col-lg-2 col-md-3 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
+                    <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "{{ action('ProductionController@toggleProduction')}}"><i class="fa fa-play mr-1"></i> Start Production</a>
                 </div>
             </div>
             <div class="row">
@@ -222,8 +222,13 @@
                                                     <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                         <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> New / Return Empty Cans</a></td>
                                                     <td>
-                                                        <span class="badge badge-success">Active</span>
-                                                        <a class="fa fa-toggle-on" type="button" href="{{-- action('ProductController@deactivateProduct',[$product->prd_id])--}}" aria-hidden="true"></a>
+                                                        @if($canister->prd_active == 0)
+                                                            <span class="badge badge-danger">Inactive</span>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$canister->prd_uuid])}}" aria-hidden="true"></a>
+                                                        @else
+                                                            <span class="badge badge-success">Active</span>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$canister->prd_uuid])}}" aria-hidden="true"></a>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -546,46 +551,53 @@
                                 <thead>
                                     <tr>
                                         <th>Canister</th>
-                                        <th>MR</th>
-                                        <th>MS</th>
-                                        <th>Botin</th>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <th>{{$canister->prd_name}}</th>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td><i>Empty</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        </td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{{$canister->prd_empty_goods}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td><i>Filled</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        </td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{{$canister->prd_quantity}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td><i>Leakers</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        </td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{{$canister->prd_leakers}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td><i>For Revalving</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        </td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{{$canister->prd_for_revalving}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td><i>Scrap</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        <td>200</td>
-                                        </td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{{$canister->prd_scraps}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 </tbody>
                             </table>
@@ -599,9 +611,11 @@
                                 <thead>
                                     <tr>
                                         <th>Stock Status</th>
-                                        <th>MR</th>
-                                        <th>MS</th>
-                                        <th>Botin</th>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <th>{{$canister->prd_name}}</th>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
@@ -609,15 +623,11 @@
                                         <td><i>Opening Stocks</i></td>
                                         <td>200</td>
                                         <td>200</td>
-                                        <td>200</td>
-                                        </td>
                                     </tr>
                                     <tr>
                                         <td><i>Closing Stocks</i></td>
                                         <td>200</td>
                                         <td>200</td>
-                                        <td>200</td>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

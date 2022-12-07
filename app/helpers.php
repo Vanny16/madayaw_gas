@@ -11,8 +11,15 @@ function generateuuid()
     return $string;
 }
 
-function record_stockin($prd_id, $quantity)
+function record_stockin($prd_id, $quantity)//, $flag)
 {
+    //FLAGS
+    // 1 = quantity
+    // 2 = leakers
+    // 3 = emptygoods
+    // 4 = for revalving
+    // 5 = scrap
+
     DB::table('quantity_logs')  
     ->insert([ 
         'acc_id' => session('acc_id'),
