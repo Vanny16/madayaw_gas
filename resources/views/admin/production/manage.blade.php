@@ -541,12 +541,12 @@
                             </table>
                         </div>
                         <!-- Canisters -->
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row mb-3">
-                                <div class="col-12 text-center bg-info">
-                                    <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
-                                </div>
+                        <div class="row mb-3">
+                            <div class="col-12 text-center bg-info">
+                                <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
                             </div>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
@@ -601,12 +601,15 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
 
-                            <div class="row mb-3 mt-5">
-                                <div class="col-12 text-center bg-info">
-                                    <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
-                                </div>
+                        <!-- Canisters -->
+                        <div class="row mb-3 mt-5">
+                            <div class="col-12 text-center bg-info">
+                                <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
                             </div>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
@@ -634,12 +637,12 @@
                         </div>
 
                         <!-- Tank -->
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row mb-3">
-                                <div class="col-12 text-center bg-info">
-                                    <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
-                                </div>
+                        <div class="row mb-3">
+                            <div class="col-12 text-center bg-info">
+                                <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
                             </div>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
