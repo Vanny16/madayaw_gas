@@ -195,96 +195,103 @@
             <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12" style="height:350px; overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Stocks</th>
-                                        <th width="70px"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbl-products">
-                                    @if(isset($products))
-                                        @foreach($products as $product)
-                                        <tr>
-                                            @if($product->prd_name)
-                                                <td>   
-                                                    {{$product->prd_name}}
-                                                </td>
-                                            @else
-                                                <td>-</td>
-                                            @endif
-                                            @if($product->prd_price)
-                                                <td>   
-                                                {{$product->prd_price}}
-                                                </td>
-                                            @else
-                                                <td>-</td>
-                                            @endif
-                                            @if($product->prd_quantity)
-                                                <td>   
-                                                {{$product->prd_quantity}}
-                                                </td>
-                                            @else
-                                                <td>-</td>
-                                            @endif
-                                            <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)"><i class="fa fa-plus"></i></button></td>
-                                
-                                            <!-- Order Details Modal -->
-                                            <div class="modal fade" id="order_details_modal{{$product->prd_id}}" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-md" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
+                 
+                    <div class="col-12" style="height:350px; overflow-x:auto;">
+                       
+                        <div class="row">
+                            @if(isset($products))
+                                @foreach($products as $product)
+                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
+                                    <div class="card">
+                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
+                                        <div class="container">
+                                            <h4><b>Botin</b></h4>
+                                            <p>100.00</p>
+                                            <p>100/pcs</p>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
+                                    <div class="card">
+                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
+                                        <div class="container">
+                                            <h4><b>Botin</b></h4>
+                                            <p>100.00</p>
+                                            <p>100/pcs</p>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
+                                    <div class="card">
+                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
+                                        <div class="container">
+                                            <h4><b>Botin</b></h4>
+                                            <p>100.00</p>
+                                            <p>100/pcs</p>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
+                                    <div class="card">
+                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
+                                        <div class="container">
+                                            <h4><b>Botin</b></h4>
+                                            <p>100.00</p>
+                                            <p>100/pcs</p>
+                                        </div>    
+                                    </div>
+                                </div>
+                        
+                                <!-- Order Details Modal -->
+                                <div class="modal fade" id="order_details_modal" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="cus_name">Product <span style="color:red">*</span></label>
+                                                            <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" value="{{$product->prd_name}}" required readonly/>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label for="cus_name">Product <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" value="{{$product->prd_name}}" required readonly/>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                                        <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                        <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                                    </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="cus_address">Price <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="cus_address">Quantity <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                        </div>
 
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
-                                                                        <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="cus_address">Total Amount <span style="color:red">*</span></label>
-                                                                        <input type="text" class="form-control" id="sub_total{{$product->prd_id}}" value="0.00" onkeypress="return isNumberKey(this, event);" readonly></input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="cus_address">Total Amount <span style="color:red">*</span></label>
+                                                            <input type="text" class="form-control" id="sub_total{{$product->prd_id}}" value="0.00" onkeypress="return isNumberKey(this, event);" readonly></input>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
+               
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
