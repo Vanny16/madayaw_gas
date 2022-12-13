@@ -29,8 +29,9 @@ class ProductController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get();
         
+        $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers'));
+        return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
 
     }
 

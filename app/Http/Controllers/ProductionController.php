@@ -23,6 +23,7 @@ class ProductionController extends Controller
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
+        // dd($canisters);
 
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -33,15 +34,66 @@ class ProductionController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get();
 
-        $pdn_flag = check_production_date();
+        $pdn_flag = check_production_log();
         // dd($pdn_flag);
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag'));
+
+        $production_times = DB::table('production_logs')
+        ->orderBy('pdn_id', 'desc')
+        ->get();
+
+        $production_canisters = DB::table('movement_logs')
+        ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+        ->where('movement_logs.acc_id', '=', session('acc_id'))
+        ->where('movement_logs.pdn_id','=', get_last_production_id())
+        ->get();
+
+        if(date('Y-m-d',strtotime($production_times[0]->pdn_datetime)) == date("Y-m-d"))
+        {
+            if($production_times[0]->pdn_action == 0)
+            {
+                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times[1]->pdn_datetime));
+                $pdn_end_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
+            }
+            else
+            {
+                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
+                $pdn_end_time = "--:--";
+
+                // $production_logs = DB::table('production_logs')
+                // ->where('pdn_datetime' = )
+                // ->get();
+            }   
+        }
+        else
+        {
+            if($production_times[0]->pdn_action == 0)
+            {
+                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times[1]->pdn_datetime));
+                $pdn_end_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
+            }
+            else
+            {
+                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
+                $pdn_end_time = "--:--";
+
+                // $production_logs = DB::table('production_logs')
+                // ->where('pdn_datetime' = )
+                // ->get();
+            }
+        }
+
+        // dd($production_canisters);
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'production_canisters', 'pdn_date','pdn_start_time','pdn_end_time'));
     }
 
     //PRODUCTION
-    public function toggleProduction()//$pdn_flag)
+    public function toggleProduction()
     {
-        $pdn_flag = check_production_date();
+        $pdn_flag = check_production_log();
         
         if($pdn_flag)
         {
@@ -65,11 +117,6 @@ class ProductionController extends Controller
             session()->flash('successMessage','Production ended!');
             return redirect()->action('ProductionController@manage');
         }
-    }
-
-    public function stopProduction()
-    {
-
     }
 
     public function createProduct(Request $request)
@@ -99,35 +146,35 @@ class ProductionController extends Controller
 
         if($flag == 0)
         {
-        DB::table('products')
-        ->insert([
-        'prd_name'=> $prd_name,
-        'acc_id' => session('acc_id'),
-        'prd_uuid' => generateuuid(),
-        'prd_description' => $prd_description,
-        'prd_sku' => $prd_sku,
-        'prd_price' => $prd_price,
-        'prd_reorder_point' => $prd_reorder,
-        'prd_for_production' => 1,
-        'prd_is_refillable' => 0,
-        'sup_id' => $sup_id
-        ]);
+            DB::table('products')
+            ->insert([
+            'prd_name'=> $prd_name,
+            'acc_id' => session('acc_id'),
+            'prd_uuid' => generateuuid(),
+            'prd_description' => $prd_description,
+            'prd_sku' => $prd_sku,
+            'prd_price' => $prd_price,
+            'prd_reorder_point' => $prd_reorder,
+            'prd_for_production' => 1,
+            'prd_is_refillable' => 0,
+            'sup_id' => $sup_id
+            ]);
         }
         elseif($flag == 1)
         {
-        DB::table('products')
-        ->insert([
-        'prd_name'=> $prd_name,
-        'acc_id' => session('acc_id'),
-        'prd_uuid' => generateuuid(),
-        'prd_description' => $prd_description,
-        'prd_sku' => $prd_sku,
-        'prd_price' => $prd_price,
-        'prd_reorder_point' => $prd_reorder,
-        'prd_for_production' => 1,
-        'prd_is_refillable' => 1,
-        'sup_id' => $sup_id
-        ]);
+            DB::table('products')
+            ->insert([
+            'prd_name'=> $prd_name,
+            'acc_id' => session('acc_id'),
+            'prd_uuid' => generateuuid(),
+            'prd_description' => $prd_description,
+            'prd_sku' => $prd_sku,
+            'prd_price' => $prd_price,
+            'prd_reorder_point' => $prd_reorder,
+            'prd_for_production' => 1,
+            'prd_is_refillable' => 1,
+            'sup_id' => $sup_id
+            ]);
         }
 
         if($request->file('prd_image'))
@@ -234,6 +281,9 @@ class ProductionController extends Controller
 
                 // SUBTRACT FROM RAW MATERIALS
                 subtract_qty($flag, $prd_quantity, $prd_id);
+
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
 
                 session()->flash('successMessage','Empty goods added');
                 return redirect()->action('ProductionController@manage');

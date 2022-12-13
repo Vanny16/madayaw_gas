@@ -21,6 +21,7 @@ Route::get('/logout', 'LoginController@logout');
 Route::group(['prefix' => 'home'], function()
 {
     Route::get('main', 'MainController@home');
+    Route::get('toggle', 'MainController@toggleProduction');
 });
 
 Route::group(['prefix' => 'user'], function()

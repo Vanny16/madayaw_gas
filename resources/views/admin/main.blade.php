@@ -35,9 +35,15 @@
 
 							<div class="card-body bg-light">
 								<div class="row">
-									<div class="col-12 text-white mb-3">
-										<a class="btn btn-success col-md-3 col-12"><i class="fa fa-play mr-1"></i> Start Production</a>
-									</div>
+									@if($pdn_flag)
+										<div class="col-12 text-white mb-3">
+											<a class="btn btn-success col-lg-2 col-md-3 col-12" href= "{{ action('MainController@toggleProduction')}}"><i class="fa fa-play mr-1"></i> Start Production</a>
+										</div>
+									@else
+										<div class="col-12 text-white mb-3">
+											<a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "{{ action('MainController@toggleProduction')}}"><i class="fa fa-stop mr-1"></i> End Production</a>
+										</div>
+									@endif
 								</div>
 							</div>
 						</div>
