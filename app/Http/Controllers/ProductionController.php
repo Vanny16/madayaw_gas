@@ -41,12 +41,6 @@ class ProductionController extends Controller
         ->orderBy('pdn_id', 'desc')
         ->get();
 
-        $production_canisters = DB::table('movement_logs')
-        ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-        ->where('movement_logs.acc_id', '=', session('acc_id'))
-        ->where('movement_logs.pdn_id','=', get_last_production_id())
-        ->get();
-
         if(date('Y-m-d',strtotime($production_times[0]->pdn_datetime)) == date("Y-m-d"))
         {
             if($production_times[0]->pdn_action == 0)
@@ -86,8 +80,7 @@ class ProductionController extends Controller
             }
         }
 
-        // dd($production_canisters);
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'production_canisters', 'pdn_date','pdn_start_time','pdn_end_time'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
     }
 
     //PRODUCTION
@@ -312,6 +305,9 @@ class ProductionController extends Controller
                 //SUBTRACT FROM RAW MATERIALS
                 subtract_qty($flag, $prd_quantity, $prd_id);
 
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
+
                 session()->flash('successMessage','Canister added');
                 return redirect()->action('ProductionController@manage');
             } 
@@ -332,12 +328,15 @@ class ProductionController extends Controller
                 'prd_leakers' => $new_quantity
             ]);  
 
+            //LOG ACTION IN PRODUCTION
+            record_movement($prd_id, $prd_quantity, $flag);
+            
             session()->flash('successMessage','Leakers added');
             return redirect()->action('ProductionController@manage');
         }
         elseif($flag == 4)
         {
-            // dd(check_materials($flag, $prd_quantity, $prd_id));
+            
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY TO REVALVING FROM LEAKERS
@@ -351,6 +350,9 @@ class ProductionController extends Controller
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
+
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
 
                 session()->flash('successMessage','Leakers sent to Revalves');
                 return redirect()->action('ProductionController@manage');
@@ -376,6 +378,9 @@ class ProductionController extends Controller
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
+                
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
 
                 session()->flash('successMessage','Leakers sent as Scraps');
                 return redirect()->action('ProductionController@manage');
@@ -389,7 +394,6 @@ class ProductionController extends Controller
     }  
 
     //EDIT PRODUCTION ITEMS
-
     public function editItem(Request $request)
     {
         $prd_id = $request->prd_id;
@@ -578,8 +582,6 @@ class ProductionController extends Controller
             session()->flash('successMessage','Supplier has been added');
             session()->flash('getProdValues', array( $prodValues));
         }
-
         return redirect()->action('ProductionController@manage');
     }
-
 }

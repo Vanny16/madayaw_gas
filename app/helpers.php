@@ -380,7 +380,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_scraps' => $scraps->prd_leakers - $qty 
+            'prd_leakers' => $scraps->prd_leakers - $qty 
         ]);
     }
 }
