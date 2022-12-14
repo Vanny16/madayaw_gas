@@ -64,13 +64,13 @@ class ProductionController extends Controller
         {
             if($production_times[0]->pdn_action == 0)
             {
-                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_date = date("F j, Y", strtotime($production_times[1]->pdn_datetime));
                 $pdn_start_time = date("h:i:s a", strtotime($production_times[1]->pdn_datetime));
                 $pdn_end_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
             }
             else
             {
-                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
+                $pdn_date = date("F j, Y", strtotime($production_times[1]->pdn_datetime));
                 $pdn_start_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
                 $pdn_end_time = "--:--";
 
@@ -583,5 +583,10 @@ class ProductionController extends Controller
             session()->flash('getProdValues', array( $prodValues));
         }
         return redirect()->action('ProductionController@manage');
+    }
+
+    private function date_span_checker()
+    {
+
     }
 }

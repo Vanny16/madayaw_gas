@@ -563,9 +563,6 @@
                                     <tr>
                                         <td><i>Empty</i></td>
                                         @if(isset($canisters))
-                                            {{--@foreach($canisters as $canister)
-                                                <td>{{$canister->prd_empty_goods}}</td>
-                                            @endforeach--}}
                                             @foreach($canisters as $canister)
                                                 <th>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</th>
                                             @endforeach
@@ -574,9 +571,6 @@
                                     <tr>
                                         <td><i>Filled</i></td>
                                         @if(isset($canisters))
-                                            {{--@foreach($canisters as $canister)
-                                                <td>{{$canister->prd_quantity}}</td>
-                                            @endforeach--}}
                                             @foreach($canisters as $canister)
                                                 <th>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</th>
                                             @endforeach
@@ -585,9 +579,6 @@
                                     <tr>
                                         <td><i>Leakers</i></td>
                                         @if(isset($canisters))
-                                            {{--@foreach($canisters as $canister)
-                                                <td>{{$canister->prd_leakers}}</td>
-                                            @endforeach--}}
                                             @foreach($canisters as $canister)
                                                 <th>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</th>
                                             @endforeach
@@ -596,9 +587,6 @@
                                     <tr>
                                         <td><i>For Revalving</i></td>
                                         @if(isset($canisters))
-                                            {{--@foreach($canisters as $canister)
-                                                <td>{{$canister->prd_for_revalving}}</td>
-                                            @endforeach--}}
                                             @foreach($canisters as $canister)
                                                 <th>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</th>
                                             @endforeach
@@ -607,9 +595,6 @@
                                     <tr>
                                         <td><i>Scrap</i></td>
                                         @if(isset($canisters))
-                                            {{--@foreach($canisters as $canister)
-                                                <td>{{$canister->prd_scraps}}</td>
-                                            @endforeach--}}
                                             @foreach($canisters as $canister)
                                                 <th>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</th>
                                             @endforeach

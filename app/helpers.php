@@ -75,13 +75,14 @@ function get_quantity($flag, $prd_id)
 function get_last_production_id()
 { 
     $production_logs = DB::table('production_logs')
+    ->where('pdn_action', '=', '1')
     ->orderBy('pdn_id', 'desc')
     ->first();
 
     return $production_logs->pdn_id;
 }
 
-function record_stockin($prd_id, $quantity)//, $flag)
+function record_stockin($prd_id, $quantity)
 {
     //FLAGS
     // 1 = quantity
@@ -187,6 +188,7 @@ function get_quantity_of_canisters($prd_id, $flag)
     // 3 = leakers
     // 4 = for revalving
     // 5 = scrap
+
     if($flag == 1)
     {
         $query = $query->sum('log_empty_goods');
