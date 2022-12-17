@@ -391,7 +391,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
@@ -519,7 +518,7 @@
                 <div class="col-md-5"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clock"></i> Daily Production Summary</h3>
+                            <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                             </div>
@@ -625,13 +624,28 @@
                                 <tbody id="tbl-products">
                                     <tr>
                                         <td><i>Opening Stocks</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{!! get_stock_report($canister->prd_id, 1) !!}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td><i>Closing Stocks</i></td>
-                                        <td>200</td>
-                                        <td>200</td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <td>{!! get_stock_report($canister->prd_id, 2) !!}</td>
+                                            @endforeach
+                                        @endif
+                                    </tr>
+                                    <hr>
+                                    <tr>
+                                        <td><b>Total Stocks</b></td>
+                                        @if(isset($canisters))
+                                            @foreach($canisters as $canister)
+                                                <strong><td>{!! get_stock_report($canister->prd_id, 3) !!}</td></strong>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 </tbody>
                             </table>

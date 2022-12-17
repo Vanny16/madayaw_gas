@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 use DB;
 
 class ProductionController extends Controller
@@ -35,51 +37,34 @@ class ProductionController extends Controller
         ->get();
 
         $pdn_flag = check_production_log();
-        // dd($pdn_flag);
+        // dd(get_stock_report());
 
         $production_times = DB::table('production_logs')
         ->orderBy('pdn_id', 'desc')
-        ->get();
+        ->first();
 
-        if(date('Y-m-d',strtotime($production_times[0]->pdn_datetime)) == date("Y-m-d"))
+        if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
         {
-            if($production_times[0]->pdn_action == 0)
+            if($production_times->pdn_end_time <> 0)
             {
-                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times[1]->pdn_datetime));
-                $pdn_end_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
+                $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
             }
             else
             {
-                $pdn_date = date("F j, Y", strtotime($production_times[0]->pdn_datetime));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
-                $pdn_end_time = "--:--";
-
-                // $production_logs = DB::table('production_logs')
-                // ->where('pdn_datetime' = )
-                // ->get();
+                $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
             }   
         }
         else
         {
-            if($production_times[0]->pdn_action == 0)
-            {
-                $pdn_date = date("F j, Y", strtotime($production_times[1]->pdn_datetime));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times[1]->pdn_datetime));
-                $pdn_end_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
-            }
-            else
-            {
-                $pdn_date = date("F j, Y", strtotime($production_times[1]->pdn_datetime));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times[0]->pdn_datetime));
-                $pdn_end_time = "--:--";
-
-                // $production_logs = DB::table('production_logs')
-                // ->where('pdn_datetime' = )
-                // ->get();
-            }
+            $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+            $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+            $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
         }
-
+        
         return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
     }
 
@@ -87,13 +72,13 @@ class ProductionController extends Controller
     public function toggleProduction()
     {
         $pdn_flag = check_production_log();
-        
+
         if($pdn_flag)
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_action' => 1
+                'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
             session()->flash('successMessage','Production started!');
@@ -102,9 +87,8 @@ class ProductionController extends Controller
         else
         {
             DB::table('production_logs')
-            ->insert([
-                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_action' => 0 
+            ->update([
+                'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
             session()->flash('successMessage','Production ended!');
@@ -583,10 +567,5 @@ class ProductionController extends Controller
             session()->flash('getProdValues', array( $prodValues));
         }
         return redirect()->action('ProductionController@manage');
-    }
-
-    private function date_span_checker()
-    {
-
     }
 }

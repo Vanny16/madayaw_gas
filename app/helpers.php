@@ -17,7 +17,7 @@ function check_production_log()
     ->orderBy('pdn_id', 'desc')
     ->first();
 
-    if($production_logs->pdn_action == 0)
+    if($production_logs->pdn_end_time <> null)
     {
         return true;
     }
@@ -25,17 +25,6 @@ function check_production_log()
     {
         return false;
     }
-    // if(date('Y-m-d',strtotime($production_logs[0]->pdn_datetime)) != date("Y-m-d"))
-    // {
-    //     return true;
-    // }
-    // else
-    // {
-    //     if(date('Y-m-d',strtotime($production_logs[1]->pdn_datetime)) == date("Y-m-d"))
-    //     {  
-    //     }
-    // }
-    // return (date('Y-m-d',strtotime($production_logs->pdn_datetime)) != date("Y-m-d"));
 }
 
 function get_quantity($flag, $prd_id)
@@ -51,7 +40,7 @@ function get_quantity($flag, $prd_id)
     // 4 = for revalving
     // 5 = scrap
 
-    if($production_logs->pdn_action == 0)
+    if($production_logs->pdn_end_time <> null)
     {
         return true;
     }
@@ -59,27 +48,15 @@ function get_quantity($flag, $prd_id)
     {
         return false;
     }
-    // if(date('Y-m-d',strtotime($production_logs[0]->pdn_datetime)) != date("Y-m-d"))
-    // {
-    //     return true;
-    // }
-    // else
-    // {
-    //     if(date('Y-m-d',strtotime($production_logs[1]->pdn_datetime)) == date("Y-m-d"))
-    //     {  
-    //     }
-    // }
-    // return (date('Y-m-d',strtotime($production_logs->pdn_datetime)) != date("Y-m-d"));
 }
 
-function get_last_production_id()
+function date_span_checker()
 { 
-    $production_logs = DB::table('production_logs')
-    ->where('pdn_action', '=', '1')
+    $production_times = DB::table('production_logs')
     ->orderBy('pdn_id', 'desc')
-    ->first();
+    ->get();
 
-    return $production_logs->pdn_id;
+
 }
 
 function record_stockin($prd_id, $quantity)
@@ -174,6 +151,15 @@ function record_movement($prd_id, $quantity, $flag)
     
 }
 
+function get_last_production_id()
+{ 
+    $production_logs = DB::table('production_logs')
+    ->orderBy('pdn_id', 'desc')
+    ->first();
+
+    return $production_logs->pdn_id;
+}
+
 function get_quantity_of_canisters($prd_id, $flag)
 { 
     $query = DB::table('movement_logs')
@@ -219,8 +205,41 @@ function get_quantity_of_canisters($prd_id, $flag)
          
         return $query;
     }
+}
 
-    
+function get_stock_report($prd_id, $flag)
+{
+    $query = DB::table('movement_logs')
+    ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    ->where('movement_logs.acc_id', '=', session('acc_id'))
+    ->where('movement_logs.pdn_id','=', get_last_production_id());
+
+    $production_logs = DB::table('movement_logs')
+    ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    ->where('movement_logs.acc_id', '=', session('acc_id'));
+
+    //FLAGS
+    // 1 = OPENING
+    // 2 = CLOSING 
+    // 3 = TOTAL
+    if($flag == 1)
+    {
+        return $production_logs = $production_logs 
+        ->where('prd_id','=', $prd_id)
+        ->where('movement_logs.pdn_id','<>', get_last_production_id())
+        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    }
+    elseif($flag == 2)
+    {
+        return $production_logs = $production_logs 
+        ->where('prd_id','=', $prd_id)
+        ->where('movement_logs.pdn_id','=', get_last_production_id())
+        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    }    
+    elseif($flag == 3)
+    {
+        return $production_logs = $production_logs ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    }
 }
 
 function check_materials($flag, $qty, $prd_id)
