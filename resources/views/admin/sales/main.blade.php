@@ -195,13 +195,11 @@
             <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
-                 
                     <div class="col-12" style="height:350px; overflow-x:auto;">
-                       
                         <div class="row">
                             @if(isset($products))
                                 @foreach($products as $product)
-                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
+                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal"  >
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">

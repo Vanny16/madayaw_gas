@@ -234,11 +234,14 @@ function get_stock_report($prd_id, $flag)
         return $production_logs = $production_logs 
         ->where('prd_id','=', $prd_id)
         ->where('movement_logs.pdn_id','=', get_last_production_id())
-        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+        ->sum(DB::raw('log_filled')) + get_stock_report($prd_id, 1);
+        // ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps')) + get_stock_report($prd_id, 1); TEST
     }    
     elseif($flag == 3)
     {
-        return $production_logs = $production_logs ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+        return $production_logs = $production_logs 
+        ->where('movement_logs.prd_id', '=', $prd_id)
+        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
     }
 }
 
