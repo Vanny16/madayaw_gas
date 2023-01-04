@@ -229,7 +229,10 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_empty_goods}}</td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
-                                                                    <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> New / Return Empty Cans</a></td>
+                                                                    <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> New Empty Cans</a></td>
+                                                                <td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
+                                                                    <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>Return Empty Cans</a></td>
                                                                 <td>
                                                                     @if($canister->prd_active == 0)
                                                                         <span class="badge badge-danger">Inactive</span>
