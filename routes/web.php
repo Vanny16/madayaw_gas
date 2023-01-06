@@ -98,7 +98,7 @@ Route::group(['prefix' => 'print'], function()
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
-
+    Route::get('report', 'SalesController@report');
     Route::post('create-customer', 'SalesController@createCustomer');
 });
 

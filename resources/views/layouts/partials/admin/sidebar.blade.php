@@ -53,7 +53,7 @@
                 @endif
 
                 <li class="nav-item">
-                    <a href="{{-- action('SalesController@main') --}}" class="nav-link">
+                    <a href="{{ action('SalesController@report') }}" class="nav-link">
                         <i class="nav-icon fa fa-bar-chart"></i>
                         <p>
                             Sales Reports
