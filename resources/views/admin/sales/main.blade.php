@@ -52,10 +52,8 @@
                                             @endforeach
                                         @endif            
                                     </select>
-
                                     <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
                                 </div>
-
                                 <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
                                     <small>
                                         <i id="current-date-now"><?php echo date(" F d, Y"); ?> </i>
@@ -112,9 +110,6 @@
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
                     </div>
-
-                    <!--   -->
-
                 </div>
             </div>
 
@@ -199,49 +194,18 @@
                         <div class="row">
                             @if(isset($products))
                                 @foreach($products as $product)
-                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal"  >
+                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}"  >
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
-                                            <h4><b>Botin</b></h4>
-                                            <p>100.00</p>
+                                            <h4><b>{{$product->prd_name}}</b></h4>
+                                            <p>PHP 100.00</p>
                                             <p>100/pcs</p>
                                         </div>    
                                     </div>
                                 </div>
-                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
-                                    <div class="card">
-                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
-                                        <div class="container">
-                                            <h4><b>Botin</b></h4>
-                                            <p>100.00</p>
-                                            <p>100/pcs</p>
-                                        </div>    
-                                    </div>
-                                </div>
-                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
-                                    <div class="card">
-                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
-                                        <div class="container">
-                                            <h4><b>Botin</b></h4>
-                                            <p>100.00</p>
-                                            <p>100/pcs</p>
-                                        </div>    
-                                    </div>
-                                </div>
-                                <div class="col" data-toggle="modal" data-target="#order_details_modal">
-                                    <div class="card">
-                                        <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
-                                        <div class="container">
-                                            <h4><b>Botin</b></h4>
-                                            <p>100.00</p>
-                                            <p>100/pcs</p>
-                                        </div>    
-                                    </div>
-                                </div>
-                        
                                 <!-- Order Details Modal -->
-                                <div class="modal fade" id="order_details_modal" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-md" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -289,7 +253,6 @@
                         </div>
                     </div>
                 </div>
-               
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
@@ -332,11 +295,11 @@
                     {{ csrf_field() }} 
                         <div class="form-group">
                             <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
-                            <input type="text" name="cus_contact" class="form-control" required readonly></input>
+                            <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
                         </div>
                         <div class="form-group">
                             <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                            <input type="text" name="cus_contact" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                            <input type="text" id="amount_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
                         </div>
                     </form>
                 </div>

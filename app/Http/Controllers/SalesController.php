@@ -15,7 +15,8 @@ class SalesController extends Controller
     {
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('prd_quantity', '!=' ,'0.0')
+        ->where('prd_for_POS', '=' ,'1')
+        ->where('prd_quantity', '<>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
         // dd(compact('products'));

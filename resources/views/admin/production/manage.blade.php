@@ -536,10 +536,10 @@
                                 </tr>
                                 <tr>
                                     <td class="text-right">End Time:  </td>
-                                    @if($pdn_end_time == null)
-                                        <td class="text-left text-danger">{{$pdn_end_time}}</td>
-                                    @else    
+                                    @if(empty($pdn_end_time))
                                         <td class="text-left text-danger">-- : -- : -- --</td>
+                                    @else    
+                                        <td class="text-left text-danger">{{$pdn_end_time}}</td>
                                     @endif
                                 </tr>
                             </table>

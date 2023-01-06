@@ -55,7 +55,8 @@ class ProductionController extends Controller
             {
                 $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
                 $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                $pdn_end_time = '-- : -- --'; 
+                // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
             }   
         }
         else

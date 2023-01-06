@@ -24,28 +24,54 @@ class MainController extends Controller
     public function toggleProduction()
     {
         $pdn_flag = check_production_log();
-        
+
         if($pdn_flag)
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_action' => 1
+                'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
             session()->flash('successMessage','Production started!');
-            return redirect()->action('MainController@home');
+            return redirect()->action('ProductionController@manage');
         }
         else
         {
             DB::table('production_logs')
-            ->insert([
-                'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_action' => 0 
+            ->update([
+                'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
             session()->flash('successMessage','Production ended!');
-            return redirect()->action('MainController@home');
+            return redirect()->action('ProductionController@manage');
         }
     }
+    // public function toggleProduction()
+    // {
+    //     $pdn_flag = check_production_log();
+        
+    //     if($pdn_flag)
+    //     {
+    //         DB::table('production_logs')
+    //         ->insert([
+    //             'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_action' => 1
+    //         ]);
+
+    //         session()->flash('successMessage','Production started!');
+    //         return redirect()->action('MainController@home');
+    //     }
+    //     else
+    //     {
+    //         DB::table('production_logs')
+    //         ->insert([
+    //             'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_action' => 0 
+    //         ]);
+
+    //         session()->flash('successMessage','Production ended!');
+    //         return redirect()->action('MainController@home');
+    //     }
+    // }
 }
