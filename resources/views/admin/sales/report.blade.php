@@ -34,25 +34,25 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                
                                 <div class="col-md-4 mb-3">
                                     <label for="date_from">From</label>
-                                
-                                    <input type="date" class="form-control" name="date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" required/>
-                                        
+                                    <input type="date" class="form-control" name="date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" required/>     
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="date_to">To</label>
-                            
                                     <input type="date" class="form-control" name="date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" required/>
-
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Selected Products</h3>
+                            <h3 class="card-title">Sales Reports</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -77,7 +77,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 </div>
