@@ -299,7 +299,7 @@
                         </div>
                         <div class="form-group">
                             <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                            <input type="text" id="amount_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                            <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
                         </div>
                     </form>
                 </div>
