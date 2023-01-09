@@ -30,6 +30,11 @@ class SalesController extends Controller
         return view('admin.sales.main', compact('products', 'customers'));
     }
 
+    public function report()
+    {
+        return view('admin.sales.report');
+    }
+
     public function createCustomer(Request $request)
     {
         $cus_name = $request->cus_name;
