@@ -109,4 +109,8 @@ class SalesController extends Controller
         return redirect()->action('SalesController@main');
     }
     
+    public function paymentSales(Request $request)
+    {
+        
+    }
 }
