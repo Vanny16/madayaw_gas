@@ -243,7 +243,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart(prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -301,6 +301,7 @@
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
                                 <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                                <input type="hidden" id="receipt_list[]" name="receipt_list[]" class="form-control" value=""></input>
                             </div>
                         </form>
                     </div>
@@ -434,7 +435,7 @@
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
-    function addToCart(prd_name, prd_price, prd_quantity, temp_discount, modal) {
+    function addToCart(prd_id, prd_name, prd_price, prd_quantity, temp_discount, modal) {
         if(prd_quantity != "" || prd_quantity > 0){
             //Calculations
             var total = document.getElementById("lbl_total").innerHTML;
@@ -469,8 +470,20 @@
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
             //Initialize Array for Sales Report
-            var report = new Array();
-            
+            var list = new Array();
+            var details = new Array();
+            var count = 0;
+
+            details[0] = prd_id;
+            details[1] = prd_name;
+            details[2] = prd_price;
+            details[3] = prd_quantity;
+            details[4] = temp_discount;
+            details[5] = sub_total;
+
+            list[count] = details[];
+            count += 1;
+
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
