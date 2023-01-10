@@ -311,6 +311,22 @@
                         <div class="col-12">
                             <div class="row">
                                 <table class="table table-sm table-borderless text-left">
+                                    <thead>
+                                        <th>Qty</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr class="card-header">
+                                            <td>1</td>
+                                            <td>Botin</td>
+                                            <td>100.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-sm table-borderless text-left">
                                     <tbody>
                                         <tr>
                                             <td>Gross Total</td>
@@ -358,6 +374,22 @@
                 <div class="col-12">
                     <div class="row">
                         <table class="table table-sm table-borderless text-left">
+                            <thead>
+                                <th>Qty</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th></th>
+                            </thead>
+                            
+                            <tbody>
+                                <tr class="card-header">
+                                    <td>1</td>
+                                    <td>Botin</td>
+                                    <td>100.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-borderless text-left">                   
                             <tbody>
                                 <tr>
                                     <td>Gross Total</td>
