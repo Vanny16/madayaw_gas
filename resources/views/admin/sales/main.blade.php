@@ -288,24 +288,59 @@
         <div class="modal-content">
             <div class="modal-header text-success">
                 <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
-            </div> 
-            <div class="modal-body">
-                <div class="col-12">
-                    <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
-                    {{ csrf_field() }} 
-                        <div class="form-group">
-                            <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
-                            <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
+            </div>
+            <div class="row"> 
+                <div class="modal-body">
+                    <div class="col-12">
+                        <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }} 
+                            <div class="form-group">
+                                <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
+                                <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="cus_address">Received Amount <span style="color:red">*</span></label>
+                                <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-header text-info">
+                        <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+                    </div> 
+                    <div class="modal-body">
+                        <div class="col-12">
+                            <div class="row">
+                                <table class="table table-sm table-borderless text-left">
+                                    <tbody>
+                                        <tr>
+                                            <td>Gross Total</td>
+                                            <td>200.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Discount</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amount Payable</td>
+                                            <td>200.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amount Paid</td>
+                                            <td>200.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Balance</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                            <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success" data-toggle="modal" data-target="#receipt-modal"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
                 <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>  
