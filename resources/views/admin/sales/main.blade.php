@@ -284,7 +284,7 @@
 
 <!-- Payment Modal -->
 <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header text-success">
                 <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
@@ -303,9 +303,43 @@
                         </div>
                     </form>
                 </div>
+                <div class="modal-header text-info">
+                    <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+                </div> 
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <table class="table table-sm table-borderless text-left">
+                                <tbody>
+                                    <tr>
+                                        <td>Gross Total</td>
+                                        <td>200.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount</td>
+                                        <td>0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount Payable</td>
+                                        <td>200.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount Paid</td>
+                                        <td>200.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Balance</td>
+                                        <td>0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
             <div class="modal-footer">
-                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
+                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success" data-toggle="modal" data-target="#receipt-modal"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
                 <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
