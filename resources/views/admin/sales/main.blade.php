@@ -52,7 +52,7 @@
                                             @endforeach
                                         @endif            
                                     </select>
-                                    <button type="button" class="btn btn-default form-control col-md-2 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
+                                    <button type="button" class="btn btn-default form-control col-md-4 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
                                 </div>
                                 <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
                                     <small>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-12 mb-3">
+                    <div class="col-md-4 col-12 mb-3">
                         <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
@@ -308,7 +308,7 @@
                 <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
                 <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
-        </div>
+        </div>  
     </div>
 </div>
 
@@ -418,7 +418,10 @@
             if(temp_discount == ""){
                 temp_discount = 0.00;
             }
-            
+            //Setter For Amount to be Paid
+            var amount = document.getElementById("amount_payable");
+            amount.value = sub_total.toFixed(2);
+
             var table = document.getElementById("tbl-cart");
             var row_count = (table.rows.length) - 2;
             var row = table.insertRow(0);
@@ -429,6 +432,9 @@
             row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            
+            //Initialize Array for Sales Report
+            var report = new Array();
             
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
