@@ -198,7 +198,7 @@
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
-                                            <h4><b>{{$product->prd_name}}</b></h4>
+                                            <b>{{$product->prd_name}}</b>
                                             <p>PHP 100.00</p>
                                             <p>100/pcs</p>
                                         </div>    
