@@ -38,7 +38,7 @@
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
 
-                                    <select class="form-control col-md-7 col-12" name="client_id" required="">
+                                    <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
                                                 <option value="-1">-NOT SPECIFIED-</option>
                                                 <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
@@ -289,74 +289,68 @@
             <div class="modal-header text-success">
                 <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
             </div>
-            <div class="row"> 
-                <div class="modal-body">
-                    <div class="col-12">
-                        <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
-                        {{ csrf_field() }} 
-                            <div class="form-group">
-                                <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
-                                <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
-                                <input type="hidden" id="receipt_list[]" name="receipt_list[]" class="form-control" value=""></input>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-header text-info">
-                        <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
-                    </div> 
-                    <div class="modal-body">
-                        <div class="col-12">
-                            <div class="row">
-                                <table class="table table-sm table-borderless text-left">
-                                    <thead>
-                                        <th>Qty</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                    </thead>
-                                    
-                                    <tbody>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Gas stove</td>
-                                            <td>500.00</td>
-                                        </tr>
-                                        <tr class="card-header">
-                                            <td>1</td>
-                                            <td>Botin</td>
-                                            <td>100.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table table-sm table-borderless text-left">
-                                    <tbody>
-                                        <tr>
-                                            <td>Gross Total</td>
-                                            <td>20.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>50.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Payable</td>
-                                            <td>20.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount Paid</td>
-                                            <td>20.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Change</td>
-                                            <td>20.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+            <div class="modal-body"> 
+                <div class="col-12">
+                    <form method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }}  
+                        <div class="form-group">
+                            <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
+                            <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
                         </div>
+                        <div class="form-group">
+                            <label for="cus_address">Received Amount <span style="color:red">*</span></label>
+                            <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
+                            <input type="hidden" id="receipt_list" name="receipt_list[]" class="form-control" value=""></input>      
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-header text-info">
+                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table class="table table-sm table-borderless text-left">
+                            <thead>
+                                <th>Qty</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th></th>
+                            </thead>
+                            
+                            <tbody>
+                                <tr class="card-header">
+                                    <td>1</td>
+                                    <td>Botin</td>
+                                    <td>100.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-borderless text-left">
+                            <tbody>
+                                <tr>
+                                    <td>Gross Total</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td>0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Payable</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Paid</td>
+                                    <td>200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td>0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -475,6 +469,11 @@
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
+    //Initialize Array for Sales Report in Add to Cart Function
+    var count = 0;
+    var list = new Array();
+    var details = new Array();
+
     function addToCart(prd_id, prd_name, prd_price, prd_quantity, temp_discount, modal) {
         if(prd_quantity != "" || prd_quantity > 0){
             //Calculations
@@ -495,8 +494,9 @@
                 temp_discount = 0.00;
             }
             //Setter For Amount to be Paid
+            var client_id = document.getElementById("client_id").value;
             var amount = document.getElementById("amount_payable");
-            amount.value = sub_total.toFixed(2);
+            amount.value = total.toFixed(2);
 
             var table = document.getElementById("tbl-cart");
             var row_count = (table.rows.length) - 2;
@@ -509,20 +509,18 @@
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
-            //Initialize Array for Sales Report
-            var list = new Array();
-            var details = new Array();
-            var count = 0;
+            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
 
-            details[0] = prd_id;
-            details[1] = prd_name;
-            details[2] = prd_price;
-            details[3] = prd_quantity;
-            details[4] = temp_discount;
-            details[5] = sub_total;
-
-            list[count] = details[];
-            count += 1;
+            count = count + 1;
+            // alert(list);
+            // for(x = 0 ; x < list.length ; x++){
+            //     alert(list[x]);
+            //     alert(client_id);
+            // }
+            
+            document.getElementById("receipt_list").value = list;
+            var testt = document.getElementById("receipt_list").value;
+            alert(testt);
 
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;

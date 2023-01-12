@@ -74,8 +74,8 @@ function record_stockin($prd_id, $quantity)
         'prd_id' => $prd_id,
         'usr_id' => session('usr_id'),
         'log_quantity' => $quantity,
-        'log_datetime' => DB::raw('CURRENT_TIMESTAMP') 
-        
+        'log_datetime' => DB::raw('CURRENT_TIMESTAMP') ,
+        'pdn_id' => get_last_production_id()
     ]); 
 }
 
