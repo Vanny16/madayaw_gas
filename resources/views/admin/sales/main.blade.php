@@ -316,10 +316,14 @@
                                         <th>Qty</th>
                                         <th>Description</th>
                                         <th>Price</th>
-                                        <th></th>
                                     </thead>
                                     
                                     <tbody>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Gas stove</td>
+                                            <td>500.00</td>
+                                        </tr>
                                         <tr class="card-header">
                                             <td>1</td>
                                             <td>Botin</td>
@@ -331,23 +335,23 @@
                                     <tbody>
                                         <tr>
                                             <td>Gross Total</td>
-                                            <td>200.00</td>
+                                            <td>20.00</td>
                                         </tr>
                                         <tr>
                                             <td>Discount</td>
-                                            <td>0.00</td>
+                                            <td>50.00</td>
                                         </tr>
                                         <tr>
                                             <td>Amount Payable</td>
-                                            <td>200.00</td>
+                                            <td>20.00</td>
                                         </tr>
                                         <tr>
                                             <td>Amount Paid</td>
-                                            <td>200.00</td>
+                                            <td>20.00</td>
                                         </tr>
                                         <tr>
-                                            <td>Balance</td>
-                                            <td>0.00</td>
+                                            <td>Change</td>
+                                            <td>20.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -379,10 +383,14 @@
                                 <th>Qty</th>
                                 <th>Description</th>
                                 <th>Price</th>
-                                <th></th>
                             </thead>
                             
                             <tbody>
+                                <tr class="">
+                                    <td>1</td>
+                                    <td>Botin</td>
+                                    <td>500.00</td>
+                                </tr>
                                 <tr class="card-header">
                                     <td>1</td>
                                     <td>Botin</td>
@@ -394,23 +402,23 @@
                             <tbody>
                                 <tr>
                                     <td>Gross Total</td>
-                                    <td>200.00</td>
+                                    <td>20.00</td>
                                 </tr>
                                 <tr>
                                     <td>Discount</td>
-                                    <td>0.00</td>
+                                    <td>50.00</td>
                                 </tr>
                                 <tr>
                                     <td>Amount Payable</td>
-                                    <td>200.00</td>
+                                    <td>20.00</td>
                                 </tr>
                                 <tr>
                                     <td>Amount Paid</td>
-                                    <td>200.00</td>
+                                    <td>20.00</td>
                                 </tr>
                                 <tr>
-                                    <td>Balance</td>
-                                    <td>0.00</td>
+                                    <td>Change</td>
+                                    <td>20.00</td>
                                 </tr>
                             </tbody>
                         </table>
