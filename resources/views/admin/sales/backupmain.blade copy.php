@@ -224,11 +224,6 @@
                                                             <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
                                                         
-                                                        {{--<div class="form-group">
-                                                            <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                        </div>--}}
-
                                                         <div class="form-group">
                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
                                                             <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
@@ -241,7 +236,7 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="cus_address">Total Amount <span style="color:red">*</span></label>
-                                                            <input type="text" class="form-control" id="sub_total{{$product->prd_id}}" value="{{$product->prd_price}}" onkeypress="return isNumberKey(this, event);" readonly></input>
+                                                            <input type="text" class="form-control" id="sub_total{{$product->prd_id}}" value="0.00" onkeypress="return isNumberKey(this, event);" readonly></input>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -291,78 +286,88 @@
 <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
-            {{ csrf_field() }} 
-                <div class="modal-body">
+            <div class="modal-header text-success">
+                <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
+            </div>
+            
+                        <div class="modal-header text-info">
+                            <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+                        </div> 
+            <div class="row">
+                <form method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
+                    {{ csrf_field() }}     
+                    <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="modal-header text-info">
-                                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
-                            </div>  
-                            <div class="row">
-                                <table class="table table-striped table-hover ml-2 table-borderless text-left">
-                                    <thead>
-                                        <th>Qty</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                        <th></th>
-                                    </thead>
-                                    <tbody id="tbl-rct">
-                                        <tr class="bg-light" height="1px">
-                                            <td colspan="6"></td>
-                                        </tr>
-                                        {{--<tr class="text-success bg-white">
-                                            <td colspan="3"></td>
-                                            <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_rct_total" class="fa fa-3x">0.00</strong></td>
-                                            <td></td>
-                                        </tr>--}}
-                                    </tbody>
-                                </table>
-                                <table class="table table-lg table-borderless text-left">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Gross Total</strong></td>
-                                            <td><a id="rct_gross_total">0.00</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Discount</strong></td>
-                                            <td><a id="rct_discount">0.00</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Amount Payable</strong></td>
-                                            <td><a id="rct_amount_payable">0.00</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Amount Paid</strong></td>
-                                            <td><a id="rct_amount_paid">0.00</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Change</strong></td>
-                                            <td><a id="rct_change">0.00</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="modal-header text-success">
-                                <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
-                            </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
-                                <input type="text" id="amount_payable" name="amount_payable" class="form-control" value="0.00" readonly></input>
+                                <input type="text" id="amount_payable" name="amount_payable" class="form-control" required readonly></input>
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event)" onkeyup="enterPayable();" required></input>
+                                <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event);" required></input>
                                 <input type="hidden" id="receipt_list" name="receipt_list[]" class="form-control" value=""></input>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            
+                        {{--</div>--}}
+                        {{--<div class="modal-body col-md-6">--}}
+                            <div class="col-12">
+                                <div class="row">
+                                    <table class="table table-sm table-borderless text-left">
+                                        <thead>
+                                            <th>Qty</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody id="tbl-rct">
+                                            <tr class="bg-light" height="1px">
+                                                <td colspan="6"></td>
+                                            </tr>
+                                            <tr class="text-success bg-white">
+                                                <td colspan="3"></td>
+                                                <td class="text-success"><strong>Total</strong></td>
+                                                <td class="text-success"><strong id="lbl_rct_total" class="fa fa-3x">0.00</strong></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-lg table-borderless text-left">
+                                        <tbody>
+                                            <tr>
+                                                <td>Gross Total</td>
+                                                <td id="rct-gross-total">200.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount</td>
+                                                <td id="rct-discount">0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Amount Payable</td>
+                                                <td id="rct-amount-paid">200.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Amount Paid</td>
+                                                <td id="rct-amount-paid">200.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Change</td>
+                                                <td id="rct-change">0.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
                     </div>
-                </div>  
+                </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
+                    <a href="{{ action('SalesController@paymentSales') }}" type="submit" class="btn btn-success" data-toggle="modal" data-target="#receipt-modal"><i class="fa fa-money-bill mr-1"> </i>Pay</a>
+                    <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#receipt-modal"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
+                    <button type="submit" class="btn btn-default" >SAVE</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -474,7 +479,6 @@
     }
 
     //Initialize Array for Sales Report in Add to Cart Function
-    var total_discount = parseFloat(0);
     var count = 0;
     var list = new Array();
     var details = new Array();
@@ -483,8 +487,7 @@
         if(prd_quantity != "" || prd_quantity > 0){
             //Calculations
             var total = document.getElementById("lbl_total").innerHTML;
-            var gross_total = (prd_price * prd_quantity);
-            var sub_total = gross_total - temp_discount;
+            var sub_total = (prd_price * prd_quantity) - temp_discount;
             total = parseFloat(total) + sub_total;
             
             // Setter For Price
@@ -499,8 +502,6 @@
             if(temp_discount == ""){
                 temp_discount = 0.00;
             }
-            total_discount = total_discount + temp_discount;
-
             //Setter For Amount to be Paid
             var client_id = document.getElementById("client_id").value;
             var amount = document.getElementById("amount_payable");
@@ -522,25 +523,22 @@
             count = count + 1;
 
             //For Populating Receipt Table 
-            var received = document.getElementById("received_amount").value;
-            var rct_table = document.getElementById("tbl-rct");
+            var rct_table = document.getElementById("tbl-receipt");
             var rct_row_count = (table.rows.length) - 2;
-            var rct_row = rct_table.insertRow(0);
-            rct_row.id = "rct_row"+rct_row_count;
-            rct_row.insertCell(0).innerHTML = prd_quantity;
-            rct_row.insertCell(1).innerHTML = prd_name;
-            rct_row.insertCell(2).innerHTML = prd_price;
+            var rct_row = table.insertRow(0);
+            rct_row.id = "row"+rct_row_count;
+            rct_row.insertCell(0).innerHTML = prd_name;
+            rct_row.insertCell(1).innerHTML = prd_price;
+            rct_row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
+            rct_row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
+            rct_row.insertCell(4).innerHTML = sub_total.toFixed(2);
+            rct_row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +rct_row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
-            document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-            document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
-            document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
-            document.getElementById("rct_amount_paid").innerHTML = received;
             document.getElementById("receipt_list").value = list;
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // session()->flash('successMessage','Transaction complete!');
         }
         else{
             alert("Please input quantity");
@@ -548,24 +546,10 @@
         
     }
 
-    function enterPayable(){
-        // alert("test");
-        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
-        var amount = parseFloat(document.getElementById("amount_payable").value);
-        var received = parseFloat(document.getElementById("received_amount").value);
-        var change = document.getElementById("rct_change").value;
-        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
-
-        var final_change = amount - received;
-        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
-    }
-
     function removeFromCart(row, sub_total) {
-        var total = document.getElementById("lbl_total").innerHTML; 
+        var total = document.getElementById("lbl_total").innerHTML;
         total = parseFloat(total) - sub_total;
-        
         document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("amount_payable").value = total.toFixed(2);
         // document.getElementById("tbl-cart").deleteRow(row.id);
 
         var deleteRow = document.getElementById(row.id);

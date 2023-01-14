@@ -111,11 +111,6 @@ class SalesController extends Controller
     
     public function paymentSales(Request $request)
     {
-        $cus_id = $request->client_id;
-        $prd_id = $request->prd_id;
-        $sls_quantity = $request->client_id;
-        $sls_discount = $request->sls_discount;
-        $sls_sub_total = $request->sls_sub_total;
         $list = $request->input('receipt_list');
         // dd(getType($test));
         // $testt = getType($test[0]);
@@ -137,11 +132,12 @@ class SalesController extends Controller
                 'sls_quantity' => $tmpArray[$count][4],
                 'sls_discount' => $tmpArray[$count][5],
                 'sls_sub_total' => $tmpArray[$count][6],
+                'sls_time' => DB::raw('CURRENT_TIMESTAMP'),
                 'pdn_id' => get_last_production_id()
             ]);
         }
-        dd($cus_id, $prd_id, $sls_quantity, $sls_discount, $sls_sub_total, $tmpArray);
 
-        session()->flash('successMessage','New customer has been added'+$testt);
+        session()->flash('successMessage','Transaction complete!');
+        return redirect()->action('SalesController@main');
     }
 }
