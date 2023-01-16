@@ -117,7 +117,6 @@
     </section>
 </div>
 
-
 <!-- Customer Modal -->
 <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
