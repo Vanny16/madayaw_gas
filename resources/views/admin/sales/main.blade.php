@@ -52,7 +52,6 @@
                                             @endforeach
                                         @endif            
                                     </select>
-                                    <button type="button" class="btn btn-default form-control col-md-4 col-12 mt-3" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</button>
                                 </div>
                                 <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
                                     <small>
@@ -117,63 +116,7 @@
     </section>
 </div>
 
-<!-- Customer Modal -->
-<div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customer Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="{{ action('SalesController@createCustomer')}}" enctype="multipart/form-data">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                                <img class="img-circle elevation-2" src="{{ asset('img/customers/default.png') }}" alt="Add Picture" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                            <div class="col-12 text-center mb-4">
-                            <a href="javascript:void(0);" class="">
-                                <label class="btn btn-transparent btn-file">
-                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                    <input type="file" class="custom-file-input" id="choose_file" name='cus_image' value="{{ old('cus_image') }}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                </label>
-                            </a>
-                            </div>
-                        </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="cus_name">Full Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="cus_name" placeholder="Enter Full Name" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Address <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="cus_address" placeholder="Enter Address" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cus_notes">Notes</label>
-                                <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- Order Modal -->
 <div class="modal fade" id="order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -227,6 +170,12 @@
                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
                                                             <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>--}}
+
+                                                        <div class="form-group">
+                                                            <label for="cus_address">Unit <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="" value="" min="" max="" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                        </div>
+
 
                                                         <div class="form-group">
                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
