@@ -107,6 +107,7 @@
                                         <th>Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
+                                        <th>Price</th>
                                         <th>Notes</th>
                                         <th width="100px">Status</th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
@@ -145,6 +146,7 @@
                                         @else
                                             <td>-</td>
                                         @endif
+                                        <td>17.50</td>
                                         @if($customer->cus_notes)
                                             <td>
                                                 <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a>

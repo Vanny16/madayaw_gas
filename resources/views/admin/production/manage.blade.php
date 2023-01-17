@@ -257,7 +257,8 @@
                                                                                 {{$canister->prd_reorder_point}},
                                                                                 {{$canister->sup_id}}
                                                                                 )">
-                                                                                <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                                <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a>
+                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </td>
