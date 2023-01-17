@@ -100,6 +100,36 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Products In</h3>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
+                            <div class="row">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-cart">
+                                        <tr class="bg-light" height="1px">
+                                            <td colspan="6"></td>
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="3"></td>
+                                            <td class="text-success"><strong>Total</strong></td>
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">

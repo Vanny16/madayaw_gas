@@ -45,7 +45,7 @@
                                             <a class="nav-link active" data-toggle="tab" href="#raw-materials">Raw Materials</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#empty-canisters">Empty Canisters</a>
+                                            <a class="nav-link" data-toggle="tab" href="#empty-canisters">Create Canisters</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#filled-canisters">Filled Canisters</a>
@@ -257,7 +257,8 @@
                                                                                 {{$canister->prd_reorder_point}},
                                                                                 {{$canister->sup_id}}
                                                                                 )">
-                                                                                <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                                <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a>
+                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </td>
