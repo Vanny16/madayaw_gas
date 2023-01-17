@@ -58,6 +58,7 @@ Route::group(['prefix' => 'customer'], function()
 Route::group(['prefix' => 'product'], function()
 {
     Route::get('manage', 'ProductController@manage');
+    Route::get('opposite', 'ProductController@opposite');
     Route::get('deactivate-product/{prd_id}', 'ProductController@deactivateProduct');
     Route::get('reactivate-product/{prd_id}', 'ProductController@reactivateProduct');
 

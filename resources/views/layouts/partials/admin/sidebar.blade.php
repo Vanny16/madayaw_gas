@@ -72,6 +72,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('ProductController@opposite') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bitbucket"></i>
+                        <p>
+                            Opposite
+                        </p>
+                    </a>
+                </li>
                 
                 <li class="nav-item">
                     <a href="{{ action('SupplierController@manage') }}" class="nav-link">
