@@ -30,17 +30,23 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-cash-register"></i> Transaction</h3>
+                            <div class="row">
+                                <h3 class="card-title col-6"><i class="fas fa-cash-register"></i> Transaction</h3>
+                                <div class="col-md-6 text-right text-gray order-lg-2 order-1 mb-3">
+                                    <small>
+                                        <i id="current-date-now"><?php echo date(" F d, Y"); ?> </i>
+                                        <i id="current-time-now" class="text-info ml-1" data-start="<?php echo time(); ?>"></i>
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
-
                                     <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
-                                                <option value="-1">-NOT SPECIFIED-</option>
-                                                <option value="0">-WALK IN-</option>
+                                        <option value="-1">-NOT SPECIFIED-</option>
+                                        <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
                                             @foreach($customers as $customer)
                                                 @if(session('new_client') == $customer->cus_name )
@@ -53,52 +59,12 @@
                                         @endif            
                                     </select>
                                 </div>
-                                <div class="col-md-3 text-right text-gray order-lg-2 order-1 mb-3">
-                                    <small>
-                                        <i id="current-date-now"><?php echo date(" F d, Y"); ?> </i>
-                                        <i id="current-time-now" class="text-info ml-1" data-start="<?php echo time(); ?>"></i>
-                                    </small>
-                                </div>
-
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
                         <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Selected Products</h3>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row">
-                                <table class="table table-hover table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Discount</th>
-                                            <th>Subtotal</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbl-cart">
-                                        <tr class="bg-light" height="1px">
-                                            <td colspan="6"></td>
-                                        </tr>
-                                        <tr class="text-success bg-white">
-                                            <td colspan="3"></td>
-                                            <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="card">
@@ -130,6 +96,43 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Selected Products</h3>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
+                            <div class="row">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th></th>
+                                            <th>Discount</th>
+                                            <th>Subtotal</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-cart">
+                                        <tr class="bg-light" height="1px">
+                                            <td colspan="6"></td>
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="3"></td>
+                                            <td></td>
+                                            <td class="text-success"><strong>Total</strong></td>
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
@@ -172,7 +175,7 @@
                                         <div class="container">
                                             <b>{{$product->prd_name}}</b>
                                             <p>PHP 100.00</p>
-                                            <p>100/pcs</p>
+                                            <p>{{$product->prd_quantity}} in stock</p>
                                         </div>    
                                     </div>
                                 </div>
@@ -195,21 +198,22 @@
                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
                                                             <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
-                                                        
-                                                        {{--<div class="form-group">
-                                                            <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                        </div>--}}
+                                                       
+                                                        <div class="row">
+                                                            <div class="form-group col-6">
+                                                                <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                                                                <input type="number" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            </div>
 
-                                                        <div class="form-group">
-                                                            <label for="cus_address">Unit <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="" value="" min="" max="" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <div class="form-group col-6">
+                                                                <label for="cus_address"># of Loose <span style="color:red">*</span></label>
+                                                                <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            </div>
                                                         </div>
 
-
                                                         <div class="form-group">
                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="1" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="0" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
 
                                                         <div class="form-group">
@@ -226,7 +230,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -436,21 +440,28 @@
         });
     });
 
-    function getTotal(prd_price_id, prd_quantity_id, temp_discount_id, txt_sub_total){
+    function getTotal(prd_price_id, crates_id, loose_id, temp_discount_id, txt_sub_total){
         var prd_price = document.getElementById(prd_price_id).value;
-        var prd_quantity = document.getElementById(prd_quantity_id).value;
+        var crates_amount = document.getElementById(crates_id).value;
+        var loose_amount = document.getElementById(loose_id).value;
+
+        var total_quantity = ((crates_amount * 12));
+        total_quantity = parseInt(total_quantity) + parseInt(loose_amount);
+        
         var temp_discount = document.getElementById(temp_discount_id).value;
-        var sub_total = (prd_price * prd_quantity) - temp_discount;
+        var sub_total = (prd_price * total_quantity) - temp_discount;
+
+
 
         if(prd_price == "" || prd_price < 1){
             document.getElementById(prd_price_id).value = "0.00";
             document.getElementById(temp_discount_id).value = "0.00";
             sub_total = 0;
         }
-        if(prd_quantity == "" || prd_quantity < 1){
-            alert("Quantity cannot be zero");
-            document.getElementById(prd_quantity_id).value = "1";
-        }
+        // if(prd_quantity == "" || prd_quantity < 1 || crates_amount < 1 || loose_amount < 1){
+        //     alert("Quantity cannot be zero");
+        //     document.getElementById(prd_quantity_id).value = "1";
+        // }
 
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
@@ -461,73 +472,74 @@
     var list = new Array();
     var details = new Array();
 
-    function addToCart(prd_id, prd_name, prd_price, prd_quantity, temp_discount, modal) {
-        if(prd_quantity != "" || prd_quantity > 0){
-            //Calculations
-            var total = document.getElementById("lbl_total").innerHTML;
-            var gross_total = (prd_price * prd_quantity);
-            var sub_total = gross_total - temp_discount;
-            total = parseFloat(total) + sub_total;
-            
-            // Setter For Price
-            if(prd_price == "" || prd_price < 1){
-                prd_price = "<small class='bg-warning badge'>Free</small>";
+    function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, prd_quantity, temp_discount, modal) {
+        if(){    
+            if(prd_quantity != "" || prd_quantity > 0){
+                //Calculations
+                var total = document.getElementById("lbl_total").innerHTML;
+                var gross_total = (prd_price * prd_quantity);
+                var sub_total = gross_total - temp_discount;
+                total = parseFloat(total) + sub_total;
+                
+                // Setter For Price
+                if(prd_price == "" || prd_price < 1){
+                    prd_price = "<small class='bg-warning badge'>Free</small>";
+                }
+                else{
+                    prd_price = parseFloat(prd_price).toFixed(2)
+                }
+                
+                // Setter For Discount
+                if(temp_discount == ""){
+                    temp_discount = 0.00;
+                }
+                total_discount = total_discount + temp_discount;
+
+                //Setter For Amount to be Paid
+                var client_id = document.getElementById("client_id").value;
+                var amount = document.getElementById("amount_payable");
+                amount.value = total.toFixed(2);
+
+                //For Populating Selected Products Table 
+                var table = document.getElementById("tbl-cart");
+                var row_count = (table.rows.length) - 2;
+                var row = table.insertRow(0);
+                row.id = "row"+row_count;
+                row.insertCell(0).innerHTML = prd_name;
+                row.insertCell(1).innerHTML = prd_price;
+                row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
+                row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
+                row.insertCell(4).innerHTML = sub_total.toFixed(2);
+                row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                
+                list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
+                count = count + 1;
+
+                //For Populating Receipt Table 
+                var received = document.getElementById("received_amount").value;
+                var rct_table = document.getElementById("tbl-rct");
+                var rct_row_count = (table.rows.length) - 2;
+                var rct_row = rct_table.insertRow(0);
+                rct_row.id = "rct_row"+rct_row_count;
+                rct_row.insertCell(0).innerHTML = prd_quantity;
+                rct_row.insertCell(1).innerHTML = prd_name;
+                rct_row.insertCell(2).innerHTML = prd_price;
+                
+                document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+                document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
+                document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
+                document.getElementById("rct_amount_paid").innerHTML = received;
+                document.getElementById("receipt_list").value = list;
+                document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+                modal.hidden = true;
+                
+                alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+                // session()->flash('successMessage','Transaction complete!');
             }
             else{
-                prd_price = parseFloat(prd_price).toFixed(2)
+                alert("Please input quantity");
             }
-            
-            // Setter For Discount
-            if(temp_discount == ""){
-                temp_discount = 0.00;
-            }
-            total_discount = total_discount + temp_discount;
-
-            //Setter For Amount to be Paid
-            var client_id = document.getElementById("client_id").value;
-            var amount = document.getElementById("amount_payable");
-            amount.value = total.toFixed(2);
-
-            //For Populating Selected Products Table 
-            var table = document.getElementById("tbl-cart");
-            var row_count = (table.rows.length) - 2;
-            var row = table.insertRow(0);
-            row.id = "row"+row_count;
-            row.insertCell(0).innerHTML = prd_name;
-            row.insertCell(1).innerHTML = prd_price;
-            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
-            row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(4).innerHTML = sub_total.toFixed(2);
-            row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
-            
-            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
-            count = count + 1;
-
-            //For Populating Receipt Table 
-            var received = document.getElementById("received_amount").value;
-            var rct_table = document.getElementById("tbl-rct");
-            var rct_row_count = (table.rows.length) - 2;
-            var rct_row = rct_table.insertRow(0);
-            rct_row.id = "rct_row"+rct_row_count;
-            rct_row.insertCell(0).innerHTML = prd_quantity;
-            rct_row.insertCell(1).innerHTML = prd_name;
-            rct_row.insertCell(2).innerHTML = prd_price;
-            
-            document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-            document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
-            document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
-            document.getElementById("rct_amount_paid").innerHTML = received;
-            document.getElementById("receipt_list").value = list;
-            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            modal.hidden = true;
-            
-            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // session()->flash('successMessage','Transaction complete!');
         }
-        else{
-            alert("Please input quantity");
-        }
-        
     }
 
     function enterPayable(){
