@@ -81,7 +81,7 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbl-cart">
+                                    <tbody id="tbl-prd_in">
                                         <tr class="bg-light" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
@@ -96,7 +96,11 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <div class="col-md-4 col-12 mb-3">
+                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Selected Products</h3>
@@ -174,7 +178,7 @@
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
                                             <b>{{$product->prd_name}}</b>
-                                            <p>PHP 100.00</p>
+                                            <p>{{$product->prd_price}}</p>
                                             <p>{{$product->prd_quantity}} in stock</p>
                                         </div>    
                                     </div>
