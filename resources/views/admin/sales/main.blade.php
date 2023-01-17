@@ -73,7 +73,7 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
-                                <table class="table table-hover table-condensed">
+                                <table class="table table-lg table-borderless text-left">
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
@@ -88,7 +88,7 @@
                                         <tr class="text-success bg-white">
                                             <td colspan="3"></td>
                                             <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                             <td></td>
                                         </tr>
                                     </tbody>

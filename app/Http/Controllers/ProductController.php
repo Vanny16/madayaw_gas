@@ -35,6 +35,29 @@ class ProductController extends Controller
 
     }
 
+    public function opposite()
+    {
+        $statuses = array(
+            1 => 'All',
+            2 => 'Active',
+            3 => 'Inactive'
+        );
+
+        $default_status = '0';
+
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->get();
+
+        $suppliers = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
+        
+        $pdn_flag = check_production_log();
+        // dd($suppliers);
+        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
+    }
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;
