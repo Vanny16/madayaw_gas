@@ -266,20 +266,17 @@
                         <label for="cus_name">Product Name<span style="color:red">*</span></label>
                         <div class="form-inline">
                             <input type="text" class="form-control" id="" value="" required/><br>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-opposite-modal"><i class="fa fa-plus-circle"></i></button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i></button>
                         </div>
                     </div>
-                
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                            <input type="number" class="form-control col-md-10" id="" value="0" min="" max="" onkeyup="" required></input>
-                        </div>
+                    <div class="form-group">
+                        <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                        <input type="number" class="form-control" id="" value="0" min="" max="" onkeyup="" required/></input>
+                    </div>
 
-                        <div class="form-group col-6">
-                            <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                            <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="" onkeyup="" required></input>
-                        </div>
+                    <div class="form-group">
+                        <label for="cus_address"># of Loose <span style="color:red">*</span></label>
+                        <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="" onkeyup="" required/></input>
                     </div>
                 </div>
             </div>
@@ -292,7 +289,7 @@
 </div>
 
 <!-- Create Opposite Cans -->
-<div class="modal fade show" id="add-opposite-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade show" id="opposite-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
             <div class="modal-header">
