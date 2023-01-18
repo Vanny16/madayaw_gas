@@ -64,12 +64,12 @@
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
-                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Canisters In</button>
                     </div>
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Products In</h3>
+                            <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
