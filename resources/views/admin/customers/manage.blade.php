@@ -258,6 +258,20 @@
                                                                         <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
                                                                     </div>
 
+                                                                    <label> Select Accessible Canisters<span style="color:red"> *</span></label>
+                                                                    <div class="card">
+                                                                        <div class="col-12 p-2">
+                                                                            <div class="row">
+                                                                                @foreach($products as $product)
+                                                                                    <div class="col-md-6">
+                                                                                        <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
+                                                                                        <label for=""> {{$product->prd_name}}</label>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div class="form-group">
                                                                         <label for="cus_notes">Notes</label>
                                                                         <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" >{{$customer->cus_notes}}</textarea>
@@ -394,13 +408,14 @@
                                     <div class="row">
                                         @foreach($products as $product)
                                             <div class="col-md-6">
-                                                <input type="checkbox" id="product{{$product->prd_id}}" name="selected_products[]" value="{{$product->prd_id}}">
+                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
                                                 <label for=""> {{$product->prd_name}}</label>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="cus_notes">Notes</label>
                                 <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>

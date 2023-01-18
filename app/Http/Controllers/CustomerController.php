@@ -45,6 +45,9 @@ class CustomerController extends Controller
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
+        $cus_accessible = $request->cus_accessible;
+
+        // dd($cus_accessible);
 
         $check_cus_name = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -121,7 +124,9 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
+        $cus_accessible = $request->cus_accessible;
 
+        // dd($cus_accessible);
         // $check_uuid = DB::table('customers')
         // ->where('cus_id', '=', $cus_id)
         // ->where('cus_uuid', '=', null)
