@@ -136,8 +136,6 @@
                         </div>
                     </div>
 
-                    
-                    
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal"><i class="fa fa-wallet"></i> Receive Payment</button>
@@ -148,12 +146,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 </div>
-
-
 
 <!-- Order Modal -->
 <div class="modal fade" id="order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -194,7 +189,7 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group">
-                                                            <label for="cus_name">Product <span style="color:red">*</span></label>
+                                                            <label for="cus_name">Product Name <span style="color:red">*</span></label>
                                                             <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" value="{{$product->prd_name}}" required readonly/>
                                                         </div>
                                                         
@@ -253,7 +248,7 @@
     </div>
 </div>
 
-<!--Canisters In -->
+<!-- Canisters In -->
 <div class="modal fade" id="canister-in-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -276,13 +271,13 @@
 
                     <div class="form-group">
                         <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                        <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="" onkeyup="" required/></input>
+                        <input type="number" class="form-control" id="" value="0" min="" max="" onkeyup="" required/></input>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="">Cancel</button>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="" onclick=""><i class="fa fa-plus-circle"></i> Add</button>
             </div>
         </div>
     </div>
@@ -298,7 +293,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
+            <form method="POST" action="" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
