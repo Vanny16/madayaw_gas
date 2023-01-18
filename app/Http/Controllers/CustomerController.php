@@ -26,13 +26,17 @@ class CustomerController extends Controller
         ->get();
 
         $cus_id = DB::table('customers')
-            ->select('cus_id')
-            ->orderBy('cus_id', 'desc')
-            ->first();
+        ->select('cus_id')
+        ->orderBy('cus_id', 'desc')
+        ->first();
 
-        // dd(gettype($cus_id));
-        
-        return view('admin.customers.manage',compact('customers','statuses','default_status'));
+        $products = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->get();
+
+        return view('admin.customers.manage',compact('customers','statuses','default_status','products'));
     }
     
     public function createCustomer(Request $request)

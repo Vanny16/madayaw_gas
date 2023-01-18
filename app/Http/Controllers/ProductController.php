@@ -30,9 +30,8 @@ class ProductController extends Controller
         ->get();
         
         $pdn_flag = check_production_log();
-        // dd($suppliers);
+        
         return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
-
     }
 
     public function opposite()
