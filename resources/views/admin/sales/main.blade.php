@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
-                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-plus-circle"></i> Canisters In</button>
+                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-right"></i> Canisters In</button>
                     </div>
 
                     <div class="card">
@@ -250,7 +250,7 @@
 
 <!-- Canisters In -->
 <div class="modal fade" id="canister-in-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Canisters In</h5>
@@ -259,15 +259,21 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="cus_name">Product Name<span style="color:red">*</span></label>
-                        <div class="form-inline">
-                            <input type="text" class="form-control" id="" value="" required/><br>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i></button>
+                        <div class="row">
+                            <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
+                                @foreach($products as $product)
+                                    <option value="{{ $product->prd_id }}" >{{ $product->prd_name }} </option>
+                                @endforeach 
+                            </select>
+                            <div class="col-md-1"></div>
+                            <button type="button" class="btn btn-success col-md-4" data-toggle="modal" data-target="#add-opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                        <input type="number" class="form-control" id="" value="0" min="" max="" onkeyup="" required/></input>
-                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                            <input type="number" class="form-control col-md-10" id="" value="0" min="" max="" onkeyup="" required></input>
+                        </div>
 
                     <div class="form-group">
                         <label for="cus_address"># of Loose <span style="color:red">*</span></label>
@@ -293,7 +299,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('SalesController@addCanister') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -311,15 +317,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="" required/>
+                                <input type="text" class="form-control" name="ops_name" placeholder="Enter Product Name" value="" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="" required/>
+                                <input type="text" class="form-control" name="ops_sku" placeholder="Enter SKU" value="" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                                <input type="text" class="form-control" name="ops_description" placeholder="Enter Description" value="" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="notes">Notes</label>
+                                <textarea name="notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="notes">Notes</label>

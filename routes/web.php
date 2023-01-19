@@ -100,8 +100,10 @@ Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
     Route::get('report', 'SalesController@report');
+
     Route::post('create-customer', 'SalesController@createCustomer');
     Route::post('payment', 'SalesController@paymentSales');
+    Route::post('add-canister', 'SalesController@addCanister');
 
 });
 
