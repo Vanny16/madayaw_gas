@@ -127,7 +127,7 @@
                                             <td colspan="3"></td>
                                             <td></td>
                                             <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                             <td></td>
                                         </tr>
                                     </tbody>
