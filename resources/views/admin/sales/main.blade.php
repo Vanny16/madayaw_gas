@@ -283,7 +283,7 @@
     </div>
 </div>
 
-<!-- Create Opposite Cans -->
+<!-- Add Opposite Cans -->
 <div class="modal fade show" id="opposite-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
@@ -320,6 +320,10 @@
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="notes">Notes</label>
+                                <textarea name="notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
                     </div>   
