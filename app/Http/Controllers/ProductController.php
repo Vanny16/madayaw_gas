@@ -52,10 +52,14 @@ class ProductController extends Controller
         $suppliers = DB::table('suppliers')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
+
+        $opposition = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
         
         $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
+        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'suppliers', 'opposition', 'pdn_flag'));
     }
     public function createProduct(Request $request)
     {

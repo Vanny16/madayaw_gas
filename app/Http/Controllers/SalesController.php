@@ -27,7 +27,10 @@ class SalesController extends Controller
         ->orderBy('cus_name')
         ->get();
 
-        return view('admin.sales.main', compact('products', 'customers'));
+        $oppositions = DB::table('oppositions')
+        ->get();
+
+        return view('admin.sales.main', compact('products', 'customers', 'oppositions'));
     }
 
     public function report()
@@ -112,14 +115,8 @@ class SalesController extends Controller
     public function paymentSales(Request $request)
     {
         $list = $request->input('receipt_list');
-        // dd(getType($test));
-        // $testt = getType($test[0]);
+        
         $tmpArray = array();
-        // foreach ($test as $sub)
-        // {
-        //     // dd(getType($test));
-        //     $tmpArray[] = implode(',', $test);
-        // }
 
         for($count = 0 ; $count < count($list) ; $count++)
         {
@@ -143,44 +140,40 @@ class SalesController extends Controller
 
     public function addCanister(Request $request)
     {
-        $cus_name = $request->cus_name;
-        $cus_address = $request->cus_address;
-        $cus_contact = $request->cus_contact;
-        $cus_notes = $request->cus_notes;
-        $cus_accessible = $request->cus_accessible;
+        $ops_name = $request->ops_name;
+        $ops_sku = $request->ops_sku;
+        $ops_description = $request->ops_description;
+        $ops_notes = $request->ops_notes;
 
-        // dd($cus_accessible);
-
-        $check_cus_name = DB::table('customers')
+        $check_ops_name = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
-        ->where('cus_name','=', $cus_name)
+        ->where('ops_name','=', $ops_name)
         ->first();
 
-        if($check_cus_name != null)
+        if($check_ops_name != null)
         {
-            session()->flash('errorMessage','Customer name is already existing');
-            return redirect()->action('CustomerController@manage');
+            session()->flash('errorMessage','Opposition canister already created');
+            return redirect()->action('SalesController@main');
         }
 
-        $usr_id = DB::table('customers')
+        DB::table('oppositions')
         ->insert([
         'acc_id' => session('acc_id'),
-        'cus_uuid' => generateuuid(),
-        'cus_name' => $cus_name, 
-        'cus_address' => $cus_address,
-        'cus_contact' => $cus_contact,
-        'cus_notes' => $cus_notes
+        'ops_name' => $ops_name, 
+        'ops_sku' => $ops_sku,
+        'ops_description' => $ops_description,
+        'ops_notes' => $ops_notes
         ]);
 
         //IMAGE UPLOAD 
-        if($request->file('cus_image'))
+        if($request->file('ops_image'))
         {
-            $cus_id = DB::table('customers')
-            ->select('cus_id')
-            ->orderBy('cus_id', 'desc')
+            $ops_id = DB::table('oppostion')
+            ->select('ops_id')
+            ->orderBy('ops_id', 'desc')
             ->first();
     
-            $file = $request->file('cus_image');
+            $file = $request->file('ops_image');
 
             $validator = Validator::make( 
                 [
@@ -193,8 +186,6 @@ class SalesController extends Controller
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );
-            
-            // dd(public_path());
     
             if ($validator->fails()) 
             {
@@ -202,19 +193,19 @@ class SalesController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
     
-            $fileName = $cus_id->cus_id . '.' . $file->getClientOriginalExtension();
+            $fileName = $ops_id->ops_id . '.' . $file->getClientOriginalExtension();
     
             Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
 
             DB::table('customers')
-            ->where('cus_id','=',$cus_id->cus_id)
+            ->where('ops_id','=',$ops_id->ops_id)
             ->update([
-                'cus_image' => $fileName,
+                'ops_image' => $fileName,
             ]);  
     
         }   
 
-        session()->flash('successMessage','New customer has been added');
-        return redirect()->action('CustomerController@manage');
+        session()->flash('successMessage','test');
+        return redirect()->action('SalesController@main');
     }
 }

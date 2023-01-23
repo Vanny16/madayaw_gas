@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
-                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-right"></i> Canisters In</button>
+                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
                     </div>
 
                     <div class="card">
@@ -77,19 +77,21 @@
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
-                                            <th>Quantity</th>
+                                            <th></th>
+                                            <th>Crates</th>
+                                            <th>Loose</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbl-prd_in">
+                                    <tbody id="tbl-prd-in">
                                         <tr class="bg-light" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="3"></td>
+                                            <td colspan="1"></td>
                                             <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            <td></td>
+                                            <td class="text-success"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
+                                            <td class="text-success"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -112,8 +114,8 @@
                                         <tr>
                                             <th>Product Name</th>
                                             <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th></th>
+                                            <th>Crates</th>
+                                            <th>Loose</th>
                                             <th>Discount</th>
                                             <th>Subtotal</th>
                                             <th></th>
@@ -125,7 +127,6 @@
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="3"></td>
-                                            <td></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-3x">0.00</strong></td>
                                             <td></td>
@@ -260,30 +261,35 @@
                     <div class="form-group">
                         <label for="cus_name">Product Name<span style="color:red">*</span></label>
                         <div class="row">
-                            <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
+                            <select class="form-control col-md-7 col-12" id="canister-in" name="canister-in" required="">
                                 @foreach($products as $product)
-                                    <option value="{{ $product->prd_id }}" >{{ $product->prd_name }} </option>
+                                    <option value="1,{{ $product->prd_id }},{{ $product->prd_name }}" >{{ $product->prd_name }} </option>
                                 @endforeach 
+                                @foreach($oppositions as $opposition)
+                                    <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}" >{{ $opposition->ops_name }} </option>
+                                @endforeach 
+                                <?php ?>
                             </select>
-                            <div class="col-md-1"></div>
-                            <button type="button" class="btn btn-success col-md-4" data-toggle="modal" data-target="#add-opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
+                            <div class="col-md-1">
+                            </div>
+                            <button type="button" class="btn btn-success col-md-4" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                            <input type="number" class="form-control col-md-10" id="" value="0" min="" max="" onkeyup="" required></input>
+                            <input type="number" class="form-control col-md-10" id="in-crates" value="0" min="" max="" onclick="this.select()" required></input>
                         </div>
-
-                    <div class="form-group">
-                        <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                        <input type="number" class="form-control" id="" value="0" min="" max="" onkeyup="" required/></input>
+                        <div class="form-group">
+                            <label for="cus_address"># of Loose <span style="color:red">*</span></label>
+                            <input type="number" class="form-control" id="in-loose" value="0" min="" max="" onclick="this.select()" required/></input>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="">Cancel</button>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="" onclick=""><i class="fa fa-plus-circle"></i> Add</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#canister-in-modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="addCanistersIn()"><i class="fa fa-plus-circle"></i> Add</button>
             </div>
         </div>
     </div>
@@ -309,7 +315,7 @@
                             <a href="javascript:void(0);" class="">
                                 <label class="btn btn-transparent btn-file">
                                     <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                    <input type="file" class="custom-file-input" id="choose_file" name='ops_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
                                 </label>
                             </a>
                             </div>
@@ -329,11 +335,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="notes">Notes</label>
-                                <textarea name="notes" placeholder="Additional notes ..." class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="notes">Notes</label>
-                                <textarea name="notes" placeholder="Additional notes ..." class="form-control"></textarea>
+                                <textarea name="ops_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
                     </div>   
@@ -516,6 +518,11 @@
 </div>
 
 <script>
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
     //get new date from timestamp in data-start attr
     var freshTime = new Date(parseInt($("#current-time-now").attr("data-start"))*1000);
     //loop to tick clock every second
@@ -571,72 +578,74 @@
     var details = new Array();
 
     function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, prd_quantity, temp_discount, modal) {
-        if(){    
-            if(prd_quantity != "" || prd_quantity > 0){
-                //Calculations
-                var total = document.getElementById("lbl_total").innerHTML;
-                var gross_total = (prd_price * prd_quantity);
-                var sub_total = gross_total - temp_discount;
-                total = parseFloat(total) + sub_total;
-                
-                // Setter For Price
-                if(prd_price == "" || prd_price < 1){
-                    prd_price = "<small class='bg-warning badge'>Free</small>";
-                }
-                else{
-                    prd_price = parseFloat(prd_price).toFixed(2)
-                }
-                
-                // Setter For Discount
-                if(temp_discount == ""){
-                    temp_discount = 0.00;
-                }
-                total_discount = total_discount + temp_discount;
-
-                //Setter For Amount to be Paid
-                var client_id = document.getElementById("client_id").value;
-                var amount = document.getElementById("amount_payable");
-                amount.value = total.toFixed(2);
-
-                //For Populating Selected Products Table 
-                var table = document.getElementById("tbl-cart");
-                var row_count = (table.rows.length) - 2;
-                var row = table.insertRow(0);
-                row.id = "row"+row_count;
-                row.insertCell(0).innerHTML = prd_name;
-                row.insertCell(1).innerHTML = prd_price;
-                row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
-                row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
-                row.insertCell(4).innerHTML = sub_total.toFixed(2);
-                row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
-                
-                list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
-                count = count + 1;
-
-                //For Populating Receipt Table 
-                var received = document.getElementById("received_amount").value;
-                var rct_table = document.getElementById("tbl-rct");
-                var rct_row_count = (table.rows.length) - 2;
-                var rct_row = rct_table.insertRow(0);
-                rct_row.id = "rct_row"+rct_row_count;
-                rct_row.insertCell(0).innerHTML = prd_quantity;
-                rct_row.insertCell(1).innerHTML = prd_name;
-                rct_row.insertCell(2).innerHTML = prd_price;
-                
-                document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-                document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
-                document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
-                document.getElementById("rct_amount_paid").innerHTML = received;
-                document.getElementById("receipt_list").value = list;
-                document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-                modal.hidden = true;
-                
-                alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-                // session()->flash('successMessage','Transaction complete!');
+        var crates_amount = parseInt(crates_amount);
+        var loose_amount = parseInt(loose_amount);
+        var prd_quantity = parseInt(prd_quantity);
+        
+        if(prd_quantity != "" || prd_quantity > 0){
+            //Calculations
+            var total = document.getElementById("lbl_total").innerHTML;
+            var gross_total = (prd_price * prd_quantity);
+            var sub_total = gross_total - temp_discount;
+            total = parseFloat(total) + sub_total;
+            
+            // Setter For Price
+            if(prd_price == "" || prd_price < 1){
+                prd_price = "<small class='bg-warning badge'>Free</small>";
             }
             else{
-                alert("Please input quantity");
+                prd_price = parseFloat(prd_price).toFixed(2)
             }
+            
+            // Setter For Discount
+            if(temp_discount == ""){
+                temp_discount = 0.00;
+            }
+            total_discount = total_discount + temp_discount;
+
+            //Setter For Amount to be Paid
+            var client_id = document.getElementById("client_id").value;
+            var amount = document.getElementById("amount_payable");
+            amount.value = total.toFixed(2);
+
+            //For Populating Selected Products Table 
+            var table = document.getElementById("tbl-cart");
+            var row_count = (table.rows.length) - 2;
+            var row = table.insertRow(0);
+            row.id = "row"+row_count;
+            row.insertCell(0).innerHTML = prd_name;
+            row.insertCell(1).innerHTML = prd_price;
+            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
+            row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(4).innerHTML = sub_total.toFixed(2);
+            row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            
+            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
+            count = count + 1;
+
+            //For Populating Receipt Table 
+            var received = document.getElementById("received_amount").value;
+            var rct_table = document.getElementById("tbl-rct");
+            var rct_row_count = (table.rows.length) - 2;
+            var rct_row = rct_table.insertRow(0);
+            rct_row.id = "rct_row"+rct_row_count;
+            rct_row.insertCell(0).innerHTML = prd_quantity;
+            rct_row.insertCell(1).innerHTML = prd_name;
+            rct_row.insertCell(2).innerHTML = prd_price;
+            
+            document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+            document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
+            document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
+            document.getElementById("rct_amount_paid").innerHTML = received;
+            document.getElementById("receipt_list").value = list;
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            modal.hidden = true;
+            
+            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+            // session()->flash('successMessage','Transaction complete!');
+        }
+        else{
+            alert("Please input quantity");
         }
     }
 
@@ -648,27 +657,117 @@
         var change = document.getElementById("rct_change").value;
         document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
 
-        var final_change = amount - received;
-        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        var final_change = received - amount;
+
+        // if(final_change != "" || final_change > 0){
+            document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        // }
+        // else{
+        //     alert();
+        // }
     }
 
-    function removeFromCart(row, sub_total) {
-        var total = document.getElementById("lbl_total").innerHTML; 
-        total = parseFloat(total) - sub_total;
-        
-        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("amount_payable").value = total.toFixed(2);
-        // document.getElementById("tbl-cart").deleteRow(row.id);
+    function removeFromCart(row, sub_total, flag) {
+        if(flag == 1){
+            var total = document.getElementById("lbl_total").innerHTML; 
+            total = parseFloat(total) - sub_total;
+            
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
+            // document.getElementById("tbl-cart").deleteRow(row.id);
 
-        var deleteRow = document.getElementById(row.id);
-	    row.parentElement.removeChild(deleteRow); 
+            var deleteRow = document.getElementById(row.id);
+            row.parentElement.removeChild(deleteRow); 
+        }
+        else{
+            
+            var deleteRow = document.getElementById(row.id);
+            row.parentElement.removeChild(deleteRow); 
+        }
     }
 
     $(document).ready(function(){
         $("#receipt-modal").modal('hide');
     });
 
-    
+    //Set Array For Input into Table
+
+    function addCanistersIn() {   
+        var in_crate = parseInt(document.getElementById("in-crates").value);
+        var in_loose = parseInt(document.getElementById("in-loose").value);
+        var sub_total = 0;
+        
+        if((in_crate + in_loose) != "" || (in_crate + in_loose) > 0){
+            //Set Empty Values to 0 for Displaying in Table
+            
+            if(in_crate == "" || in_crate < 0){
+                in_crate = 0;
+            }
+            if((in_loose) == "" || (in_loose) < 0){
+                alert(in_loose);
+                in_loose = 0;
+            }
+            
+            //Calculations
+            var total = (in_crate * 12) + in_loose;
+            var display_crates = in_crate + " pc/s";
+            var display_loose = in_loose + " pc/s";
+
+            //Setter For Canister in Name
+            var canister_id = document.getElementById("canister-in").value; 
+            var holder = canister_id.split(",");
+            var item_name = "";
+            var flag = 1;
+            if(holder[0] == "1")
+            {
+                item_name = holder[2];
+                var badge_type = "badge-primary";
+            }
+            else
+            {
+                flag = 2;
+                item_name = holder[2];
+                var badge_type = "badge-warning";
+            }
+
+            //For Populating Selected Products Table 
+            var table = document.getElementById("tbl-prd-in");
+            var row_count = (table.rows.length) - 2;
+            var row = table.insertRow(0);
+            row.id = "row"+row_count;
+            row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
+            row.insertCell(1).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_crates+"</span></span>";
+            row.insertCell(2).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
+            row.insertCell(3).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ","+flag+")'><i class='fa fa-trash text-warning'></i></a>";
+            
+            // list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
+            // count = count + 1;
+
+            // //For Populating Receipt Table 
+            // var received = document.getElementById("received_amount").value;
+            // var rct_table = document.getElementById("tbl-prd-in");
+            // var rct_row_count = (table.rows.length) - 2;
+            // var rct_row = rct_table.insertRow(0);
+            // rct_row.id = "rct_row"+rct_row_count;
+            // rct_row.insertCell(0).innerHTML = prd_quantity;
+            // rct_row.insertCell(1).innerHTML = prd_name;
+            // rct_row.insertCell(2).innerHTML = prd_price;
+            
+            // document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+            // document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
+            // document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
+            // document.getElementById("rct_amount_paid").innerHTML = received;
+            // document.getElementById("receipt_list").value = list;
+            // document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            // modal.hidden = true;
+            
+            // alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+            // // session()->flash('successMessage','Transaction complete!');
+        }
+        else{
+            alert("Please input quantity");
+        }
+    }
 </script>
 
 @endsection

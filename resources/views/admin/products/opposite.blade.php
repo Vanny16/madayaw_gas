@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Products</h1>
+                    <h1 class="m-0 text-dark">Opposition Canisters</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Opposite Products</li>
+                        <li class="breadcrumb-item active">Opposition Canisters </li>
                     </ol>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-box-open"></i> Find Product</h3>
+                            <h3 class="card-title"><i class="fas fa-box-open"></i> Find Canister</h3>
                         </div>
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="{{ action('ProductController@searchProduct') }}">
@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
-                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Product Name">
+                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Opposition Name">
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
@@ -69,7 +69,7 @@
 
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
-                        <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Product</a>
+                        <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
 
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allproductDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
@@ -77,7 +77,7 @@
                     <div class="col-md-12"> 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-boxes"></i> Products</h3>
+                                <h3 class="card-title"><i class="fas fa-boxes"></i> Canisters</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                 </div>
@@ -87,29 +87,22 @@
                                     <thead>
                                         <tr>
                                             <th width="100px"></th>
-                                            <th>Product Name</th>
+                                            <th>Opposition Name</th>
                                             <th>SKU</th>
-                                            <th>Price</th>
-                                            <th style="text-align: center">Quantity</th>
                                             <th>Description</th>
-                                            <th>Refillable</th>
-                                            <th>Supplier</th>
+                                            <th style="text-align: center">Quantity</th>
+                                            <th>Notes</th>
                                             <th width="150px"></th>
                                             <th width="120px"></th>
                                             <th width="100px"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbl-products">
-                                    @if(isset($products))
-                                        @foreach($products as $product)
-                                            @if($product->prd_quantity < $product->prd_reorder_point)
-                                                @php($reorder_indicator = "table-danger" )
-                                            @else
-                                                @php($reorder_indicator = "")
-                                            @endif
-                                            <tr class="{{ $reorder_indicator }}">
+                                    <tbody id="tbl-opposition">
+                                    @if(isset($oppositions))
+                                        @foreach($oppositions as $opposition)
+                                            <tr>
                                                 <td>
-                                                    @if($product->prd_image <> '')
+                                                    @if($opposition->prd_image <> '')
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $product->prd_image) }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                     @else
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
