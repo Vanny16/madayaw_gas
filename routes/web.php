@@ -105,6 +105,8 @@ Route::group(['prefix' => 'sales'], function()
     Route::post('payment', 'SalesController@paymentSales');
     Route::post('add-canister', 'SalesController@addCanister');
 
+    //TEST
+    Route::post('test-transaction', 'SalesController@test');
 });
 
 Route::group(['prefix' => 'production'], function()

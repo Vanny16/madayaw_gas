@@ -64,11 +64,11 @@
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
-                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
+                        <button type="button" class="btn btn-default bg-primary form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
                     </div>
 
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-primary">
                             <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
@@ -89,9 +89,9 @@
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
-                                            <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
-                                            <td class="text-success"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
+                                            <td class="text-info"><strong>Total</strong></td>
+                                            <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
+                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -100,11 +100,11 @@
                     </div>
 
                     <div class="col-md-4 col-12 mb-3">
-                        <button type="button" class="btn btn-default text-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        <button type="button" class="btn btn-default bg-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-success">
                             <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Selected Products</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
@@ -126,10 +126,10 @@
                                             <td colspan="6"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            <td></td>
+                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -211,10 +211,10 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group">
+                                                        {{--<div class="form-group">
                                                             <label for="cus_address">Quantity <span style="color:red">*</span></label>
                                                             <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="0" min="1" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                        </div>
+                                                        </div>--}}
 
                                                         <div class="form-group">
                                                             <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
@@ -230,7 +230,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, prd_quantity{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -573,14 +573,14 @@
 
     //Initialize Array for Sales Report in Add to Cart Function
     var total_discount = parseFloat(0);
-    var count = 0;
+    var count = parseInt(0);
     var list = new Array();
     var details = new Array();
 
-    function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, prd_quantity, temp_discount, modal) {
+    function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, temp_discount, modal) {
         var crates_amount = parseInt(crates_amount);
         var loose_amount = parseInt(loose_amount);
-        var prd_quantity = parseInt(prd_quantity);
+        var prd_quantity = parseInt((crates_amount * 12) + loose_amount);
         
         if(prd_quantity != "" || prd_quantity > 0){
             //Calculations
@@ -608,6 +608,8 @@
             var amount = document.getElementById("amount_payable");
             amount.value = total.toFixed(2);
 
+            alert(count);
+
             //For Populating Selected Products Table 
             var table = document.getElementById("tbl-cart");
             var row_count = (table.rows.length) - 2;
@@ -620,9 +622,14 @@
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
+            // alert(count);
             list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
-            count = count + 1;
-
+            // list[count][].push(new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
+            // list.splice(count, 0, new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
+            
+            alert(typeof list);
+            count = count + 1; 
+            
             //For Populating Receipt Table 
             var received = document.getElementById("received_amount").value;
             var rct_table = document.getElementById("tbl-rct");
@@ -667,23 +674,28 @@
         // }
     }
 
-    function removeFromCart(row, sub_total, flag) {
-        if(flag == 1){
-            var total = document.getElementById("lbl_total").innerHTML; 
-            total = parseFloat(total) - sub_total;
-            
-            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            document.getElementById("amount_payable").value = total.toFixed(2);
-            // document.getElementById("tbl-cart").deleteRow(row.id);
+    function removeFromCart(row, sub_total) {
+        var total = document.getElementById("lbl_total").innerHTML; 
+        total = parseFloat(total) - sub_total;
+        
+        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+        document.getElementById("amount_payable").value = total.toFixed(2);
 
-            var deleteRow = document.getElementById(row.id);
-            row.parentElement.removeChild(deleteRow); 
-        }
-        else{
-            
-            var deleteRow = document.getElementById(row.id);
-            row.parentElement.removeChild(deleteRow); 
-        }
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow); 
+    }
+
+    function removeFromCanisterIn(row, crate, loose){
+        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+        total_crate = parseFloat(total_crate) - crate;
+        total_loose = parseFloat(total_loose) - loose;
+
+        document.getElementById("lbl_total_crates").innerHTML = total_crate.toFixed(2);
+        document.getElementById("lbl_total_loose").innerHTML = total_loose.toFixed(2);
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow); 
     }
 
     $(document).ready(function(){
@@ -695,6 +707,8 @@
     function addCanistersIn() {   
         var in_crate = parseInt(document.getElementById("in-crates").value);
         var in_loose = parseInt(document.getElementById("in-loose").value);
+        var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
+        var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
         var sub_total = 0;
         
         if((in_crate + in_loose) != "" || (in_crate + in_loose) > 0){
@@ -730,44 +744,51 @@
                 var badge_type = "badge-warning";
             }
 
+            //For Adding Quantity to Canisters Already in the Table
+
+
+
+
             //For Populating Selected Products Table 
             var table = document.getElementById("tbl-prd-in");
             var row_count = (table.rows.length) - 2;
             var row = table.insertRow(0);
             row.id = "row"+row_count;
             row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
-            row.insertCell(1).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_crates+"</span></span>";
-            row.insertCell(2).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
-            row.insertCell(3).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ","+flag+")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(1).innerHTML = "";
+            row.insertCell(2).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_crates+"</span></span>";
+            row.insertCell(3).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
+            row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
             
-            // list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
-            // count = count + 1;
+            document.getElementById("lbl_total_crates").innerHTML = total_crates.toFixed(2);
+            document.getElementById("lbl_total_loose").innerHTML = total_loose.toFixed(2);
 
-            // //For Populating Receipt Table 
-            // var received = document.getElementById("received_amount").value;
-            // var rct_table = document.getElementById("tbl-prd-in");
-            // var rct_row_count = (table.rows.length) - 2;
-            // var rct_row = rct_table.insertRow(0);
-            // rct_row.id = "rct_row"+rct_row_count;
-            // rct_row.insertCell(0).innerHTML = prd_quantity;
-            // rct_row.insertCell(1).innerHTML = prd_name;
-            // rct_row.insertCell(2).innerHTML = prd_price;
+            document.getElementById("in-crates").value = 0;
+            document.getElementById("in-loose").value = 0;
             
-            // document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-            // document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
-            // document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
-            // document.getElementById("rct_amount_paid").innerHTML = received;
-            // document.getElementById("receipt_list").value = list;
-            // document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            // modal.hidden = true;
-            
-            // alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // // session()->flash('successMessage','Transaction complete!');
+            alert(display_crates+" Crate/s and "+display_loose+" Loose of "+item_name+ " has been added");
+
         }
         else{
             alert("Please input quantity");
         }
     }
+
+    var testtest = "haihello";
+    $(function(){
+       $('#test-button').click(function() {
+            $.ajax({
+                url: 'test-transaction/{id}',
+                type: 'GET',
+                data: { id: testtest },
+                success: function(response)
+                {
+                    document.getElementById("test-button").innerHTML = changed;
+                    // $('#something').html(response);
+                }
+            });
+       });
+    });  
 </script>
 
 @endsection

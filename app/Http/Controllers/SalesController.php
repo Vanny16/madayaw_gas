@@ -118,10 +118,20 @@ class SalesController extends Controller
         
         $tmpArray = array();
 
+        // $tmpArray[] = explode(',', $list);
+        dd(($list));
+
+        for($count1 = 0 ; $count1 < (count($tmpArray) / 6) ; $count1++)
+        {
+            for($count2 = 0 ; $count2 < 7 ; $count2++)
+            {
+
+            }
+        }
+
         for($count = 0 ; $count < count($list) ; $count++)
         {
-            $tmpArray[] = explode(',', $list[$count]);
-
+            $tmpArray[] = explode(',', $list);
             DB::table('sales_reports')
             ->insert([
                 'cus_id' => $tmpArray[$count][0],
@@ -133,7 +143,7 @@ class SalesController extends Controller
                 'pdn_id' => get_last_production_id()
             ]);
         }
-
+        dd($tmpArray);
         session()->flash('successMessage','Transaction complete!');
         return redirect()->action('SalesController@main');
     }
@@ -208,4 +218,24 @@ class SalesController extends Controller
         session()->flash('successMessage','test');
         return redirect()->action('SalesController@main');
     }
+
+    public function test()
+{
+
+    dd('test');
+    $id = $_GET['id'];
+    $test = new TestModel();
+    $result = $test->getData($id);
+
+    foreach($result as $row)
+    {
+        $html =
+              '<tr>
+                 <td>' . $row->name . '</td>' .
+                 '<td>' . $row->address . '</td>' .
+                 '<td>' . $row->age . '</td>' .
+              '</tr>';
+    }
+    return $html;
+}
 }
