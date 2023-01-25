@@ -70,6 +70,11 @@
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
+                            <div class="col-md-12 text-right text-white order-lg-2 order-1 mb-1">
+                                <small>
+                                    <i id="">Can#1</i>
+                                </small>
+                            </div>   
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -92,6 +97,7 @@
                                             <td class="text-info"><strong>Total</strong></td>
                                             <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
                                             <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
+                                           
                                         </tr>
                                     </tbody>
                                 </table>
@@ -129,7 +135,7 @@
                                             <td colspan="4"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            
+                                          
                                         </tr>
                                     </tbody>
                                 </table>
