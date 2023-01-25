@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
-                                    <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
+                                    <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
                                         <option value="-1">-NOT SPECIFIED-</option>
                                         <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
@@ -109,7 +109,7 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
-                                <table class="table table-hover table-condensed">
+                                <table class="table table-lg table-borderless text-left">
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
