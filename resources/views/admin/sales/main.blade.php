@@ -129,7 +129,6 @@
                                             <td colspan="4"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -202,12 +201,12 @@
                                                         <div class="row">
                                                             <div class="form-group col-6">
                                                                 <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                                                                <input type="number" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                <input type="number" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()"  onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" required></input>
                                                             </div>
 
                                                             <div class="form-group col-6">
                                                                 <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                                                                <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
                                                             </div>
                                                         </div>
 
@@ -438,7 +437,7 @@
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
                                 <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event)" onkeyup="enterPayable();" required></input>
-                                <input type="hidden" id="receipt_list" name="receipt_list[]" class="form-control" value=""></input>
+                                <input type="hidden" id="receipt_list" name="receipt_list" class="form-control" value=""></input>
                             </div>
                         </div>
                     </div>
@@ -621,9 +620,10 @@
             row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
-            
+
             // alert(count);
-            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
+            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
+            
             // list[count][].push(new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
             // list.splice(count, 0, new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
             
@@ -774,21 +774,29 @@
         }
     }
 
-    var testtest = "haihello";
-    $(function(){
-       $('#test-button').click(function() {
-            $.ajax({
-                url: 'test-transaction/{id}',
-                type: 'GET',
-                data: { id: testtest },
-                success: function(response)
-                {
-                    document.getElementById("test-button").innerHTML = changed;
-                    // $('#something').html(response);
-                }
-            });
-       });
-    });  
+    function noNegativeValue(id){
+        var value = document.getElementById(id).value;
+        if(value < 0){
+            document.getElementById(id).value ="0";
+        }
+    }
+
+   function getCartItems(){
+    const trs = document.querySelectorAll('#tbl-cart tr');
+
+    const result = [];
+
+    for(let tr of trs) {
+    let th_td = tr.getElementsByTagName('td');
+    if (th_td.length == 0) {
+        th_td = tr.getElementsByTagName('th');
+    }
+
+    let th_td_array = Array.from(th_td); // convert HTMLCollection to an Array
+    th_td_array = th_td_array.map(tag => tag.innerText); // get the text of each element
+    result.push(th_td_array);
+    }
+   }
 </script>
 
 @endsection
