@@ -92,7 +92,7 @@
                                             <th>Price</th>
                                             <th style="text-align: center">Quantity</th>
                                             <th>Description</th>
-                                            <th>Refillable</th>
+                                            <th>Weight</th>
                                             <th>Supplier</th>
                                             <th width="150px"></th>
                                             <th width="120px"></th>
@@ -239,6 +239,10 @@
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_weight">Weight <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter weight in grams" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
@@ -452,6 +456,10 @@
                             <div class="form-group">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_weight">Weight <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter weight in grams" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
