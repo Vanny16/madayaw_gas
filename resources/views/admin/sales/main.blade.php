@@ -622,6 +622,7 @@
             row.insertCell(0).innerHTML = prd_name;
             row.insertCell(1).innerHTML = prd_price;
             row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
+            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
             row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
