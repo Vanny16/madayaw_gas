@@ -96,8 +96,7 @@
                                             <td colspan="1"></td>
                                             <td class="text-info"><strong>Total</strong></td>
                                             <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
-                                           
+                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>                                        
                                         </tr>
                                     </tbody>
                                 </table>
@@ -134,8 +133,7 @@
                                         <tr class="text-success bg-white">
                                             <td colspan="4"></td>
                                             <td class="text-success"><strong>Total</strong></td>
-                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                          
+                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>                                         
                                         </tr>
                                     </tbody>
                                 </table>
