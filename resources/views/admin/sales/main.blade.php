@@ -643,7 +643,7 @@
             document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
             document.getElementById("rct_amount_paid").innerHTML = received;
-            document.getElementById("receipt_list").value = list;
+            // document.getElementById("receipt_list").value = list;
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
@@ -795,6 +795,11 @@
     th_td_array = th_td_array.map(tag => tag.innerText); // get the text of each element
     result.push(th_td_array);
     }
+   }
+
+   function receivePayment(){
+        getCartItems();
+        document.getElementById("receipt_list").value = list;
    }
 </script>
 
