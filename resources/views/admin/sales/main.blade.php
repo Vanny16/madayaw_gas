@@ -598,7 +598,7 @@
                 prd_price = "<small class='bg-warning badge'>Free</small>";
             }
             else{
-                prd_price = parseFloat(prd_price).toFixed(2)
+                prd_price = parseFloat(prd_price).toFixed(2);
             }
             
             // Setter For Discount
@@ -611,8 +611,6 @@
             var client_id = document.getElementById("client_id").value;
             var amount = document.getElementById("amount_payable");
             amount.value = total.toFixed(2);
-
-            alert(count);
 
             //For Populating Selected Products Table 
             var table = document.getElementById("tbl-cart");
