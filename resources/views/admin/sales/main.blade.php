@@ -131,7 +131,7 @@
                                             <td colspan="6"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>                                         
                                         </tr>
@@ -621,10 +621,11 @@
             row.id = "row"+row_count;
             row.insertCell(0).innerHTML = prd_name;
             row.insertCell(1).innerHTML = prd_price;
-            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
-            row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(4).innerHTML = sub_total.toFixed(2);
-            row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(2).innerHTML = parseFloat(crates_quantity).toFixed(1);
+            row.insertCell(3).innerHTML = parseFloat(loose_quantity).toFixed(2);
+            row.insertCell(4).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(5).innerHTML = sub_total.toFixed(2);
+            row.insertCell(6).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
             // alert(count);
             list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total);
