@@ -48,9 +48,13 @@ class ProductController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get();
         
+        $suppliers = DB::table('suppliers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
+
         $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'suppliers', 'opposition', 'pdn_flag'));
+        return view('admin.products.opposite',compact('statuses', 'default_status', 'suppliers', 'opposition', 'pdn_flag'));
     }
     public function createProduct(Request $request)
     {
@@ -140,6 +144,7 @@ class ProductController extends Controller
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
         $prd_reorder = $request->prd_reorder;
+        $prd_weight = $request->prd_weight;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
         $prd_quantity = (float)$request->prd_quantity;
@@ -197,6 +202,7 @@ class ProductController extends Controller
             'prd_sku' => $prd_sku,
             'prd_price' => $prd_price,
             'prd_reorder_point' => $prd_reorder, 
+            'prd_weight' => $prd_weight,
             'sup_id' => $sup_id
         ]);
 

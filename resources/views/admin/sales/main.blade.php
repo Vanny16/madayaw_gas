@@ -162,10 +162,12 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-shopping-cart"></i> Select Products</h5>
             </div>
+           
             <div class="col-12 mt-2"> 
                 <small><i class="fa fa-sm fa-search ml-2"></i> Search Product</small>
                 <input id="search_products" type="text" class="form-control col-md-12 col-12 mt-2 bg-light" name="search_string" placeholder="Search ..."/>
             </div>
+       
             <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
@@ -613,20 +615,19 @@
             amount.value = total.toFixed(2);
 
             //For Populating Selected Products Table 
-            var table = document.getElementById("tbl-cart"); 
+            var table = document.getElementById("tbl-cart");
             var row_count = (table.rows.length) - 2;
             var row = table.insertRow(0);
             row.id = "row"+row_count;
             row.insertCell(0).innerHTML = prd_name;
             row.insertCell(1).innerHTML = prd_price;
-            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
-            row.insertCell(2).innerHTML = parseFloat(prd_quantity).toFixed(1);
-            row.insertCell(3).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(2).innerHTML = parseFloat(crates_amount).toFixed(1);
+            row.insertCell(3).innerHTML = parseFloat(loose_amount).toFixed(1);
+            row.insertCell(4).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
-            row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(6).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
-            
             count = count + 1; 
             
             //For Populating Receipt Table 

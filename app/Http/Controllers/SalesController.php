@@ -225,7 +225,7 @@ class SalesController extends Controller
     }
 
     public function test()
-{
+    {
 
     dd('test');
     $id = $_GET['id'];
@@ -242,5 +242,6 @@ class SalesController extends Controller
               '</tr>';
     }
     return $html;
-}
+    }
+
 }
