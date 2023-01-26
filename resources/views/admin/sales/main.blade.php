@@ -598,7 +598,7 @@
                 prd_price = "<small class='bg-warning badge'>Free</small>";
             }
             else{
-                prd_price = parseFloat(prd_price).toFixed(2)
+                prd_price = parseFloat(prd_price).toFixed(2);
             }
             
             // Setter For Discount
@@ -612,10 +612,8 @@
             var amount = document.getElementById("amount_payable");
             amount.value = total.toFixed(2);
 
-            alert(count);
-
             //For Populating Selected Products Table 
-            var table = document.getElementById("tbl-cart");
+            var table = document.getElementById("tbl-cart"); 
             var row_count = (table.rows.length) - 2;
             var row = table.insertRow(0);
             row.id = "row"+row_count;
@@ -626,13 +624,8 @@
             row.insertCell(4).innerHTML = sub_total.toFixed(2);
             row.insertCell(5).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
-            // alert(count);
             list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
             
-            // list[count][].push(new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
-            // list.splice(count, 0, new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total));
-            
-            alert(typeof list);
             count = count + 1; 
             
             //For Populating Receipt Table 
