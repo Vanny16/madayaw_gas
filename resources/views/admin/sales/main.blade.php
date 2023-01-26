@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
-                                    <select class="form-control col-md-7 col-12" id="client_id" name="client_id" required="">
+                                    <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
                                         <option value="-1">-NOT SPECIFIED-</option>
                                         <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
@@ -70,6 +70,11 @@
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
+                            <div class="col-md-12 text-right text-white order-lg-2 order-1 mb-1">
+                                <small>
+                                    <i id="">Can#1</i>
+                                </small>
+                            </div>   
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -92,6 +97,7 @@
                                             <td class="text-info"><strong>Total</strong></td>
                                             <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
                                             <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>
+                                           
                                         </tr>
                                     </tbody>
                                 </table>
@@ -109,7 +115,7 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
-                                <table class="table table-hover table-condensed">
+                                <table class="table table-lg table-borderless text-left">
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
