@@ -162,10 +162,12 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-shopping-cart"></i> Select Products</h5>
             </div>
+           
             <div class="col-12 mt-2"> 
                 <small><i class="fa fa-sm fa-search ml-2"></i> Search Product</small>
                 <input id="search_products" type="text" class="form-control col-md-12 col-12 mt-2 bg-light" name="search_string" placeholder="Search ..."/>
             </div>
+       
             <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">

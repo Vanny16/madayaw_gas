@@ -30,7 +30,7 @@
                     </div>
                 @else
                     <div class="col-12 text-white mb-3">
-                        <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "{{ action('ProductionController@toggleProduction')}}"><i class="fa fa-stop mr-1"></i> End Production</a>
+                        <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "{{ action('ProductionController@toggleProduction')}}" data-toggle="modal" data-target="#end-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
                     </div>
                 @endif
             </div>
@@ -793,6 +793,26 @@
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- End Production Modal -->
+<div class="modal fade" id="end-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-danger">
+                <h5 class="modal-title"><i class="fa fa-exclamation mr-2 text-danger"> </i>Warning</h5>
+            </div> 
+            <div class="modal-body">
+                <div class="col-12">
+                    Are you sure you want to end the Production?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>Yes</a>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
         </div>
     </div>
 </div>
