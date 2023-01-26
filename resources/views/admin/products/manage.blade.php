@@ -156,7 +156,13 @@
                                                 @else
                                                     <td>-</td>
                                                 @endif
-                                                <td>Yes</td>
+                                                @if($product->prd_weight)
+                                                    <td>   
+                                                        {{$product->prd_weight}} g
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
                                                 @if($product->sup_name)
                                                     <td>   
                                                         {{$product->sup_name}}
