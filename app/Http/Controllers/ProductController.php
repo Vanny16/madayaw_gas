@@ -44,15 +44,6 @@ class ProductController extends Controller
 
         $default_status = '0';
 
-        $products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->get();
-
-        $suppliers = DB::table('suppliers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->get();
-
         $opposition = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
@@ -67,6 +58,7 @@ class ProductController extends Controller
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
+        $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
 
@@ -89,6 +81,7 @@ class ProductController extends Controller
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku,
         'prd_price' => $prd_price,
+        'prd_weight' => $prd_weight,
         'prd_reorder_point' => $prd_reorder, 
         'prd_for_production' => 1,
         'prd_is_refillable' => 1,
