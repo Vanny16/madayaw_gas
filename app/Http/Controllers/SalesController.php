@@ -114,8 +114,13 @@ class SalesController extends Controller
     
     public function paymentSales(Request $request)
     {
-        $list = $request->input('receipt_list');
-        
+        $list = $request->receipt_list;
+
+        $selected_item_list  = $list;
+        $pieces = explode(",#,", $selected_item_list);
+
+        dd($pieces);
+
         $tmpArray = array();
 
         // $tmpArray[] = explode(',', $list);
