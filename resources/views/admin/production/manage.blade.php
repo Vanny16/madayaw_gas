@@ -810,7 +810,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>Yes</a>
+                <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>End Production</a>
                 <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
