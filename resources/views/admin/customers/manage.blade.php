@@ -266,6 +266,7 @@
                                                                                     <div class="col-md-6">
                                                                                         <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
                                                                                         <label for=""> {{$product->prd_name}}</label>
+                                                                                        <input class="form-control" id="" name="" value="{{$product->prd_price}}">
                                                                                     </div>
                                                                                 @endforeach
                                                                             </div>
