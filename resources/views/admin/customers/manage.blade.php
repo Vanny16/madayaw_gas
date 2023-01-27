@@ -406,12 +406,19 @@
                             <div class="card">
                                 <div class="col-12 p-2">
                                     <div class="row">
-                                        @foreach($products as $product)
-                                            <div class="col-md-6">
-                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
-                                                <label for=""> {{$product->prd_name}}</label>
-                                            </div>
-                                        @endforeach
+                                        <table class="table table-lg table-borderless text-left">
+                                            <tbody>
+                                                <div class="col-md-6">
+                                                    @foreach($products as $product)
+                                                    <tr>
+                                                        <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}"></td>
+                                                        <td><label for="">{{$product->prd_name}}</label></td>
+                                                        <td><input class="form-control" id="" name=""></td>
+                                                    </tr>
+                                                    @endforeach
+                                                </div>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -799,9 +799,9 @@
 <div class="modal fade" id="end-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <div class="modal-header text-danger">
+            <!-- <div class="modal-header text-danger">
                 <h5 class="modal-title"><i class="fa fa-exclamation mr-2 text-danger"> </i>Warning</h5>
-            </div> 
+            </div>  -->
             <div class="modal-body">
                 <div class="col-12">
                     Are you sure you want to end the Production?
