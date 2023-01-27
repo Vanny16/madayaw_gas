@@ -127,8 +127,10 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
+                                    </tbody>
+                                    <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="6"></td>
+                                            <td colspan="7"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="3"></td>
@@ -143,7 +145,7 @@
 
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal"><i class="fa fa-wallet"></i> Receive Payment</button>
+                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()"><i class="fa fa-wallet"></i> Receive Payment</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
@@ -644,7 +646,7 @@
             document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
             document.getElementById("rct_amount_paid").innerHTML = received;
-            // document.getElementById("receipt_list").value = list;
+            document.getElementById("receipt_list").value = list;
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
@@ -781,26 +783,41 @@
         }
     }
 
-   function getCartItems(){
-    const trs = document.querySelectorAll('#tbl-cart tr');
+    function getCartItems(){
+        const trs = document.querySelectorAll('#tbl-cart tr');
 
-    const result = [];
+        const result = [];
 
-    for(let tr of trs) {
-    let th_td = tr.getElementsByTagName('td');
-    if (th_td.length == 0) {
-        th_td = tr.getElementsByTagName('th');
+        for(let tr of trs) {
+        let th_td = tr.getElementsByTagName('td');
+        if (th_td.length == 0) {
+            th_td = tr.getElementsByTagName('tr');
+        }
+
+        let th_td_array = Array.from(th_td); // convert HTMLCollection to an Array
+        th_td_array = th_td_array.map(tag => tag.innerText); // get the text of each element
+        result.push(th_td_array);
+        return result;
+        }
     }
 
-    let th_td_array = Array.from(th_td); // convert HTMLCollection to an Array
-    th_td_array = th_td_array.map(tag => tag.innerText); // get the text of each element
-    result.push(th_td_array);
-    }
-   }
+   function  receivePayment(){
 
-   function receivePayment(){
-        getCartItems();
-        document.getElementById("receipt_list").value = list;
+    var convertedIntoArray = [];
+        $("#tbl-cart tr").each(function() {
+            var rowDataArray = [];
+            var actualData = $(this).find('td');
+            if (actualData.length > 0) {
+                actualData.each(function() {
+                    rowDataArray.push($(this).text());
+                });
+                convertedIntoArray.push(rowDataArray+"#");
+            }
+        });
+
+        alert(convertedIntoArray);
+
+        document.getElementById("receipt_list").value = convertedIntoArray;
    }
 </script>
 
