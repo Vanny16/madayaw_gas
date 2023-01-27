@@ -36,7 +36,7 @@
             </div>
             <div class="row">
                 @if($pdn_flag == 0)
-                    <div class="col-md-7"> 
+                    <div class="col-md-7 order-lg-1 order-md-1 order-sm-2 order-xs-2"> 
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
@@ -520,8 +520,7 @@
                         </div>
                     </div>
                 @endif
-
-                <div class="col-md-5"> 
+                <div class="col-md-5 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
@@ -589,7 +588,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <!-- Canisters -->
                         <div class="row mb-3">
                             <div class="col-12 text-center bg-info">
