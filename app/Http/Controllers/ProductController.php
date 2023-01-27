@@ -162,7 +162,7 @@ class ProductController extends Controller
         //         'prd_uuid' => generateuuid()
         //     ]);
         // }
-
+            //test
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_uuid', '<>', $prd_uuid)
