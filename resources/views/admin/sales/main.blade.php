@@ -221,7 +221,7 @@
                                                             @else
                                                                 <div class="form-group col-12">
                                                                     <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="quantity{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
+                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
                                                                 </div>
                                                             @endif
                                                         </div>
