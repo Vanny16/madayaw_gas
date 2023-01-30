@@ -45,10 +45,10 @@
                                             <a class="nav-link active" data-toggle="tab" href="#raw-materials">Raw Materials</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#empty-canisters">Crimp Canisters</a>
+                                            <a class="nav-link" data-toggle="tab" href="#empty-canisters">Crimped</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#filled-canisters">Backflush Canisters</a>
+                                            <a class="nav-link" data-toggle="tab" href="#filled-canisters">Backflushed</a>
                                         </li>
                                     </ul>
                                     <div class="card-tools">
