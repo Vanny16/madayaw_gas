@@ -42,6 +42,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-3 order-lg-2 order-1 mb-3">
+                                    @if($transaction_id == null)
+                                        @php($transaction_id = 1)
+                                    @else
+                                        @php($transaction_id += 1)
+                                    @endif
+                                    <strong class="text-danger fa-2x">No. {{ $transaction_id }}</strong>
+                                </div>
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
                                     <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
@@ -64,16 +72,13 @@
                     </div>
 
                     <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-default bg-primary form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
+                        <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
                     </div>
 
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
                             <div class="col-md-12 text-right text-white order-lg-2 order-1 mb-1">
-                                <small>
-                                    <i id="">Can#1</i>
-                                </small>
                             </div>   
                         </div>
                         <div class="card-body" style="overflow-x:auto;">

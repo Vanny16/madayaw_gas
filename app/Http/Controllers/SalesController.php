@@ -30,7 +30,10 @@ class SalesController extends Controller
         $oppositions = DB::table('oppositions')
         ->get();
 
-        return view('admin.sales.main', compact('products', 'customers', 'oppositions'));
+        $transaction_id = DB::table('transactions')
+        ->max('trx_id');
+
+        return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
     }
 
     public function report()
