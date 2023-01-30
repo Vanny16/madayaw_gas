@@ -117,7 +117,7 @@ class SalesController extends Controller
     
     public function paymentSales(Request $request)
     {
-        $list = $request->receipt_list;
+        $list = $request->purchases;
 
         $selected_item_list  = $list;
         $pieces = explode(",#,", $selected_item_list);

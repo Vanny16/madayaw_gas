@@ -42,13 +42,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3 order-lg-2 order-1 mb-3">
+                                <div class="col-md-3 order-lg-2 order-1 mb-3 text-right">
                                     @if($transaction_id == null)
                                         @php($transaction_id = 1)
                                     @else
                                         @php($transaction_id += 1)
                                     @endif
-                                    <strong class="text-danger fa-2x">No. {{ $transaction_id }}</strong>
+                                    <label>Transaction</label>
+                                    <p class="text-danger fa-2x mr-2">No. {{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
@@ -90,18 +91,20 @@
                                             <th></th>
                                             <th>Crates</th>
                                             <th>Loose</th>
-                                            <th></th>
+                                            <th width="50"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-prd-in">
+                                    </tbody>
+                                    <tbody>
                                         <tr class="bg-light" height="1px">
                                             <td colspan="6"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
                                             <td class="text-info"><strong>Total</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0.00</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0.00</strong></td>                                        
+                                            <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
+                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
                                         </tr>
                                     </tbody>
                                 </table>
@@ -139,7 +142,7 @@
                                             <td colspan="8"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="3"></td>
+                                            <td colspan="5"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                         </tr>
@@ -223,15 +226,13 @@
                                                                 <div class="form-group col-6">
                                                                     <label for="cus_address"># of Loose <span style="color:red">*</span></label>
                                                                     <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
-                                                            </div>
-                                                            @else
-                                                                <div class="form-group col-6">
-                                                                    <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                                                                    <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()"  onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" required></input>
                                                                 </div>
+                                                            @else
+                                                                <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()"  onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" required></input>
+
                                                                 <div class="form-group col-12">
-                                                                    <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="quantity{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
+                                                                    <label for="cus_address">Quantity<span style="color:red">*</span></label>
+                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -463,7 +464,7 @@
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
                                 <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event)" onkeyup="enterPayable();" required></input>
-                                <input type="hidden" id="receipt_list" name="receipt_list" class="form-control" value=""></input>
+                                <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                         </div>
                     </div>
@@ -592,8 +593,6 @@
 
     //Initialize Array for Sales Report in Add to Cart Function
     var total_discount = parseFloat(0);
-    var count = parseInt(0);
-    var list = new Array();
     var details = new Array();
 
     function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, temp_discount, modal) {
@@ -640,15 +639,11 @@
             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(6).innerHTML = sub_total.toFixed(2);
             row.insertCell(7).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
-
-            // list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
-            count = count + 1; 
             
-            alert(row.id);
             //For Populating Receipt Table 
             var received = document.getElementById("received_amount").value;
             var rct_table = document.getElementById("tbl-rct");
-            var rct_row_count = (table.rows.length) - 2;
+            var rct_row_count = (table.rows.length);
             var rct_row = rct_table.insertRow(0);
             rct_row.id = "rct_row"+rct_row_count;
             rct_row.insertCell(0).innerHTML = prd_quantity;
@@ -659,7 +654,6 @@
             document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
             document.getElementById("rct_amount_paid").innerHTML = received;
-            document.getElementById("receipt_list").value = list;
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
@@ -697,7 +691,7 @@
         document.getElementById("amount_payable").value = total.toFixed(2);
 
         var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow); 
+        row.parentElement.removeChild(deleteRow);
     }
 
     function removeFromCanisterIn(row, crate, loose){
@@ -706,8 +700,8 @@
         total_crate = parseFloat(total_crate) - crate;
         total_loose = parseFloat(total_loose) - loose;
 
-        document.getElementById("lbl_total_crates").innerHTML = total_crate.toFixed(2);
-        document.getElementById("lbl_total_loose").innerHTML = total_loose.toFixed(2);
+        document.getElementById("lbl_total_crates").innerHTML = total_crate;
+        document.getElementById("lbl_total_loose").innerHTML = total_loose;
 
         var deleteRow = document.getElementById(row.id);
         row.parentElement.removeChild(deleteRow); 
@@ -766,7 +760,7 @@
 
             //For Populating Selected Products Table 
             var table = document.getElementById("tbl-prd-in");
-            var row_count = (table.rows.length) - 2;
+            var row_count = (table.rows.length);
             var row = table.insertRow(0);
             row.id = "row"+row_count;
             row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
@@ -775,8 +769,8 @@
             row.insertCell(3).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
             row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
             
-            document.getElementById("lbl_total_crates").innerHTML = total_crates.toFixed(2);
-            document.getElementById("lbl_total_loose").innerHTML = total_loose.toFixed(2);
+            document.getElementById("lbl_total_crates").innerHTML = total_crates;
+            document.getElementById("lbl_total_loose").innerHTML = total_loose;
 
             document.getElementById("in-crates").value = 0;
             document.getElementById("in-loose").value = 0;
@@ -816,10 +810,11 @@
 
    function  receivePayment(){
 
-    var convertedIntoArray = [];
+        var convertedIntoArray = [];
         $("#tbl-cart tr").each(function() {
             var rowDataArray = [];
             var actualData = $(this).find('td');
+             
             if (actualData.length > 0) {
                 actualData.each(function() {
                     rowDataArray.push($(this).text());
@@ -827,10 +822,13 @@
                 convertedIntoArray.push(rowDataArray+"#");
             }
         });
+        
+        // const item_list = convertedIntoArray.split(",#");
 
         alert(convertedIntoArray);
 
-        document.getElementById("receipt_list").value = convertedIntoArray;
+
+        document.getElementById("purchases").value = convertedIntoArray;
    }
 </script>
 
