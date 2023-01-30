@@ -414,7 +414,7 @@
                                                     <tr>
                                                         <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}"></td>
                                                         <td><label for="">{{$product->prd_name}}</label></td>
-                                                        <td><input class="form-control" id="" name="" value="{{$product->prd_price}}"></td>
+                                                        <td><input type="number" class="form-control" id="product{{$product->prd_id}}" name="product{{$product->prd_id}}"></td>
                                                     </tr>
                                                     @endforeach
                                                 </div>
