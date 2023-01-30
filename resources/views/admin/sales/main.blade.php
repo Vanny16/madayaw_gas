@@ -824,7 +824,7 @@
         });
         
         // const item_list = convertedIntoArray.split(",#");
-
+//test
         alert(convertedIntoArray);
 
 
