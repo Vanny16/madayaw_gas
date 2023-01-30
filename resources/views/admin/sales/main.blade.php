@@ -63,7 +63,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-12 mb-3">
+                    <div class="col-md-2 col-12 mb-3">
                         <button type="button" class="btn btn-default bg-primary form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
                     </div>
 
@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-12 mb-3">
+                    <div class="col-md-2 col-12 mb-3">
                         <button type="button" class="btn btn-default bg-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
@@ -117,6 +117,7 @@
                                 <table class="table table-lg table-borderless text-left">
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Product Name</th>
                                             <th>Price</th>
                                             <th>Crates</th>
@@ -130,7 +131,7 @@
                                     </tbody>
                                     <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="7"></td>
+                                            <td colspan="8"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="3"></td>
@@ -219,6 +220,10 @@
                                                                     <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
                                                             </div>
                                                             @else
+                                                                <div class="form-group col-6">
+                                                                    <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                                                                    <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()"  onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" required></input>
+                                                                </div>
                                                                 <div class="form-group col-12">
                                                                     <label for="cus_address">Quantity <span style="color:red">*</span></label>
                                                                     <input type="number" class="form-control" id="quantity{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" required></input>
@@ -619,20 +624,22 @@
 
             //For Populating Selected Products Table 
             var table = document.getElementById("tbl-cart");
-            var row_count = (table.rows.length) - 2;
+            var row_count = (table.rows.length);
             var row = table.insertRow(0);
             row.id = "row"+row_count;
-            row.insertCell(0).innerHTML = prd_name;
-            row.insertCell(1).innerHTML = prd_price;
-            row.insertCell(2).innerHTML = parseFloat(crates_amount).toFixed(1);
-            row.insertCell(3).innerHTML = parseFloat(loose_amount).toFixed(1);
-            row.insertCell(4).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(4).innerHTML = sub_total.toFixed(2);
-            row.insertCell(6).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(0).innerHTML = prd_id;
+            row.insertCell(1).innerHTML = prd_name;
+            row.insertCell(2).innerHTML = prd_price;
+            row.insertCell(3).innerHTML = parseFloat(crates_amount).toFixed(1);
+            row.insertCell(4).innerHTML = parseFloat(loose_amount).toFixed(1);
+            row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(6).innerHTML = sub_total.toFixed(2);
+            row.insertCell(7).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
-            list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
+            // list[count] = new Array(client_id, prd_id, prd_name, prd_price, prd_quantity, temp_discount, sub_total,"#");
             count = count + 1; 
             
+            alert(row.id);
             //For Populating Receipt Table 
             var received = document.getElementById("received_amount").value;
             var rct_table = document.getElementById("tbl-rct");
