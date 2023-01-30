@@ -485,11 +485,6 @@
                             </thead>
                             
                             <tbody>
-                                <tr class="">
-                                    <td>1</td>
-                                    <td>Botin</td>
-                                    <td>500.00</td>
-                                </tr>
                                 <tr class="card-header">
                                     <td>1</td>
                                     <td>Botin</td>
@@ -497,6 +492,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        
                         <table class="table table-sm table-borderless text-left">                   
                             <tbody>
                                 <tr>
