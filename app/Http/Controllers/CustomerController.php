@@ -139,8 +139,13 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
-        $cus_accessible = $request->cus_accessible;
+        $cus_accessibles = $request->cus_accessible;
 
+        $accessibles = "";
+        foreach($cus_accessibles as $cus_access)
+        {
+            $accessibles = $accessibles . $cus_access . ",";
+        }
         // dd($cus_accessible);
         // $check_uuid = DB::table('customers')
         // ->where('cus_id', '=', $cus_id)
@@ -174,6 +179,7 @@ class CustomerController extends Controller
             'cus_name' => $cus_name,
             'cus_address' => $cus_address,
             'cus_contact' => $cus_contact,
+            'cus_accessibles' => $accessibles,
             'cus_notes' => $cus_notes
         ]);
 
