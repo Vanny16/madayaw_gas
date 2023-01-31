@@ -36,7 +36,15 @@ class CustomerController extends Controller
         ->where('prd_is_refillable','=','1')
         ->get();
 
-        return view('admin.customers.manage',compact('customers','statuses','default_status','products'));
+        $selected_products = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->get();
+
+        // dd($products);
+
+        return view('admin.customers.manage',compact('customers','statuses','default_status','products','selected_products'));
     }
     
     public function createCustomer(Request $request)
@@ -45,9 +53,15 @@ class CustomerController extends Controller
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
-        $cus_accessible = $request->cus_accessible;
+        $cus_accessibles = $request->cus_accessible;
 
-        // dd($cus_accessible);
+        $accessibles = "";
+        foreach($cus_accessibles as $cus_access)
+        {
+            $accessibles = $accessibles . $cus_access . ",";
+        }
+
+        // dd($accessibles);
 
         $check_cus_name = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -67,6 +81,7 @@ class CustomerController extends Controller
         'cus_name' => $cus_name, 
         'cus_address' => $cus_address,
         'cus_contact' => $cus_contact,
+        'cus_accessibles' => $accessibles,
         'cus_notes' => $cus_notes
         ]);
 
@@ -124,8 +139,13 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
-        $cus_accessible = $request->cus_accessible;
+        $cus_accessibles = $request->cus_accessible;
 
+        $accessibles = "";
+        foreach($cus_accessibles as $cus_access)
+        {
+            $accessibles = $accessibles . $cus_access . ",";
+        }
         // dd($cus_accessible);
         // $check_uuid = DB::table('customers')
         // ->where('cus_id', '=', $cus_id)
@@ -159,6 +179,7 @@ class CustomerController extends Controller
             'cus_name' => $cus_name,
             'cus_address' => $cus_address,
             'cus_contact' => $cus_contact,
+            'cus_accessibles' => $accessibles,
             'cus_notes' => $cus_notes
         ]);
 
@@ -251,6 +272,15 @@ class CustomerController extends Controller
         $customers = $query->orderBy('cus_name')->get(); 
 
         return view('admin.customers.manage', compact('customers', 'statuses', 'default_status'));
+    }
+
+    public function changeProductPrice(Request $request)
+    {
+        $customers = $request->customers;
+        $prd_id = $request->prd_id;
+        $prd_price = $request->prd_price;
+
+        
     }
 
 }

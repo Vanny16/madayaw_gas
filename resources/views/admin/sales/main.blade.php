@@ -159,6 +159,9 @@
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
+                        <div class="col-md-2 col-12 mb-3">
+                        <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
+                        </div>
                     </div>
                 </div>
             </div>
