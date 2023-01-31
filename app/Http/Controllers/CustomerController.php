@@ -274,4 +274,13 @@ class CustomerController extends Controller
         return view('admin.customers.manage', compact('customers', 'statuses', 'default_status'));
     }
 
+    public function changeProductPrice(Request $request)
+    {
+        $customers = $request->customers;
+        $prd_id = $request->prd_id;
+        $prd_price = $request->prd_price;
+
+        
+    }
+
 }
