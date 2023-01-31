@@ -21,10 +21,11 @@
             </div>
        
         </div>
+        
             <p>Customer Name: </p>
             <p>Date: </p>
             <p>Address: </p>
-            
+
             <div class="card-body">
                 <table class="table table-hover table-condensed">
                     <thead>
@@ -48,13 +49,13 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col-md-2 col-12 mb-3">
-                        <p>Issued By: </p>
-                    </div>
-                    <div class="col-md-8 col-12 mb-6" style="text-align:right;">
-                        <p>Receive By: </p>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <p>Issued By: </p>
+                </div>
+                <div class="col-md-8 col-12 mb-6" style="text-align:right;">
+                    <p>Receive By: </p>
                 </div>
             </div>
         </div>
