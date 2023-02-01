@@ -49,7 +49,7 @@
                                         @php($transaction_id += 1)
                                     @endif
                                     <label>Transaction</label>
-                                    <p class="text-danger fa-2x mr-2">No. {{ $transaction_id }}</p>
+                                    <p class="text-danger fa-2x mr-2">TRX 20230131-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
@@ -125,7 +125,7 @@
                                 <table class="table table-lg table-borderless text-left">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th width="1"></th>
                                             <th>Product Name</th>
                                             <th>Price</th>
                                             <th>Crates</th>
@@ -159,6 +159,9 @@
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
+                        <div class="col-md-2 col-12 mb-3">
+                        <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,10 +177,10 @@
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-shopping-cart"></i> Select Products</h5>
             </div>
            
-            <div class="col-12 mt-2"> 
+            <!-- <div class="col-12 mt-2"> 
                 <small><i class="fa fa-sm fa-search ml-2"></i> Search Product</small>
                 <input id="search_products" type="text" class="form-control col-md-12 col-12 mt-2 bg-light" name="search_string" placeholder="Search ..."/>
-            </div>
+            </div> -->
        
             <form method="POST" action="{{ action('CustomerController@createCustomer')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
@@ -192,7 +195,7 @@
                                         <div class="container">
                                             <b>{{$product->prd_name}}</b>
                                             <p>{{$product->prd_price}}</p>
-                                            <p>{{$product->prd_quantity}} in stock</p>
+                                            <p>{{$product->prd_quantity}} available</p>
                                         </div>    
                                     </div>
                                 </div>
@@ -430,6 +433,9 @@
                                 <table class="table table-lg table-borderless text-left">
                                     <tbody>
                                         <tr>
+                                            <td colspan="2"><hr></td>
+                                        </tr>
+                                        <tr>
                                             <td><strong>Gross Total</strong></td>
                                             <td><a id="rct_gross_total">0.00</a></td>
                                         </tr>
@@ -459,11 +465,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
-                                <input type="text" id="amount_payable" name="amount_payable" class="form-control" value="0.00" readonly></input>
+                                <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="amount_amount" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event)" onkeyup="enterPayable();" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" placeholder="Enter Amount" onkeypress="return isNumberKey(this, event)" onkeyup="enterPayable();" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                         </div>
@@ -631,25 +637,17 @@
             var row_count = (table.rows.length);
             var row = table.insertRow(0);
             row.id = "row"+row_count;
-            row.insertCell(0).innerHTML = prd_id;
+            row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
             row.insertCell(1).innerHTML = prd_name;
             row.insertCell(2).innerHTML = prd_price;
-            row.insertCell(3).innerHTML = parseFloat(crates_amount).toFixed(1);
-            row.insertCell(4).innerHTML = parseFloat(loose_amount).toFixed(1);
+            row.insertCell(3).innerHTML = parseFloat(crates_amount);
+            row.insertCell(4).innerHTML = parseFloat(loose_amount);
             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
             row.insertCell(6).innerHTML = sub_total.toFixed(2);
             row.insertCell(7).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
             
-            //For Populating Receipt Table 
             var received = document.getElementById("received_amount").value;
-            var rct_table = document.getElementById("tbl-rct");
-            var rct_row_count = (table.rows.length);
-            var rct_row = rct_table.insertRow(0);
-            rct_row.id = "rct_row"+rct_row_count;
-            rct_row.insertCell(0).innerHTML = prd_quantity;
-            rct_row.insertCell(1).innerHTML = prd_name;
-            rct_row.insertCell(2).innerHTML = prd_price;
-            
+
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
             document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
@@ -810,6 +808,7 @@
 
    function  receivePayment(){
 
+        var client_id = document.getElementById("client_id").value;
         var convertedIntoArray = [];
         $("#tbl-cart tr").each(function() {
             var rowDataArray = [];
@@ -819,16 +818,44 @@
                 actualData.each(function() {
                     rowDataArray.push($(this).text());
                 });
-                convertedIntoArray.push(rowDataArray+"#");
+                convertedIntoArray.push(rowDataArray+client_id+",#");
             }
         });
-        
-        // const item_list = convertedIntoArray.split(",#");
-
-        alert(convertedIntoArray);
-
 
         document.getElementById("purchases").value = convertedIntoArray;
+        
+        //For Receipt
+        let cart_text = convertedIntoArray.toString();
+        const cart_item = cart_text.split(",#,");
+        
+        var rct_table = document.getElementById("tbl-rct");
+        $("#tbl-rct tr").remove(); 
+        
+        var item_qty = "";
+        var item_des = "";
+        var item_tot = "";
+
+        for(let i=0; i <= (cart_item.length)-1; i++){
+            let row_text = cart_item[i];
+            const row_item = row_text.split(",");
+
+            var rct_row = rct_table.insertRow(0);
+
+            for(let j=0; j < row_item.length; j++){
+                //For Populating Receipt Table 
+                var prd_quantity = parseInt((row_item[3] * 12) + parseInt(row_item[4]));
+                
+                item_qty = prd_quantity;
+                item_des = row_item[1];
+                item_tot = row_item[6];
+        
+            }
+
+            rct_row.insertCell(0).innerHTML = item_qty;
+            rct_row.insertCell(1).innerHTML = item_des;
+            rct_row.insertCell(2).innerHTML = item_tot;
+        }
+
    }
 </script>
 

@@ -68,4 +68,12 @@ class PrintController extends Controller
         return view('admin.print.main', compact('all_sale_details'));
     }
 
+    public function receiptDetails()
+    {
+        $receipt_Details = DB::table('sales_reports')
+        ->get();
+
+        return view('admin.print.deliveryreceipt', compact('receipt_Details'));
+    }
+
 }

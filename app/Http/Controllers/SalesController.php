@@ -117,41 +117,67 @@ class SalesController extends Controller
     
     public function paymentSales(Request $request)
     {
-        $list = $request->purchases;
+        $trx_id = DB::table('transactions')
+        ->max('trx_id');
 
-        $selected_item_list  = $list;
-        $pieces = explode(",#,", $selected_item_list);
-
-        dd($pieces);
-
-        $tmpArray = array();
-
-        // $tmpArray[] = explode(',', $list);
-        dd(($list));
-
-        for($count1 = 0 ; $count1 < (count($tmpArray) / 6) ; $count1++)
-        {
-            for($count2 = 0 ; $count2 < 7 ; $count2++)
-            {
-
-            }
+        if($trx_id == null){
+            $trx_id = 1;
+        }
+        else{
+            $trx_id += 1;
         }
 
-        for($count = 0 ; $count < count($list) ; $count++)
+        $trx_ref_id = date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $prd_id = "";
+        $prd_price = "";
+        $pur_qty = "";
+        $pur_total = "";
+        $cus_id = "";
+        
+        $trx_total = $request->trx_total;
+        $trx_amount_paid = $request->trx_amount_paid;
+        $trx_balance = (double)$trx_amount_paid - (double)$trx_total;
+
+        $list = $request->purchases;
+        $selected_item_list  = $list;
+        $purchase_row = explode(",#,", $selected_item_list);
+
+        // dd($purchase_row);
+
+        for($i = 0 ; $i < count($purchase_row) ; $i++)
         {
-            $tmpArray[] = explode(',', $list);
-            DB::table('sales_reports')
+            $purchase_data = explode(",", $purchase_row[$i]);
+
+            for($j = 0 ; $j < count($purchase_data) ; $j++)
+            {
+                $prd_quantity = (int)($purchase_data[3] * 12) + (int)($purchase_data[4]);
+                $prd_id =  $purchase_data[0];
+                $prd_price = $purchase_data[2];
+                $pur_qty = $prd_quantity;
+                $pur_total = $purchase_data[6];
+                $cus_id = $purchase_data[7];
+            }
+            
+            DB::table('purchases')
             ->insert([
-                'cus_id' => $tmpArray[$count][0],
-                'prd_id' => $tmpArray[$count][1],
-                'sls_quantity' => $tmpArray[$count][4],
-                'sls_discount' => $tmpArray[$count][5],
-                'sls_sub_total' => $tmpArray[$count][6],
-                'sls_time' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_id' => get_last_production_id()
+                'trx_id' => $trx_id,
+                'prd_id' => $prd_id,
+                'prd_price' => $prd_price,
+                'pur_qty' => $prd_quantity,
+                'pur_total' => $pur_total
             ]);
         }
-        dd($tmpArray);
+
+        DB::table('transactions')
+        ->insert([
+            'trx_ref_id' => $trx_ref_id,
+            'cus_id' => $cus_id,
+            'trx_datetime' => date('Y-m-d H:i:s'),
+            'trx_total' => $trx_total,
+            'trx_amount_paid' => $trx_amount_paid,
+            'trx_balance' => $trx_balance
+        ]);
+
         session()->flash('successMessage','Transaction complete!');
         return redirect()->action('SalesController@main');
     }
@@ -238,11 +264,11 @@ class SalesController extends Controller
     foreach($result as $row)
     {
         $html =
-              '<tr>
-                 <td>' . $row->name . '</td>' .
-                 '<td>' . $row->address . '</td>' .
-                 '<td>' . $row->age . '</td>' .
-              '</tr>';
+        '<tr>
+            <td>' . $row->name . '</td>' .
+            '<td>' . $row->address . '</td>' .
+            '<td>' . $row->age . '</td>' .
+        '</tr>';
     }
     return $html;
     }

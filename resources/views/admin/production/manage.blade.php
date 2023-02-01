@@ -52,11 +52,13 @@
                                         </li>
                                     </ul>
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(0)"><i class="fas fa-plus"></i> Add New Item</button>
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(0)"><i class="fas fa-plus"></i> Add New Item</button>
+                                    </div>
                                     <div id="raw-materials" class="tab-pane active">
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">

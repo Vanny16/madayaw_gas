@@ -108,6 +108,7 @@ Route::group(['prefix' => 'sales'], function()
     Route::post('search-product', 'SalesController@searchProduct');
     //TEST
     Route::post('test-transaction', 'SalesController@test');
+    Route::get('print', 'PrintController@receiptDetails');
 });
 
 Route::group(['prefix' => 'production'], function()
