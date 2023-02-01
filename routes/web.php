@@ -51,6 +51,7 @@ Route::group(['prefix' => 'customer'], function()
     Route::post('search-customer', 'CustomerController@searchCustomer');
     Route::post('create-customer', 'CustomerController@createCustomer');
     Route::post('edit-customer/{cus_id}', 'CustomerController@editCustomer');
+    Route::post('change-price', 'CustomerController@changeProductPrice');
     
 
 });
