@@ -264,11 +264,11 @@ class SalesController extends Controller
     foreach($result as $row)
     {
         $html =
-              '<tr>
-                 <td>' . $row->name . '</td>' .
-                 '<td>' . $row->address . '</td>' .
-                 '<td>' . $row->age . '</td>' .
-              '</tr>';
+        '<tr>
+            <td>' . $row->name . '</td>' .
+            '<td>' . $row->address . '</td>' .
+            '<td>' . $row->age . '</td>' .
+        '</tr>';
     }
     return $html;
     }
