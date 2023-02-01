@@ -35,7 +35,7 @@
                             <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Description</th>
                             <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Unit Price</th>
                             <th style="border: 1px solid black; border-collapse:collapse;">Amount</th>
-                            <th width="20px"></th>
+                            <th width="10px"></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -88,7 +88,7 @@
                             <div class="row ml-2 mt-2 mb-2">
                                 <form action="" class="col-md-12 form-inline">
                                     <div class="col-md-1">
-                                        <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#discount-modal"><i class="fa fa-gift fa-sm"></i> Apply Discount</a>
+                                        <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#pricing-modal"><i class="fa fa-gift fa-sm"></i> Adjust Pricing</a>
                                     </div>
 
                                     <div class="col-md-2">
@@ -547,20 +547,31 @@
 </div>
 
 
-<!--Discount Modal -->
-<div class="modal fade" id="discount-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
+<!--Pricing Modal -->
+<div class="modal fade" id="pricing-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                Apply Discount
+                <h5>Adjust Product Price</h5>
             </div>
-            <div class="modal-body">
-                    <input type="number" placeholder="Enter Discount %" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-info" href=""><i class="fa fa-gift"></i> Apply</a>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
+            <form method="POST" action="{{ action('CustomerController@changeProductPrice')}}" enctype="multipart/form-data">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="form-group"> 
+                    <select class="form-control" id="pricing_selection" name="pricing_selection" required>
+                        @foreach($products as $product)
+                            <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>
+                        @endforeach   
+                    </select>
+                    </div>
+                    <div class="form-group"> 
+                        <input type="number" placeholder="Enter New Price" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                    </div>
+                <div class="modal-footer">
+                    <a class="btn btn-info" href=""><i class="fa fa-gift"></i> Apply</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
