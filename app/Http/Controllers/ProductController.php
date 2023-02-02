@@ -56,7 +56,7 @@ class ProductController extends Controller
         // dd($suppliers);
         return view('admin.products.opposite',compact('statuses', 'default_status', 'suppliers', 'oppositions', 'pdn_flag'));
     }
-    
+
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;

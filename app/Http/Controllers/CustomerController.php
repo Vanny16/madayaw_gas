@@ -131,6 +131,20 @@ class CustomerController extends Controller
         return redirect()->action('CustomerController@manage');
     }
 
+    // public function canisterIn()
+    // {
+    //     $madayaw_canisters = array(
+    //         1 => 'Botin',
+    //         2 => 'Madayaw Square',
+    //         3 => 'Madayaw Round'
+    //     );
+
+    //     $ops_id = DB::table('oppositions')
+    //     -> where('ops_id', = , session('ops_id'))
+    //     -> get(); 
+        
+    // }
+
     public function editCustomer(Request $request)
     {
         $cus_id = $request->cus_id;

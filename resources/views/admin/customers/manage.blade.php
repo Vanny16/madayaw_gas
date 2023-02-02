@@ -156,7 +156,15 @@
                                                         <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
                                                     </td>
                                                 @endif
-                                                <td>17.50</td>
+                                                @if($customer->cus_accessibles_prices == null)
+                                                <td>
+                                                    0.00
+                                                </td>
+                                                @else
+                                                    <td>
+                                                        {{$customer->cus_accessibles_prices}}
+                                                    </td>
+                                                @endif
                                                 @if($customer->cus_notes)
                                                     <td>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a>
