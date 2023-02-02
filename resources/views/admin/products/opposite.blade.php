@@ -267,7 +267,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="row">
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-5">
                                                                         <label for="filter_status">Opposite Canisters</label>
                                                                         <select class="form-control" id="filter_status" name="filter_status">
                                                                              <!-- @foreach($statuses as $status)
@@ -287,8 +287,12 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-2">
+                                                                        <div class="mx-auto">
+                                                                            <span class="fa fa-exchange"> </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
                                                                         <label for="filter_status">Madayaw Canisters</label>
                                                                         <select class="form-control" id="filter_status" name="filter_status">
                                                                             <!-- @foreach($statuses as $status)
