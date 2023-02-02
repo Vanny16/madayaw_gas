@@ -252,25 +252,4 @@ class SalesController extends Controller
         session()->flash('successMessage','test');
         return redirect()->action('SalesController@main');
     }
-
-    public function test()
-    {
-
-    dd('test');
-    $id = $_GET['id'];
-    $test = new TestModel();
-    $result = $test->getData($id);
-
-    foreach($result as $row)
-    {
-        $html =
-        '<tr>
-            <td>' . $row->name . '</td>' .
-            '<td>' . $row->address . '</td>' .
-            '<td>' . $row->age . '</td>' .
-        '</tr>';
-    }
-    return $html;
-    }
-
 }

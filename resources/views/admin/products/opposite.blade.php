@@ -86,14 +86,14 @@
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th width="100px"></th>
+                                            <th width="20px"></th>
                                             <th>Opposition Name</th>
                                             <th>SKU</th>
                                             <th>Description</th>
-                                            <th style="text-align: center">Quantity</th>
+                                            <th>Quantity</th>
+                                            <th width="200px"></th>
                                             <th>Notes</th>
-                                            <th width="150px"></th>
-                                            <th width="120px"></th>
+                                            <th>Active</th>
                                             <th width="100px"></th>
                                         </tr>
                                     </thead>
@@ -101,98 +101,80 @@
                                     @if(isset($oppositions))
                                         @foreach($oppositions as $opposition)
                                             <tr>
+                                                @if($opposition->ops_id)
+                                                    <td>   
+                                                        {{$opposition->ops_id}}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
+                                                @if($opposition->ops_name)
+                                                    <td>   
+                                                        {{$opposition->ops_name}}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
+                                                @if($opposition->ops_sku)
+                                                    <td>   
+                                                        {{$opposition->ops_sku}}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
+                                                @if($opposition->ops_description)
+                                                    <td>   
+                                                        {{$opposition->ops_description}}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
+                                                @if($opposition->ops_quantity)
+                                                    <td style="text-align: center">   
+                                                        {{$opposition->ops_quantity}}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
                                                 <td>
-                                                    @if($opposition->prd_image <> '')
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $product->prd_image) }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                    @else
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$product->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                    @endif
-                                                </td>   
-                                                @if($product->prd_name)
-                                                    <td>   
-                                                        {{$product->prd_name}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($product->prd_sku)
-                                                    <td>   
-                                                        {{$product->prd_sku}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($product->prd_price === null)
-                                                    <td>
-                                                        0.00
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        {{$product->prd_price}}
-                                                    </td>
-                                                @endif
-                                                <td style="text-align: center">   
-                                                    {{$product->prd_quantity}}
-                                                    <br>
-                                                    @if($reorder_indicator != "") 
-                                                        @if($product->prd_quantity == 0)
-                                                            <span class="badge badge-danger">Restock now</span>
-                                                        @elseif($product->prd_quantity < $product->prd_reorder_point)
-                                                            <span class="badge badge-warning">Request for restock</span>
-                                                        @endif
-                                                    @endif
+                                                    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal-{{$opposition->ops_id}}"><a class="fa fa-exchange"></a> Trade Canisters</button>
                                                 </td>
-                                                @if($product->prd_description)
-                                                    <td>   
-                                                        {{$product->prd_description}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                <td>Yes</td>
-                                                @if($product->sup_name)
-                                                    <td>   
-                                                        {{$product->sup_name}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($product->prd_active == 0)
+                                                @if($opposition->ops_notes)
                                                     <td>
-                                                        <a class="btn btn-default btn-sm text-primary" disabled><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$opposition->ops_id}}"><i class="fa fa-eye"></i></a>
                                                     </td>
                                                 @else
                                                     <td>
-                                                        <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                        <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
                                                     </td>
                                                 @endif
                                                 <td>
-                                                    @if($product->prd_active == 1) 
-                                                    <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                    @if($opposition->ops_active == 1) 
+                                                        <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                     @else
-                                                    <span class="badge badge-danger">Inactive</span>
-                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                        <span class="badge badge-danger">Inactive</span>
+                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                @if($product->prd_active == 0)
+                                                @if($opposition->ops_active == 0)
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                                 @else   
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                             @endif
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                         </ul>
                                                     </div>
                                                 @endif
                                                 </td>
 
                                                 <!-- Edit Products Modal -->
-                                                <div class="modal fade" id="edit-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal fade" id="edit-opposition-modal-{{$opposition->ops_id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -217,56 +199,32 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
-                                                                        <div class="form-group">
+                                                                            <div class="form-group">
                                                                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}"/>
+                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $opposition->ops_name }}"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}"/>
-                                                                            </div>
-                                                                            {{--<div class="form-group">
-                                                                                <label for="prd_sku">Status <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="sts_name" value=""/>
-                                                                            </div>--}}
-                                                                            <div class="form-group">
-                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $opposition->ops_sku }}"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                <input type="text" class="form-control" name="prd_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
+                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_reorder" value="{{ $product->prd_reorder_point }}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                                                                <select class="form-control" id="suppliers" name="sup_id" required>
-                                                                                    @foreach($suppliers as $supplier)
-                                                                                        @if($supplier->sup_active == 0)
-                                                                                            @continue
-                                                                                        @else
-                                                                                            @if($product->sup_id == $supplier->sup_id)
-                                                                                                <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
-                                                                                            @else
-                                                                                                <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
-                                                                                            @endif
-                                                                                        @endif
-                                                                                    @endforeach   
-                                                                                </select> 
+                                                                                <label for="notes">Notes</label>
+                                                                                <textarea class="form-control" name="ops_notes" placeholder="Additional notes ..." value="{{ $opposition->ops_notes }}"></textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> 
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}" hidden/>        
+                                                                    {{--<input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> --}}
+                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $opposition->ops_id }}" hidden/>        
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
@@ -274,9 +232,53 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                                <!--Notes Modal -->
+                                                <div class="modal fade modal-lg" id="notes-modal-{{$opposition->ops_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Notes</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                    <div class="col-md-12">
+                                                                        {{ $opposition->ops_notes }}
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
+                                                <!--Exchange Modal -->
+                                                <div class="modal fade" id="exchange-modal-{{$opposition->ops_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Notes</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                    <div class="col-md-12">
+                                                                        {{ $opposition->ops_notes }}
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <!-- Stockin Modal -->
+                                                {{--
                                                 <div class="modal fade" id="product-stockin-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-md" role="document">
                                                         <div class="modal-content">
@@ -372,6 +374,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                --}}
                                             </tr> 
                                         @endforeach
                                     @endif
@@ -387,28 +391,6 @@
 </div>
 
 <!-- Create Modal -->
-
-@if(session('getProdValues'))
-    @php($prd_name = Session::get('getProdValues')[0][0])
-    @php($prd_sku = Session::get('getProdValues')[0][1])
-    @php($prd_price = Session::get('getProdValues')[0][2])
-    @php($prd_description = Session::get('getProdValues')[0][3])
-    @php($prd_reorder = Session::get('getProdValues')[0][4])
-    @php($sup_name = Session::get('getProdValues')[0][5])
-    {{--@php($is_production = Session::get('getProdValues')[0][6])
-    @php($is_refillable = Session::get('getProdValues')[0][7])--}}
-    @php($state = Session::get('getProdValues')[0][6])
-@else
-    @php($prd_name = '')
-    @php($prd_sku = '')
-    @php($prd_price = '')
-    @php($prd_description = '')
-    @php($prd_reorder = '')
-    @php($sup_name = '')
-    {{--@php($is_production = '')
-    @php($is_refillable = '')--}}
-    @php($state = '')
-@endif
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
@@ -436,43 +418,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="{{ $prd_name }}" required/>
+                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
-                            </div>
-                            <div class="form-group">
-                                <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="{{ $prd_description }}" required/>
+                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" required/>
                             </div>
                             <div class="form-group">
-                                <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
-                                <input type="text" name="prd_reorder" class="form-control" placeholder="Enter Reorder Point" value="{{ $prd_reorder }}" onkeypress="return isNumberKey(this, event);" maxlength="11" required></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="sup_id">Supplier <span style="color:red">*</span></label>
-                                <div class="form-inline">
-                                    <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
-                                        @foreach($suppliers as $supplier)
-                                            @if($supplier->sup_active == 0)
-                                                @continue
-                                            @else
-                                                @if($sup_name == $supplier->sup_name )
-                                                    @php($selected = "selected")
-                                                @else
-                                                    @php($selected = "")
-                                                @endif
-                                                <option value="{{ $supplier->sup_id }}" {{ $selected }}>{{ $supplier->sup_name }}</option>
-                                            @endif
-                                        @endforeach   
-                                    </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
-                                </div>
+                                <label for="notes">Notes</label>
+                                <textarea name="ops_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -487,60 +445,6 @@
         </div>
     </div>
 </div>
-
-<!-- Add Supplier Modal -->
-<div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="form-add" action="{{ action('ProductController@createSupplier')}}">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="sup_name">Supplier Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_name" placeholder="Enter Supplier Name" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sup_address">Address <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="sup_address" placeholder="Enter Supplier Address" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sup_contact">Contact <span style="color:red">*</span></label>
-                                <input type="text" name="sup_contact" class="form-control" placeholder="Enter Supplier Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sup_notes">Notes</label>
-                                <textarea name="sup_notes" placeholder="Additional notes ..." class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-                
-                <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
-                <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
-                <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
-                <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
-                <!-- <input type="text" id="sup_prd_is_production" name="sup_prd_is_production" value="" hidden/>
-                <input type="text" id="sup_prd_is_refillable" name="sup_prd_is_refillable" value="" hidden/> -->
-            </form>
-        </div>
-    </div>
-</div>
- 
 <script>
     $(document).ready(function(){
         $("#search_products").on("keyup", function() {
@@ -557,11 +461,6 @@
     });
 </script>
 <script>
-    
-    $(document).ready(function(){
-        $("#product-modal").modal('{{$state}}');
-    });
-
     function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
         document.getElementById('sup_prd_name').value = prd_name;
         document.getElementById('sup_prd_sku').value = prd_sku;

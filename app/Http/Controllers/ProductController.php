@@ -44,7 +44,7 @@ class ProductController extends Controller
 
         $default_status = '0';
 
-        $opposition = DB::table('oppositions')
+        $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
         
@@ -54,8 +54,9 @@ class ProductController extends Controller
 
         $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.opposite',compact('statuses', 'default_status', 'suppliers', 'opposition', 'pdn_flag'));
+        return view('admin.products.opposite',compact('statuses', 'default_status', 'suppliers', 'oppositions', 'pdn_flag'));
     }
+    
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;
@@ -134,6 +135,77 @@ class ProductController extends Controller
 
         session()->flash('successMessage','Product has been added');
         return redirect()->action('ProductController@manage');
+    }
+
+    public function addOpposition(Request $request)
+    {
+        $ops_name = $request->ops_name;
+        $ops_sku = $request->ops_sku;
+        $ops_description = $request->ops_description;
+        $ops_notes = $request->ops_notes;
+
+        $check_ops_name = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_name','=', $ops_name)
+        ->first();
+
+        if($check_ops_name != null)
+        {
+            session()->flash('errorMessage','Opposition canister already created');
+            return redirect()->action('SalesController@main');
+        }
+
+        DB::table('oppositions')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'ops_name' => $ops_name, 
+        'ops_sku' => $ops_sku,
+        'ops_description' => $ops_description,
+        'ops_notes' => $ops_notes
+        ]);
+
+        //IMAGE UPLOAD 
+        if($request->file('ops_image'))
+        {
+            $ops_id = DB::table('oppostion')
+            ->select('ops_id')
+            ->orderBy('ops_id', 'desc')
+            ->first();
+    
+            $file = $request->file('ops_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $ops_id->ops_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('customers')
+            ->where('ops_id','=',$ops_id->ops_id)
+            ->update([
+                'ops_image' => $fileName,
+            ]);  
+    
+        }   
+
+        session()->flash('successMessage','test');
+        return redirect()->action('SalesController@main');
     }
 
     public function editProduct(Request $request)
@@ -242,6 +314,77 @@ class ProductController extends Controller
         }
         session()->flash('successMessage','Product details updated.');
         return redirect()->action('ProductController@manage');
+    }
+
+    public function editOpposition(Request $request)
+    {
+        $ops_name = $request->ops_name;
+        $ops_sku = $request->ops_sku;
+        $ops_description = $request->ops_description;
+        $ops_notes = $request->ops_notes;
+
+        $check_ops_name = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_name','=', $ops_name)
+        ->first();
+
+        if($check_ops_name != null)
+        {
+            session()->flash('errorMessage','Opposition canister already created');
+            return redirect()->action('SalesController@main');
+        }
+
+        DB::table('oppositions')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'ops_name' => $ops_name, 
+        'ops_sku' => $ops_sku,
+        'ops_description' => $ops_description,
+        'ops_notes' => $ops_notes
+        ]);
+
+        //IMAGE UPLOAD 
+        if($request->file('ops_image'))
+        {
+            $ops_id = DB::table('oppostion')
+            ->select('ops_id')
+            ->orderBy('ops_id', 'desc')
+            ->first();
+    
+            $file = $request->file('ops_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $ops_id->ops_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('customers')
+            ->where('ops_id','=',$ops_id->ops_id)
+            ->update([
+                'ops_image' => $fileName,
+            ]);  
+    
+        }   
+
+        session()->flash('successMessage','test');
+        return redirect()->action('SalesController@main');
     }
 
     public function addQuantity(Request $request)
