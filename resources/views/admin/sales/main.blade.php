@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#canister-in-modal"><i class="fa fa-arrow-down"></i> Canisters In</button>
+                        <button type="button" class="btn btn-default bg-danger form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -110,10 +110,6 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-default bg-success form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -160,7 +156,7 @@
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
-                        <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
+                            <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
                         </div>
                     </div>
                 </div>
@@ -189,7 +185,7 @@
                         <div class="row">
                             @if(isset($products))
                                 @foreach($products as $product)
-                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}"  >
+                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
@@ -201,14 +197,55 @@
                                 </div>
                                 <!-- Order Details Modal -->
                                 <div class="modal fade" id="order_details_modal{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-md" role="document">
+                                    <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-12">
+
+                                                    <div class="col-5">
+                                                        @if($product->prd_is_refillable == '0')
+                                                        <h5 class="text-center mt-5">{{$product->prd_name}} is a non-refillable item.</h5>
+                                                        @else
+                                                        <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
+                                                        <div class="form-group">
+                                                            <label for="cus_name">Product Name <span style="color:red">*</span></label>
+                                                            <div class="form-inline">
+                                                                <select class="form-control col-7" id="canister_in" name="canister_in" required>
+                                                                    @foreach($products as $in_product)
+                                                                        @if($in_product->prd_id == $product->prd_id)
+                                                                            @php($select_prd_in = "selected")
+                                                                        @else
+                                                                            @php($select_prd_in = "")
+                                                                        @endif
+                                                                        <option value="1,{{ $in_product->prd_id }},{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
+                                                                    @endforeach 
+                                                                    @foreach($oppositions as $opposition)
+                                                                        <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
+                                                                    @endforeach 
+                                                                </select>
+                                                                <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="in_crates{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeyup="set_onkeyup(in_crates{{$product->prd_id}}.value,crates_amount{{$product->prd_id}}.id)" onchange="noNegativeValue('in_crates{{$product->prd_id}}')" required></input>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="cus_address"># of Loose <span style="color:red">*</span></label>
+                                                            <input type="number" class="form-control" id="in_loose{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeyup="set_onkeyup(in_loose{{$product->prd_id}}.value,loose_amount{{$product->prd_id}}.id)" onchange="noNegativeValue('in_loose{{$product->prd_id}}');" required/></input>
+                                                        </div>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="col-1 bg-light text-center align-items-center">
+                                                        <i class="fa fa-arrow-right text-danger mt-5" height="100%"></i>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <h3 class="text-success mb-5"><i class="fa fa-arrow-up"></i> OUT</h3>
                                                         <div class="form-group">
                                                             <label for="cus_name">Product Name <span style="color:red">*</span></label>
                                                             <input type="text" class="form-control" id="prd_name{{$product->prd_id}}" value="{{$product->prd_name}}" required readonly/>
@@ -259,7 +296,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id)"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="addCanistersIn(in_crates{{$product->prd_id}}.id,in_loose{{$product->prd_id}}.id); addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, order_details_modal{{$product->prd_id}}.id);"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -274,52 +311,6 @@
                     <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
-
-<!-- Canisters In -->
-<div class="modal fade" id="canister-in-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Canisters In</h5>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="cus_name">Product Name<span style="color:red">*</span></label>
-                        <div class="row">
-                            <select class="form-control col-md-7 col-12" id="canister-in" name="canister-in" required="">
-                                @foreach($products as $product)
-                                    <option value="1,{{ $product->prd_id }},{{ $product->prd_name }}" >{{ $product->prd_name }} </option>
-                                @endforeach 
-                                @foreach($oppositions as $opposition)
-                                    <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}" >{{ $opposition->ops_name }} </option>
-                                @endforeach 
-                                <?php ?>
-                            </select>
-                            <div class="col-md-1">
-                            </div>
-                            <button type="button" class="btn btn-success col-md-4" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                            <input type="number" class="form-control col-md-10" id="in-crates" value="0" min="" max="" onclick="this.select()" required></input>
-                        </div>
-                        <div class="form-group">
-                            <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                            <input type="number" class="form-control" id="in-loose" value="0" min="" max="" onclick="this.select()" required/></input>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#canister-in-modal">Cancel</button>
-                <button type="button" class="btn btn-success" onclick="addCanistersIn()"><i class="fa fa-plus-circle"></i> Add</button>
-            </div>
         </div>
     </div>
 </div>
@@ -478,6 +469,9 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+                <div class="col-md-2 col-12 mb-3">
+                    <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
                 </div>
             </form>
         </div>  
@@ -711,9 +705,10 @@
 
     //Set Array For Input into Table
 
-    function addCanistersIn() {   
-        var in_crate = parseInt(document.getElementById("in-crates").value);
-        var in_loose = parseInt(document.getElementById("in-loose").value);
+    function addCanistersIn(in_crate_id, in_loose_id){
+        alert(in_crate_id);   
+        var in_crate = parseInt(document.getElementById(in_crate_id).value);
+        var in_loose = parseInt(document.getElementById(in_loose_id).value);
         var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
         var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
         var sub_total = 0;
@@ -735,7 +730,7 @@
             var display_loose = in_loose + " pc/s";
 
             //Setter For Canister in Name
-            var canister_id = document.getElementById("canister-in").value; 
+            var canister_id = document.getElementById("canister_in").value; 
             var holder = canister_id.split(",");
             var item_name = "";
             var flag = 1;
@@ -851,12 +846,21 @@
         
             }
 
-            rct_row.insertCell(0).innerHTML = item_qty;
-            rct_row.insertCell(1).innerHTML = item_des;
-            rct_row.insertCell(2).innerHTML = item_tot;
+            try{
+                rct_row.insertCell(0).innerHTML = item_qty;
+                rct_row.insertCell(1).innerHTML = item_des;
+                rct_row.insertCell(2).innerHTML = item_tot;
+            }
+            catch(e){
+                alert("Please select products first");
+            }
         }
 
    }
+
+    function set_onkeyup(orig,copy){
+        document.getElementById(copy).value = orig;
+    }
 </script>
 
 @endsection
