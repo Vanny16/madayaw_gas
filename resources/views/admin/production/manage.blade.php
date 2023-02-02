@@ -58,7 +58,7 @@
                                 <div class="tab-content card-body">
                                     <div id="raw-materials" class="tab-pane active">
                                         <div class="card-tools">
-                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(0)"><i class="fas fa-plus"></i> Add New Item</button>
+                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(0)"><i class="fas fa-plus"></i> Add Raw Materials</button>
                                         </div>
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
@@ -206,7 +206,7 @@
                                     </div>
                                     <div id="empty-canisters" class="tab-pane">
                                         <div class="card-tools">
-                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(1)"><i class="fas fa-plus"></i> Add New Item</button>
+                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(1)"><i class="fas fa-plus"></i> Add New Canister</button>
                                         </div>
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
