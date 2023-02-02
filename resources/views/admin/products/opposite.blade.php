@@ -70,7 +70,7 @@
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
                         <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
-
+                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><a class="fa fa-exchange"></a> Trade Canisters</button>
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allproductDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
 
@@ -137,7 +137,7 @@
                                                     <td>-</td>
                                                 @endif
                                                 <td>
-                                                    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal-{{$opposition->ops_id}}"><a class="fa fa-exchange"></a> Trade Canisters</button>
+                                                    <!-- <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal-{{$opposition->ops_id}}"><a class="fa fa-exchange"></a> Trade Canisters</button> -->
                                                 </td>
                                                 @if($opposition->ops_notes)
                                                     <td>
@@ -256,19 +256,61 @@
                                                 </div>
 
                                                 <!--Exchange Modal -->
-                                                <div class="modal fade" id="exchange-modal-{{$opposition->ops_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
+                                                <div class="modal fade" id="exchange-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Notes</h5>
+                                                                <h5 class="modal-title">Trade Canisters</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                    <div class="col-md-12">
-                                                                        {{ $opposition->ops_notes }}
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label for="filter_status">Opposite Canisters</label>
+                                                                        <select class="form-control" id="filter_status" name="filter_status">
+                                                                             <!-- @foreach($statuses as $status)
+                                                                                @if($status == $default_status) 
+                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $status }}">{{ $status }}</option>
+                                                                                @endif
+                                                                            @endforeach    -->
+                                                                            <option value="">Other Canisters</option>
+
+                                                                        </select> 
+
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12 mt-2">
+                                                                                <input class="form-control" type="text" value="" id="" name="opposite_canisters" />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
+                                                                    
+                                                                    <div class="col-md-6">
+                                                                        <label for="filter_status">Madayaw Canisters</label>
+                                                                        <select class="form-control" id="filter_status" name="filter_status">
+                                                                            <!-- @foreach($statuses as $status)
+                                                                                @if($status == $default_status) 
+                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $status }}">{{ $status }}</option>
+                                                                                @endif
+                                                                            @endforeach    -->
+                                                                            <option value="">Botin</option>
+                                                                            <option value="">Madayaw Square</option>
+                                                                            <option value="">Madayaw Round</option>
+                                                                            
+                                                                        </select>
+
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12 mt-2">
+                                                                                <input class="form-control" type="text" value="" id="" name="products" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
