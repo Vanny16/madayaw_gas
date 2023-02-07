@@ -69,7 +69,7 @@
 
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
-                        <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
+                        <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
                         <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><a class="fa fa-exchange"></a> Trade Canisters</button>
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allproductDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
@@ -302,7 +302,6 @@
                                                                                     <option value="{{ $status }}">{{ $status }}</option>
                                                                                 @endif
                                                                             @endforeach    -->
-                                                                           
                                                                             <option value="">Botin</option>
                                                                             <option value="">Madayaw Square</option>
                                                                             <option value="">Madayaw Round</option>
@@ -318,7 +317,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Canisters In</button>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
@@ -493,6 +491,67 @@
         </div>
     </div>
 </div>
+
+<!--Exchange Modal -->
+<div class="modal fade" id="exchange-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Trade Canisters</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductController@tradeCanisters') }}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row w-100 justify-content-center align-items-center"> 
+                                <label for="opposition-canisters" class="text-danger" >Opposite Canisters</label>
+                            </div>
+                            <select class="form-control" id="opposition-canisters" name="opposition_canister">
+                                @foreach($oppositions as $opposition)
+                                    <option value="{{ $opposition->ops_id }}">{{ $opposition->ops_name }}</option>
+                                @endforeach   
+                            </select> 
+                            <div class="form-group mt-2">
+                                <input class="form-control" type="number" value="0" id="" name="trade_in_opposite_amount" onclick="this.select()"/>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mx-auto">
+                            <div class="container h-100">
+                                <div class="row h-100 justify-content-center align-items-center"> 
+                                    <span class="fa fa-exchange text-primary"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row w-100 justify-content-center align-items-center"> 
+                                <label for="madayaw-canisters" class="text-success">Madayaw Canisters</label>
+                            </div>
+                            <select class="form-control" id="madayaw-canisters" name="madayaw_canister">
+                                @foreach($products as $product)
+                                    <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>
+                                @endforeach   
+                            </select>
+                            <div class="row">
+                                <div class="form-group col-md-12 mt-2">
+                                    <input class="form-control" type="number" value="0" id="" name="trade_in_madayaw_amount" onclick="this.select()"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $("#search_products").on("keyup", function() {
