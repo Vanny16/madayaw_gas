@@ -98,333 +98,220 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-opposition">
-                                    @if(isset($oppositions))
-                                        @foreach($oppositions as $opposition)
-                                            <tr>
-                                                @if($opposition->ops_id)
-                                                    <td>   
-                                                        {{$opposition->ops_id}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($opposition->ops_name)
-                                                    <td>   
-                                                        {{$opposition->ops_name}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($opposition->ops_sku)
-                                                    <td>   
-                                                        {{$opposition->ops_sku}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($opposition->ops_description)
-                                                    <td>   
-                                                        {{$opposition->ops_description}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                @if($opposition->ops_quantity)
-                                                    <td style="text-align: center">   
-                                                        {{$opposition->ops_quantity}}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
-                                                <td>
-                                                    <!-- <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal-{{$opposition->ops_id}}"><a class="fa fa-exchange"></a> Trade Canisters</button> -->
-                                                </td>
-                                                @if($opposition->ops_notes)
-                                                    <td>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$opposition->ops_id}}"><i class="fa fa-eye"></i></a>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
-                                                    </td>
-                                                @endif
-                                                <td>
-                                                    @if($opposition->ops_active == 1) 
-                                                        <span class="badge badge-success">Active</span>
-                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                        @if(isset($oppositions))
+                                            @foreach($oppositions as $opposition)
+                                                <tr>
+                                                    @if($opposition->ops_id)
+                                                        <td>   
+                                                            {{$opposition->ops_id}}
+                                                        </td>
                                                     @else
-                                                        <span class="badge badge-danger">Inactive</span>
-                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                        <td>-</td>
                                                     @endif
-                                                </td>
-                                                <td>
-                                                @if($opposition->ops_active == 0)
-                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                                @else   
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                        <ul class="dropdown-menu">
-                                                            @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                            @endif
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
-                                                        </ul>
-                                                    </div>
-                                                @endif
-                                                </td>
-
-                                                <!-- Edit Products Modal -->
-                                                <div class="modal fade" id="edit-opposition-modal-{{$opposition->ops_id}}" tabindex="-1" role="dialog" aria-hidden="true">
-                                                    <div class="modal-dialog modal-md" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="{{ action('ProductController@editProduct') }}" enctype="multipart/form-data">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-12 text-center">
-                                                                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
-                                                                            <div class="col-12 text-center mb-4">
-                                                                            <a href="javascript:void(0);" class="">
-                                                                                <label class="btn btn-transparent btn-file">
-                                                                                    <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                                                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
-                                                                                </label>
-                                                                            </a>
+                                                    @if($opposition->ops_name)
+                                                        <td>   
+                                                            {{$opposition->ops_name}}
+                                                        </td>
+                                                    @else
+                                                        <td>-</td>
+                                                    @endif
+                                                    @if($opposition->ops_sku)
+                                                        <td>   
+                                                            {{$opposition->ops_sku}}
+                                                        </td>
+                                                    @else
+                                                        <td>-</td>
+                                                    @endif
+                                                    @if($opposition->ops_description)
+                                                        <td>   
+                                                            {{$opposition->ops_description}}
+                                                        </td>
+                                                    @else
+                                                        <td>-</td>
+                                                    @endif
+                                                    @if($opposition->ops_quantity)
+                                                        <td style="text-align: center">   
+                                                            {{$opposition->ops_quantity}}
+                                                        </td>
+                                                    @else
+                                                        <td>-</td>
+                                                    @endif
+                                                    <td>
+                                                        <!-- <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal-{{$opposition->ops_id}}"><a class="fa fa-exchange"></a> Trade Canisters</button> -->
+                                                    </td>
+                                                    @if($opposition->ops_notes)
+                                                        <td>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#notes-modal-{{$opposition->ops_id}}"><i class="fa fa-eye"></i></a>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
+                                                        </td>
+                                                    @endif
+                                                    <td>
+                                                        @if($opposition->ops_active == 1) 
+                                                            <span class="badge badge-success">Active</span>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                        @else
+                                                            <span class="badge badge-danger">Inactive</span>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                    @if($opposition->ops_active == 0)
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    @else   
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                            <ul class="dropdown-menu">
+                                                                @if(session('typ_id') == '1' || session('typ_id') == '2')
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                @endif
+                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    @endif
+                                                    </td>
+                                                    <!-- Edit Products Modal -->
+                                                    <div class="modal fade" id="edit-opposition-modal-{{$opposition->ops_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <form method="POST" action="{{ action('ProductController@editProduct') }}" enctype="multipart/form-data">
+                                                                {{ csrf_field() }} 
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-12 text-center">
+                                                                                    <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                                <div class="col-12 text-center mb-4">
+                                                                                <a href="javascript:void(0);" class="">
+                                                                                    <label class="btn btn-transparent btn-file">
+                                                                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                        <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                    </label>
+                                                                                </a>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $opposition->ops_name }}"/>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $opposition->ops_sku }}"/>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="notes">Notes</label>
-                                                                                <textarea class="form-control" name="ops_notes" placeholder="Additional notes ..." value="{{ $opposition->ops_notes }}"></textarea>
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="prd_name" value="{{ $opposition->ops_name }}"/>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="prd_sku" value="{{ $opposition->ops_sku }}"/>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="prd_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="notes">Notes</label>
+                                                                                    <textarea class="form-control" name="ops_notes" placeholder="Additional notes ..." value="{{ $opposition->ops_notes }}"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="modal-footer">
+                                                                        {{--<input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> --}}
+                                                                        <input type="text" class="form-control" name="prd_id" value="{{ $opposition->ops_id }}" hidden/>        
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!--Notes Modal -->
+                                                    <div class="modal fade modal-lg" id="notes-modal-{{$opposition->ops_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Notes</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                        <div class="col-md-12">
+                                                                            {{ $opposition->ops_notes }}
+                                                                        </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    {{--<input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> --}}
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $opposition->ops_id }}" hidden/>        
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                 </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!--Notes Modal -->
-                                                <div class="modal fade modal-lg" id="notes-modal-{{$opposition->ops_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Notes</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                    <div class="col-md-12">
-                                                                        {{ $opposition->ops_notes }}
-                                                                    </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <!--Exchange Modal -->
-                                                <div class="modal fade" id="exchange-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Trade Canisters</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-5">
-                                                                        <label for="filter_status">Opposite Canisters</label>
-                                                                        <select class="form-control" id="filter_status" name="filter_status">
-                                                                             <!-- @foreach($statuses as $status)
-                                                                                @if($status == $default_status) 
-                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
-                                                                                @else
-                                                                                    <option value="{{ $status }}">{{ $status }}</option>
-                                                                                @endif
-                                                                            @endforeach    -->
-                                                                            <option value="">Other Canisters</option>
-
-                                                                        </select> 
-
+                                                    <!--Exchange Modal -->
+                                                    <div class="modal fade" id="exchange-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Trade Canisters</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <form method="POST" action="{{ action('ProductController@tradeCanisters') }}" enctype="multipart/form-data">
+                                                                {{ csrf_field() }} 
+                                                                    <div class="modal-body">
                                                                         <div class="row">
-                                                                            <div class="form-group col-md-12 mt-2">
-                                                                                <input class="form-control" type="text" value="" id="" name="opposite_canisters" />
+                                                                            <div class="col-md-5">
+                                                                                <label for="filter_status">Opposite Canisters</label>
+                                                                                <select class="form-control" id="filter_status" name="opposition_canister">
+                                                                                    @foreach($oppositions as $opposition)
+                                                                                        <option value="{{ $opposition->ops_id }}">{{ $opposition->ops_name }}</option>   
+                                                                                    @endforeach 
+                                                                                </select> 
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-md-12 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_amount" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                                <div class="mx-auto">
+                                                                                    <span class="fa fa-exchange"> </span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-5">
+                                                                                <label for="filter_status">Madayaw Canisters</label>
+                                                                                <select class="form-control" id="filter_status" name="madayaw_canister">
+                                                                                    @foreach($products as $product)
+                                                                                        <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>   
+                                                                                    @endforeach  
+                                                                                </select>
+
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-md-12 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_amount" />
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-2">
-                                                                        <div class="mx-auto">
-                                                                            <span class="fa fa-exchange"> </span>
-                                                                        </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-success">Submit</button>
                                                                     </div>
-                                                                    <div class="col-md-5">
-                                                                        <label for="filter_status">Madayaw Canisters</label>
-                                                                        <select class="form-control" id="filter_status" name="filter_status">
-                                                                            <!-- @foreach($statuses as $status)
-                                                                                @if($status == $default_status) 
-                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
-                                                                                @else
-                                                                                    <option value="{{ $status }}">{{ $status }}</option>
-                                                                                @endif
-                                                                            @endforeach    -->
-                                                                            <option value="">Botin</option>
-                                                                            <option value="">Madayaw Square</option>
-                                                                            <option value="">Madayaw Round</option>
-                                                                            
-                                                                        </select>
-
-                                                                        <div class="row">
-                                                                            <div class="form-group col-md-12 mt-2">
-                                                                                <input class="form-control" type="text" value="" id="" name="products" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <!-- Stockin Modal -->
-                                                {{--
-                                                <div class="modal fade" id="product-stockin-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-md" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form method="POST" action="{{ action('ProductController@addQuantity') }}">
-                                                            {{ csrf_field() }} 
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-group">
-                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}" readonly required/>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" readonly required/>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly required/>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
-                                                                                <input type="number" class="form-control" name="prd_quantity" placeholder="Enter Quantity" onkeypress="return isNumberKey(this, event);" required/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">  
-                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}"  hidden/>    
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Print-Product Modal -->
-                                                <div class="modal fade" id="print-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-md" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-10 col-12">
-                                                                        <h3><strong style="text-transform:uppercase;">{{ $product->prd_name }}</strong></h3> 
-                                                                        <i class="text-default">
-                                                                            {{ $product->prd_description }}
-                                                                            <br>
-                                                                            {{ $product->prd_sku }} 
-                                                                            <br>
-                                                                            {{ $product->prd_quantity }}
-                                                                            <br>
-                                                                            {{ $product->sup_name }}
-                                                                        </i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_sku]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Product-Profile Modal -->
-                                                <div class="modal fade" id="img-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
-                                                        <div class="modal-content bg-transparent">
-                                                            <div class="modal-body">
-                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            
-                                                                <div class="row">
-                                                                    <div class="col-12 text-center">
-                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
-                                                                            @if($product->prd_image <> '')
-                                                                                <img src="{{ asset('img/products/' . $product->prd_image) }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
-                                                                            @else
-                                                                            <img src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
-                                                                            @endif
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                --}}
-                                            </tr> 
-                                        @endforeach
-                                    @endif
+                                                </tr> 
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
