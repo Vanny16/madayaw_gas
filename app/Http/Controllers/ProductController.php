@@ -47,14 +47,15 @@ class ProductController extends Controller
         $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
-        
-        $suppliers = DB::table('suppliers')
-        ->where('acc_id', '=', session('acc_id'))
+
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
         ->get();
 
         $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.opposite',compact('statuses', 'default_status', 'suppliers', 'oppositions', 'pdn_flag'));
+        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'oppositions', 'pdn_flag'));
     }
     
     public function createProduct(Request $request)
@@ -512,5 +513,52 @@ class ProductController extends Controller
         }
 
         return redirect()->action('ProductController@manage');
+    }
+
+    public function tradeCanisters(Request $request)
+    {
+        $opposition_canister_id = $request->opposition_canister;
+        $madayaw_canister_id = $request->madayaw_canister;
+        $trade_in_opposition_amount = $request->trade_in_opposition_amount;
+        $trade_in_products_amount = $request->trade_in_madayaw_amount; 
+        // dd($request);
+
+        $oppositions = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_id', '=', $opposition_canister_id)
+        ->first();
+        $opposition_qty = ($oppositions->ops_quantity);
+
+        $products = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $madayaw_canister_id)
+        ->first();
+        $product_qty = $products->prd_quantity;
+
+        //CALCULATION
+        $new_opposition_qty = $opposition_qty - $trade_in_opposition_amount;
+
+        if($new_opposition_qty < 0)
+        {
+            $new_opposition_qty = 0;
+        }
+
+        DB::table('oppositions')
+        ->where('ops_id', '=', $opposition_canister_id)
+        ->update([
+            'ops_quantity' => $new_opposition_qty
+        ]);
+
+        $new_products_qty = $product_qty + $trade_in_products_amount;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $madayaw_canister_id)
+        ->update([
+            'prd_quantity' => $new_products_qty
+        ]);
+
+        session()->flash('successMessage','Canister exchange saved!');
+        return redirect()->action('ProductController@opposite');
     }
 } 
