@@ -254,6 +254,174 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!--Exchange Modal -->
+                                                <div class="modal fade" id="exchange-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Trade Canisters</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-5">
+                                                                        <label for="filter_status">Opposite Canisters</label>
+                                                                        <select class="form-control" id="filter_status" name="filter_status">
+                                                                             <!-- @foreach($statuses as $status)
+                                                                                @if($status == $default_status) 
+                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $status }}">{{ $status }}</option>
+                                                                                @endif
+                                                                            @endforeach    -->
+                                                                            <option value="">Other Canisters</option>
+
+                                                                        </select> 
+
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12 mt-2">
+                                                                                <input class="form-control" type="text" value="" id="" name="opposite_canisters" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="mx-auto">
+                                                                            <span class="fa fa-exchange"> </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                        <label for="filter_status">Madayaw Canisters</label>
+                                                                        <select class="form-control" id="filter_status" name="filter_status">
+                                                                            <!-- @foreach($statuses as $status)
+                                                                                @if($status == $default_status) 
+                                                                                    <option value="{{ $status }}" selected>{{ $status }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $status }}">{{ $status }}</option>
+                                                                                @endif
+                                                                            @endforeach    -->
+                                                                            <option value="">Botin</option>
+                                                                            <option value="">Madayaw Square</option>
+                                                                            <option value="">Madayaw Round</option>
+                                                                            
+                                                                        </select>
+
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12 mt-2">
+                                                                                <input class="form-control" type="text" value="" id="" name="products" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Stockin Modal -->
+                                                {{--
+                                                <div class="modal fade" id="product-stockin-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ action('ProductController@addQuantity') }}">
+                                                            {{ csrf_field() }} 
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_name" value="{{ $product->prd_name }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_sku" value="{{ $product->prd_sku }}" readonly required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_sku">Quantity to be added <span style="color:red">*</span></label>
+                                                                                <input type="number" class="form-control" name="prd_quantity" placeholder="Enter Quantity" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">  
+                                                                    <input type="text" class="form-control" name="prd_id" value="{{ $product->prd_id }}"  hidden/>    
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Print-Product Modal -->
+                                                <div class="modal fade" id="print-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-10 col-12">
+                                                                        <h3><strong style="text-transform:uppercase;">{{ $product->prd_name }}</strong></h3> 
+                                                                        <i class="text-default">
+                                                                            {{ $product->prd_description }}
+                                                                            <br>
+                                                                            {{ $product->prd_sku }} 
+                                                                            <br>
+                                                                            {{ $product->prd_quantity }}
+                                                                            <br>
+                                                                            {{ $product->sup_name }}
+                                                                        </i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a class="btn btn-info" href="{{ action('PrintController@productDetails',[$product->prd_sku]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Product-Profile Modal -->
+                                                <div class="modal fade" id="img-product-modal-{{$product->prd_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content bg-transparent">
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            
+                                                                <div class="row">
+                                                                    <div class="col-12 text-center">
+                                                                        <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal">
+                                                                            @if($product->prd_image <> '')
+                                                                                <img src="{{ asset('img/products/' . $product->prd_image) }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @else
+                                                                            <img src="{{ asset('img/products/default.png') }}" alt="{{ $product->prd_image }}"  alt="{{ $product->prd_image }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                            @endif
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                --}}
                                             </tr> 
                                         @endforeach
                                     @endif
