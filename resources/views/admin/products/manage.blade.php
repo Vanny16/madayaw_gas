@@ -247,8 +247,12 @@
                                                                                 <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="prd_weight">Weight (in grams) <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter weight in grams" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
+                                                                                <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $product->prd_deposit}}" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
@@ -464,8 +468,12 @@
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_weight">Weight (in grams)<span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter weight in grams" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $product->prd_deposit}}" onkeypress="return isNumberKey(this, event);" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_weight">Net Weight (g)<span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
