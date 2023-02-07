@@ -51,6 +51,7 @@ class ProductController extends Controller
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_is_refillable', '=', '1')
         ->get();
 
         $pdn_flag = check_production_log();
@@ -521,7 +522,7 @@ class ProductController extends Controller
         $madayaw_canister_id = $request->madayaw_canister;
         $trade_in_opposition_amount = $request->trade_in_opposition_amount;
         $trade_in_products_amount = $request->trade_in_madayaw_amount; 
-        // dd($request);
+        //dd($request);
 
         $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
