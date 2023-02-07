@@ -666,54 +666,6 @@
         }
     }
 
-    function enterPayable(){
-        // alert("test");
-        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
-        var amount = parseFloat(document.getElementById("amount_payable").value);
-        var received = parseFloat(document.getElementById("received_amount").value);
-        var change = document.getElementById("rct_change").value;
-        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
-
-        var final_change = received - amount;
-
-        // if(final_change != "" || final_change > 0){
-            document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
-        // }
-        // else{
-        //     alert();
-        // }
-    }
-
-    function removeFromCart(row, sub_total) {
-        var total = document.getElementById("lbl_total").innerHTML; 
-        total = parseFloat(total) - sub_total;
-        
-        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("amount_payable").value = total.toFixed(2);
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow);
-    }
-
-    function removeFromCanisterIn(row, crate, loose){
-        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
-        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
-        total_crate = parseFloat(total_crate) - crate;
-        total_loose = parseFloat(total_loose) - loose;
-
-        document.getElementById("lbl_total_crates").innerHTML = total_crate;
-        document.getElementById("lbl_total_loose").innerHTML = total_loose;
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow); 
-    }
-
-    $(document).ready(function(){
-        $("#receipt-modal").modal('hide');
-    });
-
-    //Set Array For Input into Table
-
     function addCanistersIn(in_crate_id, in_loose_id, select_id){
 
         try{
@@ -764,12 +716,12 @@
                 var table = document.getElementById("tbl-prd-in");
                 var row_count = (table.rows.length);
                 var row = table.insertRow(0);
-                row.id = "row"+row_count;
+                row.id = "row_in"+row_count;
                 row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
                 row.insertCell(1).innerHTML = "";
                 row.insertCell(2).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_crates+"</span></span>";
                 row.insertCell(3).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
-                row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
+                // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
                 
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
@@ -785,6 +737,52 @@
             alert("Item has been added");
         }
     }
+
+    function enterPayable(){
+        // alert("test");
+        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
+        var amount = parseFloat(document.getElementById("amount_payable").value);
+        var received = parseFloat(document.getElementById("received_amount").value);
+        var change = document.getElementById("rct_change").value;
+        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
+
+        var final_change = received - amount;
+
+        // if(final_change != "" || final_change > 0){
+            document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        // }
+        // else{
+        //     alert();
+        // }
+    }
+
+    function removeFromCart(row, sub_total) {
+        var total = document.getElementById("lbl_total").innerHTML; 
+        total = parseFloat(total) - sub_total;
+        
+        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+        document.getElementById("amount_payable").value = total.toFixed(2);
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow);
+    }
+
+    function removeFromCanisterIn(row, crate, loose){
+        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+        total_crate = parseFloat(total_crate) - crate;
+        total_loose = parseFloat(total_loose) - loose;
+
+        document.getElementById("lbl_total_crates").innerHTML = total_crate;
+        document.getElementById("lbl_total_loose").innerHTML = total_loose;
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow); 
+    }
+
+    $(document).ready(function(){
+        $("#receipt-modal").modal('hide');
+    });
 
     function noNegativeValue(id){
         var value = document.getElementById(id).value;
