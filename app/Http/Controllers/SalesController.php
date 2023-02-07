@@ -155,7 +155,7 @@ class SalesController extends Controller
                 $prd_price = $purchase_data[2];
                 $pur_qty = $prd_quantity;
                 $pur_total = $purchase_data[6];
-                $cus_id = $purchase_data[7];
+                $cus_id = $purchase_data[9];
             }
             
             DB::table('purchases')
