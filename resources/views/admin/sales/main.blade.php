@@ -127,6 +127,7 @@
                                             <th>Crates</th>
                                             <th>Loose</th>
                                             <th>Discount</th>
+                                            <th>Total Deposit</th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
@@ -207,42 +208,42 @@
 
                                                     <div class="col-5">
                                                         @if($product->prd_is_refillable == '0')
-                                                        @php($addCanistersIn = "")
-                                                        @php($in_crate_value = "0")
-                                                        @php($in_crate_value = "0")
-                                                        <h5 class="text-center mt-5">{{$product->prd_name}} is a non-refillable item.</h5>
+                                                            @php($addCanistersIn = "")
+                                                            @php($in_crate_value = "0")
+                                                            @php($in_crate_value = "0")
+                                                            <h5 class="text-center mt-5">{{$product->prd_name}} is a non-refillable item.</h5>
                                                         @else
-                                                        @php($addCanistersIn = "addCanistersIn(in_crates$product->prd_id.id,in_loose$product->prd_id.id,canister_in$product->prd_id.id); ")
-                                                        @php($in_crate_value = "in_crates$product->prd_id.value")
-                                                        @php($in_loose_value = "in_loose$product->prd_id.value")
-                                                        <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
-                                                        <div class="form-group">
-                                                            <label for="cus_name">Product Name <span style="color:red">*</span></label>
-                                                            <div class="form-inline">
-                                                                <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
-                                                                    @foreach($products as $in_product)
-                                                                        @if($in_product->prd_id == $product->prd_id)
-                                                                            @php($select_prd_in = "selected")
-                                                                        @else
-                                                                            @php($select_prd_in = "")
-                                                                        @endif
-                                                                        <option value="1,{{ $in_product->prd_id }},{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
-                                                                    @endforeach 
-                                                                    @foreach($oppositions as $opposition)
-                                                                        <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
-                                                                    @endforeach 
-                                                                </select>
-                                                                <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
+                                                            @php($addCanistersIn = "addCanistersIn(in_crates$product->prd_id.id,in_loose$product->prd_id.id,canister_in$product->prd_id.id); ")
+                                                            @php($in_crate_value = "in_crates$product->prd_id.value")
+                                                            @php($in_loose_value = "in_loose$product->prd_id.value")
+                                                            <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
+                                                            <div class="form-group">
+                                                                <label for="cus_name">Product Name <span style="color:red">*</span></label>
+                                                                <div class="form-inline">
+                                                                    <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
+                                                                        @foreach($products as $in_product)
+                                                                            @if($in_product->prd_id == $product->prd_id)
+                                                                                @php($select_prd_in = "selected")
+                                                                            @else
+                                                                                @php($select_prd_in = "")
+                                                                            @endif
+                                                                            <option value="1,{{ $in_product->prd_id }},{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
+                                                                        @endforeach 
+                                                                        @foreach($oppositions as $opposition)
+                                                                            <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
+                                                                        @endforeach 
+                                                                    </select>
+                                                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="in_crates{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_crates{{$product->prd_id}}')" onkeyup="noNegativeValue('in_crates{{$product->prd_id}}'); set_onkeyup(in_crates{{$product->prd_id}}.value,crates_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required></input>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="in_loose{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_loose{{$product->prd_id}}')" onkeyup="noNegativeValue('in_loose{{$product->prd_id}}'); set_onkeyup(in_loose{{$product->prd_id}}.value,loose_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required/></input>
-                                                        </div>
+                                                            <div class="form-group">
+                                                                <label for="cus_address"># of Crates <span style="color:red">*</span></label>
+                                                                <input type="number" class="form-control" id="in_crates{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_crates{{$product->prd_id}}')" onkeyup="noNegativeValue('in_crates{{$product->prd_id}}'); set_onkeyup(in_crates{{$product->prd_id}}.value,crates_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required></input>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="cus_address"># of Loose <span style="color:red">*</span></label>
+                                                                <input type="number" class="form-control" id="in_loose{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_loose{{$product->prd_id}}')" onkeyup="noNegativeValue('in_loose{{$product->prd_id}}'); set_onkeyup(in_loose{{$product->prd_id}}.value,loose_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required/></input>
+                                                            </div>
                                                         @endif
                                                     </div>
 
@@ -302,7 +303,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="{{$addCanistersIn}} addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, {{$in_crate_value}}, {{$in_loose_value}}, order_details_modal{{$product->prd_id}}.id);"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="{{$addCanistersIn}} addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, {{$product->prd_deposit}}, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, {{$in_crate_value}}, {{$in_loose_value}}, order_details_modal{{$product->prd_id}}.id);"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -599,18 +600,30 @@
     var total_discount = parseFloat(0);
     var details = new Array();
 
-    function addToCart(prd_id, prd_name, prd_price, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
+    function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
         
         var crates_amount = parseInt(crates_amount);
         var loose_amount = parseInt(loose_amount);
-        var prd_quantity = parseInt((crates_amount * 12) + loose_amount);
+        var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
+        var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
+        var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
+
+        alert("Purchase: "+prd_quantity);
+        alert("In: "+prd_in_quantity);
         
         if(prd_quantity != "" || prd_quantity > 0){
-            //Calculations
-            var total = document.getElementById("lbl_total").innerHTML;
-            var gross_total = (prd_price * prd_quantity);
-            var sub_total = gross_total - temp_discount;
-            total = parseFloat(total) + sub_total;
+            if(prd_in_quantity > prd_quantity){
+                alert("Canisters to be in must not be greater than quantity to be purchased");
+            }
+            else{
+                //Calculations
+                var total = document.getElementById("lbl_total").innerHTML;
+                var gross_total = (prd_price * prd_quantity);
+                var total_deposit = prd_deposit * brd_new_prd_quantity;
+                var sub_total = gross_total - temp_discount + total_deposit;
+                total = parseFloat(total) + sub_total;
+            }
+
             
             // Setter For Price
             if(prd_price == "" || prd_price < 1){
@@ -638,17 +651,17 @@
             var row = table.insertRow(0);
             row.id = "row"+row_count;
             row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-            row.insertCell(1).innerHTML = prd_name;
+            row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
             row.insertCell(2).innerHTML = prd_price;
             row.insertCell(3).innerHTML = parseFloat(crates_amount);
             row.insertCell(4).innerHTML = parseFloat(loose_amount);
             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = sub_total.toFixed(2);
-            row.insertCell(7).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-            row.insertCell(8).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(9).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(6).innerHTML = total_deposit.toFixed(2);
+            row.insertCell(7).innerHTML = sub_total.toFixed(2);
+            row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+            row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
-            
             var received = document.getElementById("received_amount").value;
 
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
@@ -689,7 +702,7 @@
                 
                 //Calculations
                 var total = (in_crate * 12) + in_loose;
-                var display_crates = in_crate + " pc/s";
+                var display_crates = in_crate;
                 var display_loose = in_loose + " pc/s";
 
                 //Setter For Canister in Name
@@ -719,8 +732,8 @@
                 row.id = "row_in"+row_count;
                 row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
                 row.insertCell(1).innerHTML = "";
-                row.insertCell(2).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_crates+"</span></span>";
-                row.insertCell(3).innerHTML = "<span class='lead'> <span class='badge badge-pill badge-info'>"+display_loose+"</span></span>";
+                row.insertCell(2).innerHTML = display_crates;
+                row.insertCell(3).innerHTML = display_loose;
                 // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
                 
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
@@ -751,7 +764,7 @@
             amount = 0;
         }
         else{
-            parseFloat(amount);
+            amount = parseFloat(document.getElementById("amount_payable").value);
         }
 
         var final_change = received - amount;

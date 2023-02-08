@@ -132,6 +132,7 @@ class SalesController extends Controller
         $prd_price = "";
         $pur_qty = "";
         $pur_total = "";
+        $pur_deposit = "";
         $cus_id = "";
         
         $trx_total = $request->trx_total;
@@ -154,8 +155,9 @@ class SalesController extends Controller
                 $prd_id =  $purchase_data[0];
                 $prd_price = $purchase_data[2];
                 $pur_qty = $prd_quantity;
-                $pur_total = $purchase_data[6];
-                $cus_id = $purchase_data[9];
+                $pur_deposit = $purchase_data[6];
+                $pur_total = $purchase_data[7];
+                $cus_id = $purchase_data[10];
             }
             
             DB::table('purchases')
@@ -164,6 +166,7 @@ class SalesController extends Controller
                 'prd_id' => $prd_id,
                 'prd_price' => $prd_price,
                 'pur_qty' => $prd_quantity,
+                'pur_deposit' => $pur_deposit,
                 'pur_total' => $pur_total
             ]);
         }
