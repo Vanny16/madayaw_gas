@@ -103,6 +103,7 @@ class ProductionController extends Controller
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
+        $prd_deposit = $request->prd_deposit;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $flag = $request->add_flag;
@@ -148,6 +149,7 @@ class ProductionController extends Controller
             'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
             'prd_price' => $prd_price,
+            'prd_deposit' => $prd_deposit,
             'prd_reorder_point' => $prd_reorder,
             'prd_for_production' => 1,
             'prd_is_refillable' => 1,

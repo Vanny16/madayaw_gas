@@ -759,6 +759,14 @@
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
+                                <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="" onkeypress="return isNumberKey(this, event);" required/>
+                            </div>
+                            <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="{{ $prd_description }}" required/>
                             </div>
