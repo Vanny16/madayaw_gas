@@ -156,9 +156,6 @@
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
                         </div>
-                        <div class="col-md-2 col-12 mb-3">
-                            <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -462,7 +459,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" placeholder="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                         </div>
@@ -472,9 +469,9 @@
                     <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
-                <div class="col-md-2 col-12 mb-3">
+                <!-- <div class="col-md-2 col-12 mb-3">
                     <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
-                </div>
+                </div> -->
             </form>
         </div>  
     </div>

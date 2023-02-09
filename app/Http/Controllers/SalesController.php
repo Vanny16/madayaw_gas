@@ -137,7 +137,11 @@ class SalesController extends Controller
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
+        $pur_crate = "";
+        $pur_loose = "";
         $pur_total = "";
+        $pur_crate_in = "";
+        $pur_loose_in = "";
         $pur_deposit = "";
         $cus_id = "";
         
@@ -160,10 +164,15 @@ class SalesController extends Controller
                 $prd_quantity = (int)($purchase_data[3] * 12) + (int)($purchase_data[4]);
                 $prd_id =  $purchase_data[0];
                 $prd_price = $purchase_data[2];
+                $pur_crate = $purchase_data[3];
+                $pur_loose = $purchase_data[4];
                 $pur_qty = $prd_quantity;
                 $pur_deposit = $purchase_data[6];
                 $pur_total = $purchase_data[7];
+                $pur_crate_in = $purchase_data[8];
+                $pur_loose_in = $purchase_data[9];
                 $cus_id = $purchase_data[10];
+            
             }
             
             DB::table('purchases')
@@ -171,14 +180,19 @@ class SalesController extends Controller
                 'trx_id' => $trx_id,
                 'prd_id' => $prd_id,
                 'prd_price' => $prd_price,
+                'pur_crate' => $pur_crate,
+                'pur_loose' => $pur_loose,
                 'pur_qty' => $prd_quantity,
                 'pur_deposit' => $pur_deposit,
+                'pur_crate_in' => $pur_crate_in,
+                'pur_loose_in' => $pur_loose_in,
                 'pur_total' => $pur_total
             ]);
         }
 
         DB::table('transactions')
         ->insert([
+            'acc_id' => session('acc_id'),
             'trx_ref_id' => $trx_ref_id,
             'cus_id' => $cus_id,
             'trx_datetime' => date('Y-m-d H:i:s'),
@@ -187,8 +201,10 @@ class SalesController extends Controller
             'trx_balance' => $trx_balance
         ]);
 
+        session(['latest_trx_id' => $trx_id]);
+
         session()->flash('successMessage','Transaction complete!');
-        return redirect()->action('SalesController@main');
+        return redirect()->action('PrintController@receiptDetails');
     }
 
     public function addCanister(Request $request)

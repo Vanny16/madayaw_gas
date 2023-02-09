@@ -70,10 +70,20 @@ class PrintController extends Controller
 
     public function receiptDetails()
     {
-        $receipt_Details = DB::table('sales_reports')
+        $latest_trx_id = session('latest_trx_id');
+
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->first();
+
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
 
-        return view('admin.print.deliveryreceipt', compact('receipt_Details'));
+        session()->flash('successMessage','Transaction complete!');
+        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases'));
     }
 
 }
