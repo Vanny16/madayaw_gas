@@ -241,7 +241,6 @@
                                                                         @if(is_array($products) || is_object($products))
                                                                             @foreach($accessibles as $accessible)
                                                                                 @foreach($products as $product)
-                                                                                 
                                                                                     @if($product->prd_id == $accessible)
                                                                                         @php($prd_accessible = $product->prd_name) 
                                                                                         <span class="badge badge-pill badge-primary">{{$accessible}}</span>
@@ -259,16 +258,16 @@
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
                                                                                         @php($prd_accessible = $product->prd_name) 
-                                                                                        <span class="badge badge-pill badge-primary">PHP</span>
+                                                                                        <span class="badge badge-pill badge-primary">₱</span>
                                                                                         <a class="lead"> | </a>
-                                                                                        <span class="badge badge-primary"><?php echo $product->prd_price + $product->prd_deposit ?></span>
+                                                                                        <span class="badge badge-light"><?php echo $product->prd_price + $product->prd_deposit ?></span>
                                                                                         <br>
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
                                                                         @endif
                                                                     </div>
-                                                                    <div class="col-md-6"> 
+                                                                    <!-- <div class="col-md-6"> 
                                                                         @if(is_array($products) || is_object($products))
                                                                             @foreach($accessibles as $accessible)
                                                                                 @foreach($products as $product)
@@ -284,7 +283,7 @@
                                                                                 @endforeach    
                                                                             @endforeach
                                                                         @endif
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
