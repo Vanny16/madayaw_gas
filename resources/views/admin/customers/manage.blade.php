@@ -108,7 +108,6 @@
                                         <th>Contact #</th>
                                         <th>Address</th>
                                         <th>Products</th>
-                                        <th>Price</th>
                                         <th>Notes</th>
                                         <th width="100px">Status</th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
@@ -154,15 +153,6 @@
                                                 @else
                                                     <td>
                                                         <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
-                                                    </td>
-                                                @endif
-                                                @if($customer->cus_accessibles_prices == null)
-                                                <td>
-                                                    0.00
-                                                </td>
-                                                @else
-                                                    <td>
-                                                        {{$customer->cus_accessibles_prices}}
                                                     </td>
                                                 @endif
                                                 @if($customer->cus_notes)
@@ -239,7 +229,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="col-md-12">
+                                                                <div class="row">
                                                                     <?php 
                                                                         $accessibles = explode(",",$customer->cus_accessibles);
                                                                         if(end($accessibles) == " " || end($accessibles) == "")
@@ -247,7 +237,7 @@
 
                                                                         // dd(is_array($products));
                                                                     ?>
-                                                                    <div class="col-md-12">
+                                                                    <div class="col-md-6">
                                                                         @if(is_array($products) || is_object($products))
                                                                             @foreach($accessibles as $accessible)
                                                                                 @foreach($products as $product)
@@ -255,12 +245,45 @@
                                                                                         @php($prd_accessible = $product->prd_name) 
                                                                                         <span class="badge badge-pill badge-primary">{{$accessible}}</span>
                                                                                         <a class="lead"> | </a>
-                                                                                        <span class="badge badge-pill badge-info">{{$prd_accessible}}</span><br>
+                                                                                        <span class="badge badge-pill badge-info">{{$prd_accessible}}</span>
+                                                                                        <br>
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
                                                                         @endif
                                                                     </div>
+                                                                    <div class="col-md-6"> 
+                                                                        @if(is_array($products) || is_object($products))
+                                                                            @foreach($accessibles as $accessible)
+                                                                                @foreach($products as $product)
+                                                                                    @if($product->prd_id == $accessible)
+                                                                                        @php($prd_accessible = $product->prd_name) 
+                                                                                        <span class="badge badge-pill badge-primary">₱</span>
+                                                                                        <a class="lead"> | </a>
+                                                                                        <span class="badge badge-light"><?php echo $product->prd_price + $product->prd_deposit ?></span>
+                                                                                        <br>
+                                                                                    @endif
+                                                                                @endforeach    
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </div>
+                                                                    <!-- <div class="col-md-6"> 
+                                                                        @if(is_array($products) || is_object($products))
+                                                                            @foreach($accessibles as $accessible)
+                                                                                @foreach($products as $product)
+                                                                                    @if($product->prd_id == $accessible)
+                                                                                        @php($prd_accessible = $product->prd_name) 
+                                                                                        <span class="badge badge-pill badge-primary">PHP</span>
+                                                                                        <a class="lead"> | </a>
+                                                                                        <span class="badge badge-primary"><?php echo $product->prd_price + $product->prd_deposit ?></span>
+                                                                                        <br>
+                                                                                    @endif
+                                                                                        
+                                                                                
+                                                                                @endforeach    
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
