@@ -38,6 +38,12 @@ class SalesController extends Controller
 
     public function report()
     {
+        $sales = DB::table('purchases')
+        ->join('products','products.prd_id','=','purchases.prd_id')
+        ->where('products.acc_id','=', session('acc_id'))
+        ->get();
+        // dd($sales);        
+
         return view('admin.sales.report');
     }
 

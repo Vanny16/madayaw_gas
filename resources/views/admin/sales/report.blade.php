@@ -60,9 +60,9 @@
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
+                                            <th>Description</th>
                                             <th>Price</th>
                                             <th>Quantity</th>
-                                            <th>Discount</th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
