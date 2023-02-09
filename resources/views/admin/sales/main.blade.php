@@ -607,9 +607,6 @@
         var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
         var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
-
-        alert("Purchase: "+prd_quantity);
-        alert("In: "+prd_in_quantity);
         
         if(prd_quantity != "" || prd_quantity > 0){
             if(prd_in_quantity > prd_quantity){
@@ -739,7 +736,7 @@
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
                 
-                alert(display_crates+" Crate/s and "+display_loose+" Loose of "+item_name+ " has been added");
+                // alert(display_crates+" Crate/s and "+display_loose+" Loose of "+item_name+ " has been added");
 
             }
             else{
