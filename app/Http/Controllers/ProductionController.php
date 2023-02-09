@@ -211,7 +211,7 @@ class ProductionController extends Controller
         $flag = $request->stockin_flag;
         
         record_stockin($prd_id, $prd_quantity);
-
+        
         $quantity = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id', '=', $prd_id)
@@ -326,7 +326,7 @@ class ProductionController extends Controller
             
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
-                //ADD QUANTITY TO REVALVING FROM LEAKERS
+                //ADD QUANTITY FROM LEAKERS TO REVALVING 
                 (float)$new_quantity = (float)$quantity->prd_for_revalving + $prd_quantity;
                 
                 DB::table('products')
@@ -335,8 +335,22 @@ class ProductionController extends Controller
                     'prd_for_revalving' => $new_quantity
                 ]);  
 
+                $search_string = 'valve';
+
+                $valve_details = DB::table('products')
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_name', 'LIKE', '%valve%')
+                ->first();  
+
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
+
+                $valve_details = DB::table('products')
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_name', 'LIKE', '%valve%')
+                ->update([
+                    'prd_quantity' => $valve_qty = $valve_details->prd_quantity - 1
+                ]);
 
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
