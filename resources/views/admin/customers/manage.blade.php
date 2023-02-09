@@ -239,7 +239,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="col-md-12">
+                                                                <div class="row">
                                                                     <?php 
                                                                         $accessibles = explode(",",$customer->cus_accessibles);
                                                                         if(end($accessibles) == " " || end($accessibles) == "")
@@ -247,7 +247,7 @@
 
                                                                         // dd(is_array($products));
                                                                     ?>
-                                                                    <div class="col-md-12">
+                                                                    <div class="col-md-6">
                                                                         @if(is_array($products) || is_object($products))
                                                                             @foreach($accessibles as $accessible)
                                                                                 @foreach($products as $product)
@@ -255,7 +255,23 @@
                                                                                         @php($prd_accessible = $product->prd_name) 
                                                                                         <span class="badge badge-pill badge-primary">{{$accessible}}</span>
                                                                                         <a class="lead"> | </a>
-                                                                                        <span class="badge badge-pill badge-info">{{$prd_accessible}}</span><br>
+                                                                                        <span class="badge badge-pill badge-info">{{$prd_accessible}}</span>
+                                                                                        <br>
+                                                                                    @endif
+                                                                                @endforeach    
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="col-md-6"> 
+                                                                        @if(is_array($products) || is_object($products))
+                                                                            @foreach($accessibles as $accessible)
+                                                                                @foreach($products as $product)
+                                                                                    @if($product->prd_id == $accessible)
+                                                                                        @php($prd_accessible = $product->prd_name) 
+                                                                                        <span class="badge badge-pill badge-primary">PHP</span>
+                                                                                        <a class="lead"> | </a>
+                                                                                        <span class="badge badge-primary"><?php echo $product->prd_price + $product->prd_deposit ?></span>
+                                                                                        <br>
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
