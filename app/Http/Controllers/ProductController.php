@@ -264,6 +264,7 @@ class ProductController extends Controller
         'prd_reorder_point' => $prd_reorder, 
         'prd_for_production' => 1,
         'prd_is_refillable' => 1,
+        'prd_for_POS' => 1,
         'sup_id' => $sup_id
         ]);
 

@@ -56,6 +56,32 @@ Route::group(['prefix' => 'customer'], function()
 
 });
 
+Route::group(['prefix' => 'print'], function()
+{
+    Route::get('customer/{pay_uuid}', 'PrintController@customerDetails');
+    Route::get('customer', 'PrintController@allcustomerDetails');
+
+    Route::get('supplier/{pay_uuid}', 'PrintController@supplierDetails');
+    Route::get('supplier', 'PrintController@allsupplierDetails');
+
+    Route::get('product/{pay_uuid}', 'PrintController@productDetails');
+    Route::get('product', 'PrintController@allproductDetails');
+
+    Route::get('print', 'PrintController@allsaleDetails');
+});
+
+Route::group(['prefix' => 'production'], function()
+{
+    Route::get('tank', 'ProductionController@tank');
+    Route::get('manage', 'ProductionController@manage');
+    Route::get('toggle', 'ProductionController@toggleProduction');///{pdn_flag}
+    Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
+    
+    Route::post('add-empty-goods', 'ProductionController@createProduct');
+    Route::post('add-quantity', 'ProductionController@addQuantity');
+    Route::post('edit-product', 'ProductionController@editItem');
+});
+
 Route::group(['prefix' => 'product'], function()
 {
     Route::get('manage', 'ProductController@manage');
@@ -78,36 +104,15 @@ Route::group(['prefix' => 'product'], function()
     
 });
 
-Route::group(['prefix' => 'supplier'], function()
+Route::group(['prefix' => 'reports'], function()
 {
-    Route::get('manage', 'SupplierController@manage');
-    Route::get('deactivate-supplier/{sup_id}', 'SupplierController@deactivateSupplier');
-    Route::get('reactivate-supplier/{sup_id}', 'SupplierController@reactivateSupplier');
-    
-    Route::post('create-supplier', 'SupplierController@createSupplier');
-    Route::post('edit-supplier/{sup_id}', 'SupplierController@editSupplier');
-    Route::post('search-supplier', 'SupplierController@searchSupplier');
-    Route::post('upload-avatar', 'SupplierController@uploadAvatar');
-});
-
-Route::group(['prefix' => 'print'], function()
-{
-    Route::get('customer/{pay_uuid}', 'PrintController@customerDetails');
-    Route::get('customer', 'PrintController@allcustomerDetails');
-
-    Route::get('supplier/{pay_uuid}', 'PrintController@supplierDetails');
-    Route::get('supplier', 'PrintController@allsupplierDetails');
-
-    Route::get('product/{pay_uuid}', 'PrintController@productDetails');
-    Route::get('product', 'PrintController@allproductDetails');
-
-    Route::get('print', 'PrintController@allsaleDetails');
+    Route::get('sales', 'ReportsController@sales');
+    Route::get('production', 'ReportsController@production');
 });
 
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
-    Route::get('report', 'SalesController@report');
 
     Route::post('create-customer', 'SalesController@createCustomer');
     Route::post('payment', 'SalesController@paymentSales');
@@ -118,14 +123,14 @@ Route::group(['prefix' => 'sales'], function()
     Route::get('print', 'PrintController@receiptDetails');
 });
 
-Route::group(['prefix' => 'production'], function()
+Route::group(['prefix' => 'supplier'], function()
 {
-    Route::get('tank', 'ProductionController@tank');
-    Route::get('manage', 'ProductionController@manage');
-    Route::get('toggle', 'ProductionController@toggleProduction');///{pdn_flag}
-    Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
+    Route::get('manage', 'SupplierController@manage');
+    Route::get('deactivate-supplier/{sup_id}', 'SupplierController@deactivateSupplier');
+    Route::get('reactivate-supplier/{sup_id}', 'SupplierController@reactivateSupplier');
     
-    Route::post('add-empty-goods', 'ProductionController@createProduct');
-    Route::post('add-quantity', 'ProductionController@addQuantity');
-    Route::post('edit-product', 'ProductionController@editItem');
+    Route::post('create-supplier', 'SupplierController@createSupplier');
+    Route::post('edit-supplier/{sup_id}', 'SupplierController@editSupplier');
+    Route::post('search-supplier', 'SupplierController@searchSupplier');
+    Route::post('upload-avatar', 'SupplierController@uploadAvatar');
 });

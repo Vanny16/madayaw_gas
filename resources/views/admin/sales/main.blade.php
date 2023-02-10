@@ -205,7 +205,7 @@
                                                         @if($product->prd_is_refillable == '0')
                                                             @php($addCanistersIn = "")
                                                             @php($in_crate_value = "0")
-                                                            @php($in_crate_value = "0")
+                                                            @php($in_loose_value = "0")
                                                             <h5 class="text-center mt-5">{{$product->prd_name}} is a non-refillable item.</h5>
                                                         @else
                                                             @php($addCanistersIn = "addCanistersIn(in_crates$product->prd_id.id,in_loose$product->prd_id.id,canister_in$product->prd_id.id); ")
