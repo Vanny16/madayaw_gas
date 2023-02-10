@@ -54,8 +54,6 @@
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
                                     <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
-                                        <option value="-1">-NOT SPECIFIED-</option>
-                                        <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
                                             @foreach($customers as $customer)
                                                 @if(session('new_client') == $customer->cus_name )
