@@ -258,7 +258,7 @@
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
                                                                                         @php($prd_accessible = $product->prd_name) 
-                                                                                        <span class="badge badge-pill badge-primary">₱</span>
+                                                                                        <span class="badge badge-pill badge-primary">₱ </span>
                                                                                         <a class="lead"> | </a>
                                                                                         <span class="badge badge-light"><?php echo $product->prd_price + $product->prd_deposit ?></span>
                                                                                         <br>
