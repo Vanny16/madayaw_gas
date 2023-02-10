@@ -52,15 +52,6 @@
                 </li>
                 @endif
 
-                <li class="nav-item">
-                    <a href="{{ action('SalesController@report') }}" class="nav-link">
-                        <i class="nav-icon fa fa-bar-chart"></i>
-                        <p>
-                            Sales Reports
-                        </p>
-                    </a>
-                </li>
-
                 @if(session('typ_id') == '1')
                 <li class="nav-header">INVENTORY</li>
 
@@ -108,7 +99,27 @@
                         </p>
                     </a>
                 </li>
-                    
+                 
+                <li class="nav-header">REPORTS</li>
+
+                <li class="nav-item">
+                    <a href="{{ action('ReportsController@sales') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bar-chart"></i>
+                        <p>
+                            Sales Reports
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('ReportsController@production') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bar-chart"></i>
+                        <p>
+                            Production Reports
+                        </p>
+                    </a>
+                </li>
+                
                 <li class="nav-header">ACCOUNTS</li>
 
                 <li class="nav-item">
