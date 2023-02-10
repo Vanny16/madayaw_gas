@@ -62,6 +62,9 @@ Route::group(['prefix' => 'product'], function()
     Route::get('opposite', 'ProductController@opposite');
     Route::get('deactivate-product/{prd_id}', 'ProductController@deactivateProduct');
     Route::get('reactivate-product/{prd_id}', 'ProductController@reactivateProduct');
+    Route::get('opsdeactivate-product/{ops_id}', 'ProductController@opsdeactivateProduct');
+    Route::get('opsreactivate-product/{ops_id}', 'ProductController@opsreactivateProduct');
+
 
     Route::post('create-supplier', 'ProductController@createSupplier');
     Route::post('search-user', 'ProductController@searchProduct');
@@ -69,6 +72,9 @@ Route::group(['prefix' => 'product'], function()
     Route::post('add-product', 'ProductController@createProduct');
     Route::post('add-quantity', 'ProductController@addQuantity');
     Route::post('trade-canisters', 'ProductController@tradeCanisters');
+
+    Route::post('add-opposition', 'ProductController@addOpposition');
+    Route::post('edit-opposition', 'ProductController@editOpposition');
     
 });
 
