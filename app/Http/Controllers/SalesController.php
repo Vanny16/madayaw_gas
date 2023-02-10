@@ -36,17 +36,6 @@ class SalesController extends Controller
         return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
     }
 
-    public function report()
-    {
-        $sales = DB::table('purchases')
-        ->join('products','products.prd_id','=','purchases.prd_id')
-        ->where('products.acc_id','=', session('acc_id'))
-        ->get();
-        // dd($sales);        
-
-        return view('admin.sales.report');
-    }
-
     public function createCustomer(Request $request)
     {
         $cus_name = $request->cus_name;
