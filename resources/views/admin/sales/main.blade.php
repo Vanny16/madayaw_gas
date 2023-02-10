@@ -54,8 +54,6 @@
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <label>Customer Name</label>
                                     <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
-                                        <option value="-1">-NOT SPECIFIED-</option>
-                                        <option value="0">-WALK IN-</option>
                                         @if(isset($customers))
                                             @foreach($customers as $customer)
                                                 @if(session('new_client') == $customer->cus_name )
@@ -151,13 +149,10 @@
 
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()"><i class="fa fa-wallet"></i> Receive Payment</button>
+                            <button id="btn_rcv_pay" type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()" disabled><i class="fa fa-wallet"></i> Receive Payment</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
-                        </div>
-                        <div class="col-md-2 col-12 mb-3">
-                            <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
                         </div>
                     </div>
                 </div>
@@ -284,14 +279,9 @@
                                                             @endif
                                                         </div>
 
-                                                        {{--<div class="form-group">
-                                                            <label for="cus_address">Quantity <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_quantity{{$product->prd_id}}" value="0" min="1" max="{{$product->prd_quantity}}" onchange="noNegativeValue('prd_quantity{{$product->prd_id}}')" onkeyup="noNegativeValue('prd_quantity{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
-                                                        </div>--}}
-
                                                         <div class="form-group">
                                                             <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onchange="noNegativeValue('temp_discount{{$product->prd_id}}')" onkeyup="noNegativeValue('temp_discount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
                                                         
                                                         <div class="form-group">
@@ -400,13 +390,13 @@
 <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
+            <form id="form_payment" method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-7">
                             <div class="modal-header text-info">
-                                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
+                                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Order Summary</h5>
                             </div>  
                             <div class="row">
                                 <table class="table table-striped table-hover ml-2 table-borderless text-left">
@@ -467,19 +457,19 @@
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" placeholder="Enter Amount" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                         </div>
                     </div>
                 </div>  
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
+                    <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
-                <div class="col-md-2 col-12 mb-3">
+                <!-- <div class="col-md-2 col-12 mb-3">
                     <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
-                </div>
+                </div> -->
             </form>
         </div>  
     </div>
@@ -670,6 +660,8 @@
             
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             // session()->flash('successMessage','Transaction complete!');
+            
+            checkCart();
         }
         else{
             alert("Please input quantity");
@@ -802,14 +794,7 @@
         $("#receipt-modal").modal('hide');
     });
 
-    function noNegativeValue(id){
-        var value = document.getElementById(id).value;
-        if(value < 0 || value == ""){
-            document.getElementById(id).value ="0";
-        }
-    }
-
-   function  receivePayment(){
+   function receivePayment(){
 
         var client_id = document.getElementById("client_id").value;
         var convertedIntoArray = [];
@@ -866,8 +851,21 @@
 
    }
 
+   function noNegativeValue(id){
+
+        $("#"+id).on("input", function() {
+            if (/^0/.test(this.value)) {
+                this.value = this.value.replace(/^0/, "")
+            }
+        });
+
+        var value = document.getElementById(id).value;
+        if(value < 0 || value == ""){
+            document.getElementById(id).value ="0";
+        }
+    }
+
     function set_onkeyup(orig,copy){
-        
         if(orig < 0 || orig == ""){
             document.getElementById(copy).value ="0";
         }
@@ -875,6 +873,31 @@
             document.getElementById(copy).value = orig;
         }
     }
+
+    function checkCart(){
+        var table = document.getElementById("tbl-cart");
+        var rowCount = table.rows.length;
+
+        if(rowCount < 1){
+            document.getElementById("btn_rcv_pay").disabled = true;
+        }
+        else{
+            document.getElementById("btn_rcv_pay").disabled = false;
+        }
+    }
+
+    function noCredit(){
+        var total = parseFloat(document.getElementById("amount_payable").value);
+        var payment = parseFloat(document.getElementById("received_amount").value);
+
+        if(payment = "" || total > payment){
+            alert("Insufficient Payment");
+        }
+        else{
+            document.getElementById("form_payment").submit(); 
+        }
+    }
+    
 </script>
 
 @endsection
