@@ -207,6 +207,7 @@ class SalesController extends Controller
         DB::table('transactions')
         ->insert([
             'acc_id' => session('acc_id'),
+            'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
             'cus_id' => $cus_id,
             'trx_datetime' => date('Y-m-d H:i:s'),
