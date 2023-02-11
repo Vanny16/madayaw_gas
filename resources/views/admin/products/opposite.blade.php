@@ -151,10 +151,10 @@
                                                     <td>
                                                         @if($opposition->ops_active == 1) 
                                                             <span class="badge badge-success">Active</span>
-                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @else
                                                             <span class="badge badge-danger">Inactive</span>
-                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -182,7 +182,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form method="POST" action="{{ action('ProductController@editProduct') }}" enctype="multipart/form-data">
+                                                                <form method="POST" action="{{ action('ProductController@editOpposition') }}" enctype="multipart/form-data">
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
@@ -199,20 +199,20 @@
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="prd_name" value="{{ $opposition->ops_name }}"/>
+                                                                                    <label for="ops_name">Product Name <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}"/>
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="prd_sku" value="{{ $opposition->ops_sku }}"/>
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="prd_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                    <label for="ops_sku">SKU <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}"/>
                                                                                 </div>
                                                                                 <div class="form-group">
                                                                                     <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                     <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="ops_quantity">Quantity <span style="color:red">*</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                                 </div>
                                                                                 <div class="form-group">
                                                                                     <label for="notes">Notes</label>
@@ -323,7 +323,7 @@
     </section>
 </div>
 
-<!-- Create Modal -->
+<!-- Opposition Create Modal -->
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
@@ -333,33 +333,37 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@createProduct') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('ProductController@addOpposition') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 text-center">
-                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $opposition->ops_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                             <div class="col-12 text-center mb-4">
                             <a href="javascript:void(0);" class="">
                                 <label class="btn btn-transparent btn-file">
                                     <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                    <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                    <input type="file" class="custom-file-input" id="choose_file" name='ops_image' value="{{-- old('ops_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
                                 </label>
                             </a>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" required/>
+                                <label for="ops_name">Product Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="ops_name" placeholder="Enter Product Name" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" required/>
+                                <label for="ops_sku">SKU <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="ops_sku" placeholder="Enter SKU" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_description">Description <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" required/>
+                                <label for="ops_description">Description <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="ops_description" placeholder="Enter Description" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ops_quantity">Quantity <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="ops_quantity" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                             </div>
                             <div class="form-group">
                                 <label for="notes">Notes</label>

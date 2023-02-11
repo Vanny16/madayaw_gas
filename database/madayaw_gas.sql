@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-10 12:47:06
+Date: 2023-02-10 17:47:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -125,6 +125,7 @@ CREATE TABLE `movement_logs` (
   `log_empty_goods` decimal(10,0) DEFAULT '0',
   `log_for_revalving` decimal(10,0) DEFAULT '0',
   `log_scraps` decimal(10,0) DEFAULT '0',
+  `usr_id` int(11) DEFAULT NULL,
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
@@ -133,34 +134,34 @@ CREATE TABLE `movement_logs` (
 -- ----------------------------
 -- Records of movement_logs
 -- ----------------------------
-INSERT INTO `movement_logs` VALUES ('1', '1', '2', '1', '0', '0', '0', '0', '2022-11-14', null);
-INSERT INTO `movement_logs` VALUES ('2', '1', '2', '2', '0', '0', '0', '0', '2022-11-14', null);
-INSERT INTO `movement_logs` VALUES ('3', '1', '3', '1', '0', '0', '0', '0', '2022-12-12', '19');
-INSERT INTO `movement_logs` VALUES ('4', '1', '8', '22', '0', '0', '0', '0', '2022-12-12', '19');
-INSERT INTO `movement_logs` VALUES ('5', '1', '3', '20', '0', '0', '0', '0', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('6', '1', '3', '0', '0', '2', '0', '0', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('7', '1', '3', '0', '0', '1', '0', '0', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('8', '1', '8', '0', '1', '0', '0', '0', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('9', '1', '8', '0', '0', '0', '0', '1', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('10', '1', '8', '0', '0', '0', '0', '1', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('11', '1', '3', '0', '0', '0', '0', '1', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('12', '1', '3', '0', '0', '0', '1', '0', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('13', '1', '8', '0', '0', '0', '0', '1', '2022-12-13', '21');
-INSERT INTO `movement_logs` VALUES ('14', '1', '3', '0', '0', '0', '2', '0', '2022-12-14', '27');
-INSERT INTO `movement_logs` VALUES ('15', '1', '3', '0', '0', '0', '2', '0', '2022-12-15', '36');
-INSERT INTO `movement_logs` VALUES ('16', '1', '3', '0', '0', '1', '0', '0', '2023-01-04', '38');
-INSERT INTO `movement_logs` VALUES ('17', '1', '3', '1', '0', '0', '0', '0', '2023-01-04', '38');
-INSERT INTO `movement_logs` VALUES ('18', '1', '3', '0', '1', '0', '0', '0', '2023-01-04', '38');
-INSERT INTO `movement_logs` VALUES ('19', '1', '3', '0', '0', '1', '0', '0', '2023-01-13', '46');
-INSERT INTO `movement_logs` VALUES ('20', '1', '3', '0', '0', '12', '0', '0', '2023-01-13', '46');
-INSERT INTO `movement_logs` VALUES ('21', '1', '3', '0', '0', '144', '0', '0', '2023-01-13', '46');
-INSERT INTO `movement_logs` VALUES ('22', '1', '3', '0', '0', '0', '0', '1', '2023-01-13', '46');
-INSERT INTO `movement_logs` VALUES ('23', '1', '3', '0', '0', '0', '0', '1', '2023-01-17', '47');
-INSERT INTO `movement_logs` VALUES ('24', '1', '3', '0', '0', '0', '0', '1', '2023-01-17', '47');
-INSERT INTO `movement_logs` VALUES ('25', '1', '3', '0', '0', '0', '0', '1', '2023-01-17', '47');
-INSERT INTO `movement_logs` VALUES ('26', '1', '3', '0', '0', '0', '1', '0', '2023-02-09', '66');
-INSERT INTO `movement_logs` VALUES ('27', '1', '3', '0', '0', '0', '1', '0', '2023-02-09', '66');
-INSERT INTO `movement_logs` VALUES ('28', '1', '3', '0', '0', '0', '1', '0', '2023-02-09', '66');
+INSERT INTO `movement_logs` VALUES ('1', '1', '2', '1', '0', '0', '0', '0', null, '2022-11-14', null);
+INSERT INTO `movement_logs` VALUES ('2', '1', '2', '2', '0', '0', '0', '0', null, '2022-11-14', null);
+INSERT INTO `movement_logs` VALUES ('3', '1', '3', '1', '0', '0', '0', '0', null, '2022-12-12', '19');
+INSERT INTO `movement_logs` VALUES ('4', '1', '8', '22', '0', '0', '0', '0', null, '2022-12-12', '19');
+INSERT INTO `movement_logs` VALUES ('5', '1', '3', '20', '0', '0', '0', '0', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('6', '1', '3', '0', '0', '2', '0', '0', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('7', '1', '3', '0', '0', '1', '0', '0', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('8', '1', '8', '0', '1', '0', '0', '0', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('9', '1', '8', '0', '0', '0', '0', '1', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('10', '1', '8', '0', '0', '0', '0', '1', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('11', '1', '3', '0', '0', '0', '0', '1', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('12', '1', '3', '0', '0', '0', '1', '0', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('13', '1', '8', '0', '0', '0', '0', '1', null, '2022-12-13', '21');
+INSERT INTO `movement_logs` VALUES ('14', '1', '3', '0', '0', '0', '2', '0', null, '2022-12-14', '27');
+INSERT INTO `movement_logs` VALUES ('15', '1', '3', '0', '0', '0', '2', '0', null, '2022-12-15', '36');
+INSERT INTO `movement_logs` VALUES ('16', '1', '3', '0', '0', '1', '0', '0', null, '2023-01-04', '38');
+INSERT INTO `movement_logs` VALUES ('17', '1', '3', '1', '0', '0', '0', '0', null, '2023-01-04', '38');
+INSERT INTO `movement_logs` VALUES ('18', '1', '3', '0', '1', '0', '0', '0', null, '2023-01-04', '38');
+INSERT INTO `movement_logs` VALUES ('19', '1', '3', '0', '0', '1', '0', '0', null, '2023-01-13', '46');
+INSERT INTO `movement_logs` VALUES ('20', '1', '3', '0', '0', '12', '0', '0', null, '2023-01-13', '46');
+INSERT INTO `movement_logs` VALUES ('21', '1', '3', '0', '0', '144', '0', '0', null, '2023-01-13', '46');
+INSERT INTO `movement_logs` VALUES ('22', '1', '3', '0', '0', '0', '0', '1', null, '2023-01-13', '46');
+INSERT INTO `movement_logs` VALUES ('23', '1', '3', '0', '0', '0', '0', '1', null, '2023-01-17', '47');
+INSERT INTO `movement_logs` VALUES ('24', '1', '3', '0', '0', '0', '0', '1', null, '2023-01-17', '47');
+INSERT INTO `movement_logs` VALUES ('25', '1', '3', '0', '0', '0', '0', '1', null, '2023-01-17', '47');
+INSERT INTO `movement_logs` VALUES ('26', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
+INSERT INTO `movement_logs` VALUES ('27', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
+INSERT INTO `movement_logs` VALUES ('28', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
 
 -- ----------------------------
 -- Table structure for `oppositions`
@@ -296,14 +297,14 @@ CREATE TABLE `products` (
   `prd_weight` decimal(10,0) DEFAULT NULL,
   `prd_type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '100.00', '0.00', '82.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '49.00', '0.00', '82.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
-INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '154.00', '4.00', '181.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '48.00', '0.00', '132.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '45.00', '0.00', '0.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
+INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '120.00', '4.00', '209.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
 INSERT INTO `products` VALUES ('4', '1', 'ij1wajgnaj5z06aujgqv36ins9urm2u9', 'Butane Cap', 'Cap for the butane cans', 'TESTC4P4BU74N3', null, '0.50', '50', '14808.00', '0.00', '19.00', '0.00', '0', '2000.00', null, '47', '1', '0', '1', '0', '170', null);
 INSERT INTO `products` VALUES ('5', '1', 'xd6wsvy4yablidejcak1knk8ruqv1tm3', 'Butane Can', 'can for butane', 'TESTC4N4BU74N3', null, '2.00', '50', '9795.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '2', '1', '0', '1', '0', null, null);
 INSERT INTO `products` VALUES ('6', '1', '0a0vbc4af603skdaa857ucqxz7m4tm2n', 'Butane Valve', 'valve for the butane cans', 'TESTV4LV34BU74N3', null, '3.00', '50', '9794.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '52', '1', '0', '1', '0', null, null);
@@ -312,7 +313,9 @@ INSERT INTO `products` VALUES ('8', '1', '8r9f0dor9l4px2fprrpas1jre4ddqeh2', 'Ma
 INSERT INTO `products` VALUES ('9', '1', 'xaf1j0efoh6uvy8rqxoxhlgwfvql1dc4', 'tesWeight', 'testforweight', 'TWNEN325132', null, '232.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, '17', null);
 INSERT INTO `products` VALUES ('10', '1', 'hx5q5g7qbaaozcs2dku49hxoczq7no90', 'Tripler', 'gg', 'TR897234', null, '60.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '45555.00', null, '1', '1', '0', '1', null, null, null);
 INSERT INTO `products` VALUES ('11', '1', 'ndasdgvjgabu362sejolqrsarqzrlhe1', 'Madayaw Triangle', 'MT018230705970580MT018230705970580', 'MT018230705970580', null, '170.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, null, null);
-INSERT INTO `products` VALUES ('12', '1', 'lw6v6d61xsqhc4giyesbj8pkokbmsaib', 'Madayaw Oblong', 'For Canister', 'OBKLG768', null, '100.00', '100', '1000.00', '0.00', '0.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '140', null);
+INSERT INTO `products` VALUES ('12', '1', 'lw6v6d61xsqhc4giyesbj8pkokbmsaib', 'Madayaw Oblong', 'For Canister', 'OBKLG768', null, '100.00', '100', '976.00', '0.00', '24.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '140', null);
+INSERT INTO `products` VALUES ('13', '1', 'z3j0lbywcvq3osq87cqxribe2i2hfvv2', 'Tripler', 'BUGU', 'TUI876', null, null, null, '0.00', '0.00', '0.00', '0.00', '0', null, null, null, '1', '1', '1', null, null, null);
+INSERT INTO `products` VALUES ('14', '1', '8gjyl8geie8z5f1retzt18eavn4id1da', 'Madayaw Rectangle', 'BOGO', 'RE767923', null, '120.00', '100', '1000.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '3', '1', '1', '1', null, '147', null);
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -331,7 +334,7 @@ CREATE TABLE `purchases` (
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
@@ -397,6 +400,12 @@ INSERT INTO `purchases` VALUES ('58', '22', '2', '0', '1', '0.00', '2000.00', '1
 INSERT INTO `purchases` VALUES ('59', '22', '1', '2', '5', '250.00', '4600.00', '29', '150.00', '2', '0');
 INSERT INTO `purchases` VALUES ('60', '23', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
 INSERT INTO `purchases` VALUES ('61', '23', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('62', '24', '3', '2', '5', '300.00', '880.00', '29', '20.00', '2', '2');
+INSERT INTO `purchases` VALUES ('63', '24', '1', '2', '2', '0.00', '3900.00', '26', '150.00', '2', '2');
+INSERT INTO `purchases` VALUES ('64', '24', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('65', '25', '3', '0', '5', '300.00', '400.00', '5', '20.00', '0', '2');
+INSERT INTO `purchases` VALUES ('67', '27', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('68', '27', '1', '2', '2', '100.00', '4000.00', '26', '150.00', '2', '0');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -411,7 +420,7 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -498,6 +507,8 @@ INSERT INTO `quantity_logs` VALUES ('79', '1', '3', '1', '1', '2023-02-09 16:17:
 INSERT INTO `quantity_logs` VALUES ('80', '1', '3', '1', '1', '2023-02-09 16:39:47', '66');
 INSERT INTO `quantity_logs` VALUES ('81', '1', '3', '1', '120', '2023-02-10 11:43:10', '66');
 INSERT INTO `quantity_logs` VALUES ('82', '1', '1', '1', '-2326', '2023-02-10 12:35:35', '66');
+INSERT INTO `quantity_logs` VALUES ('83', '1', '14', '1', '900', '2023-02-10 13:46:42', '66');
+INSERT INTO `quantity_logs` VALUES ('84', '1', '14', '1', '100', '2023-02-10 13:46:54', '66');
 
 -- ----------------------------
 -- Table structure for `sales_reports`
@@ -636,35 +647,40 @@ CREATE TABLE `transactions` (
   `trx_amount_paid` decimal(11,0) DEFAULT NULL,
   `trx_balance` decimal(11,0) DEFAULT NULL,
   `acc_id` tinyint(4) DEFAULT NULL,
+  `usr_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
-INSERT INTO `transactions` VALUES ('1', '20230131-1', '-1', '2023-01-31 10:39:06', '2020', '2500', '480', '1');
-INSERT INTO `transactions` VALUES ('2', '20230201-2', '-1', '2023-02-01 09:43:30', '1800', '23', '-1777', '1');
-INSERT INTO `transactions` VALUES ('3', '20230207-3', '100', '2023-02-07 07:19:18', '362300', '362300', '0', '1');
-INSERT INTO `transactions` VALUES ('4', '20230207-4', '-1', '2023-02-07 07:36:07', '38100', '100', '-38000', '1');
-INSERT INTO `transactions` VALUES ('5', '20230207-5', '2', '2023-02-07 07:39:32', '385400', '45', '-385355', '1');
-INSERT INTO `transactions` VALUES ('6', '20230207-6', '-1', '2023-02-07 08:37:08', '204000', '2014000', '1810000', '1');
-INSERT INTO `transactions` VALUES ('7', '20230207-7', '3', '2023-02-07 09:05:48', '184000', '184000', '0', '1');
-INSERT INTO `transactions` VALUES ('8', '20230208-8', '-1', '2023-02-08 09:17:45', '4670', '5000', '330', '1');
-INSERT INTO `transactions` VALUES ('9', '20230208-9', '-1', '2023-02-08 09:22:29', '4200', '4500', '300', '1');
-INSERT INTO `transactions` VALUES ('10', '20230209-10', '-1', '2023-02-09 04:57:51', '2000', '2', '-1998', '1');
-INSERT INTO `transactions` VALUES ('11', '20230209-11', '-1', '2023-02-09 05:04:20', '2000', '2000', '0', '1');
-INSERT INTO `transactions` VALUES ('12', '20230209-12', '-1', '2023-02-09 06:14:21', '2000', null, '-2000', '1');
-INSERT INTO `transactions` VALUES ('13', '20230209-13', '2', '2023-02-09 06:40:58', '240', '240', '0', '1');
-INSERT INTO `transactions` VALUES ('14', '20230209-14', '2', '2023-02-09 08:30:34', '4480', '5000', '520', '1');
-INSERT INTO `transactions` VALUES ('15', '20230209-15', '-1', '2023-02-09 09:17:37', '185500', '185500', '0', '1');
-INSERT INTO `transactions` VALUES ('16', '20230209-16', '1', '2023-02-09 09:20:29', '308200', '308200', '0', null);
-INSERT INTO `transactions` VALUES ('17', '20230209-17', '-1', '2023-02-09 09:35:23', '7600', '7600', '0', null);
-INSERT INTO `transactions` VALUES ('18', '20230209-18', '-1', '2023-02-09 09:36:36', '2000', '2000', '0', null);
-INSERT INTO `transactions` VALUES ('19', '20230209-19', '-1', '2023-02-09 09:58:59', '13760', '13760', '0', '1');
-INSERT INTO `transactions` VALUES ('20', '20230210-20', '3', '2023-02-10 03:24:47', '6000', '6000', '0', '1');
-INSERT INTO `transactions` VALUES ('21', '20230210-21', '-1', '2023-02-10 04:21:27', '3600', '3600', '0', '1');
-INSERT INTO `transactions` VALUES ('22', '20230210-22', '46', '2023-02-10 04:23:08', '6600', '7000', '400', '1');
-INSERT INTO `transactions` VALUES ('23', '20230210-23', '-1', '2023-02-10 04:26:45', '5600', '6000', '400', '1');
+INSERT INTO `transactions` VALUES ('1', '20230131-1', '-1', '2023-01-31 10:39:06', '2020', '2500', '480', '1', null);
+INSERT INTO `transactions` VALUES ('2', '20230201-2', '-1', '2023-02-01 09:43:30', '1800', '23', '-1777', '1', null);
+INSERT INTO `transactions` VALUES ('3', '20230207-3', '100', '2023-02-07 07:19:18', '362300', '362300', '0', '1', null);
+INSERT INTO `transactions` VALUES ('4', '20230207-4', '-1', '2023-02-07 07:36:07', '38100', '100', '-38000', '1', null);
+INSERT INTO `transactions` VALUES ('5', '20230207-5', '2', '2023-02-07 07:39:32', '385400', '45', '-385355', '1', null);
+INSERT INTO `transactions` VALUES ('6', '20230207-6', '-1', '2023-02-07 08:37:08', '204000', '2014000', '1810000', '1', null);
+INSERT INTO `transactions` VALUES ('7', '20230207-7', '3', '2023-02-07 09:05:48', '184000', '184000', '0', '1', null);
+INSERT INTO `transactions` VALUES ('8', '20230208-8', '-1', '2023-02-08 09:17:45', '4670', '5000', '330', '1', null);
+INSERT INTO `transactions` VALUES ('9', '20230208-9', '-1', '2023-02-08 09:22:29', '4200', '4500', '300', '1', null);
+INSERT INTO `transactions` VALUES ('10', '20230209-10', '-1', '2023-02-09 04:57:51', '2000', '2', '-1998', '1', null);
+INSERT INTO `transactions` VALUES ('11', '20230209-11', '-1', '2023-02-09 05:04:20', '2000', '2000', '0', '1', null);
+INSERT INTO `transactions` VALUES ('12', '20230209-12', '-1', '2023-02-09 06:14:21', '2000', null, '-2000', '1', null);
+INSERT INTO `transactions` VALUES ('13', '20230209-13', '2', '2023-02-09 06:40:58', '240', '240', '0', '1', null);
+INSERT INTO `transactions` VALUES ('14', '20230209-14', '2', '2023-02-09 08:30:34', '4480', '5000', '520', '1', null);
+INSERT INTO `transactions` VALUES ('15', '20230209-15', '-1', '2023-02-09 09:17:37', '185500', '185500', '0', '1', null);
+INSERT INTO `transactions` VALUES ('16', '20230209-16', '1', '2023-02-09 09:20:29', '308200', '308200', '0', null, null);
+INSERT INTO `transactions` VALUES ('17', '20230209-17', '-1', '2023-02-09 09:35:23', '7600', '7600', '0', null, null);
+INSERT INTO `transactions` VALUES ('18', '20230209-18', '-1', '2023-02-09 09:36:36', '2000', '2000', '0', null, null);
+INSERT INTO `transactions` VALUES ('19', '20230209-19', '-1', '2023-02-09 09:58:59', '13760', '13760', '0', '1', null);
+INSERT INTO `transactions` VALUES ('20', '20230210-20', '3', '2023-02-10 03:24:47', '6000', '6000', '0', '1', null);
+INSERT INTO `transactions` VALUES ('21', '20230210-21', '-1', '2023-02-10 04:21:27', '3600', '3600', '0', '1', null);
+INSERT INTO `transactions` VALUES ('22', '20230210-22', '46', '2023-02-10 04:23:08', '6600', '7000', '400', '1', null);
+INSERT INTO `transactions` VALUES ('23', '20230210-23', '-1', '2023-02-10 04:26:45', '5600', '6000', '400', '1', null);
+INSERT INTO `transactions` VALUES ('24', '20230210-24', '-1', '2023-02-10 05:15:28', '8780', '8780', '0', '1', null);
+INSERT INTO `transactions` VALUES ('25', '20230210-25', '-1', '2023-02-10 05:43:45', '400', '400', '0', '1', null);
+INSERT INTO `transactions` VALUES ('26', '20230210-26', '-1', '2023-02-10 07:08:00', '2400', '2400', '0', '1', null);
+INSERT INTO `transactions` VALUES ('27', '20230210-27', '-1', '2023-02-10 09:46:14', '8000', '8000', '0', '1', '1');
 
 -- ----------------------------
 -- Table structure for `users`
@@ -687,7 +703,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', 'jcf7sitxxlujbed8ewo233ajotcl8m5j', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tann Kudarat, South Kortabato', '1.png', '1', '1');
+INSERT INTO `users` VALUES ('1', '1', 'ewx58n5e6syi8vqj9t2cix1urygehofa', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tann Kudarat, South Kortabato', '1.png', '1', '1');
 INSERT INTO `users` VALUES ('2', '1', 's3anhknpd87r3fbdx0icyrq6nm99xr67', 'Xabara Satirani', 'xabara', '0425fd883a2436611041284f0fd3c1b2', 'Jubinol', '2.jpg', '1', '2');
 INSERT INTO `users` VALUES ('3', '1', 'lv8r2fyf3gstlyp3o06l9k6fbbs4oh2k', 'Yoo In Na', 'yooinah', 'f9ed4bdb724da4c8ff4f643641335e9b', 'Toodongie Jang, Seoul, South Korea', '3.jpg', '1', '3');
 INSERT INTO `users` VALUES ('4', '1', 'c238f96ny7lpt1kcmmsxmk6ru753r2kl', 'Kim Hee Ae', 'kimheeae', '65e63fefb00486abd78b96729ff6f7c6', 'Seoultan Kudarat, Manila, Philippines', '4.jpg', '0', '2');
