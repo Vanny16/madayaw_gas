@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Sales Reports</h1>
+                    <h1 class="m-0 text-dark">Production Reports</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -52,26 +52,41 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Sales Reports</h3>
+                            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Production Reports</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
+                                            <th>Date</th>
                                             <th>Product Name</th>
-                                            <th>Description</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Subtotal</th>
+                                            <th>Empty Goods</th>
+                                            <th>Filled Canisters</th>
+                                            <th>Leakers</th>
+                                            <th>For Revalving</th>
+                                            <th>Scrap</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
-                                        <tr class="bg-light" height="1px">
-                                        </tr>
+                                        @if(isset($productions))
+                                            @foreach($productions as $production)
+                                                <tr>
+                                                    <td>{{$production->log_date}}</td>
+                                                    <td>{{$production->prd_name}}</td>
+                                                    <td>{{$production->log_empty_goods}}</td>
+                                                    <td>{{$production->log_filled}}</td>
+                                                    <td>{{$production->log_leakers}}</td>
+                                                    <td>{{$production->log_for_revalving}}</td>
+                                                    <td>{{$production->log_for_revalving}}</td>
+                                                    <td></td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
+                                {{ $productions->links() }}
                             </div>
                         </div>
                     </div>

@@ -101,6 +101,7 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_empty_goods' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+            'usr_id' => session('usr_id'),
             'pdn_id' => $get_pdn_id->pdn_id
         ]);  
     }
@@ -112,6 +113,7 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_filled' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+            'usr_id' => session('usr_id'),
             'pdn_id' => $get_pdn_id->pdn_id
         ]); 
     }
@@ -123,6 +125,7 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_leakers' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+            'usr_id' => session('usr_id'),
             'pdn_id' => $get_pdn_id->pdn_id
         ]); 
     }
@@ -134,6 +137,7 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_for_revalving' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+            'usr_id' => session('usr_id'),
             'pdn_id' => $get_pdn_id->pdn_id
         ]); 
     }
@@ -145,6 +149,7 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_scraps' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+            'usr_id' => session('usr_id'),
             'pdn_id' => $get_pdn_id->pdn_id
         ]); 
     }
