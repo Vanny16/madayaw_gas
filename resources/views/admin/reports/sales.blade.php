@@ -62,13 +62,47 @@
                                             <th>Product Name</th>
                                             <th>Description</th>
                                             <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Subtotal</th>
+                                            <th>Quantity Sold</th>
+                                            <th>Total Sales</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-cart">
+                                        @php($total_sold = 0)
+                                        @php($total_sales = 0)
+                                        @foreach($sales as $sale)
+                                        
+                                           @if($sale->total_sold != null)
+                                                @php($total_sold += $sale->total_sold)
+                                            @endif
+                                            @if($sale->total_sales != null)
+                                                @php($total_sales += $sale->total_sales)
+                                            @endif
+
+                                            @if($sale->total_sold == null)
+                                                @php($sale->total_sold = "0")
+                                            @endif
+                                            @if($sale->total_sales == null)
+                                                @php($sale->total_sales = "0")
+                                            @endif
+                                            
+                                            <tr>
+                                                <td>{{ $sale->prd_name }}</td>
+                                                <td>{{ $sale->prd_description }}</td>
+                                                <td>{{ $sale->prd_price }}</td>
+                                                <td>{{ $sale->total_sold }}</td>
+                                                <td>₱ {{ number_format($sale->total_sales, 2, '.', ',') }}</td>
+                                                <td></td>
+                                            </tr>
+                                        @endforeach
                                         <tr class="bg-light" height="1px">
+                                            <td colspan="6"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class=""><strong class="fa-2x">Total</strong></td>
+                                            <td><strong class="fa-2x text-success">{{ $total_sold }}</strong></td>
+                                            <td><strong class="fa-2x text-success">₱ {{ number_format($total_sales, 2, '.', ',') }}</strong></td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
