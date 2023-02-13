@@ -115,7 +115,7 @@ class ProductController extends Controller
         //IMAGE UPLOAD 
         if($request->file('ops_image'))
         {
-            $ops_id = DB::table('oppostion')
+            $ops_id = DB::table('oppostions')
             ->select('ops_id')
             ->orderBy('ops_id', 'desc')
             ->first();

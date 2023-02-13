@@ -199,23 +199,23 @@
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_name">Product Name <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}"/>
+                                                                                    <label for="ops_name">Product Name <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_sku">SKU <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}"/>
+                                                                                    <label for="ops_sku">SKU <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                    <label for="prd_description">Description <span style="color:red"> *</span></label>
                                                                                     <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_quantity">Quantity <span style="color:red">*</span></label>
+                                                                                    <label for="ops_quantity">Quantity <span style="color:red"> *</span></label>
                                                                                     <input type="text" class="form-control" name="ops_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="notes">Notes</label>
+                                                                                    <label for="notes">Notes </label>
                                                                                     <textarea class="form-control" name="ops_notes" placeholder="Additional notes ..." value="{{ $opposition->ops_notes }}"></textarea>
                                                                                 </div>
                                                                             </div>
