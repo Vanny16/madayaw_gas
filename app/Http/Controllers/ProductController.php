@@ -107,6 +107,7 @@ class ProductController extends Controller
         'acc_id' => session('acc_id'),
         'ops_name' => $ops_name, 
         'ops_sku' => $ops_sku,
+        'ops_uuid' => generateuuid(),
         'ops_description' => $ops_description,
         'ops_quantity' => $ops_quantity,
         'ops_notes' => $ops_notes
@@ -158,18 +159,42 @@ class ProductController extends Controller
 
     public function editOpposition(Request $request)
     {
+        $ops_id = $request->ops_id;
         $ops_name = $request->ops_name;
         $ops_sku = $request->ops_sku;
         $ops_description = $request->ops_description;
         $ops_quantity = $request->ops_quantity;
         $ops_notes = $request->ops_notes;
+        $ops_uuid = $request->ops_uuid;
 
         $check_ops_name = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->where('ops_name','=', $ops_name)
         ->first();
         // dd($check_ops_name);
-        if($check_ops_name != null)
+
+        //   $check_uuid = DB::table('oppositions')
+        // ->where('ops_id', '=', $ops_id)
+        // ->where('ops_uuid', '=', null)
+        // ->get();
+
+        // // dd($check_uuid);
+        // if($check_uuid != null)
+        // {
+        //     DB::table('oppositions')
+        //     ->where('ops_id', '=', $ops_id)
+        //     ->update([
+        //         'ops_uuid' => generateuuid()
+        //     ]);
+        // }
+
+        $sku_checker = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_uuid', '<>', $ops_uuid)
+        ->where('ops_sku','=',$ops_sku)
+        ->first();
+        // dd($sku_checker);
+        if($sku_checker != null)
         {
             session()->flash('errorMessage','Opposition canister already created');
             return redirect()->action('ProductController@opposite');

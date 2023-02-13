@@ -191,7 +191,7 @@
                                                                                 <div class="col-12 text-center mb-4">
                                                                                 <a href="javascript:void(0);" class="">
                                                                                     <label class="btn btn-transparent btn-file">
-                                                                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo </small>
                                                                                         <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('ops_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
                                                                                     </label>
                                                                                 </a>
@@ -207,8 +207,8 @@
                                                                                     <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="prd_description">Description <span style="color:red"> *</span></label>
-                                                                                    <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
+                                                                                    <label for="ops_description">Description <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_description" value="{{ $opposition->ops_description }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
                                                                                     <label for="ops_quantity">Quantity <span style="color:red"> *</span></label>
@@ -222,7 +222,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        {{--<input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> --}}
+                                                                        <input type="text" class="form-control" name="ops_uuid" value="{{ $opposition->ops_uuid }}"  hidden/> 
                                                                         <input type="text" class="form-control" name="ops_id" value="{{ $opposition->ops_id }}" hidden/>        
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
