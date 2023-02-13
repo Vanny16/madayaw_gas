@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Sales Reports</h1>
+                    <h1 class="m-0 text-dark">Transaction Reports</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Reports / Sales</li>
+                        <li class="breadcrumb-item active">Reports / Transactions</li>
                     </ol>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                             <h3 class="card-title"><i class="fas fa-calendar"></i> Selected Date</h3>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ action('ReportsController@salesFilter')}}">
+                            <form method="POST" action="{{ action('ReportsController@transactionsFilter')}}">
                             {{ csrf_field() }} 
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
@@ -81,7 +81,7 @@
                                 @endif
                                 </div>
                                 <div class="col-6">
-                                    <a href="{{ action('ReportsController@sales') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
+                                    <a href="{{ action('ReportsController@transactions') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
                                 </div>
                             </div>
                         </div>
