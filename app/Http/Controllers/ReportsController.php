@@ -22,9 +22,8 @@ class ReportsController extends Controller
                 ->groupBy('products.prd_id', 'products.prd_name', 'products.prd_description', 'products.prd_price')
                 ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
                 ->orderBy('products.prd_name')
-                ->get();
+                ->get();   
 
-        // dd($sales);        
 
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to'));
     }
@@ -95,12 +94,22 @@ class ReportsController extends Controller
 
     public function production()
     {
-        $sales = DB::table('movement_logs')
-        ->join('products','products.prd_id','=','purchases.prd_id')
-        ->where('products.acc_id','=', session('acc_id'))
-        ->get();
-        // dd($sales);
+        $productions = DB::table('movement_logs')
+        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+        ->join('products','products.prd_id','=','movement_logs.prd_id')
+        ->where('movement_logs.acc_id','=', session('acc_id'))
+        ->selectRaw()
+        ->orderBy('movement_logs.pdn_id', 'desc')
+        ->paginate(10);
+// dd($productions);  
+        
+        $date_filter = "";
 
-        return view('admin.reports.production');
+        return view('admin.reports.production', compact('productions','date_filter'));
+    }
+
+    public function search()
+    {
+
     }
 }

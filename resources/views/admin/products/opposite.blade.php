@@ -187,43 +187,43 @@
                                                                     <div class="modal-body">
                                                                         <div class="row">
                                                                             <div class="col-12 text-center">
-                                                                                    <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                                    <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $opposite->ops_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                                                                 <div class="col-12 text-center mb-4">
                                                                                 <a href="javascript:void(0);" class="">
                                                                                     <label class="btn btn-transparent btn-file">
-                                                                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
-                                                                                        <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                        <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo </small>
+                                                                                        <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('ops_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
                                                                                     </label>
                                                                                 </a>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_name">Product Name <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}"/>
+                                                                                    <label for="ops_name">Product Name <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_sku">SKU <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}"/>
+                                                                                    <label for="ops_sku">SKU <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_sku" value="{{ $opposition->ops_sku }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="prd_description">Description <span style="color:red">*</span></label>
-                                                                                    <input type="text" class="form-control" name="prd_description" value="{{ $opposition->ops_description }}" />
+                                                                                    <label for="ops_description">Description <span style="color:red"> *</span></label>
+                                                                                    <input type="text" class="form-control" name="ops_description" value="{{ $opposition->ops_description }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_quantity">Quantity <span style="color:red">*</span></label>
+                                                                                    <label for="ops_quantity">Quantity <span style="color:red"> *</span></label>
                                                                                     <input type="text" class="form-control" name="ops_quantity" value="{{ $opposition->ops_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <label for="notes">Notes</label>
+                                                                                    <label for="notes">Notes </label>
                                                                                     <textarea class="form-control" name="ops_notes" placeholder="Additional notes ..." value="{{ $opposition->ops_notes }}"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        {{--<input type="text" class="form-control" name="prd_uuid" value="{{ $product->prd_uuid }}"  hidden/> --}}
-                                                                        <input type="text" class="form-control" name="prd_id" value="{{ $opposition->ops_id }}" hidden/>        
+                                                                        <input type="text" class="form-control" name="ops_uuid" value="{{ $opposition->ops_uuid }}"  hidden/> 
+                                                                        <input type="text" class="form-control" name="ops_id" value="{{ $opposition->ops_id }}" hidden/>        
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                                     </div>
