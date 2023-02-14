@@ -125,7 +125,7 @@
                                             <tr>
                                                 <td>{{ $sale->prd_name }}</td>
                                                 <td>{{ $sale->prd_description }}</td>
-                                                <td>{{ $sale->prd_price }}</td>
+                                                <td>₱ {{ number_format($sale->prd_price, 2, '.', ',') }}</td>
                                                 <td>{{ number_format($sale->total_sold, 2, '.', ',') }}</td>
                                                 <td>₱ {{ number_format($sale->total_sales, 2, '.', ',') }}</td>
                                                 <td></td>

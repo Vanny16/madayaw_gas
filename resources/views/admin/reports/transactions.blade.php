@@ -26,10 +26,10 @@
                 </div>
             </div>
 
-            @if($sales_date_from != "" && $sales_date_to != "")
+            @if($transactions_date_from != "" && $transactions_date_to != "")
                 @php
-                    $date_from = $sales_date_from;
-                    $date_to = $sales_date_to;
+                    $date_from = $transactions_date_from;
+                    $date_to = $transactions_date_to;
                 @endphp
             @else
                 @php
@@ -50,11 +50,11 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="date_from">From</label>
-                                        <input type="date" class="form-control" name="sales_date_from" value="{{ $date_from }}" required/>     
+                                        <input type="date" class="form-control" name="transactions_date_from" value="{{ $date_from }}" required/>     
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="date_to">To</label>
-                                        <input type="date" class="form-control" name="sales_date_to" value="{{ $date_to }}" required/>
+                                        <input type="date" class="form-control" name="transactions_date_to" value="{{ $date_to }}" required/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -70,14 +70,14 @@
                             <div class="row">
                                 <div class="col-6">
 
-                                @if($sales_date_from != "" && $sales_date_to != "")
-                                    @if($sales_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
-                                        <h4>Today's sales</h4>
+                                @if($transactions_date_from != "" && $transactions_date_to != "")
+                                    @if($transactions_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
+                                        <h4>Today's transactions</h4>
                                     @else
-                                        <h4>Sales from <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_to)->format('F d, Y') }}</span></h4>
+                                        <h4>Transactions from <span class="text-info">{{ \Carbon\Carbon::parse($transactions_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($transactions_date_to)->format('F d, Y') }}</span></h4>
                                     @endif
                                 @else
-                                    <h4>All time sales</h4>
+                                    <h4>All time transactions</h4>
                                 @endif
                                 </div>
                                 <div class="col-6">
@@ -88,57 +88,38 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Sales Reports</h3>
+                            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Description</th>
-                                            <th>Price</th>
-                                            <th>Quantity Sold</th>
-                                            <th>Total Sales</th>
-                                            <th></th>
+                                            <th>Reference ID</th>
+                                            <th>User</th>
+                                            <th>Customer</th>
+                                            <th>Date & Time</th>
+                                            <th>Total Sale</th>
+                                            <th>Amount Received</th>
+                                            <th>Change</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbl-cart">
+                                    <tbody>
                                         @php($total_sold = 0)
                                         @php($total_sales = 0)
-                                        @foreach($sales as $sale)
-                                        
-                                           @if($sale->total_sold != null)
-                                                @php($total_sold += $sale->total_sold)
-                                            @endif
-                                            @if($sale->total_sales != null)
-                                                @php($total_sales += $sale->total_sales)
-                                            @endif
-
-                                            @if($sale->total_sold == null)
-                                                @php($sale->total_sold = "0")
-                                            @endif
-                                            @if($sale->total_sales == null)
-                                                @php($sale->total_sales = "0")
-                                            @endif
-                                            
+                                        @foreach($transactions as $transaction)
                                             <tr>
-                                                <td>{{ $sale->prd_name }}</td>
-                                                <td>{{ $sale->prd_description }}</td>
-                                                <td>{{ $sale->prd_price }}</td>
-                                                <td>{{ number_format($sale->total_sold, 2, '.', ',') }}</td>
-                                                <td>₱ {{ number_format($sale->total_sales, 2, '.', ',') }}</td>
-                                                <td></td>
+                                                <td>{{ $transaction->trx_ref_id }}</td>
+                                                <td>{{ $transaction->usr_full_name }}</td>
+                                                <td>{{ $transaction->cus_name }}</td>
+                                                <td>{{ $transaction->trx_datetime }}</td>
+                                                <td>₱ {{ number_format($transaction->trx_total, 2, '.', ',') }}</td>
+                                                <td>₱ {{ number_format($transaction->trx_amount_paid, 2, '.', ',') }}</td>
+                                                <td>₱ {{ number_format($transaction->trx_balance, 2, '.', ',') }}</td>
                                             </tr>
                                         @endforeach
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="6"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class=""><strong class="fa-2x">Total</strong></td>
-                                            <td><strong class="fa-2x text-success">{{ number_format($total_sold, 2, '.', ',') }}</strong></td>
-                                            <td><strong class="fa-2x text-success">₱ {{ number_format($total_sales, 2, '.', ',') }}</strong></td>
-                                            <td></td>
+                                            <td colspan="7"></td>
                                         </tr>
                                     </tbody>
                                 </table>

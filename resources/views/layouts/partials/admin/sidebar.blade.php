@@ -124,8 +124,8 @@
                             <p>
                                 Transaction Reports
                             </p>
-                            <input type="date" class="form-control" name="sales_date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
-                            <input type="date" class="form-control" name="sales_date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
+                            <input type="date" class="form-control" name="transactions_date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
+                            <input type="date" class="form-control" name="transactions_date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
                         </button>
                     </form>
                 </li>
