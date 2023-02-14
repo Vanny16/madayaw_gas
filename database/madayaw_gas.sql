@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-14 13:18:56
+Date: 2023-02-14 17:21:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,7 @@ CREATE TABLE `customers` (
   `cus_name` varchar(255) DEFAULT NULL,
   `cus_address` varchar(255) DEFAULT NULL,
   `cus_contact` varchar(11) DEFAULT NULL,
-  `cus_change` float DEFAULT NULL,
+  `cus_price_change` float DEFAULT NULL,
   `cus_accessibles` varchar(255) DEFAULT NULL,
   `cus_accessibles_prices` varchar(255) DEFAULT NULL,
   `cus_notes` varchar(255) DEFAULT NULL,
@@ -302,14 +302,14 @@ CREATE TABLE `products` (
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '8.00', '0.00', '169.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '44.00', '0.00', '233.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
+INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '-6.00', '0.00', '183.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '41.00', '0.00', '179.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
 INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '95.00', '4.00', '233.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
 INSERT INTO `products` VALUES ('4', '1', 'ij1wajgnaj5z06aujgqv36ins9urm2u9', 'Butane Cap', 'Cap for the butane cans', 'TESTC4P4BU74N3', null, '0.50', '50', '14808.00', '0.00', '19.00', '0.00', '0', '2000.00', null, '47', '1', '0', '1', '0', '170', null);
 INSERT INTO `products` VALUES ('5', '1', 'xd6wsvy4yablidejcak1knk8ruqv1tm3', 'Butane Can', 'can for butane', 'TESTC4N4BU74N3', null, '2.00', '50', '9795.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '2', '1', '0', '1', '0', null, null);
 INSERT INTO `products` VALUES ('6', '1', '0a0vbc4af603skdaa857ucqxz7m4tm2n', 'Butane Valve', 'valve for the butane cans', 'TESTV4LV34BU74N3', null, '3.00', '50', '9794.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '52', '1', '0', '1', '0', null, null);
 INSERT INTO `products` VALUES ('7', '1', 'z2lv0fmn11wd3j6ximnk82bysx7a3r38', 'Secret', 'For Canister', 'SEC878978', null, '800.00', '50', '9807.00', '0.00', '19.00', '0.00', '0', '100.00', null, '52', '1', '0', '1', '0', null, null);
-INSERT INTO `products` VALUES ('8', '1', '8r9f0dor9l4px2fprrpas1jre4ddqeh2', 'Madayaw Square', 'bangga Buto', 'MNAS87678', null, '150.00', '50', '7.00', '0.00', '23.00', '1.00', '5', '0.00', null, '4', '1', '1', '1', '1', '17', null);
+INSERT INTO `products` VALUES ('8', '1', '8r9f0dor9l4px2fprrpas1jre4ddqeh2', 'Madayaw Square', 'bangga Buto', 'MNAS87678', null, '150.00', '50', '-245.00', '0.00', '179.00', '1.00', '5', '0.00', null, '4', '1', '1', '1', '1', '17', null);
 INSERT INTO `products` VALUES ('9', '1', 'xaf1j0efoh6uvy8rqxoxhlgwfvql1dc4', 'tesWeight', 'testforweight', 'TWNEN325132', null, '232.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, '17', null);
 INSERT INTO `products` VALUES ('10', '1', 'hx5q5g7qbaaozcs2dku49hxoczq7no90', 'Tripler', 'gg', 'TR897234', null, '60.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '45555.00', null, '1', '1', '0', '1', null, null, null);
 INSERT INTO `products` VALUES ('11', '1', 'ndasdgvjgabu362sejolqrsarqzrlhe1', 'Madayaw Triangle', 'MT018230705970580MT018230705970580', 'MT018230705970580', null, '170.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, null, null);
@@ -334,7 +334,7 @@ CREATE TABLE `purchases` (
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
@@ -342,6 +342,11 @@ CREATE TABLE `purchases` (
 INSERT INTO `purchases` VALUES ('1', '1', '3', '2', '1', '100.00', '600.00', '25', '20.00', '2', '0');
 INSERT INTO `purchases` VALUES ('2', '1', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
 INSERT INTO `purchases` VALUES ('3', '1', '1', '1', '3', '100.00', '2350.00', '15', '150.00', '1', '1');
+INSERT INTO `purchases` VALUES ('4', '2', '8', '1', '0', '0.00', '1800.00', '12', '150.00', '1', '0');
+INSERT INTO `purchases` VALUES ('5', '2', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('6', '3', '8', '20', '0', '4800.00', '40800.00', '240', '150.00', '12', '0');
+INSERT INTO `purchases` VALUES ('7', '3', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('8', '3', '1', '1', '2', '0.00', '2100.00', '14', '150.00', '1', '2');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -588,12 +593,14 @@ CREATE TABLE `transactions` (
   `trx_balance` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
 INSERT INTO `transactions` VALUES ('1', '20230214-1', '1', '1', '-1', '2023-02-14 11:58:27', '2023-02-14', '11:58:27', '5000', '50', '4950');
+INSERT INTO `transactions` VALUES ('2', '20230214-2', '1', '1', '-1', '2023-02-14 04:36:58', '2023-02-14', '04:36:58', '4000', '200', '3800');
+INSERT INTO `transactions` VALUES ('3', '20230214-3', '1', '1', '39', '2023-02-14 05:00:59', '2023-02-14', '05:00:59', '47000', '100', '46900');
 
 -- ----------------------------
 -- Table structure for `users`
