@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-10 17:47:53
+Date: 2023-02-14 13:18:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -302,9 +302,9 @@ CREATE TABLE `products` (
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '48.00', '0.00', '132.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '45.00', '0.00', '0.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
-INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '120.00', '4.00', '209.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '8.00', '0.00', '169.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '44.00', '0.00', '233.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
+INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '95.00', '4.00', '233.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
 INSERT INTO `products` VALUES ('4', '1', 'ij1wajgnaj5z06aujgqv36ins9urm2u9', 'Butane Cap', 'Cap for the butane cans', 'TESTC4P4BU74N3', null, '0.50', '50', '14808.00', '0.00', '19.00', '0.00', '0', '2000.00', null, '47', '1', '0', '1', '0', '170', null);
 INSERT INTO `products` VALUES ('5', '1', 'xd6wsvy4yablidejcak1knk8ruqv1tm3', 'Butane Can', 'can for butane', 'TESTC4N4BU74N3', null, '2.00', '50', '9795.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '2', '1', '0', '1', '0', null, null);
 INSERT INTO `products` VALUES ('6', '1', '0a0vbc4af603skdaa857ucqxz7m4tm2n', 'Butane Valve', 'valve for the butane cans', 'TESTV4LV34BU74N3', null, '3.00', '50', '9794.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '52', '1', '0', '1', '0', null, null);
@@ -313,7 +313,7 @@ INSERT INTO `products` VALUES ('8', '1', '8r9f0dor9l4px2fprrpas1jre4ddqeh2', 'Ma
 INSERT INTO `products` VALUES ('9', '1', 'xaf1j0efoh6uvy8rqxoxhlgwfvql1dc4', 'tesWeight', 'testforweight', 'TWNEN325132', null, '232.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, '17', null);
 INSERT INTO `products` VALUES ('10', '1', 'hx5q5g7qbaaozcs2dku49hxoczq7no90', 'Tripler', 'gg', 'TR897234', null, '60.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '45555.00', null, '1', '1', '0', '1', null, null, null);
 INSERT INTO `products` VALUES ('11', '1', 'ndasdgvjgabu362sejolqrsarqzrlhe1', 'Madayaw Triangle', 'MT018230705970580MT018230705970580', 'MT018230705970580', null, '170.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, null, null);
-INSERT INTO `products` VALUES ('12', '1', 'lw6v6d61xsqhc4giyesbj8pkokbmsaib', 'Madayaw Oblong', 'For Canister', 'OBKLG768', null, '100.00', '100', '976.00', '0.00', '24.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '140', null);
+INSERT INTO `products` VALUES ('12', '1', 'lw6v6d61xsqhc4giyesbj8pkokbmsaib', 'Madayaw Oblong', 'For Canister', 'OBKLG768', null, '100.00', '100', '950.00', '0.00', '50.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '140', null);
 INSERT INTO `products` VALUES ('13', '1', 'z3j0lbywcvq3osq87cqxribe2i2hfvv2', 'Tripler', 'BUGU', 'TUI876', null, null, null, '0.00', '0.00', '0.00', '0.00', '0', null, null, null, '1', '1', '1', null, null, null);
 INSERT INTO `products` VALUES ('14', '1', '8gjyl8geie8z5f1retzt18eavn4id1da', 'Madayaw Rectangle', 'BOGO', 'RE767923', null, '120.00', '100', '1000.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '3', '1', '1', '1', null, '147', null);
 
@@ -334,78 +334,14 @@ CREATE TABLE `purchases` (
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
 -- ----------------------------
-INSERT INTO `purchases` VALUES ('1', '1', '2', null, null, null, '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('2', '1', '3', null, null, null, '20.00', '1', '20.00', null, null);
-INSERT INTO `purchases` VALUES ('3', '2', '8', null, null, null, '1800.00', '12', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('4', '3', '8', null, null, null, '180000.00', '1200', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('5', '3', '2', null, null, null, '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('6', '3', '1', null, null, null, '180300.00', '1202', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('7', '4', '1', null, null, null, '38100.00', '254', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('8', '5', '8', null, null, null, '180000.00', '1200', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('9', '5', '8', null, null, null, '180000.00', '1200', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('10', '5', '2', null, null, null, '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('11', '5', '1', null, null, null, '23400.00', '156', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('12', '6', '3', null, null, null, '24000.00', '1200', '20.00', null, null);
-INSERT INTO `purchases` VALUES ('13', '6', '1', null, null, null, '180000.00', '1200', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('14', '7', '8', null, null, null, '180000.00', '1200', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('15', '7', '2', null, null, null, '4000.00', '2', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('16', '8', '3', null, null, null, '200.00', '26', '20.00', null, null);
-INSERT INTO `purchases` VALUES ('17', '8', '1', null, null, null, '50.00', '26', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('18', '9', '1', null, null, '150.00', '4200.00', '27', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('19', '10', '2', null, null, '0.00', '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('20', '11', '2', null, null, '0.00', '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('21', '12', '2', null, null, '0.00', '2000.00', '1', '2000.00', null, null);
-INSERT INTO `purchases` VALUES ('22', '13', '3', null, null, '0.00', '240.00', '12', '20.00', null, null);
-INSERT INTO `purchases` VALUES ('23', '14', '8', '2', '2', '100.00', '4000.00', '26', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('24', '14', '3', '2', '0', '0.00', '480.00', '24', '20.00', null, null);
-INSERT INTO `purchases` VALUES ('25', '15', '8', '100', '5', '250.00', '181000.00', '1205', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('26', '15', '1', '2', '5', '150.00', '4500.00', '29', '150.00', null, null);
-INSERT INTO `purchases` VALUES ('27', '16', '1', '50', '5', '250.00', '91000.00', '605', '150.00', '50', '0');
-INSERT INTO `purchases` VALUES ('28', '16', '3', '230', '0', '0.00', '55200.00', '2760', '20.00', '230', '0');
-INSERT INTO `purchases` VALUES ('29', '16', '8', '90', '0', '0.00', '162000.00', '1080', '150.00', '90', '0');
-INSERT INTO `purchases` VALUES ('30', '17', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('31', '17', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('32', '18', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('33', '19', '3', '13', '7', '700.00', '3960.00', '163', '20.00', '13', '0');
-INSERT INTO `purchases` VALUES ('34', '19', '2', '0', '3', '0.00', '6000.00', '3', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('35', '19', '1', '2', '1', '50.00', '3800.00', '25', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('36', '20', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('37', '20', '1', '2', '2', '100.00', '4000.00', '26', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('38', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('39', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('40', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('41', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('42', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('43', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('44', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('45', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('46', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('47', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('48', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('49', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('50', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('51', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('52', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('53', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('54', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('55', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('56', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('57', '21', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('58', '22', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('59', '22', '1', '2', '5', '250.00', '4600.00', '29', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('60', '23', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
-INSERT INTO `purchases` VALUES ('61', '23', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('62', '24', '3', '2', '5', '300.00', '880.00', '29', '20.00', '2', '2');
-INSERT INTO `purchases` VALUES ('63', '24', '1', '2', '2', '0.00', '3900.00', '26', '150.00', '2', '2');
-INSERT INTO `purchases` VALUES ('64', '24', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('65', '25', '3', '0', '5', '300.00', '400.00', '5', '20.00', '0', '2');
-INSERT INTO `purchases` VALUES ('67', '27', '2', '0', '2', '0.00', '4000.00', '2', '2000.00', '0', '0');
-INSERT INTO `purchases` VALUES ('68', '27', '1', '2', '2', '100.00', '4000.00', '26', '150.00', '2', '0');
+INSERT INTO `purchases` VALUES ('1', '1', '3', '2', '1', '100.00', '600.00', '25', '20.00', '2', '0');
+INSERT INTO `purchases` VALUES ('2', '1', '2', '0', '1', '0.00', '2000.00', '1', '2000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('3', '1', '1', '1', '3', '100.00', '2350.00', '15', '150.00', '1', '1');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -599,7 +535,7 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(11) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
@@ -618,6 +554,7 @@ INSERT INTO `suppliers` VALUES ('50', 'q6j3m56b827ihzkfobxdgut8fwj85inm', null, 
 INSERT INTO `suppliers` VALUES ('51', '3nqd5rymh6lzjhaj6wvml1f9xhog0lz8', null, 'Russel', 'Uyanguren', '23132313123', null, null, '1');
 INSERT INTO `suppliers` VALUES ('52', 'ep47tgxeztpdmuoyond0hnwzn52xf60m', '1', 'Narval Cartel', 'Malagos, Calinan, Toril, Mintal, Tugbok, Makilala, Cebugay, Digos, Davao Oriental', '09867675675', 'Adik ni sya', null, '1');
 INSERT INTO `suppliers` VALUES ('53', 'jhv5tyiysf1epomioqj2uhdkgadi6swh', '1', 'TEST', 'INFINIT', '09103901293', null, null, '1');
+INSERT INTO `suppliers` VALUES ('54', 'ppde3byagqemb60r9hc04c207xznnyf5', '1', null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`
@@ -641,46 +578,22 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
   `trx_id` int(11) NOT NULL AUTO_INCREMENT,
   `trx_ref_id` varchar(30) DEFAULT NULL,
-  `cus_id` int(11) DEFAULT NULL,
-  `trx_datetime` datetime DEFAULT NULL,
-  `trx_total` decimal(11,0) DEFAULT NULL,
-  `trx_amount_paid` decimal(11,0) DEFAULT NULL,
-  `trx_balance` decimal(11,0) DEFAULT NULL,
   `acc_id` tinyint(4) DEFAULT NULL,
   `usr_id` int(11) DEFAULT NULL,
+  `cus_id` int(11) DEFAULT NULL,
+  `trx_datetime` datetime DEFAULT NULL,
+  `trx_date` varchar(20) DEFAULT NULL,
+  `trx_time` varchar(20) DEFAULT NULL,
+  `trx_amount_paid` decimal(11,0) DEFAULT NULL,
+  `trx_balance` decimal(11,0) DEFAULT NULL,
+  `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
-INSERT INTO `transactions` VALUES ('1', '20230131-1', '-1', '2023-01-31 10:39:06', '2020', '2500', '480', '1', null);
-INSERT INTO `transactions` VALUES ('2', '20230201-2', '-1', '2023-02-01 09:43:30', '1800', '23', '-1777', '1', null);
-INSERT INTO `transactions` VALUES ('3', '20230207-3', '100', '2023-02-07 07:19:18', '362300', '362300', '0', '1', null);
-INSERT INTO `transactions` VALUES ('4', '20230207-4', '-1', '2023-02-07 07:36:07', '38100', '100', '-38000', '1', null);
-INSERT INTO `transactions` VALUES ('5', '20230207-5', '2', '2023-02-07 07:39:32', '385400', '45', '-385355', '1', null);
-INSERT INTO `transactions` VALUES ('6', '20230207-6', '-1', '2023-02-07 08:37:08', '204000', '2014000', '1810000', '1', null);
-INSERT INTO `transactions` VALUES ('7', '20230207-7', '3', '2023-02-07 09:05:48', '184000', '184000', '0', '1', null);
-INSERT INTO `transactions` VALUES ('8', '20230208-8', '-1', '2023-02-08 09:17:45', '4670', '5000', '330', '1', null);
-INSERT INTO `transactions` VALUES ('9', '20230208-9', '-1', '2023-02-08 09:22:29', '4200', '4500', '300', '1', null);
-INSERT INTO `transactions` VALUES ('10', '20230209-10', '-1', '2023-02-09 04:57:51', '2000', '2', '-1998', '1', null);
-INSERT INTO `transactions` VALUES ('11', '20230209-11', '-1', '2023-02-09 05:04:20', '2000', '2000', '0', '1', null);
-INSERT INTO `transactions` VALUES ('12', '20230209-12', '-1', '2023-02-09 06:14:21', '2000', null, '-2000', '1', null);
-INSERT INTO `transactions` VALUES ('13', '20230209-13', '2', '2023-02-09 06:40:58', '240', '240', '0', '1', null);
-INSERT INTO `transactions` VALUES ('14', '20230209-14', '2', '2023-02-09 08:30:34', '4480', '5000', '520', '1', null);
-INSERT INTO `transactions` VALUES ('15', '20230209-15', '-1', '2023-02-09 09:17:37', '185500', '185500', '0', '1', null);
-INSERT INTO `transactions` VALUES ('16', '20230209-16', '1', '2023-02-09 09:20:29', '308200', '308200', '0', null, null);
-INSERT INTO `transactions` VALUES ('17', '20230209-17', '-1', '2023-02-09 09:35:23', '7600', '7600', '0', null, null);
-INSERT INTO `transactions` VALUES ('18', '20230209-18', '-1', '2023-02-09 09:36:36', '2000', '2000', '0', null, null);
-INSERT INTO `transactions` VALUES ('19', '20230209-19', '-1', '2023-02-09 09:58:59', '13760', '13760', '0', '1', null);
-INSERT INTO `transactions` VALUES ('20', '20230210-20', '3', '2023-02-10 03:24:47', '6000', '6000', '0', '1', null);
-INSERT INTO `transactions` VALUES ('21', '20230210-21', '-1', '2023-02-10 04:21:27', '3600', '3600', '0', '1', null);
-INSERT INTO `transactions` VALUES ('22', '20230210-22', '46', '2023-02-10 04:23:08', '6600', '7000', '400', '1', null);
-INSERT INTO `transactions` VALUES ('23', '20230210-23', '-1', '2023-02-10 04:26:45', '5600', '6000', '400', '1', null);
-INSERT INTO `transactions` VALUES ('24', '20230210-24', '-1', '2023-02-10 05:15:28', '8780', '8780', '0', '1', null);
-INSERT INTO `transactions` VALUES ('25', '20230210-25', '-1', '2023-02-10 05:43:45', '400', '400', '0', '1', null);
-INSERT INTO `transactions` VALUES ('26', '20230210-26', '-1', '2023-02-10 07:08:00', '2400', '2400', '0', '1', null);
-INSERT INTO `transactions` VALUES ('27', '20230210-27', '-1', '2023-02-10 09:46:14', '8000', '8000', '0', '1', '1');
+INSERT INTO `transactions` VALUES ('1', '20230214-1', '1', '1', '-1', '2023-02-14 11:58:27', '2023-02-14', '11:58:27', '5000', '50', '4950');
 
 -- ----------------------------
 -- Table structure for `users`

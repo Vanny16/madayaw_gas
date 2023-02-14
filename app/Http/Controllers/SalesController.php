@@ -210,10 +210,12 @@ class SalesController extends Controller
             'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
             'cus_id' => $cus_id,
-            'trx_datetime' => date('Y-m-d H:i:s'),
+            'trx_datetime' => date('Y-m-d h:i:s'),
+            'trx_date' => date('Y-m-d'),
+            'trx_time' => date('h:i:s'),
             'trx_total' => $trx_total,
             'trx_amount_paid' => $trx_amount_paid,
-            'trx_balance' => $trx_balance
+            'trx_balance' => $trx_balance 
         ]);
 
         session(['latest_trx_id' => $trx_id]);

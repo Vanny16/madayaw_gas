@@ -107,6 +107,9 @@ Route::group(['prefix' => 'product'], function()
 Route::group(['prefix' => 'reports'], function()
 {
     Route::get('sales', 'ReportsController@sales');
+    Route::post('sales-filter', 'ReportsController@salesFilter');
+    Route::get('transactions', 'ReportsController@transactions');
+    Route::post('transactions-filter', 'ReportsController@transactionsFilter');
     Route::get('production', 'ReportsController@production');
     Route::get('test-production', 'ReportsController@testProductions');
 

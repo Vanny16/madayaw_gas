@@ -10,7 +10,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Reports</li>
+                        <li class="breadcrumb-item active">Reports / Sales</li>
                     </ol>
                 </div>
             </div>
@@ -25,6 +25,18 @@
                     @include('layouts.partials.alert')
                 </div>
             </div>
+
+            @if($sales_date_from != "" && $sales_date_to != "")
+                @php
+                    $date_from = $sales_date_from;
+                    $date_to = $sales_date_to;
+                @endphp
+            @else
+                @php
+                    $date_from = Carbon\Carbon::parse()->format('Y-m-d');
+                    $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                @endphp
+            @endif
             
             <div class="row">
                 <div class="col-md-12"> 
@@ -33,19 +45,43 @@
                             <h3 class="card-title"><i class="fas fa-calendar"></i> Selected Date</h3>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="date_from">From</label>
-                                    <input type="date" class="form-control" name="date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" required/>     
+                            <form method="POST" action="{{ action('ReportsController@salesFilter')}}">
+                            {{ csrf_field() }} 
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="date_from">From</label>
+                                        <input type="date" class="form-control" name="sales_date_from" value="{{ $date_from }}" required/>     
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="date_to">To</label>
+                                        <input type="date" class="form-control" name="sales_date_to" value="{{ $date_to }}" required/>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="date_to">To</label>
-                                    <input type="date" class="form-control" name="date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" required/>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
+                                <div class="col-6">
+
+                                @if($sales_date_from != "" && $sales_date_to != "")
+                                    @if($sales_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
+                                        <h4>Today's sales</h4>
+                                    @else
+                                        <h4>Sales from <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_to)->format('F d, Y') }}</span></h4>
+                                    @endif
+                                @else
+                                    <h4>All time sales</h4>
+                                @endif
+                                </div>
+                                <div class="col-6">
+                                    <a href="{{ action('ReportsController@sales') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +125,8 @@
                                             <tr>
                                                 <td>{{ $sale->prd_name }}</td>
                                                 <td>{{ $sale->prd_description }}</td>
-                                                <td>{{ $sale->prd_price }}</td>
-                                                <td>{{ $sale->total_sold }}</td>
+                                                <td>₱ {{ number_format($sale->prd_price, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($sale->total_sold, 2, '.', ',') }}</td>
                                                 <td>₱ {{ number_format($sale->total_sales, 2, '.', ',') }}</td>
                                                 <td></td>
                                             </tr>
@@ -100,7 +136,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" class=""><strong class="fa-2x">Total</strong></td>
-                                            <td><strong class="fa-2x text-success">{{ $total_sold }}</strong></td>
+                                            <td><strong class="fa-2x text-success">{{ number_format($total_sold, 2, '.', ',') }}</strong></td>
                                             <td><strong class="fa-2x text-success">₱ {{ number_format($total_sales, 2, '.', ',') }}</strong></td>
                                             <td></td>
                                         </tr>
