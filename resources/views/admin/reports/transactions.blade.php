@@ -86,6 +86,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3"> 
+                            <a class="btn btn-info col-md-1 col-12 float-left" href="{{ action('PrintController@alltransactionReports') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                        </div>
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>

@@ -69,6 +69,10 @@ Route::group(['prefix' => 'print'], function()
 
     Route::get('print', 'PrintController@allsaleDetails');
     Route::get('print', 'PrintController@alloppositeDetails');
+
+    Route::get('print', 'PrintController@allsalesReports');
+
+    Route::get('print', 'PrintController@alltransactionReports');
 });
 
 Route::group(['prefix' => 'production'], function()
