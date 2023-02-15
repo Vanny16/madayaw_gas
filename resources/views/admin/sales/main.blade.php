@@ -52,19 +52,22 @@
                                     <p class="text-danger fa-2x mr-2">TRX 20230131-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
-                                    <label>Customer Name</label>
-                                    <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
-                                        @if(isset($customers))
-                                            @foreach($customers as $customer)
-                                                @if(session('new_client') == $customer->cus_name )
-                                                    @php($selected = "selected")
-                                                @else
-                                                    @php($selected = "")
-                                                @endif
-                                                <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
-                                            @endforeach
-                                        @endif            
-                                    </select>
+                                    <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
+                                    {{ csrf_field() }} 
+                                        <label>Customer Name</label>
+                                        <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
+                                            @if(isset($customers))
+                                                @foreach($customers as $customer)
+                                                    @if(session('new_client') == $customer->cus_name || session('selected_customer') == $customer->cus_id)
+                                                        @php($selected = "selected")
+                                                    @else
+                                                        @php($selected = "")
+                                                    @endif
+                                                    <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
+                                                @endforeach
+                                            @endif            
+                                        </select>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -897,6 +900,9 @@
             document.getElementById("form_payment").submit(); 
         }
     }
+
+    document.getElementById("client_id").addEventListener("change", function() {
+    document.getElementById("cus_form").submit(); });
     
 </script>
 
