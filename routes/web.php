@@ -68,6 +68,7 @@ Route::group(['prefix' => 'print'], function()
     Route::get('product', 'PrintController@allproductDetails');
 
     Route::get('print', 'PrintController@allsaleDetails');
+    Route::get('print', 'PrintController@alloppositeDetails');
 });
 
 Route::group(['prefix' => 'production'], function()
@@ -101,6 +102,7 @@ Route::group(['prefix' => 'product'], function()
 
     Route::post('add-opposition', 'ProductController@addOpposition');
     Route::post('edit-opposition', 'ProductController@editOpposition');
+    Route::post('search-opposition', 'ProductController@searchOpposition');
     
 });
 
