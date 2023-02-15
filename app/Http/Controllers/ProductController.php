@@ -30,7 +30,7 @@ class ProductController extends Controller
         ->get();
         
         $pdn_flag = check_production_log();
-        
+        // dd($pdn_flag);
         return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
     }
 
@@ -543,13 +543,14 @@ class ProductController extends Controller
             $request->sup_prd_name,
             $request->sup_prd_sku,
             $request->sup_prd_price,
+            $request->sup_prd_deposit,
+            $request->sup_prd_weight,
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
-            // $request->sup_prd_is_production,
-            // $request->sup_prd_is_refillable,
             'show'
         );
+        // dd($prodValues);
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');

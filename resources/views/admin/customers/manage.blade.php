@@ -88,12 +88,12 @@
                             <div class="row ml-2 mt-2 mb-2">
                                 <form action="" class="col-md-12 form-inline">
                                     <div class="col-md-1">
-                                        <a href="javascript:void(0)" class="text-danger" data-toggle="modal" data-target="#pricing-modal"><i class="fa fa-gift fa-sm"></i> Adjust Pricing</a>
+                                        <a href="javascript:void(0)" id="adjust-pricing" class="text-danger" data-toggle="modal" data-target="#pricing-modal" onclick="changePricing()"><i class="fa fa-money fa-sm"></i> Adjust Pricing</a>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    {{--<div class="col-md-2">
                                         <a href="javascript:void(0)" class="text-gray"><i class="fa fa-undo fa-sm"></i> Remove Discount</a>
-                                    </div>
+                                    </div>--}}
                                 </form>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                 <thead>
                                     <tr>
                                         <th width="20px">
-                                            <input type="checkbox" id="customer_select_all"></th>
+                                            <input type="checkbox" id="customer-select-all"></th>
                                         <th width="50px"></th>
                                         <th>Name</th>
                                         <th>Contact #</th>
@@ -120,7 +120,7 @@
                                         @foreach($customers as $customer)
                                             <tr>
                                                 <td>
-                                                    <input type="checkbox" class="customer_select" name="customer_select">
+                                                    <input type="checkbox" class="customer-select" id="customer-select" name="customer-select[]" value="{{$customer->cus_id}}">
                                                 </td>
                                                 <td>
                                                 @if($customer->cus_image <> '')
@@ -267,23 +267,7 @@
                                                                             @endforeach
                                                                         @endif
                                                                     </div>
-                                                                    <!-- <div class="col-md-6"> 
-                                                                        @if(is_array($products) || is_object($products))
-                                                                            @foreach($accessibles as $accessible)
-                                                                                @foreach($products as $product)
-                                                                                    @if($product->prd_id == $accessible)
-                                                                                        @php($prd_accessible = $product->prd_name) 
-                                                                                        <span class="badge badge-pill badge-primary">PHP</span>
-                                                                                        <a class="lead"> | </a>
-                                                                                        <span class="badge badge-primary"><?php echo $product->prd_price + $product->prd_deposit ?></span>
-                                                                                        <br>
-                                                                                    @endif
-                                                                                        
-                                                                                
-                                                                                @endforeach    
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </div> -->
+                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -451,7 +435,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a class="btn btn-info" href="{{ action('PrintController@customerDetails',[$customer->cus_uuid]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                                                                <a class="btn btn-info" href="{{ action('PrintController@customerDetails',[$customer->cus_id]) }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
@@ -589,17 +573,11 @@
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="form-group"> 
-                    <select class="form-control" id="pricing_selection" name="pricing_selection" required>
-                        @foreach($products as $product)
-                            <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>
-                        @endforeach   
-                    </select>
-                    </div>
-                    <div class="form-group"> 
-                        <input type="number" placeholder="Enter New Price" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                        <input type="number"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                        <input type="text" class="form-control" id="selected-customers" name="selected_customers[]" hidden>
                     </div>
                 <div class="modal-footer">
-                    <a class="btn btn-info" href=""><i class="fa fa-gift"></i> Apply</a>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-gift"></i> Apply</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -608,58 +586,98 @@
 </div>
 
 <script>
+    function changePricing() {
+        alert(document.getElementById("customer-select").value);
+        document.getElementById("selected-customers").value = document.getElementById("customer-select").value;
+    }
 
-$(document).ready(function(){
-    $("#search_customers").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#tbl-customers tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    $(document).ready(function(){
+        $("#search_customers").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbl-customers tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
     });
-});
 
-$(".custom-file-input").on("change", function() {
-    var fileName = $(this).val().split("\\").pop();
-    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});
-
-
-$(document).ready(function() {
-    $("#customer_select_all").change(function() {
-        if (this.checked) {
-            $(".customer_select").each(function() {
-                this.checked=true;
-            $("#cus-toolbar").prop("hidden", false);
-            });
-        } else {
-            $(".customer_select").each(function() {
-                this.checked=false;
-                $("#cus-toolbar").prop("hidden", true);
-            });
-        }
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
-    $(".customer_select").click(function () {
-        if ($(this).is(":checked")) {
-            var isAllChecked = 0;
-
-            $(".customer_select").each(function() {
-                if (!this.checked){
-                    isAllChecked = 1;
-                    $("#cus-toolbar").prop("hidden", false);
-                }
-            });
-
-            if (isAllChecked == 0) {
-                $("#customer_select_all").prop("checked", true);
+    $(document).ready(function() {
+        $("#customer-select-all").change(function() {
+            if (this.checked) {
+                $("#customer-select").each(function() {
+                    this.checked=true;
                 $("#cus-toolbar").prop("hidden", false);
-            }     
-        }
-        else {
-            $("#customer_select_all").prop("checked", false);
-        }
+                });
+            } else {
+                $("#customer-select").each(function() {
+                    this.checked=false;
+                    $("#cus-toolbar").prop("hidden", true);
+                });
+            }
+        });
+
+        $("#customer-select").click(function () {
+            if ($(this).is(":checked")) {
+                var isAllChecked = 0;
+
+                $("#customer-select").each(function() {
+                    if (!this.checked){
+                        isAllChecked = 1;
+                        $("#cus-toolbar").prop("hidden", false);
+                    }
+                });
+
+                if (isAllChecked == 0) {
+                    $("#customer-select-all").prop("checked", true);
+                    $("#cus-toolbar").prop("hidden", false);
+                }     
+            }
+            else {
+                $("#customer-select-all").prop("checked", false);
+            }
+        });
     });
-});
+
+    // $(document).ready(function() {
+    //     $("#customer-select-all").change(function() {
+    //         if (this.checked) {
+    //             $(".customer-select").each(function() {
+    //                 this.checked=true;
+    //             $("#cus-toolbar").prop("hidden", false);
+    //             });
+    //         } else {
+    //             $(".customer-select").each(function() {
+    //                 this.checked=false;
+    //                 $("#cus-toolbar").prop("hidden", true);
+    //             });
+    //         }
+    //     });
+
+    //     $(".customer-select").click(function () {
+    //         if ($(this).is(":checked")) {
+    //             var isAllChecked = 0;
+
+    //             $(".customer-select").each(function() {
+    //                 if (!this.checked){
+    //                     isAllChecked = 1;
+    //                     $("#cus-toolbar").prop("hidden", false);
+    //                 }
+    //             });
+
+    //             if (isAllChecked == 0) {
+    //                 $("#customer-select-all").prop("checked", true);
+    //                 $("#cus-toolbar").prop("hidden", false);
+    //             }     
+    //         }
+    //         else {
+    //             $("#customer-select-all").prop("checked", false);
+    //         }
+    //     });
+    // });
 
 </script>
 @endsection
