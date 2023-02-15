@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="search_string">Find Product</label>
-                                                <input type="text" class="form-control" id="search_products" name="search_string" placeholder="Opposition Name">
+                                                <input type="text" class="form-control" id="search_oppositions" name="search_string" placeholder="Opposition Name">
                                         </div>
                                         <div class="col-md-2">
                                             <label for="filter_status">Status</label>
@@ -71,7 +71,7 @@
                     <div class="col-md-12 mb-3"> 
                         <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
                         <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><a class="fa fa-exchange"></a> Trade Canisters</button>
-                        <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allproductDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                        <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@alloppositeDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
 
                     <div class="col-md-12"> 
@@ -130,7 +130,7 @@
                                                         <td>-</td>
                                                     @endif
                                                     @if($opposition->ops_quantity)
-                                                        <td style="text-align: center">   
+                                                        <td style="text-align: left">   
                                                             {{$opposition->ops_quantity}}
                                                         </td>
                                                     @else
@@ -445,9 +445,9 @@
 
 <script>
     $(document).ready(function(){
-        $("#search_products").on("keyup", function() {
+        $("#search_oppositions").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#tbl-products tr").filter(function() {
+            $("#tbl-opposition tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
@@ -459,14 +459,14 @@
     });
 </script>
 <script>
-    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
-        document.getElementById('sup_prd_name').value = prd_name;
-        document.getElementById('sup_prd_sku').value = prd_sku;
-        document.getElementById('sup_prd_description').value = prd_description;
-        document.getElementById('sup_prd_reorder').value = prd_reorder;
-        document.getElementById('sup_prd_is_production').value = is_production;
-        document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    }
+    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+    //     document.getElementById('sup_prd_name').value = prd_name;
+    //     document.getElementById('sup_prd_sku').value = prd_sku;
+    //     document.getElementById('sup_prd_description').value = prd_description;
+    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
+    //     document.getElementById('sup_prd_is_production').value = is_production;
+    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    // }
 
     // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
     //     document.getElementById('sup_prd_name').value = prd_name;

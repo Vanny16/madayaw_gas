@@ -622,4 +622,37 @@ class ProductController extends Controller
         return redirect()->action('ProductController@opposite');
     }
 
+    public function searchOpposition(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+
+        $ops_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('oppositions')
+        ->join('products', 'products.prd_id', '=', 'oppositions.prd_id')
+        ->where('oppositions.acc_id','=',session('acc_id'))
+        ->where('ops_name','LIKE', $search_string . '%');
+
+        // dd($search_string);
+
+        if($ops_active != 2){
+            $query = $query->where('ops_active', '=', $ops_active);
+        }
+
+        $oppositions = $query->orderBy('ops_name')->get(); 
+
+        $products = DB::table('products')
+        ->get();
+
+        return view('admin.products.opposite', compact( 'statuses', 'default_status', 'oppostions','ops_active','products'));
+    }
+
 } 

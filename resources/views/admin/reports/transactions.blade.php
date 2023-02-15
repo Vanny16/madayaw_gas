@@ -108,7 +108,7 @@
                                         @php($total_sold = 0)
                                         @php($total_sales = 0)
                                         @foreach($transactions as $transaction)
-                                            <tr>
+                                            <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
                                                 <td>{{ $transaction->trx_ref_id }}</td>
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
@@ -117,6 +117,50 @@
                                                 <td>₱ {{ number_format($transaction->trx_amount_paid, 2, '.', ',') }}</td>
                                                 <td>₱ {{ number_format($transaction->trx_balance, 2, '.', ',') }}</td>
                                             </tr>
+
+                                            <!-- Purchases Modal -->
+                                            <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header text-info">
+                                                            <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Purchases</h5>
+                                                            <p class="text-danger mr-2">TRX {{ $transaction->trx_ref_id }}</p>
+                                                        </div> 
+                                                        <div class="modal-body">
+                                                            <div class="col-12">
+                                                                <div class="row">
+                                                                    <div class="container">
+                                                                        <div class="row header">
+                                                                            <div class="col"><strong>Product</strong></div>
+                                                                            <div class="col"><strong>Price</strong></div>
+                                                                            <div class="col"><strong>Crates</strong></div>
+                                                                            <div class="col"><strong>Loose</strong></div>
+                                                                            <div class="col"><strong>Deposit</strong></div>
+                                                                            <div class="col"><strong>Subtotal</strong></div>
+                                                                        </div>
+                                                                        @foreach($purchases as $purchase)
+                                                                            @if($purchase->trx_id == $transaction->trx_id)
+                                                                                <hr>
+                                                                                <div class="row">
+                                                                                    <div class="col">{{ $purchase->prd_name }}</div>
+                                                                                    <div class="col">₱ {{ number_format($purchase->prd_price, 2, '.', ',') }}</div>
+                                                                                    <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
+                                                                                    <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
+                                                                                    <div class="col">₱ {{ number_format($purchase->pur_deposit, 2, '.', ',') }}</div>
+                                                                                    <div class="col">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</div>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                         <tr class="bg-light" height="1px">
                                             <td colspan="7"></td>
