@@ -68,7 +68,7 @@ class PrintController extends Controller
         return view('admin.print.main', compact('all_sale_details'));
     }
 
-    public function oppositeDetails($prd_sku)
+    public function oppositeDetails($ops_id)
     {
         $opposite_details = DB::table('oppositions')
         ->where('ops_id', '=', $ops_id)
@@ -102,6 +102,40 @@ class PrintController extends Controller
 
         session()->flash('successMessage','Transaction complete!');
         return view('admin.print.deliveryreceipt', compact('transactions', 'purchases'));
+    }
+
+    public function salesReports($sls_id)
+    {
+        $salesReports = DB::table('sales_reports')
+        ->where('sls_id', '=', $sls_id)
+        ->get();
+
+        return view('admin.print.salesreports', compact('salesReports'));
+    }
+
+    public function allsalesReports()
+    {
+        $all_salesReports = DB::table('sales_reports')
+        ->get();
+
+        return view('admin.print.salesreports', compact('all_salesReports'));
+    }
+
+    public function transactionReports($trx_id)
+    {
+        $transactionReports = DB::table('transactions')
+        ->where('trx_id', '=', $trx_id)
+        ->get();
+
+        return view('admin.print.transactionreport', compact('transactionReports'));
+    }
+
+    public function alltransactionReports()
+    {
+        $all_transaction = DB::table('transactions')
+        ->get();
+
+        return view('admin.print.transactionreport', compact('all_transaction'));
     }
 
 }
