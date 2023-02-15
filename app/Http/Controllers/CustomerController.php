@@ -155,13 +155,18 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
-        $cus_accessibles = $request->cus_accessible;
+        $cus_accessibles = $request->input('cus_accessible');
+        dd($cus_accessibles);
 
         $accessibles = "";
+        $accessibles_prices = "";
+        $counter = 0;
         foreach($cus_accessibles as $cus_access)
         {
+            
             $accessibles = $accessibles . $cus_access . ",";
         }
+
         // dd($cus_accessible);
         // $check_uuid = DB::table('customers')
         // ->where('cus_id', '=', $cus_id)
@@ -293,12 +298,24 @@ class CustomerController extends Controller
     public function changeProductPrice(Request $request)
     {
         $customers = $request->customers;
-        $prd_id = $request->prd_id;
-        $prd_price = $request->prd_price;
+        $price_change = $request->price_change;
         $selected_customers = $request->selected_customers;
-        dd($selected_customers);
 
-        
+        $selected_array = explode(",",$selected_customers);
+        if(end($selected_array) == " " || end($selected_array) == ""){array_pop($selected_array);}
+
+        // dd($selected_array);
+
+        foreach($selected_array as $selected_customer)
+        {
+            DB::table('customers')
+                ->where('cus_id', '=', $selected_customer)
+                ->update([
+                'cus_price_change' => $price_change
+                ]);
+        }
+        session()->flash('successMessage', 'Successfully updated customer pricing');
+        return redirect()->action('CustomerController@manage');
     }
 
 }

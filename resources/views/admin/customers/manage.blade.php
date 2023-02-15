@@ -342,7 +342,7 @@
                                                                                                             @if(is_null($accessibles))
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="product{{$product->prd_id}}">
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]">
                                                                                                             @else
                                                                                                                 @php($check_indicator = "")
                                                                                                                 @foreach($accessibles as $accessible)
@@ -355,43 +355,17 @@
                                                                                                                 @endforeach
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="product{{$product->prd_id}}" value="{{$product->prd_price}}">
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
+                                                                                                                <input type="text" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="<?php echo($check_indicator)?>" hidden>
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
                                                                                                 @endif
-
-                                                                                                {{--
-                                                                                                @if(is_array($selected_products) || is_object($selected_products))
-                                                                                                    @foreach($selected_products as $selected_product)
-                                                                                                        @foreach($accessibles as $accessible)
-                                                                                                            @if($selected_product->prd_id != $accessible)
-                                                                                                                <div class="col-md-6">
-                                                                                                                    <input type="checkbox" id="product{{$selected_product->prd_id}}" name="cus_accessible[]" value="{{$selected_product->prd_id}}">
-                                                                                                                    <label for=""> {{$selected_product->prd_name}}</label>
-                                                                                                                    <input class="form-control" id="" name="" value="{{$selected_product->prd_price}}">  
-                                                                                                                </div>
-                                                                                                            @else 
-                                                                                                                <div class="col-md-6">                   
-                                                                                                                    <input type="checkbox" id="product{{$selected_product->prd_id}}" name="cus_accessible[]" value="{{$selected_product->prd_id}}" checked >                                            
-                                                                                                                    <label for=""> {{$selected_product->prd_name}}</label>
-                                                                                                                    <input class="form-control" id="" name="" value="{{$selected_product->prd_price}}">  
-                                                                                                                </div>
-                                                                                                                @continue
-                                                                                                            @endif   
-                                                                                                        @endforeach    
-                                                                                                    @endforeach
-                                                                                                @endif
-                                                                                                --}}
-
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
-                                                                            {{----}}
-
                                                                             <div class="form-group">
                                                                                 <label for="cus_notes">Notes</label>
                                                                                 <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control" >{{$customer->cus_notes}}</textarea>
@@ -573,8 +547,9 @@
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="form-group"> 
-                        <input type="number"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
-                        <input type="text" class="form-control" id="selected-customers" name="selected_customers[]" hidden>
+                        <label for="cus_name">Enter Changed Price<span style="color:red">*</span></label>
+                        <input type="number"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                        <input type="text" class="form-control" id="selected-customers" name="selected_customers" value="" hidden>
                     </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-gift"></i> Apply</button>
@@ -586,10 +561,17 @@
 </div>
 
 <script>
-    function changePricing() {
-        alert(document.getElementById("customer-select").value);
-        document.getElementById("selected-customers").value = document.getElementById("customer-select").value;
-    }
+    // function changePricing() {
+    //     checkedValues = "";
+    //     $(".customer-select:checked").each(function() {
+
+    //     // Push the value of the checked checkbox into the array
+    //     checkedValues = checkedValues + $(this).val()+",";
+    //     });
+
+    //     alert(checkedValues);
+    //     document.getElementById("selected-customers").value = checkedValues;
+    // }
 
     $(document).ready(function(){
         $("#search_customers").on("keyup", function() {
@@ -608,23 +590,23 @@
     $(document).ready(function() {
         $("#customer-select-all").change(function() {
             if (this.checked) {
-                $("#customer-select").each(function() {
+                $(".customer-select").each(function() {
                     this.checked=true;
                 $("#cus-toolbar").prop("hidden", false);
                 });
             } else {
-                $("#customer-select").each(function() {
+                $(".customer-select").each(function() {
                     this.checked=false;
                     $("#cus-toolbar").prop("hidden", true);
                 });
             }
         });
 
-        $("#customer-select").click(function () {
+        $(".customer-select").click(function () {
             if ($(this).is(":checked")) {
                 var isAllChecked = 0;
 
-                $("#customer-select").each(function() {
+                $(".customer-select").each(function() {
                     if (!this.checked){
                         isAllChecked = 1;
                         $("#cus-toolbar").prop("hidden", false);
@@ -641,43 +623,6 @@
             }
         });
     });
-
-    // $(document).ready(function() {
-    //     $("#customer-select-all").change(function() {
-    //         if (this.checked) {
-    //             $(".customer-select").each(function() {
-    //                 this.checked=true;
-    //             $("#cus-toolbar").prop("hidden", false);
-    //             });
-    //         } else {
-    //             $(".customer-select").each(function() {
-    //                 this.checked=false;
-    //                 $("#cus-toolbar").prop("hidden", true);
-    //             });
-    //         }
-    //     });
-
-    //     $(".customer-select").click(function () {
-    //         if ($(this).is(":checked")) {
-    //             var isAllChecked = 0;
-
-    //             $(".customer-select").each(function() {
-    //                 if (!this.checked){
-    //                     isAllChecked = 1;
-    //                     $("#cus-toolbar").prop("hidden", false);
-    //                 }
-    //             });
-
-    //             if (isAllChecked == 0) {
-    //                 $("#customer-select-all").prop("checked", true);
-    //                 $("#cus-toolbar").prop("hidden", false);
-    //             }     
-    //         }
-    //         else {
-    //             $("#customer-select-all").prop("checked", false);
-    //         }
-    //     });
-    // });
 
 </script>
 @endsection
