@@ -30,7 +30,7 @@ class ProductController extends Controller
         ->get();
         
         $pdn_flag = check_production_log();
-        
+        // dd($pdn_flag);
         return view('admin.products.manage',compact('statuses', 'default_status', 'products', 'suppliers', 'pdn_flag'));
     }
 
@@ -543,13 +543,14 @@ class ProductController extends Controller
             $request->sup_prd_name,
             $request->sup_prd_sku,
             $request->sup_prd_price,
+            $request->sup_prd_deposit,
+            $request->sup_prd_weight,
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
-            // $request->sup_prd_is_production,
-            // $request->sup_prd_is_refillable,
             'show'
         );
+        // dd($prodValues);
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');
@@ -619,6 +620,39 @@ class ProductController extends Controller
 
         session()->flash('successMessage','Canister exchange saved!');
         return redirect()->action('ProductController@opposite');
+    }
+
+    public function searchOpposition(Request $request)
+    {
+        $search_string = $request->search_string;
+
+        $statuses = array(
+            0 => 'Inactive',
+            1 => 'Active',
+            2 => 'All'
+        );
+
+        $default_status = $request->filter_status;
+
+        $ops_active = array_search($request->filter_status, $statuses);
+
+        $query = DB::table('oppositions')
+        ->join('products', 'products.prd_id', '=', 'oppositions.prd_id')
+        ->where('oppositions.acc_id','=',session('acc_id'))
+        ->where('ops_name','LIKE', $search_string . '%');
+
+        // dd($search_string);
+
+        if($ops_active != 2){
+            $query = $query->where('ops_active', '=', $ops_active);
+        }
+
+        $oppositions = $query->orderBy('ops_name')->get(); 
+
+        $products = DB::table('products')
+        ->get();
+
+        return view('admin.products.opposite', compact( 'statuses', 'default_status', 'oppostions','ops_active','products'));
     }
 
 } 

@@ -68,6 +68,24 @@ class PrintController extends Controller
         return view('admin.print.main', compact('all_sale_details'));
     }
 
+    public function oppositeDetails($prd_sku)
+    {
+        $opposite_details = DB::table('oppositions')
+        ->where('ops_id', '=', $ops_id)
+        ->get();
+
+        return view('admin.print.opposites', compact('opposite_details'));
+    }
+
+    public function alloppositeDetails()
+    {
+        $all_oppisite_details = DB::table('oppositions')
+        ->get();
+
+        return view('admin.print.opposites', compact('all_opposite_details'));
+    }
+
+
     public function receiptDetails()
     {
         $latest_trx_id = session('latest_trx_id');

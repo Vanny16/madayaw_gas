@@ -23,6 +23,8 @@ class CustomerController extends Controller
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
+        ->where('cus_id','<>', 0)
+        ->where('cus_id','<>', -1)
         ->get();
 
         $cus_id = DB::table('customers')
@@ -293,6 +295,8 @@ class CustomerController extends Controller
         $customers = $request->customers;
         $prd_id = $request->prd_id;
         $prd_price = $request->prd_price;
+        $selected_customers = $request->selected_customers;
+        dd($selected_customers);
 
         
     }

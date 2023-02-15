@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                @if($pdn_flag == 0)
+                @if($pdn_flag == false)
                     <div class="col-md-12 mb-3"> 
                         <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Product</a>
 
@@ -413,21 +413,21 @@
     @php($prd_name = Session::get('getProdValues')[0][0])
     @php($prd_sku = Session::get('getProdValues')[0][1])
     @php($prd_price = Session::get('getProdValues')[0][2])
-    @php($prd_description = Session::get('getProdValues')[0][3])
-    @php($prd_reorder = Session::get('getProdValues')[0][4])
-    @php($sup_name = Session::get('getProdValues')[0][5])
-    {{--@php($is_production = Session::get('getProdValues')[0][6])
-    @php($is_refillable = Session::get('getProdValues')[0][7])--}}
-    @php($state = Session::get('getProdValues')[0][6])
+    @php($prd_deposit = Session::get('getProdValues')[0][3])
+    @php($prd_weight = Session::get('getProdValues')[0][4])
+    @php($prd_description = Session::get('getProdValues')[0][5])
+    @php($prd_reorder = Session::get('getProdValues')[0][6])
+    @php($sup_name = Session::get('getProdValues')[0][7])
+    @php($state = Session::get('getProdValues')[0][8])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
     @php($prd_price = '')
+    @php($prd_deposit = '')
+    @php($prd_weight = '')
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
-    {{--@php($is_production = '')
-    @php($is_refillable = '')--}}
     @php($state = '')
 @endif
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -465,15 +465,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $product->prd_deposit}}" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $prd_deposit }}" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_weight">Net Weight (g)<span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -500,7 +500,7 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_price.value, prd_deposit.value, prd_weight.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -560,11 +560,12 @@
                 </div>
                 
                 <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
-                <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_sku" name="sup_prd_sku"  hidden/>
+                <input type="text" id="sup_prd_price" name="sup_prd_price"  hidden/>
+                <input type="text" id="sup_prd_deposit" name="sup_prd_deposit"  hidden/>
+                <input type="text" id="sup_prd_weight" name="sup_prd_weight" hidden/>
                 <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
                 <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
-                <!-- <input type="text" id="sup_prd_is_production" name="sup_prd_is_production" value="" hidden/>
-                <input type="text" id="sup_prd_is_refillable" name="sup_prd_is_refillable" value="" hidden/> -->
             </form>
         </div>
     </div>
@@ -591,23 +592,15 @@
         $("#product-modal").modal('{{$state}}');
     });
 
-    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+    function getNewProductValue(prd_name, prd_sku, prd_price, prd_deposit, prd_weight, prd_description, prd_reorder){
         document.getElementById('sup_prd_name').value = prd_name;
         document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_price').value = prd_price;
+        document.getElementById('sup_prd_deposit').value = prd_deposit;
+        document.getElementById('sup_prd_weight').value = prd_weight;
         document.getElementById('sup_prd_description').value = prd_description;
         document.getElementById('sup_prd_reorder').value = prd_reorder;
-        document.getElementById('sup_prd_is_production').value = is_production;
-        document.getElementById('sup_prd_is_refillable').value = is_refillable;
     }
-
-    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
-    //     document.getElementById('sup_prd_name').value = prd_name;
-    //     document.getElementById('sup_prd_sku').value = prd_sku;
-    //     document.getElementById('sup_prd_description').value = prd_description;
-    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
-    //     document.getElementById('sup_prd_is_production').value = is_production;
-    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    // }
 </script>
 
 @endsection
