@@ -287,9 +287,9 @@ class ProductController extends Controller
         'prd_price' => $prd_price,
         'prd_deposit' => $prd_deposit,
         'prd_weight' => $prd_weight,
-        'prd_reorder_point' => $prd_reorder, 
-        'prd_for_production' => 1,
-        'prd_is_refillable' => 1,
+        'prd_reorder_point' => $prd_reorder,
+        'prd_for_production' => 0,
+        'prd_is_refillable' => 0,
         'prd_for_POS' => 1,
         'sup_id' => $sup_id
         ]);

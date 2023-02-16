@@ -49,7 +49,7 @@
                                         @php($transaction_id += 1)
                                     @endif
                                     <label>Transaction</label>
-                                    <p class="text-danger fa-2x mr-2">TRX 20230131-{{ $transaction_id }}</p>
+                                    <p class="text-danger fa-2x mr-2">TRX <?php echo date("Y").date("m").date("d"); ?>-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
