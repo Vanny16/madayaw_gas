@@ -37,8 +37,8 @@
                         @foreach($all_transaction_reports as $all_transaction_report)
                         <tr>
                             <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_id}}</td>
-                            <td>{{$all_transaction_report->cus_id}}</td>
+                            <td>{{$all_transaction_report->usr_name}}</td>
+                            <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
                             <td>₱ {{$all_transaction_report->trx_total}}</td>
                             <td>₱ {{$all_transaction_report->trx_amount_paid}}</td>
@@ -67,8 +67,8 @@
                         @foreach($transaction_reports as $transaction_report)
                         <tr>
                             <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_id}}</td>
-                            <td>{{$all_transaction_report->cus_id}}</td>
+                            <td>{{$all_transaction_report->usr_name}}</td>
+                            <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
                             <td>{{$all_transaction_report->trx_total}}</td>
                             <td>{{$all_transaction_report->trx_amount_paid}}</td>
@@ -84,5 +84,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
+    window.location.href = "{{ action('ReportsController@transactions') }}";
 </script>
 @endsection

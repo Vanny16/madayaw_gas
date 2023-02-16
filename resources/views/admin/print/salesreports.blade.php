@@ -34,13 +34,12 @@
                     <tbody>
                         @foreach($all_sales_reports as $all_sales_report)
                         <tr>
-                            <td>{{$all_sales_report->sales_date_from}}</td>
-                            <td>{{$all_sales_report->sales_date_to}}</td>
+                          
                             <td>{{$all_sales_report->prd_name}}</td>
                             <td>{{$all_sales_report->prd_description}}</td>
-                            <td>₱ {{$all_sales_report->prd_price}}</td>
-                            <td>{{$all_sales_report->total_sold}}</td>
-                            <td>₱ {{$all_sales_report->total_sales}}</td>
+                            <td>₱ {{ number_format($all_sales_report->prd_price, 2, '.', ',')}}</td>
+                            <td>{{ number_format($all_sales_report->total_sold, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($all_sales_report->total_sales, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -62,13 +61,12 @@
                     <tbody>
                         @foreach($sales_reports as $sales_report)
                         <tr>
-                            <td>{{$sales_report->sales_date_from}}</td>
-                            <td>{{$sales_report->sales_date_to}}</td>
+                          
                             <td>{{$sales_report->prd_name}}</td>
                             <td>{{$sales_report->prd_description}}</td>
-                            <td>₱ {{$sales_report->prd_price}}</td>
-                            <td>{{$sales_report->total_sold}}</td>
-                            <td>₱ {{$sales_report->total_sales}}</td>
+                            <td>₱ {{ number_format($sales_report->prd_price, 2, '.', ',')}}</td>
+                            <td>{{ number_format($sales_report->total_sold, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sales_report->total_sales, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -80,5 +78,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
+    window.location.href = "{{ action('ReportsController@sales') }}";
 </script>
 @endsection

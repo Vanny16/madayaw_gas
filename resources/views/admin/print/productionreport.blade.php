@@ -9,15 +9,15 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_production_reports))    
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Production  Reports</h3>
+            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Production  Reports</h3>
             @else
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Production Report</h3>
+            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Production Report</h3>
             @endif
         </div>
             <div class="card-body">
                 <table class="table table-hover table-condensed">
 
-                @if(isset($all_transaction_reports))
+                @if(isset($all_production_reports))
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -36,17 +36,17 @@
                     <tbody>
                         @foreach($all_production_reports as $all_production_report)
                         <tr>
-                            <td>{{$all_production_report->trx_ref_id}}</td>
-                            <td>{{$all_production_report->usr_id}}</td>
-                            <td>{{$all_production_report->cus_id}}</td>
-                            <td>{{$all_production_report->trx_datetime}}</td>
-                            <td>{{$all_production_report->trx_total}}</td>
-                            <td>{{$all_production_report->trx_amount_paid}}</td>
+                            <td>{{$all_production_report->log_date}}</td>
+                            <td>{{$all_production_report->prd_name}}</td>
+                            <td>{{$all_production_report->log_empty_good}}</td>
+                            <td>{{$all_production_report->log_filled}}</td>
+                            <td>{{$all_production_report->log_for_revalving}}</td>
+                            <td>{{$all_production_report->log_scraps}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
 
-                @elseif(isset($sales_reports))
+                @elseif(isset($production_reports))
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -65,12 +65,12 @@
                     <tbody>
                         @foreach($production_reports as $production_report)
                         <tr>
-                            <td>{{$all_production_report->trx_ref_id}}</td>
-                            <td>{{$all_production_report->usr_id}}</td>
-                            <td>{{$all_production_report->cus_id}}</td>
-                            <td>{{$all_production_report->trx_datetime}}</td>
-                            <td>{{$all_production_report->trx_total}}</td>
-                            <td>{{$all_production_report->trx_amount_paid}}</td>
+                            <td>{{$production_report->log_date}}</td>
+                            <td>{{$production_report->prd_name}}</td>
+                            <td>{{$production_report->log_empty_good}}</td>
+                            <td>{{$production_report->log_filled}}</td>
+                            <td>{{$all_production_report->log_for_revalving}}</td>
+                            <td>{{$production_report->log_scraps}}</td>
                         </tr> 
                         @endforeach
                     </tbody>

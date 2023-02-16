@@ -104,12 +104,12 @@ class PrintController extends Controller
         return view('admin.print.deliveryreceipt', compact('transactions', 'purchases'));
     }
 
-    public function salesReports($sls_id)
+    public function salesReports(Request $request)
     {   
         $sales_date_from = $request->sales_date_from;
         $sales_date_to = $request->sales_date_to;
 
-        $sales = DB::table('products')
+        $sales_reports = DB::table('products')
         ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
         ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -121,20 +121,22 @@ class PrintController extends Controller
         ->orderBy('products.prd_name')
         ->get();
 
-        $salesReports = DB::table('sales_reports')
-        ->where('sls_id', '=', $sls_id)
-        ->get();
+
+        // $salesReports = DB::table('sales_reports')
+        // ->where('sls_id', '=', $sls_id)
+        // ->get();
 
      
-        return view('admin.print.salesreports', compact('salesReports', 'sales', 'sales_date_from', 'sales_date_to'));
+        return view('admin.print.salesreports', compact('sales_reports', 'sales_date_from', 'sales_date_to'));
     }
 
     public function allsalesReports(Request $request)
     {
         $sales_date_from = $request->sales_date_from;
         $sales_date_to = $request->sales_date_to;
+        // dd($sales_date_from);
 
-        $sales = DB::table('products')
+        $all_sales_reports = DB::table('products')
         ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
         ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -145,21 +147,22 @@ class PrintController extends Controller
         ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
         ->orderBy('products.prd_name')
         ->get();
+
        
-        $all_sales_Reports = DB::table('sales_reports')
-        ->get();
+        // $all_sales_Reports = DB::table('sales_reports')
+        // ->get();
         // dd($all_sales_Reports);
 
        
-        return view('admin.print.salesreports', compact('all_sales_Reports', 'sales', 'sales_date_from', 'sales_date_to'));
+        return view('admin.print.salesreports', compact('all_sales_reports', 'sales_date_from', 'sales_date_to'));
     }
 
-    public function transactionReports($trx_id)
+    public function transactionReports(Request $request)
     {   
         $transactions_date_from = $request->transactions_date_from;
         $transactions_date_to = $request->transactions_date_to;
 
-        $transactions = DB::table('transactions')
+        $transaction_reports = DB::table('transactions')
         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
@@ -169,11 +172,11 @@ class PrintController extends Controller
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
 
-        $transaction_Reports = DB::table('transactions')
-        ->where('trx_id', '=', $trx_id)
-        ->get();
+        // $transaction_Reports = DB::table('transactions')
+        // ->where('trx_id', '=', $trx_id)
+        // ->get();
 
-        return view('admin.print.transactionreport', compact('transaction_Reports', 'transactions', 'purchases'));
+        return view('admin.print.transactionreport', compact('transaction_reports', 'purchases', 'transactions_date_from', 'transactions_date_to'));
     }
 
     public function alltransactionReports(Request $request)
@@ -181,7 +184,7 @@ class PrintController extends Controller
         $transactions_date_from = $request->transactions_date_from;
         $transactions_date_to = $request->transactions_date_to;
 
-        $transactions = DB::table('transactions')
+        $all_transaction_reports = DB::table('transactions')
         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
@@ -191,10 +194,45 @@ class PrintController extends Controller
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
 
-        $all_transaction_reports = DB::table('transactions')
-        ->get();
+        // $all_transaction_reports = DB::table('transactions')
+        // ->get();
 
-        return view('admin.print.transactionreport', compact('all_transaction_reports', 'transactions', 'purchases'));
+        return view('admin.print.transactionreport', compact('all_transaction_reports', 'purchases', 'transactions_date_from', 'transactions_date_to'));
+    }
+
+    public function productionReports(Request $request)
+    {
+        $production_date_from = $request->production_date_from;
+        $production_date_to = $request->production_date_to;
+        
+        $production_reports = DB::table('movement_logs')
+        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+        ->join('products','products.prd_id','=','movement_logs.prd_id')
+        ->where('movement_logs.acc_id','=', session('acc_id'))
+        ->whereBetween('movement_logs.log_date', [date("Y-m-d", strtotime($production_date_from)), date("Y-m-d", strtotime($production_date_to))])
+        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
+        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
+        ->orderBy('movement_logs.pdn_id', 'desc')
+        ->paginate(10);
+
+        return view('admin.print.productionreport', compact('production_reports', 'production_date_from', 'production_date_to'));
+    }
+    public function allproductionReports(Request $request)
+    {
+        $production_date_from = $request->production_date_from;
+        $production_date_to = $request->production_date_to;
+        
+        $all_production_reports = DB::table('movement_logs')
+        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+        ->join('products','products.prd_id','=','movement_logs.prd_id')
+        ->where('movement_logs.acc_id','=', session('acc_id'))
+        ->whereBetween('movement_logs.log_date', [date("Y-m-d", strtotime($production_date_from)), date("Y-m-d", strtotime($production_date_to))])
+        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
+        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
+        ->orderBy('movement_logs.pdn_id', 'desc')
+        ->paginate(10);
+
+        return view('admin.print.productionreport', compact('all_production_reports', 'production_date_from', 'production_date_to'));
     }
 
 }
