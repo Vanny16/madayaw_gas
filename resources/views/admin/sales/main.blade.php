@@ -185,12 +185,17 @@
                         <div class="row">
                             @if(isset($products))
                                 @foreach($products as $product)
+                                @if(property_exists($product, 'cus_accessibles_prices'))
+                                    @php($prd_price = $product->cus_accessibles_prices)
+                                @else
+                                    @php($prd_price = $product->prd_price)
+                                @endif
                                 <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
                                             <b>{{$product->prd_name}}</b>
-                                            <p>{{$product->prd_price}}</p>
+                                            <p>₱ {{ number_format($prd_price, 2, '.', ',') }}</p>
                                             <p>{{$product->prd_quantity}} available</p>
                                         </div>    
                                     </div>
@@ -259,7 +264,7 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{$product->prd_price}}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, prd_quantity{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id)" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', ',') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
                                                        
                                                         <div class="row">

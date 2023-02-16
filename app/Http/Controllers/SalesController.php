@@ -52,7 +52,16 @@ class SalesController extends Controller
             
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
-        
+                
+        $cus_accessibles_prices_list = $selected_customer->cus_accessibles_prices;
+        $cus_accessibles_prices = explode(",", $cus_accessibles_prices_list);
+                
+        $cus_price_change = $selected_customer->cus_price_change;
+
+        if($cus_price_change == null){
+            $cus_price_change = 0;
+        }
+
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
             $product = DB::table('products')
                 ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -61,16 +70,17 @@ class SalesController extends Controller
                 ->where('prd_quantity', '>' ,'0.0')
                 ->where('prd_active', '=' ,'1')
                 ->first();
-        
+                
             if ($product !== null) {
-                $product = json_decode(json_encode($product));
-                array_push($products, $product);
+                $product = json_decode(json_encode($product), true);
+                $product['cus_accessibles_prices'] = $cus_accessibles_prices[$i] + $cus_price_change;
+                array_push($products, (object)$product);
             }
         }
         
         session()->flash('selected_customer',$selected_customer->cus_id);
 
-        dd($products);
+        // dd($products);
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
