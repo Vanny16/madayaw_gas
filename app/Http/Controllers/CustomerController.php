@@ -35,7 +35,6 @@ class CustomerController extends Controller
         $products = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_for_POS','=','1')
-        ->where('prd_is_refillable','=','1')
         ->get();
 
         $selected_products = DB::table('products')
