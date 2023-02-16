@@ -408,7 +408,6 @@
 </div>
 
 <!-- Create Modal -->
-
 @if(session('getProdValues'))
     @php($prd_name = Session::get('getProdValues')[0][0])
     @php($prd_sku = Session::get('getProdValues')[0][1])
