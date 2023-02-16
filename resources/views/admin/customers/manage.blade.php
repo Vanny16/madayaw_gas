@@ -336,6 +336,8 @@
 
                                                                                                 $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
                                                                                                 // if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){array_pop($accessibles_prices);}
+                                                                                                
+                                                                                                $counter = 0;
                                                                                             ?>
                                                                                             <div class="col-md-12">
                                                                                                 @if(is_array($products) || is_object($products))
@@ -346,20 +348,17 @@
                                                                                                                 <label for="">{{$product->prd_name}}</label>
                                                                                                                 <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
                                                                                                             @else
-                                                                                                                @php($counter = 0)
                                                                                                                 @foreach($accessibles as $accessible)
                                                                                                                     @php($check_indicator = "")
                                                                                                                     @php($displayed_price = "")
                                                                                                                     @if($product->prd_id == $accessible)
                                                                                                                         @php($check_indicator = "checked")
-                                                                                                                        @php($displayed_price = $accessibles_prices[$counter])
                                                                                                                         @php($counter++)
                                                                                                                         @break
                                                                                                                     @else
                                                                                                                         @php($displayed_price = $product->prd_price)
                                                                                                                     @endif
                                                                                                                 @endforeach
-                                                                                                                <input type="text" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="" hidden>
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
                                                                                                                 <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($counter)?>">
@@ -567,17 +566,16 @@
 </div>
 
 <script>
-    // function changePricing() {
-    //     checkedValues = "";
-    //     $(".customer-select:checked").each(function() {
+    function changePricing() {
+        checkedValues = "";
+        $(".customer-select:checked").each(function() {
 
-    //     // Push the value of the checked checkbox into the array
-    //     checkedValues = checkedValues + $(this).val()+",";
-    //     });
+        // Push the value of the checked checkbox into the array
+        checkedValues = checkedValues + $(this).val()+",";
+        });
 
-    //     alert(checkedValues);
-    //     document.getElementById("selected-customers").value = checkedValues;
-    // }
+        document.getElementById("selected-customers").value = checkedValues;
+    }
 
     $(document).ready(function(){
         $("#search_customers").on("keyup", function() {
