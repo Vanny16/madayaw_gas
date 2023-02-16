@@ -104,6 +104,7 @@ class ProductionController extends Controller
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
         $prd_deposit = $request->prd_deposit;
+        $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $flag = $request->add_flag;
@@ -118,6 +119,7 @@ class ProductionController extends Controller
             session()->flash('errorMessage','Product with this SKU already exists');
             return redirect()->action('ProductionController@manage');
         }
+
 
         //FLAGS
         // 0 = quantity raw materials
@@ -135,6 +137,7 @@ class ProductionController extends Controller
             'prd_price' => $prd_price,
             'prd_reorder_point' => $prd_reorder,
             'prd_for_production' => 1,
+            'prd_for_POS' => 0,
             'prd_is_refillable' => 0,
             'sup_id' => $sup_id
             ]);
@@ -150,8 +153,10 @@ class ProductionController extends Controller
             'prd_sku' => $prd_sku,
             'prd_price' => $prd_price,
             'prd_deposit' => $prd_deposit,
+            'prd_weight' => $prd_weight,
             'prd_reorder_point' => $prd_reorder,
             'prd_for_production' => 1,
+            'prd_for_POS' => 1,
             'prd_is_refillable' => 1,
             'sup_id' => $sup_id
             ]);

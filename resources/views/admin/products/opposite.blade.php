@@ -177,7 +177,7 @@
                                                         <div class="modal-dialog modal-md" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Opppositoin Form</h5>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
@@ -199,7 +199,7 @@
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    <label for="ops_name">Product Name <span style="color:red"> *</span></label>
+                                                                                    <label for="ops_name">Opposition Name <span style="color:red"> *</span></label>
                                                                                     <input type="text" class="form-control" name="ops_name" value="{{ $opposition->ops_name }}" />
                                                                                 </div>
                                                                                 <div class="form-group">
@@ -328,7 +328,7 @@
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Opposition Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -350,20 +350,20 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="ops_name">Product Name <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="ops_name" placeholder="Enter Product Name" required/>
+                                <label for="ops_name">Opposition Name <span style="color:red"> *</span></label>
+                                <input type="text" class="form-control" name="ops_name" placeholder="Enter Opposition Name" required/>
                             </div>
                             <div class="form-group">
-                                <label for="ops_sku">SKU <span style="color:red">*</span></label>
+                                <label for="ops_sku">SKU <span style="color:red"> *</span></label>
                                 <input type="text" class="form-control" name="ops_sku" placeholder="Enter SKU" required/>
                             </div>
                             <div class="form-group">
-                                <label for="ops_description">Description <span style="color:red">*</span></label>
+                                <label for="ops_description">Description <span style="color:red"> *</span></label>
                                 <input type="text" class="form-control" name="ops_description" placeholder="Enter Description" required/>
                             </div>
                             <div class="form-group">
-                                <label for="ops_quantity">Quantity <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="ops_quantity" value="" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                <label for="ops_quantity">Quantity <span style="color:red"> *</span></label>
+                                <input type="text" class="form-control" name="ops_quantity" value="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                             </div>
                             <div class="form-group">
                                 <label for="notes">Notes</label>
@@ -371,8 +371,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr/>
-                    
+                    <hr/> 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

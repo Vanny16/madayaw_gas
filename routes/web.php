@@ -67,8 +67,12 @@ Route::group(['prefix' => 'print'], function()
     Route::get('product/{pay_uuid}', 'PrintController@productDetails');
     Route::get('product', 'PrintController@allproductDetails');
 
-    Route::get('print', 'PrintController@allsaleDetails');
-    Route::get('print', 'PrintController@alloppositeDetails');
+    Route::get('salesdetails', 'PrintController@allsaleDetails');
+    Route::get('oppositedetails', 'PrintController@alloppositeDetails');
+
+    Route::get('salesreports', 'PrintController@allsalesReports');
+
+    Route::get('transactionreports', 'PrintController@alltransactionReports');
 });
 
 Route::group(['prefix' => 'production'], function()

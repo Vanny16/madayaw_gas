@@ -16,10 +16,9 @@ class SalesController extends Controller
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('prd_for_POS', '=' ,'1')
-        ->where('prd_quantity', '<>' ,'0.0')
+        ->where('prd_quantity', '>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
-        // dd(compact('products'));
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
@@ -50,26 +49,43 @@ class SalesController extends Controller
         ->orderBy('cus_id')
         ->first();
 
-        $cus_accessibles_list = $selected_customer->cus_accessibles;
-        $cus_accessibles = explode(",", $cus_accessibles_list);
-        // dd($cus_accessibles);
         $products = array();
 
-        for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
-            $product = DB::table('products')
-                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-                ->where('prd_for_POS', '=' ,'1')
-                ->where('prd_id', '=' ,$cus_accessibles[$i])
-                ->where('prd_quantity', '<>' ,'0.0')
-                ->where('prd_active', '=' ,'1')
-                ->first();
-        
-            if ($product !== null) {
-                $product = json_decode(json_encode($product));
-                array_push($products, $product);
+        // if($client_id == "0"){
+        //     $products = DB::table('products')
+        //         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        //         ->where('prd_for_POS', '=' ,'1')
+        //         ->where('prd_quantity', '<>' ,'0.0')
+        //         ->where('prd_active', '=' ,'1')
+        //         ->get();
+                
+        //     session()->flash('selected_customer','0');
+        // }
+        // else{
+            
+            $cus_accessibles_list = $selected_customer->cus_accessibles;
+            $cus_accessibles = explode(",", $cus_accessibles_list);
+            
+            for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
+                $product = DB::table('products')
+                    ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                    ->where('prd_for_POS', '=' ,'1')
+                    ->where('prd_id', '=' ,$cus_accessibles[$i])
+                    ->where('prd_quantity', '>' ,'0.0')
+                    ->where('prd_active', '=' ,'1')
+                    ->first();
+            
+                if ($product !== null) {
+                    $product = json_decode(json_encode($product));
+                    array_push($products, $product);
+                }
             }
-        }
-        dd($products);
+            
+            session()->flash('selected_customer',$selected_customer->cus_id);
+        // }
+        
+
+        // dd($products);
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
@@ -82,9 +98,6 @@ class SalesController extends Controller
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
-
-        
-        session()->flash('selected_customer',$selected_customer->cus_id);
 
         return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
     }

@@ -65,6 +65,7 @@
                             </form>
                         </div>
                     </div>
+                    
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -84,6 +85,11 @@
                                     <a href="{{ action('ReportsController@sales') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3"> 
+                            <a class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                         </div>
                     </div>
                     <div class="card">

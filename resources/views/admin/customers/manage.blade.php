@@ -107,7 +107,7 @@
                                         <th>Name</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
-                                        <th>Products</th>
+                                        <th>Accessible Products</th>
                                         <th>Notes</th>
                                         <th width="100px">Status</th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
