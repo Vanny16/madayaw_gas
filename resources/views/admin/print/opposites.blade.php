@@ -33,10 +33,10 @@
                     <tbody>
                         @foreach($all_opposite_details as $all_opposite_detail)
                         <tr>
-                            <td>{{$all_opposite_detail->prd_name}}</td>
-                            <td>{{$all_opposite_detail->prd_sku}}</td>
-                            <td>{{$all_opposite_detail->prd_description}}</td>
-                            <td>{{$all_opposite_detail->prd_quantity}}</td>
+                            <td>{{$all_opposite_detail->ops_name}}</td>
+                            <td>{{$all_opposite_detail->ops_sku}}</td>
+                            <td>{{$all_opposite_detail->ops_description}}</td>
+                            <td>{{$all_opposite_detail->ops_quantity}}</td>
                         </tr> 
                         @endforeach
                     </tbody>

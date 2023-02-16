@@ -89,7 +89,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-3"> 
-                            <a class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                            <form method="POST" action="{{ action('PrintController@allsalesReports')}}">
+                            {{ csrf_field() }}
+                                <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
+                                <input type="date_from" class="form-control" id="sales_date_from" name="sales_date_from" value="{{ $date_from }}" hidden/>
+                                <input type="date_to" class="form-control" id="sales_date_to" name="sales_date_to" value="{{ $date_to }}" hidden/>
+                            </form>
                         </div>
                     </div>
                     <div class="card">
