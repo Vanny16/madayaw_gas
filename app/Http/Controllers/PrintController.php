@@ -79,7 +79,7 @@ class PrintController extends Controller
 
     public function alloppositeDetails()
     {
-        $all_oppisite_details = DB::table('oppositions')
+        $all_opposite_details = DB::table('oppositions')
         ->get();
 
         return view('admin.print.opposites', compact('all_opposite_details'));
@@ -105,37 +105,96 @@ class PrintController extends Controller
     }
 
     public function salesReports($sls_id)
-    {
+    {   
+        $sales_date_from = $request->sales_date_from;
+        $sales_date_to = $request->sales_date_to;
+
+        $sales = DB::table('products')
+        ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+        ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('products.prd_for_POS', '=', '1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+        ->selectRaw('products.prd_id, products.prd_name, products.prd_price, products.prd_description, sum(purchases.pur_qty) as total_sold, sum(purchases.pur_total) as total_sales')
+        ->groupBy('products.prd_id', 'products.prd_name', 'products.prd_description', 'products.prd_price')
+        ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
+        ->orderBy('products.prd_name')
+        ->get();
+
         $salesReports = DB::table('sales_reports')
         ->where('sls_id', '=', $sls_id)
         ->get();
 
-        return view('admin.print.salesreports', compact('salesReports'));
+     
+        return view('admin.print.salesreports', compact('salesReports', 'sales', 'sales_date_from', 'sales_date_to'));
     }
 
-    public function allsalesReports()
+    public function allsalesReports(Request $request)
     {
-        $all_salesReports = DB::table('sales_reports')
-        ->get();
+        $sales_date_from = $request->sales_date_from;
+        $sales_date_to = $request->sales_date_to;
 
-        return view('admin.print.salesreports', compact('all_salesReports'));
+        $sales = DB::table('products')
+        ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+        ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('products.prd_for_POS', '=', '1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+        ->selectRaw('products.prd_id, products.prd_name, products.prd_price, products.prd_description, sum(purchases.pur_qty) as total_sold, sum(purchases.pur_total) as total_sales')
+        ->groupBy('products.prd_id', 'products.prd_name', 'products.prd_description', 'products.prd_price')
+        ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
+        ->orderBy('products.prd_name')
+        ->get();
+       
+        $all_sales_Reports = DB::table('sales_reports')
+        ->get();
+        // dd($all_sales_Reports);
+
+       
+        return view('admin.print.salesreports', compact('all_sales_Reports', 'sales', 'sales_date_from', 'sales_date_to'));
     }
 
     public function transactionReports($trx_id)
-    {
-        $transactionReports = DB::table('transactions')
+    {   
+        $transactions_date_from = $request->transactions_date_from;
+        $transactions_date_to = $request->transactions_date_to;
+
+        $transactions = DB::table('transactions')
+        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+        ->get();
+
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->get();
+
+        $transaction_Reports = DB::table('transactions')
         ->where('trx_id', '=', $trx_id)
         ->get();
 
-        return view('admin.print.transactionreport', compact('transactionReports'));
+        return view('admin.print.transactionreport', compact('transaction_Reports', 'transactions', 'purchases'));
     }
 
-    public function alltransactionReports()
-    {
-        $all_transaction = DB::table('transactions')
+    public function alltransactionReports(Request $request)
+    {   
+        $transactions_date_from = $request->transactions_date_from;
+        $transactions_date_to = $request->transactions_date_to;
+
+        $transactions = DB::table('transactions')
+        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
         ->get();
 
-        return view('admin.print.transactionreport', compact('all_transaction'));
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->get();
+
+        $all_transaction_reports = DB::table('transactions')
+        ->get();
+
+        return view('admin.print.transactionreport', compact('all_transaction_reports', 'transactions', 'purchases'));
     }
 
 }
