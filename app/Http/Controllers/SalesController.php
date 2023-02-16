@@ -63,7 +63,7 @@ class SalesController extends Controller
                 ->first();
         
             if ($product !== null) {
-                $product = json_decode(json_encode($product));
+                $product = json_decode(json_encode($product + "accecciblePrice" => @accessible_price));
                 array_push($products, $product);
             }
         }
