@@ -34,7 +34,7 @@ class CustomerController extends Controller
 
         $products = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
+        ->where('prd_for_POS','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
 
@@ -55,12 +55,26 @@ class CustomerController extends Controller
         $cus_address = $request->cus_address;
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
-        $cus_accessibles = $request->cus_accessible;
+        $cus_accessibles = $request->input('cus_accessibles');
 
         $accessibles = "";
+        $accessibles_prices = "";
+        $counter = 0;
+        
+        // dd($cus_accessibles);
         foreach($cus_accessibles as $cus_access)
         {
-            $accessibles = $accessibles . $cus_access . ",";
+            if(strpos($cus_access, ".") == false && $cus_access <> null){
+                $accessibles =  $accessibles . $cus_access . ",";
+                $accessibles_prices = $accessibles_prices . $cus_accessibles[$counter + 1] . ",";
+                // continue;
+            }
+            else
+            {
+                continue;
+            }
+            
+            $counter++;
         }
 
         // dd($accessibles);
@@ -84,6 +98,7 @@ class CustomerController extends Controller
         'cus_address' => $cus_address,
         'cus_contact' => $cus_contact,
         'cus_accessibles' => $accessibles,
+        'cus_accessibles_prices' => $accessibles_prices,
         'cus_notes' => $cus_notes
         ]);
 
@@ -155,19 +170,23 @@ class CustomerController extends Controller
         $cus_contact = $request->cus_contact;
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
-        $cus_accessibles = $request->input('cus_accessible');
-        dd($cus_accessibles);
+        $cus_accessibles = $request->input('cus_accessibles');
+        // dd($cus_accessibles);
 
         $accessibles = "";
         $accessibles_prices = "";
         $counter = 0;
         foreach($cus_accessibles as $cus_access)
         {
+            if(strpos($cus_access, ".") === false && $cus_access <> null){
+                $accessibles =  $accessibles . $cus_access . ",";
+                $accessibles_prices = $accessibles_prices . $cus_accessibles[$counter + 1] . ",";
+            }
             
-            $accessibles = $accessibles . $cus_access . ",";
+            $counter++;
         }
+        // dd($accessibles, $accessibles_prices);
 
-        // dd($cus_accessible);
         // $check_uuid = DB::table('customers')
         // ->where('cus_id', '=', $cus_id)
         // ->where('cus_uuid', '=', null)
@@ -201,6 +220,7 @@ class CustomerController extends Controller
             'cus_address' => $cus_address,
             'cus_contact' => $cus_contact,
             'cus_accessibles' => $accessibles,
+            'cus_accessibles_prices' => $accessibles_prices,
             'cus_notes' => $cus_notes
         ]);
 
