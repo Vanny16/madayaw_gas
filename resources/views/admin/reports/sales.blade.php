@@ -89,7 +89,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-3"> 
-                            <a class="btn btn-info col-md-1 col-12 float-left" href="{{ action('PrintController@allsalesReports') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                            <a class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                         </div>
                     </div>
                     <div class="card">
