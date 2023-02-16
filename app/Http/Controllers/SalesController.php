@@ -16,7 +16,7 @@ class SalesController extends Controller
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('prd_for_POS', '=' ,'1')
-        ->where('prd_quantity', '<>' ,'0.0')
+        ->where('prd_quantity', '>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
 
@@ -51,17 +51,17 @@ class SalesController extends Controller
 
         $products = array();
 
-        if($client_id == "0"){
-            $products = DB::table('products')
-                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-                ->where('prd_for_POS', '=' ,'1')
-                ->where('prd_quantity', '<>' ,'0.0')
-                ->where('prd_active', '=' ,'1')
-                ->get();
+        // if($client_id == "0"){
+        //     $products = DB::table('products')
+        //         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        //         ->where('prd_for_POS', '=' ,'1')
+        //         ->where('prd_quantity', '<>' ,'0.0')
+        //         ->where('prd_active', '=' ,'1')
+        //         ->get();
                 
-            session()->flash('selected_customer','0');
-        }
-        else{
+        //     session()->flash('selected_customer','0');
+        // }
+        // else{
             
             $cus_accessibles_list = $selected_customer->cus_accessibles;
             $cus_accessibles = explode(",", $cus_accessibles_list);
@@ -71,7 +71,7 @@ class SalesController extends Controller
                     ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
                     ->where('prd_for_POS', '=' ,'1')
                     ->where('prd_id', '=' ,$cus_accessibles[$i])
-                    ->where('prd_quantity', '<>' ,'0.0')
+                    ->where('prd_quantity', '>' ,'0.0')
                     ->where('prd_active', '=' ,'1')
                     ->first();
             
@@ -82,7 +82,7 @@ class SalesController extends Controller
             }
             
             session()->flash('selected_customer',$selected_customer->cus_id);
-        }
+        // }
         
 
         // dd($products);

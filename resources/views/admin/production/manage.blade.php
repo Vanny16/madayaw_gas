@@ -216,7 +216,6 @@
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
                                                         <th></th>
-                                                        <th></th>
                                                         <th width="50px"></th>
                                                     </tr>
                                                 </thead>
@@ -228,7 +227,7 @@
                                                                     @if($canister->prd_image <> '')
                                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
@@ -236,9 +235,9 @@
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                                     <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Crimp New Cans</a></td>
                                                                 <td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
+                                                                <!-- <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                                     <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>Return Empty Cans</a></td>
-                                                                <td>
+                                                                <td> -->
                                                                     @if($canister->prd_active == 0)
                                                                         <span class="badge badge-danger">Inactive</span>
                                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$canister->prd_uuid])}}" aria-hidden="true"></a>
@@ -374,7 +373,7 @@
                                                                     @if($canister->prd_image <> '')
                                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
@@ -385,7 +384,7 @@
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                                         <ul class="dropdown-menu">
-                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-raw-modal-{{$raw_material->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-raw-modal-{{--$raw_material->prd_id--}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                                         </ul>
                                                                     </div>
@@ -440,7 +439,7 @@
                                                                     @if($canister->prd_image <> '')
                                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
@@ -475,7 +474,7 @@
                                                                     @if($canister->prd_image <> '')
                                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
@@ -507,7 +506,7 @@
                                                                     @if($canister->prd_image <> '')
                                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
@@ -703,7 +702,6 @@
     </section>
 </div>
 
-<!-- Create Product Modal -->
 @if(session('getProductionValues'))
     @php($prd_name = Session::get('getProductionValues')[0][0])
     @php($prd_sku = Session::get('getProductionValues')[0][1])
@@ -721,6 +719,8 @@
     @php($sup_name = '')
     @php($state = '')
 @endif
+
+<!-- Create Product Modal -->
 <div class="modal fade show" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
@@ -758,13 +758,13 @@
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"  id="prd_deposit">
                                 <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="" onkeypress="return isNumberKey(this, event);"/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="prd_weight">
                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -919,6 +919,15 @@
 <script>
     function addItem(flag){
         document.getElementById('set_add_flag').value = flag;
+
+        if(flag === 0){
+            $("#prd_deposit").hide();
+            $("#prd_weight").hide();
+        }else{
+            $("#prd_deposit").show();
+            $("#prd_weight").show();
+        }
+
     }
 
     // function editItem(prd_id, prd_name, prd_sku, prd_price, prd_quantity, prd_description, prd_reorder_point, sup_id){
