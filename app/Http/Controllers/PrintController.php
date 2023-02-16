@@ -215,6 +215,7 @@ class PrintController extends Controller
         ->orderBy('movement_logs.pdn_id', 'desc')
         ->paginate(10);
 
+
         return view('admin.print.productionreport', compact('production_reports', 'production_date_from', 'production_date_to'));
     }
     public function allproductionReports(Request $request)
@@ -231,6 +232,7 @@ class PrintController extends Controller
         ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
         ->orderBy('movement_logs.pdn_id', 'desc')
         ->paginate(10);
+
 
         return view('admin.print.productionreport', compact('all_production_reports', 'production_date_from', 'production_date_to'));
     }
