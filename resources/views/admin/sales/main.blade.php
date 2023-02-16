@@ -66,7 +66,7 @@
                                                     @endif
                                                     <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
                                                 @endforeach
-                                            @endif            
+                                            @endif
                                         </select>
                                     </form>
                                 </div>
