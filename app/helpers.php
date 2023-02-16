@@ -410,6 +410,35 @@ function subtract_qty($flag, $qty, $prd_id)
         ->update([
             'prd_leakers' => $scraps->prd_leakers - $qty 
         ]);
+    }   
+}
+
+function return_accessibles_prices($customer_id, $product_id)
+{
+    $accessibles_products = DB::table('customers')
+    ->where('cus_id', '=', $customer_id)
+    ->select('cus_accessibles')
+    ->first();
+    
+    $accessible_prices = DB::table('customers')
+    ->where('cus_id', '=', $customer_id)
+    ->select('cus_accessibles_prices')
+    ->first();
+    // dd($accessibles_products, $accessible_prices);
+    $accessibles_array = explode(",",$accessibles_products->cus_accessibles);
+    if(end($accessibles_array) == " " || end($accessibles_array) == ""){array_pop($accessibles_array);}
+
+    $prices_array = explode(",",$accessible_prices->cus_accessibles_prices);
+    if(end($prices_array) == " " || end($prices_array) == ""){array_pop($prices_array);}
+
+    $accessible_index = 0;
+    foreach($accessibles_array as $accessible)
+    {
+        if($accessible == $product_id){break;}
+        $accessible_index++;
     }
+    dd($prices_array[$accessible_index]);
+    $test = $prices_array[$accessible_index];
+    return $test;
 }
 ?>

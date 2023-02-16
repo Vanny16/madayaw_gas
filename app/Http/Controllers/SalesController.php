@@ -52,7 +52,7 @@ class SalesController extends Controller
 
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
-
+        // dd($cus_accessibles);
         $products = array();
 
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
@@ -69,8 +69,7 @@ class SalesController extends Controller
                 array_push($products, $product);
             }
         }
-
-        // dd($products);
+        dd($products);
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
