@@ -101,8 +101,8 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_empty_goods' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id'),
-            'pdn_id' => $get_pdn_id->pdn_id
+            'usr_id' => session('usr_id')
+            // 'pdn_id' => $get_pdn_id->pdn_id
         ]);  
     }
     elseif($flag == 2)
@@ -113,8 +113,8 @@ function record_movement($prd_id, $quantity, $flag)
             'prd_id' => $prd_id,
             'log_filled' => $quantity,
             'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id'),
-            'pdn_id' => $get_pdn_id->pdn_id
+            'usr_id' => session('usr_id')
+            // 'pdn_id' => $get_pdn_id->pdn_id
         ]); 
     }
     elseif($flag == 3)
@@ -162,7 +162,7 @@ function get_last_production_id()
     ->orderBy('pdn_id', 'desc')
     ->first();
 
-    return $production_logs->pdn_id;
+    // return $production_logs->pdn_id;
 }
 
 function get_quantity_of_canisters($prd_id, $flag)

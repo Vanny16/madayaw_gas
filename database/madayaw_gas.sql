@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-16 18:12:08
+Date: 2023-02-16 18:59:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,7 +105,7 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -149,6 +149,10 @@ INSERT INTO `movement_logs` VALUES ('36', '1', '3', '1200', '0', '0', '0', '0', 
 INSERT INTO `movement_logs` VALUES ('37', '1', '3', '0', '0', '1200', '0', '0', '1', '2023-02-16', '66');
 INSERT INTO `movement_logs` VALUES ('38', '1', '5', '0', '0', '1200', '0', '0', '1', '2023-02-16', '66');
 INSERT INTO `movement_logs` VALUES ('39', '1', '5', '840', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('40', '1', '4', '0', '0', '120', '0', '0', '1', '2023-02-16', null);
+INSERT INTO `movement_logs` VALUES ('41', '1', '3', '0', '0', '240', '0', '0', '1', '2023-02-16', null);
+INSERT INTO `movement_logs` VALUES ('42', '1', '3', '120', '0', '0', '0', '0', '1', '2023-02-16', null);
+INSERT INTO `movement_logs` VALUES ('43', '1', '4', '120', '0', '0', '0', '0', '1', '2023-02-16', null);
 
 -- ----------------------------
 -- Table structure for `oppositions`
@@ -166,14 +170,11 @@ CREATE TABLE `oppositions` (
   `acc_id` int(11) DEFAULT NULL,
   `ops_active` int(11) DEFAULT '1',
   PRIMARY KEY (`ops_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of oppositions
 -- ----------------------------
-INSERT INTO `oppositions` VALUES ('1', null, 'sdfsdsf', 'sfsdffs', 'sfsdffs', '0', null, 'sfsdffs', '1', '1');
-INSERT INTO `oppositions` VALUES ('2', '2d5kzyfqs41oh3pxdaklnc6ex94bg2aq', 'Tripler', 'TRS234', 'bb', '0', null, 'sdf', '1', '1');
-INSERT INTO `oppositions` VALUES ('3', 'zwy9y8c668t8mtr6ovyw0ufmgbsoqp22', 'Kardo', 'BHISD78', 'UId', '1200', null, null, '1', '1');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -262,11 +263,25 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
 -- ----------------------------
+INSERT INTO `quantity_logs` VALUES ('1', '1', '1', '1', '1000', '2023-02-16 18:35:12', null);
+INSERT INTO `quantity_logs` VALUES ('2', '1', '2', '1', '1000', '2023-02-16 18:35:25', null);
+INSERT INTO `quantity_logs` VALUES ('3', '1', '3', '1', '12000', '2023-02-16 18:39:06', null);
+INSERT INTO `quantity_logs` VALUES ('4', '1', '3', '1', '1200', '2023-02-16 18:39:41', null);
+INSERT INTO `quantity_logs` VALUES ('5', '1', '3', '1', '600', '2023-02-16 18:39:49', null);
+INSERT INTO `quantity_logs` VALUES ('6', '1', '3', '1', '600', '2023-02-16 18:40:20', null);
+INSERT INTO `quantity_logs` VALUES ('7', '1', '4', '1', '120', '2023-02-16 18:40:38', null);
+INSERT INTO `quantity_logs` VALUES ('8', '1', '1', '1', '1000', '2023-02-16 18:40:53', null);
+INSERT INTO `quantity_logs` VALUES ('9', '1', '3', '1', '240', '2023-02-16 18:40:59', null);
+INSERT INTO `quantity_logs` VALUES ('10', '1', '3', '1', '120', '2023-02-16 18:41:22', null);
+INSERT INTO `quantity_logs` VALUES ('11', '1', '3', '1', '120', '2023-02-16 18:42:17', null);
+INSERT INTO `quantity_logs` VALUES ('12', '1', '4', '1', '240', '2023-02-16 18:43:37', null);
+INSERT INTO `quantity_logs` VALUES ('13', '1', '4', '1', '120', '2023-02-16 18:44:04', null);
+INSERT INTO `quantity_logs` VALUES ('14', '1', '5', '1', '10', '2023-02-16 18:49:12', null);
 
 -- ----------------------------
 -- Table structure for `sales_reports`
@@ -282,26 +297,11 @@ CREATE TABLE `sales_reports` (
   `sls_time` time DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`sls_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sales_reports
 -- ----------------------------
-INSERT INTO `sales_reports` VALUES ('1', '-1', '1', '1', '0', '150', null, '42');
-INSERT INTO `sales_reports` VALUES ('2', '-1', '2', '1', '0', '2000', null, '42');
-INSERT INTO `sales_reports` VALUES ('3', '-1', '2', '1', '0', '2000', null, '42');
-INSERT INTO `sales_reports` VALUES ('4', '-1', '2', '1', '0', '2000', null, '42');
-INSERT INTO `sales_reports` VALUES ('5', '-1', '2', '1', '0', '2000', '11:07:01', '43');
-INSERT INTO `sales_reports` VALUES ('6', '-1', '2', '1', '0', '2000', '11:07:33', '43');
-INSERT INTO `sales_reports` VALUES ('7', '-1', '2', '1', '0', '2000', '11:07:36', '43');
-INSERT INTO `sales_reports` VALUES ('8', '-1', '1', '1', '0', '150', '11:08:03', '43');
-INSERT INTO `sales_reports` VALUES ('9', '-1', '1', '1', '0', '150', '00:28:09', '45');
-INSERT INTO `sales_reports` VALUES ('10', '-1', '1', '1', '0', '150', '00:44:51', '45');
-INSERT INTO `sales_reports` VALUES ('11', '-1', '2', '1', '0', '2000', '09:44:05', '48');
-INSERT INTO `sales_reports` VALUES ('12', '-1', '3', '12', '0', '240', '14:54:59', '48');
-INSERT INTO `sales_reports` VALUES ('13', '-1', '1', '12', '0', '1800', '14:55:45', '48');
-INSERT INTO `sales_reports` VALUES ('14', '-1', '3', '2', '0', '40', '17:16:40', '48');
-INSERT INTO `sales_reports` VALUES ('15', '-1', '2', '1', '0', '2000', '17:24:25', '48');
 
 -- ----------------------------
 -- Table structure for `stockin_logs`
@@ -318,13 +318,11 @@ CREATE TABLE `stockin_logs` (
   `log_scraps` decimal(10,0) DEFAULT '0',
   `log_date` date DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stockin_logs
 -- ----------------------------
-INSERT INTO `stockin_logs` VALUES ('1', '1', '2', '1', '0', '0', '0', '0', '2022-11-14');
-INSERT INTO `stockin_logs` VALUES ('2', '1', '2', '2', '0', '0', '0', '0', '2022-11-14');
 
 -- ----------------------------
 -- Table structure for `stock_statuses`
