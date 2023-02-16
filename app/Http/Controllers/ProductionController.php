@@ -43,28 +43,36 @@ class ProductionController extends Controller
         ->orderBy('pdn_id', 'desc')
         ->first();
 
-        if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
-        {
-            if($production_times->pdn_end_time <> 0)
+        $pdn_date = "";
+        $pdn_start_time = "";
+        $pdn_end_time = '-- : -- --'; 
+
+        if(isset($production_times)){
+            if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
             {
-                $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                if($production_times->pdn_end_time <> 0)
+                {
+                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                    $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                }
+                else
+                {
+                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                    $pdn_end_time = '-- : -- --'; 
+                    // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                }   
             }
             else
             {
                 $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
                 $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                $pdn_end_time = '-- : -- --'; 
-                // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-            }   
+                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+            }
         }
-        else
-        {
-            $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-            $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-            $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-        }
+
+        
         
         return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
     }

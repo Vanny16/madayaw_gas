@@ -17,14 +17,14 @@ function check_production_log()
     ->orderBy('pdn_id', 'desc')
     ->first();
 
-    if($production_logs->pdn_end_time <> null)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    // if($production_logs->pdn_end_time <> null)
+    // {
+    //     return true;
+    // }
+    // else
+    // {
+    //     return false;
+    // }
 }
 
 function get_quantity($flag, $prd_id)
