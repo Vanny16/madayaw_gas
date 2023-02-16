@@ -332,8 +332,12 @@
                                                                                         <div class="row">
                                                                                             <?php 
                                                                                                 $accessibles = explode(",",$customer->cus_accessibles);
-                                                                                                if(end($accessibles) == " " || end($accessibles) == "")
-                                                                                                {array_pop($accessibles);}
+                                                                                                if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
+
+                                                                                                $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
+                                                                                                // if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){array_pop($accessibles_prices);}
+                                                                                                
+                                                                                                $counter = 0;
                                                                                             ?>
                                                                                             <div class="col-md-12">
                                                                                                 @if(is_array($products) || is_object($products))
@@ -342,21 +346,22 @@
                                                                                                             @if(is_null($accessibles))
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]">
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
                                                                                                             @else
-                                                                                                                @php($check_indicator = "")
                                                                                                                 @foreach($accessibles as $accessible)
+                                                                                                                    @php($check_indicator = "")
+                                                                                                                    @php($displayed_price = "")
                                                                                                                     @if($product->prd_id == $accessible)
                                                                                                                         @php($check_indicator = "checked")
+                                                                                                                        @php($counter++)
                                                                                                                         @break
                                                                                                                     @else
-                                                                                                                        @php($check_indicator = "")
+                                                                                                                        @php($displayed_price = $product->prd_price)
                                                                                                                     @endif
                                                                                                                 @endforeach
-                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
+                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
-                                                                                                                <input type="text" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="<?php echo($check_indicator)?>" hidden>
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($counter)?>">
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
@@ -506,9 +511,9 @@
                                                     @if(is_array($products) || is_object($products))
                                                         @foreach($products as $product)
                                                         <tr>
-                                                            <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}"></td>
+                                                            <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}"></td>
                                                             <td><label for="">{{$product->prd_name}}</label></td>
-                                                            <td><input type="number" class="form-control" id="product{{$product->prd_id}}" name="product{{$product->prd_id}}"></td>
+                                                            <td><input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_price}}"></td>
                                                         </tr>
                                                         @endforeach
                                                     @endif
@@ -561,17 +566,16 @@
 </div>
 
 <script>
-    // function changePricing() {
-    //     checkedValues = "";
-    //     $(".customer-select:checked").each(function() {
+    function changePricing() {
+        checkedValues = "";
+        $(".customer-select:checked").each(function() {
 
-    //     // Push the value of the checked checkbox into the array
-    //     checkedValues = checkedValues + $(this).val()+",";
-    //     });
+        // Push the value of the checked checkbox into the array
+        checkedValues = checkedValues + $(this).val()+",";
+        });
 
-    //     alert(checkedValues);
-    //     document.getElementById("selected-customers").value = checkedValues;
-    // }
+        document.getElementById("selected-customers").value = checkedValues;
+    }
 
     $(document).ready(function(){
         $("#search_customers").on("keyup", function() {

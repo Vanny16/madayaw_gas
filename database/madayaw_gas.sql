@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-15 18:04:41
+Date: 2023-02-16 15:18:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,35 +52,18 @@ CREATE TABLE `customers` (
   `cus_image` varchar(255) DEFAULT NULL,
   `cus_active` tinyint(11) DEFAULT '1',
   PRIMARY KEY (`cus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
-INSERT INTO `customers` VALUES ('0', '1', 'fafuydtfadfasudgag7qgadkdasdasdq', 'WALK-IN', 'WALK-IN', null, null, null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('1', '1', 'k2ffps6z9q3kdoq8a9v5f7sfptmie3xi', 'Raevin Jhon Palacio', 'Indangan, Davao City', '09876789876', '50', null, null, 'Bugu ni sya bataa', '1.jpg', '1');
-INSERT INTO `customers` VALUES ('2', '1', 'y7x0gpa9h0pidh1dzh2teaqbatmw740y', 'Klein Arandain', 'Baghdad, Bicol, Davao City', '09112345678', '5', null, null, 'Gwenchanaeyo', '2.jpg', '1');
-INSERT INTO `customers` VALUES ('3', '1', 'nzvhw6youarmhxy81sw759p999qjt97l', 'Kim Tae Hee', 'Seoulup, Davao Occidental', '09998789698', '5', null, null, 'Korekong', '3.jpg', '1');
-INSERT INTO `customers` VALUES ('38', '1', 'yx105wevbih5hfcxqlxa1r1jh0pmcrb5', 'Yllen Marquez', 'Toril, Davao Manila City Cebugay', '09998998765', '5', null, null, 'gwapa', '38.jpg', '1');
-INSERT INTO `customers` VALUES ('39', '1', 'zajnwmfcqz1rdt6rfep3k1cby9c2e1mp', 'Ylona Musk', 'New York Singapore', '09867557523', '5', null, null, 'Budots', '39.jpg', '1');
-INSERT INTO `customers` VALUES ('40', '1', '06ohp2x82zl91t1u70wr3og96u0v1wh9', 'GANI', 'iNAG', '09809890809', '5', null, null, null, '40.jpg', '1');
-INSERT INTO `customers` VALUES ('41', '1', 'z80bs6ipe21dwvakoin4a5asku6uz1c5', 'asas', 'asasa', '12321321321', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('42', '1', 'vkv9ojmfnnhjge29sx41s4f6f1gdlve4', 'asdada', '234234234', '34234234234', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('43', '1', 'u38hdqbdpai43jh49melxhzpfyy8lxz4', 'Segismundo', 'HIHIHI', '09890790182', '5', null, null, null, '43.jpg', '1');
-INSERT INTO `customers` VALUES ('44', '1', 'u6mj12uj3augbhco88dnr3lsrkjm6l53', 'Lee Joon Gi', 'Arthdal', '09877566756', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('45', '1', 'rrtmausvrja4jv1y2g2wyz23cg52varu', 'Lee Seung Gi', 'Agdao', '09872342434', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('46', '1', 'v1la2ny5eoqw9w9jurpd1c0gj0zhv92i', 'Song Hye Kyo', 'Malvar', '09856646464', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('47', '1', 'nq0fzun6zg93a97l6qh26jxs72rntjzc', 'Jung Hae In', 'Bablok', '09097898789', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('48', '1', 'fwcm46udocptbd9cci9dz9ayami0mh1q', '34534534', '345345345', '54345345345', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('49', '1', 'm6s8ukdtda0tqn0akrcfx1h3h6vhbw8u', 'sdsdsd', '345345345', '54345345345', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('50', '1', 'otjd79ssv5jq1utnncvtsht9rq82ov7m', 'Baby', 'NONO', '34323453453', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('51', '1', '4dk7po8svvbm5sy4vvmj3fpcjcvzay32', 'Chloe Grace Moretz', 'New York', '22131232131', '5', null, null, 'gwapa', '51.jpg', '1');
-INSERT INTO `customers` VALUES ('52', '1', 'wogwtwtuz8xh6odvjugtmplllevqrkou', 'skalgy', 'Maplop', '09879878768', '5', null, null, 'hahahah', null, '1');
-INSERT INTO `customers` VALUES ('53', '1', 'yogv2zn56lq42cntyw5g43a7qazi8cpq', 'bambam', 'makmak', '09324242342', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('54', '1', 'w23lrdly209omdzj0dysa6jgdvvso7m4', 'tetest', 'asdfa', '12313213123', '5', null, null, null, null, '1');
-INSERT INTO `customers` VALUES ('55', '1', '8j83vu0b2nre14hlpj3poiti7r225hci', 'testestestestest', 'testestestestest', '12312313131', '5', '1, 3, ', null, null, null, '1');
-INSERT INTO `customers` VALUES ('56', '1', 'ane878wuk7jdxlnya9oddgv4sfhgp76t', 'nightTest', 'nightTest', '12131231312', '5', '1,3,8,9', null, null, null, '1');
-INSERT INTO `customers` VALUES ('58', '1', 'adsdasdsadaihauytgab78asd', 'WALK-IN', 'WALK-IN', null, null, null, null, null, null, '1');
+INSERT INTO `customers` VALUES ('1', '1', 'w0o0ax1hx8wzxwmwfb2depx9t8pi9tl2', 'WALK IN', 'NOT SPECIFIED', '00000000000', null, '1,3,8,9,11,12,13,14,15,16,', null, null, null, '1');
+INSERT INTO `customers` VALUES ('2', '1', 'g5b92umehxcxua0x1wkcukf3hizo32z3', 'Raevin Jhon Palacio', 'Seoul Tan Kudarat, South Kortabato', '09987897756', null, '1,3,8,11,12,14,15,16,', null, null, null, '1');
+INSERT INTO `customers` VALUES ('3', '1', '22t02wck5o9qvwpjbinxx6vb37sb31sy', 'Klein Aranas', 'Toril, Davao Manila City Cebugay', '09123234334', null, '1,3,8,9,11,12,13,14,15,', null, null, null, '1');
+INSERT INTO `customers` VALUES ('4', '1', 'looezqlgs8ey6j50a6aeprv6trequdbg', 'Kim Tae Hee', 'Seoulup, Davao Occidental', '09879878768', null, '2,3,', null, null, null, '1');
+INSERT INTO `customers` VALUES ('5', '1', 'k1nxdsvvikf6yyn44h4sfugj0m5drtm7', 'Myoui Mina', 'Indangan, Davao City', '09517876873', null, '2,3,5,6,', null, null, null, '1');
+INSERT INTO `customers` VALUES ('6', '1', 'vly46pezfh5l48ttpyjw0tket0yu2vvj', 'Kim Da Hyun', 'Baghdad, Bicol, Davao City', '09546123234', null, '2,3,5,6,', '120.00,3,120.00,5,', null, null, '1');
+INSERT INTO `customers` VALUES ('7', '1', 'llgb10x2qcn0nx8mjm395jei50m4e2l6', 'Shin Min A', 'Seuolup', '09986235434', null, '2,5,', '120.00,120.00,', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `fuel_prices`
@@ -129,7 +112,7 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -162,6 +145,17 @@ INSERT INTO `movement_logs` VALUES ('25', '1', '3', '0', '0', '0', '0', '1', nul
 INSERT INTO `movement_logs` VALUES ('26', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
 INSERT INTO `movement_logs` VALUES ('27', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
 INSERT INTO `movement_logs` VALUES ('28', '1', '3', '0', '0', '0', '1', '0', null, '2023-02-09', '66');
+INSERT INTO `movement_logs` VALUES ('29', '1', '2', '0', '0', '1440', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('30', '1', '2', '240', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('31', '1', '2', '144', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('32', '1', '2', '6', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('33', '1', '2', '1', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('34', '1', '2', '12', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('35', '1', '3', '0', '0', '1200', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('36', '1', '3', '1200', '0', '0', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('37', '1', '3', '0', '0', '1200', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('38', '1', '5', '0', '0', '1200', '0', '0', '1', '2023-02-16', '66');
+INSERT INTO `movement_logs` VALUES ('39', '1', '5', '840', '0', '0', '0', '0', '1', '2023-02-16', '66');
 
 -- ----------------------------
 -- Table structure for `oppositions`
@@ -298,27 +292,18 @@ CREATE TABLE `products` (
   `prd_weight` decimal(10,0) DEFAULT NULL,
   `prd_type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES ('1', '1', 'v8ekyfm1otz5574togwczrlv8bckqcgn', 'Botin', 'Can', 'TFY86', null, '150.00', '50', '-55.00', '0.00', '255.00', '0.00', '0', '10.00', null, '2', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('2', '1', 'j0tvnf2d1nxh336618ovmj168ot5c9up', 'Gas Stove', 'Single Burner', 'GHG87678', null, '2000.00', '0', '41.00', '0.00', '179.00', '0.00', '0', '50.00', null, '3', '1', '0', '0', '1', '100', null);
-INSERT INTO `products` VALUES ('3', '1', 'sign3b6inu2a58tl13njkh03g1fkmxyg', 'Madayaw Round', 'Round Butane Can', 'TEST0123456789', null, '20.00', '100', '95.00', '4.00', '233.00', '22.00', '18', '50.00', null, '47', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('4', '1', 'ij1wajgnaj5z06aujgqv36ins9urm2u9', 'Butane Cap', 'Cap for the butane cans', 'TESTC4P4BU74N3', null, '0.50', '50', '14808.00', '0.00', '19.00', '0.00', '0', '2000.00', null, '47', '1', '0', '1', '0', '170', null);
-INSERT INTO `products` VALUES ('5', '1', 'xd6wsvy4yablidejcak1knk8ruqv1tm3', 'Butane Can', 'can for butane', 'TESTC4N4BU74N3', null, '2.00', '50', '9795.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '2', '1', '0', '1', '0', null, null);
-INSERT INTO `products` VALUES ('6', '1', '0a0vbc4af603skdaa857ucqxz7m4tm2n', 'Butane Valve', 'valve for the butane cans', 'TESTV4LV34BU74N3', null, '3.00', '50', '9794.00', '0.00', '19.00', '0.00', '0', '5000.00', null, '52', '1', '0', '1', '0', null, null);
-INSERT INTO `products` VALUES ('7', '1', 'z2lv0fmn11wd3j6ximnk82bysx7a3r38', 'Secret', 'For Canister', 'SEC878978', null, '800.00', '50', '9807.00', '0.00', '19.00', '0.00', '0', '100.00', null, '52', '1', '0', '1', '0', null, null);
-INSERT INTO `products` VALUES ('8', '1', '8r9f0dor9l4px2fprrpas1jre4ddqeh2', 'Madayaw Square', 'bangga Buto', 'MNAS87678', null, '150.00', '50', '-245.00', '0.00', '179.00', '1.00', '5', '0.00', null, '4', '1', '1', '1', '1', '17', null);
-INSERT INTO `products` VALUES ('9', '1', 'xaf1j0efoh6uvy8rqxoxhlgwfvql1dc4', 'tesWeight', 'testforweight', 'TWNEN325132', null, '232.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, '17', null);
-INSERT INTO `products` VALUES ('10', '1', 'hx5q5g7qbaaozcs2dku49hxoczq7no90', 'Tripler', 'gg', 'TR897234', null, '60.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '45555.00', null, '1', '1', '0', '1', null, null, null);
-INSERT INTO `products` VALUES ('11', '1', 'ndasdgvjgabu362sejolqrsarqzrlhe1', 'Madayaw Triangle', 'MT018230705970580MT018230705970580', 'MT018230705970580', null, '170.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '2000.00', null, '1', '1', '1', '1', null, null, null);
-INSERT INTO `products` VALUES ('12', '1', 'lw6v6d61xsqhc4giyesbj8pkokbmsaib', 'Madayaw Oblong', 'For Canister', 'OBKLG768', null, '100.00', '100', '878.00', '0.00', '122.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '140', null);
-INSERT INTO `products` VALUES ('13', '1', 'z3j0lbywcvq3osq87cqxribe2i2hfvv2', 'Tripler', 'BUGU', 'TUI876', null, null, '1', '0.00', '0.00', '0.00', '0.00', '0', null, null, null, '1', '1', '1', null, null, null);
-INSERT INTO `products` VALUES ('14', '1', '8gjyl8geie8z5f1retzt18eavn4id1da', 'Madayaw Rectangle', 'BOGO', 'RE767923', null, '120.00', '100', '1000.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '3', '1', '1', '1', null, '147', null);
-INSERT INTO `products` VALUES ('15', '1', '5h5k4vp1mqj5tow7in50k51xlwqf41i3', 'Madayaw Trapezoid', 'Madayaw Trapezoid', 'Madayaw Trapezoid', null, '171.00', '17', '76.00', '0.00', '24.00', '0.00', '0', '1700.00', null, '58', '1', '1', '1', '1', '170', null);
-INSERT INTO `products` VALUES ('16', '1', 'tvtwq8hrn4wfet0upici6iv898crwy2z', 'Madayaw Dabaw', 'bobo', 'MUIG87678', null, '130.00', '17', '1000.00', '0.00', '0.00', '0.00', '0', '100.00', null, '3', '1', '1', '1', '1', '170', null);
+INSERT INTO `products` VALUES ('1', '1', 'qrpkd4p4dfdsotw1wuve7wpafsh4kxgq', 'Can', 'For Canister', 'BUIG7', null, '120.00', '0', '4960.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '59', '1', '0', '1', '0', null, null);
+INSERT INTO `products` VALUES ('2', '1', '02mjydqpqfuy607g0fm44dkh7t20qiue', 'Madayaw Round', 'LPG Content MR', 'MR576', null, '120.00', '100', '379.00', '0.00', '1061.00', '0.00', '0', '1000.00', null, '59', '1', '1', '1', '1', '147', null);
+INSERT INTO `products` VALUES ('3', '1', 'dgqaghxk3z9uuv9b2uimqzh0ffythltd', 'Madayaw Square', 'MS LPG', 'MS768', null, '120.00', '100', '1151.00', '0.00', '1249.00', '0.00', '0', '1000.00', null, '59', '1', '1', '1', '1', '140', null);
+INSERT INTO `products` VALUES ('4', '1', '7o20zok87qh3ro8ttf63pa5y9v2fq17w', 'Valve', 'For Canister', 'VJH80', null, '10.00', '0', '98800.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '59', '1', '0', '1', '0', null, null);
+INSERT INTO `products` VALUES ('5', '1', 'ipz3aih812joichi6czb74kw8oibhuld', 'Madayaw Oblong', 'MO LPG', 'MO9879', null, '100.00', '100', '840.00', '0.00', '360.00', '0.00', '0', '1000.00', null, '59', '1', '1', '1', '1', '200', null);
+INSERT INTO `products` VALUES ('6', '1', '7i8kp0tqrklbythf0tnx6zs130qxpf2o', 'Gas Stove', 'GS Madayaw', 'GS678', null, '1000.00', '0', '999.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '59', '1', '0', '0', '1', '0', null);
+INSERT INTO `products` VALUES ('8', '1', '1c7tv4xait34bcfvweheu7bnn29mlb3c', 'Gas tank', 'Stove', 'GT879', null, '1000.00', '0', '10000.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '59', '1', '0', '0', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -337,7 +322,7 @@ CREATE TABLE `purchases` (
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
@@ -357,6 +342,11 @@ INSERT INTO `purchases` VALUES ('12', '7', '12', '2', '0', '0.00', '2400.00', '2
 INSERT INTO `purchases` VALUES ('13', '8', '12', '2', '0', '0.00', '2400.00', '24', '100.00', '2', '0');
 INSERT INTO `purchases` VALUES ('14', '9', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
 INSERT INTO `purchases` VALUES ('15', '10', '1', '2', '0', '0.00', '3600.00', '24', '150.00', '2', '0');
+INSERT INTO `purchases` VALUES ('16', '11', '16', '2', '0', '0.00', '3120.00', '24', '130.00', '2', '0');
+INSERT INTO `purchases` VALUES ('17', '12', '3', '2', '1', '0.00', '3000.00', '25', '120.00', '2', '1');
+INSERT INTO `purchases` VALUES ('18', '13', '2', '2', '0', '0.00', '2880.00', '24', '120.00', '2', '0');
+INSERT INTO `purchases` VALUES ('19', '14', '6', '0', '1', '0.00', '1000.00', '1', '1000.00', '0', '0');
+INSERT INTO `purchases` VALUES ('20', '15', '3', '2', '0', '0.00', '2880.00', '24', '120.00', '2', '0');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -371,7 +361,7 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -462,6 +452,30 @@ INSERT INTO `quantity_logs` VALUES ('83', '1', '14', '1', '900', '2023-02-10 13:
 INSERT INTO `quantity_logs` VALUES ('84', '1', '14', '1', '100', '2023-02-10 13:46:54', '66');
 INSERT INTO `quantity_logs` VALUES ('85', '1', '15', '1', '100', '2023-02-15 17:20:24', '66');
 INSERT INTO `quantity_logs` VALUES ('86', '1', '16', '1', '1000', '2023-02-15 17:22:00', '66');
+INSERT INTO `quantity_logs` VALUES ('87', '1', '2', '1', '1442', '2023-02-16 10:51:55', '66');
+INSERT INTO `quantity_logs` VALUES ('88', '1', '2', '1', '1440', '2023-02-16 10:52:09', '66');
+INSERT INTO `quantity_logs` VALUES ('89', '1', '1', '1', '10000', '2023-02-16 10:53:04', '66');
+INSERT INTO `quantity_logs` VALUES ('90', '1', '2', '1', '1440', '2023-02-16 10:53:13', '66');
+INSERT INTO `quantity_logs` VALUES ('91', '1', '2', '1', '240', '2023-02-16 10:59:17', '66');
+INSERT INTO `quantity_logs` VALUES ('92', '1', '2', '1', '144', '2023-02-16 10:59:56', '66');
+INSERT INTO `quantity_logs` VALUES ('93', '1', '2', '1', '12000', '2023-02-16 11:00:24', '66');
+INSERT INTO `quantity_logs` VALUES ('94', '1', '2', '1', '6', '2023-02-16 11:00:55', '66');
+INSERT INTO `quantity_logs` VALUES ('95', '1', '2', '1', '1', '2023-02-16 11:01:15', '66');
+INSERT INTO `quantity_logs` VALUES ('96', '1', '2', '1', '12', '2023-02-16 11:01:27', '66');
+INSERT INTO `quantity_logs` VALUES ('97', '1', '2', '1', '1200', '2023-02-16 11:01:48', '66');
+INSERT INTO `quantity_logs` VALUES ('98', '1', '2', '1', '1201201', '2023-02-16 11:02:08', '66');
+INSERT INTO `quantity_logs` VALUES ('99', '1', '2', '1', '1440', '2023-02-16 11:02:27', '66');
+INSERT INTO `quantity_logs` VALUES ('100', '1', '3', '1', '144', '2023-02-16 11:03:51', '66');
+INSERT INTO `quantity_logs` VALUES ('101', '1', '3', '1', '1200', '2023-02-16 11:04:02', '66');
+INSERT INTO `quantity_logs` VALUES ('102', '1', '3', '1', '1441', '2023-02-16 11:04:21', '66');
+INSERT INTO `quantity_logs` VALUES ('103', '1', '3', '1', '1200', '2023-02-16 11:04:36', '66');
+INSERT INTO `quantity_logs` VALUES ('104', '1', '3', '1', '1200', '2023-02-16 11:04:46', '66');
+INSERT INTO `quantity_logs` VALUES ('105', '1', '4', '1', '100000', '2023-02-16 11:12:22', '66');
+INSERT INTO `quantity_logs` VALUES ('106', '1', '5', '1', '1200', '2023-02-16 11:15:20', '66');
+INSERT INTO `quantity_logs` VALUES ('107', '1', '5', '1', '1440', '2023-02-16 11:15:27', '66');
+INSERT INTO `quantity_logs` VALUES ('108', '1', '5', '1', '840', '2023-02-16 11:15:34', '66');
+INSERT INTO `quantity_logs` VALUES ('109', '1', '6', '1', '1000', '2023-02-16 11:30:49', '66');
+INSERT INTO `quantity_logs` VALUES ('110', '1', '8', '1', '10000', '2023-02-16 12:05:42', '66');
 
 -- ----------------------------
 -- Table structure for `sales_reports`
@@ -552,7 +566,7 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(11) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
@@ -576,6 +590,7 @@ INSERT INTO `suppliers` VALUES ('55', '3nsdo41avwacw2p5fr58xt3mqdscup42', '1', '
 INSERT INTO `suppliers` VALUES ('56', 'a97zgdb0johzeh60oxeadr0h2m9xdx5x', '1', 'newtest1', 'newtest1', '12321231313', null, null, '1');
 INSERT INTO `suppliers` VALUES ('57', 'p9pydgsiunst2q1w9z611gowowrel504', '1', 'testsupplier2', 'testsupplier2', '13132131331', null, null, '1');
 INSERT INTO `suppliers` VALUES ('58', 'rtk8wbvudy7i2pd5cqjoev7fu7b68wwd', '1', 'Madayaw Name House', 'Madayaw Name House', '12312312312', null, null, '1');
+INSERT INTO `suppliers` VALUES ('59', 'x0e3jvd9mq8emj98oxcm0q8wftsw180d', '1', 'Madayaw Gas', 'Bunawan, Public Market', '09878967782', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`
@@ -609,7 +624,7 @@ CREATE TABLE `transactions` (
   `trx_balance` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
@@ -624,6 +639,11 @@ INSERT INTO `transactions` VALUES ('7', '20230215-7', '1', '1', '0', '2023-02-15
 INSERT INTO `transactions` VALUES ('8', '20230215-8', '1', '1', '0', '2023-02-15 05:59:10', '2023-02-15', '05:59:10', '3000', '600', '2400');
 INSERT INTO `transactions` VALUES ('9', '20230215-9', '1', '1', '0', '2023-02-15 06:00:36', '2023-02-15', '06:00:36', '4000', '400', '3600');
 INSERT INTO `transactions` VALUES ('10', '20230215-10', '1', '1', '0', '2023-02-15 06:04:03', '2023-02-15', '06:04:03', '4000', '400', '3600');
+INSERT INTO `transactions` VALUES ('11', '20230216-11', '1', '1', '0', '2023-02-16 09:46:21', '2023-02-16', '09:46:21', '3120', '0', '3120');
+INSERT INTO `transactions` VALUES ('12', '20230216-12', '1', '1', '4', '2023-02-16 11:28:39', '2023-02-16', '11:28:39', '3000', '0', '3000');
+INSERT INTO `transactions` VALUES ('13', '20230216-13', '1', '1', '4', '2023-02-16 11:36:31', '2023-02-16', '11:36:31', '3000', '120', '2880');
+INSERT INTO `transactions` VALUES ('14', '20230216-14', '1', '1', '1', '2023-02-16 12:14:25', '2023-02-16', '12:14:25', '1000', '0', '1000');
+INSERT INTO `transactions` VALUES ('15', '20230216-15', '1', '1', '3', '2023-02-16 01:42:42', '2023-02-16', '01:42:42', '2880', '0', '2880');
 
 -- ----------------------------
 -- Table structure for `users`
@@ -641,18 +661,12 @@ CREATE TABLE `users` (
   `usr_active` tinyint(255) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', 'ewx58n5e6syi8vqj9t2cix1urygehofa', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tann Kudarat, South Kortabato', '1.png', '1', '1');
-INSERT INTO `users` VALUES ('2', '1', 's3anhknpd87r3fbdx0icyrq6nm99xr67', 'Xabara Satirani', 'xabara', '0425fd883a2436611041284f0fd3c1b2', 'Jubinol', '2.jpg', '1', '2');
-INSERT INTO `users` VALUES ('3', '1', 'lv8r2fyf3gstlyp3o06l9k6fbbs4oh2k', 'Yoo In Na', 'yooinah', 'f9ed4bdb724da4c8ff4f643641335e9b', 'Toodongie Jang, Seoul, South Korea', '3.jpg', '1', '3');
-INSERT INTO `users` VALUES ('4', '1', 'c238f96ny7lpt1kcmmsxmk6ru753r2kl', 'Kim Hee Ae', 'kimheeae', '65e63fefb00486abd78b96729ff6f7c6', 'Seoultan Kudarat, Manila, Philippines', '4.jpg', '0', '2');
-INSERT INTO `users` VALUES ('5', '1', 'xxtal1sdqp1ww8fx5tuk20tv7l2rqq9s', 'Son Ye Ji', 'sonyeji', 'bf5e60282c1176ba438c7fcaa2bb6fd7', 'Iran Iwalk', null, '1', '3');
-INSERT INTO `users` VALUES ('6', '1', '826hl7u51lvi1ko8yfzy9vvat65j9aiu', 'Chloe Grace Moretz', 'cgmoretz', '16291f5d11553b3e71104d6ac7f5ae41', 'America', '6.jpg', '1', '2');
-INSERT INTO `users` VALUES ('7', '1', 'ha3egb7wywbs30yvmnsfij9rs2148ce1', 'Ma Dong Sok', 'madongsok', '90514a444e03185e003b08ede2dcf706', 'Incheon, Quirino St., Davao City, Philippines', '7.jpg', '1', '2');
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, null, '1', '1');
 
 -- ----------------------------
 -- Table structure for `user_types`

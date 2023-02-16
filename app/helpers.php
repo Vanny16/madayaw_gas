@@ -410,6 +410,6 @@ function subtract_qty($flag, $qty, $prd_id)
         ->update([
             'prd_leakers' => $scraps->prd_leakers - $qty 
         ]);
-    }
+    }   
 }
 ?>
