@@ -323,7 +323,7 @@ class CustomerController extends Controller
         $selected_array = explode(",",$selected_customers);
         if(end($selected_array) == " " || end($selected_array) == ""){array_pop($selected_array);}
 
-        // dd($selected_array);
+        // dd($selected_customers); 
 
         foreach($selected_array as $selected_customer)
         {
