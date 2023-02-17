@@ -526,13 +526,13 @@
                                                 <div class="col-md-6">
                                                     @if(is_array($products) || is_object($products))
                                                         @foreach($products as $product)
-                                                        
+                                                        <tr>
                                                             <div class="form-check">
-                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}">
-                                                                <label for="">{{$product->prd_name}}</label>
-                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}">
+                                                                <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}"></td>
+                                                                <td><label for="">{{$product->prd_name}}</label></td>
+                                                                <td><input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}"></td>
                                                             </div>
-                                                        
+                                                        </tr>
                                                         @endforeach
                                                     @endif
                                                 </div>
