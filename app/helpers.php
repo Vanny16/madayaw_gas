@@ -16,15 +16,22 @@ function check_production_log()
     $production_logs = DB::table('production_logs')
     ->orderBy('pdn_id', 'desc')
     ->first();
-
-    // if($production_logs->pdn_end_time <> null)
-    // {
-    //     return true;
-    // }
-    // else
-    // {
-    //     return false;
-    // }
+    
+    if(isset($production_logs))
+    {
+        if($production_logs->pdn_end_time <> null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return true;
+    }
 }
 
 function get_quantity($flag, $prd_id)
@@ -93,67 +100,74 @@ function record_movement($prd_id, $quantity, $flag)
     ->first();
 
     // dd($get_pdn_id);
-    if($flag == 1)
+    if(isset($get_pdn_id))
     {
-        DB::table('movement_logs')  
-        ->insert([ 
-            'acc_id' => session('acc_id'),
-            'prd_id' => $prd_id,
-            'log_empty_goods' => $quantity,
-            'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id')
-            // 'pdn_id' => $get_pdn_id->pdn_id
-        ]);  
+        if($flag == 1)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_empty_goods' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]);  
+        }
+        elseif($flag == 2)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_filled' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
+        elseif($flag == 3)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_leakers' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
+        elseif($flag == 4)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_for_revalving' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
+        elseif($flag == 5)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_scraps' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
     }
-    elseif($flag == 2)
+    else
     {
-        DB::table('movement_logs')  
-        ->insert([ 
-            'acc_id' => session('acc_id'),
-            'prd_id' => $prd_id,
-            'log_filled' => $quantity,
-            'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id')
-            // 'pdn_id' => $get_pdn_id->pdn_id
-        ]); 
+
     }
-    elseif($flag == 3)
-    {
-        DB::table('movement_logs')  
-        ->insert([ 
-            'acc_id' => session('acc_id'),
-            'prd_id' => $prd_id,
-            'log_leakers' => $quantity,
-            'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id'),
-            'pdn_id' => $get_pdn_id->pdn_id
-        ]); 
-    }
-    elseif($flag == 4)
-    {
-        DB::table('movement_logs')  
-        ->insert([ 
-            'acc_id' => session('acc_id'),
-            'prd_id' => $prd_id,
-            'log_for_revalving' => $quantity,
-            'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id'),
-            'pdn_id' => $get_pdn_id->pdn_id
-        ]); 
-    }
-    elseif($flag == 5)
-    {
-        DB::table('movement_logs')  
-        ->insert([ 
-            'acc_id' => session('acc_id'),
-            'prd_id' => $prd_id,
-            'log_scraps' => $quantity,
-            'log_date' => DB::raw('CURRENT_TIMESTAMP'),
-            'usr_id' => session('usr_id'),
-            'pdn_id' => $get_pdn_id->pdn_id
-        ]); 
-    }
-    
+
 }
 
 function get_last_production_id()
@@ -262,18 +276,25 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_active','<>','0')    
         ->get();
     
-        foreach ($raw_materials as $raw_material)
+        if(isset($raw_materials))
         {
-            if((float)$raw_material->prd_quantity >= $qty)
+            foreach ($raw_materials as $raw_material)
             {
-                continue;
+                if((float)$raw_material->prd_quantity >= $qty)
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
-        }
         return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     //FOR FILLING CANISTERS
     elseif($flag == 2)
@@ -286,18 +307,25 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->get();
 
-        foreach ($empty_goods as $empty_good)
+        if(isset($empty_goods))
         {
-            if((float)$empty_good->prd_empty_goods >= $qty)
+            foreach ($empty_goods as $empty_good)
             {
-                continue;
-            }
-            else
-            {
-                return false;
-            }
-        }
+                if((float)$empty_good->prd_empty_goods >= $qty)
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }    
         return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     //FOR REVALVING OR SCRAPPING LEAKERS 
     elseif($flag == 4 || $flag == 5)
@@ -309,18 +337,25 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->get();
 
-        foreach ($leakers as $leaker)
+        if(isset($leakers))
         {
-            if((float)$leaker->prd_leakers >= $qty)
+            foreach ($leakers as $leaker)
             {
-                continue;
+                if((float)$leaker->prd_leakers >= $qty)
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return true;
         }
-        return true;
+        else
+        {
+            return false;
+        }
     }
 }
 
@@ -337,6 +372,15 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_active','<>','0')
         ->get();
 
+        if(isset($raw_materials))
+        {
+            $new_quantity= $raw_materials[$x]->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
+
         for($x = 0 ; sizeOf($raw_materials) - 1 >= $x ; $x++)
         {
             DB::table('products')        
@@ -345,7 +389,7 @@ function subtract_qty($flag, $qty, $prd_id)
             ->where('prd_for_production','=','1')
             ->where('prd_is_refillable','=','0')
             ->update([
-                'prd_quantity' => $raw_materials[$x]->prd_quantity - $qty 
+                'prd_quantity' => $new_quantity
             ]);
 
         }
@@ -360,7 +404,14 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->first();
 
-        // dd($canister, $canister->prd_empty_goods - $qty );
+        if(isset($raw_materials))
+        {
+            $new_quantity= $canister[$x]->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
 
         DB::table('products')        
         ->where('prd_id', '=', $canister->prd_id)
@@ -381,7 +432,14 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->first();
 
-        // dd($canister, $canister->prd_empty_goods - $qty );
+        if(isset($raw_materials))
+        {
+            $new_quantity= $revalves[$x]->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
 
         DB::table('products')        
         ->where('prd_id', '=', $revalves->prd_id)
@@ -401,6 +459,15 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->first();
+
+        if(isset($raw_materials))
+        {
+            $new_quantity= $scraps[$x]->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
 
         DB::table('products')        
         ->where('prd_id', '=', $scraps->prd_id)

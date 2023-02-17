@@ -336,7 +336,6 @@ class ProductionController extends Controller
         }
         elseif($flag == 4)
         {
-            
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY FROM LEAKERS TO REVALVING 
