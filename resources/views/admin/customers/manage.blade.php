@@ -261,12 +261,12 @@
                                                                             @foreach($accessibles as $key => $accessible)
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
-                                                                                        {{--@php(dd($key))
+                                                                                        {{-- @php(dd($key))
                                                                                         @php($prd_accessible = $product->prd_name)
                                                                                             <span class="badge badge-pill badge-primary">₱ </span>
                                                                                             <a class="lead"> | </a>
                                                                                             <span class="badge badge-light"><?php echo (float)$accessibles_prices[$key] + $product->prd_deposit ?></span>
-                                                                                            <br>--}}
+                                                                                            <br> --}}
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
@@ -348,7 +348,7 @@
                                                                                                 @if(is_array($products) || is_object($products))
                                                                                                     @foreach($products as $product)
                                                                                                         <div class="col-6 required-checkbox">    
-                                                                                                            @if($accessibles == "")
+                                                                                                            @if(count($accessibles) < 1)
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}">
                                                                                                                 <label for="">{{$product->prd_name}}</label>
                                                                                                                 <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}">
