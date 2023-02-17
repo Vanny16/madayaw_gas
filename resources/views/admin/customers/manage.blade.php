@@ -240,39 +240,23 @@
 
                                                                         $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
                                                                         // dd(is_array($products));
+                                                                        $counter = 0;
                                                                     ?>
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-12">
                                                                         @if(is_array($products) || is_object($products))
                                                                             @foreach($accessibles as $accessible)
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
                                                                                         @php($prd_accessible = $product->prd_name) 
-                                                                                        <span class="badge badge-pill badge-primary">{{$accessible}}</span>
-                                                                                        <a class="lead"> | </a>
-                                                                                        <span class="badge badge-pill badge-info">{{$prd_accessible}}</span>
+                                                                                        <div class="d-flex justify-content-center">
+                                                                                            <h2 class="badge badge-pill badge-info">{{$prd_accessible}}</h2>
+                                                                                        </div>
                                                                                         <br>
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
                                                                         @endif
                                                                     </div>
-                                                                    <div class="col-md-6"> 
-                                                                        @if(is_array($products) || is_object($products))
-                                                                            @foreach($accessibles as $key => $accessible)
-                                                                                @foreach($products as $product)
-                                                                                    @if($product->prd_id == $accessible)
-                                                                                        {{-- @php(dd($key))
-                                                                                        @php($prd_accessible = $product->prd_name)
-                                                                                            <span class="badge badge-pill badge-primary">₱ </span>
-                                                                                            <a class="lead"> | </a>
-                                                                                            <span class="badge badge-light"><?php echo (float)$accessibles_prices[$key] + $product->prd_deposit ?></span>
-                                                                                            <br> --}}
-                                                                                    @endif
-                                                                                @endforeach    
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </div>
-                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -464,6 +448,9 @@
                                     @endif
                                 </tbody>
                             </table>
+                            {{--<div class = "d-flex justify-content-center">
+                                {{ $customers->links() }}
+                            </div>--}}
                         </div>
                     </div>
                 </div>
