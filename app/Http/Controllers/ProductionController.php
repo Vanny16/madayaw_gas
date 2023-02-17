@@ -72,8 +72,6 @@ class ProductionController extends Controller
             }
         }
 
-        
-        
         return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
     }
 
@@ -212,6 +210,24 @@ class ProductionController extends Controller
             ]);  
         }
 
+        $prodValues = array(
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $request->show_modal, 
+            $request->tab_1,
+            $request->tab_2
+        );
+
+        session()->flash('getProdValues', array( $prodValues));
         session()->flash('successMessage','Raw material has been added');
         return redirect()->action('ProductionController@manage');
     }
@@ -245,6 +261,24 @@ class ProductionController extends Controller
         // 4 = revalve
         // 5 = scrap
         
+        $prodValues = array(
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $request->show_modal, 
+            $request->tab_1,
+            $request->tab_2
+        );
+
+        
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS
@@ -256,6 +290,7 @@ class ProductionController extends Controller
                 'prd_quantity' => (float)$new_quantity
             ]);  
 
+            session()->flash('getProdValues', array( $prodValues));
             session()->flash('successMessage','Raw materials added');
             return redirect()->action('ProductionController@manage');
         }
@@ -278,11 +313,13 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
 
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Empty goods added');
                 return redirect()->action('ProductionController@manage');
             } 
             else
             {
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('errorMessage','Raw materials insufficient!');
                 return redirect()->action('ProductionController@manage');
             }  
@@ -308,11 +345,13 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
 
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Canister added');
                 return redirect()->action('ProductionController@manage');
             } 
             else
             {
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('errorMessage','Empty goods insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
@@ -331,6 +370,7 @@ class ProductionController extends Controller
             //LOG ACTION IN PRODUCTION
             record_movement($prd_id, $prd_quantity, $flag);
             
+            session()->flash('getProdValues', array( $prodValues));
             session()->flash('successMessage','Leakers added');
             return redirect()->action('ProductionController@manage');
         }
@@ -367,11 +407,13 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
 
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Leakers sent to Revalves');
                 return redirect()->action('ProductionController@manage');
             }
             else
             {
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('errorMessage','Leakers insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
@@ -395,15 +437,20 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
 
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Leakers sent as Scraps');
                 return redirect()->action('ProductionController@manage');
                 }
             else
             {
+                session()->flash('getProdValues', array( $prodValues));
                 session()->flash('errorMessage','Leakers insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
+            
         }
+
+        session()->flash('getProdValues', array( $prodValues));
     }  
 
     //EDIT PRODUCTION ITEMS
@@ -568,13 +615,21 @@ class ProductionController extends Controller
             $request->sup_prd_name,
             $request->sup_prd_sku,
             $request->sup_prd_price,
+            $request->sup_prd_deposit,
+            $request->sup_prd_weight,
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
             $request->sup_prd_is_production,
             $request->sup_prd_is_refillable,
-            'show'
+            'show',
+            $request->show_modal,
+            $request->tab_1,
+            $request->tab_2
         );
+
+        // dd($prodValues);
+
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');
