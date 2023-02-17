@@ -266,6 +266,7 @@ function get_stock_report($prd_id, $flag)
 function check_materials($flag, $qty, $prd_id)
 {
    //FOR EMPTYGOODS
+   //dd($flag, $qty, $prd_id);
     if($flag == 1)
     {
         $raw_materials = DB::table('products')
@@ -406,7 +407,7 @@ function subtract_qty($flag, $qty, $prd_id)
 
         if(isset($canister))
         {
-            $new_quantity= $canister->prd_quantity - $qty;
+            $new_quantity= $canister->prd_empty_goods - $qty;
         }
         else
         {
@@ -434,7 +435,7 @@ function subtract_qty($flag, $qty, $prd_id)
 
         if(isset($revalves))
         {
-            $new_quantity= $revalves[$x]->prd_quantity - $qty;
+            $new_quantity= $revalves->prd_leakers - $qty;
         }
         else
         {
@@ -462,7 +463,7 @@ function subtract_qty($flag, $qty, $prd_id)
 
         if(isset($scraps))
         {
-            $new_quantity= $scraps->prd_quantity - $qty;
+            $new_quantity= $scraps->prd_leakers - $qty;
         }
         else
         {

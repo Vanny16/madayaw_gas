@@ -261,7 +261,7 @@
                                                                             @foreach($accessibles as $key => $accessible)
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
-                                                                                        {{--@php(dd($key)) test
+                                                                                        {{--@php(dd($key))
                                                                                         @php($prd_accessible = $product->prd_name)
                                                                                             <span class="badge badge-pill badge-primary">₱ </span>
                                                                                             <a class="lead"> | </a>
