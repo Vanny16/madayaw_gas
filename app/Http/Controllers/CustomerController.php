@@ -65,13 +65,7 @@ class CustomerController extends Controller
             
             if(count($cus_access) == 2){
                 $accessibles =  $accessibles . $cus_access['prd_id'] . ",";
-
-                if(!isset($cus_accessibles[$counter + 1]))
-                {
-                    break;
-                }
                 $accessibles_prices = $accessibles_prices . $cus_access['price'] . ",";
-                // continue;
             }
             else
             {
@@ -182,13 +176,7 @@ class CustomerController extends Controller
             
             if(count($cus_access) == 2){
                 $accessibles =  $accessibles . $cus_access['prd_id'] . ",";
-
-                if(!isset($cus_accessibles[$counter + 1]))
-                {
-                    break;
-                }
                 $accessibles_prices = $accessibles_prices . $cus_access['price'] . ",";
-                // continue;
             }
             else
             {
