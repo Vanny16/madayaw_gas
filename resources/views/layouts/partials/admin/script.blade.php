@@ -1,13 +1,13 @@
 <!-- jQuery -->
 <script src="{{ asset('bootstrap/admin/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>
 
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 
 <script src="{{ asset('bootstrap/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('bootstrap/admin/plugins/bootstrap/js/custom-js.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/chart.js/Chart.min.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/sparklines/sparkline.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
@@ -69,4 +69,37 @@
       }
       return true;
     }
+
+(function() {
+  const form = document.querySelector('.required-checkbox');
+  const checkboxes = form.querySelectorAll('input[type=checkbox]');
+  const checkboxLength = checkboxes.length;
+  const firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
+
+  function init() {
+      if (firstCheckbox) {
+          for (let i = 0; i < checkboxLength; i++) {
+              checkboxes[i].addEventListener('change', checkValidity);
+          }
+
+          checkValidity();
+      }
+  }
+
+  function isChecked() {
+      for (let i = 0; i < checkboxLength; i++) {
+          if (checkboxes[i].checked) return true;
+      }
+
+      return false;
+  }
+
+  function checkValidity() {
+      const errorMessage = !isChecked() ? 'Select at least one checkbox.' : '';
+      firstCheckbox.setCustomValidity(errorMessage);
+  }
+
+  init();
+})();
+
 </script>

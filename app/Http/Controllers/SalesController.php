@@ -41,6 +41,10 @@ class SalesController extends Controller
     {
         $client_id = $request->client_id;
 
+        if($client_id == 0){
+            return redirect()->action('SalesController@main');
+        }
+
         $selected_customer = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')

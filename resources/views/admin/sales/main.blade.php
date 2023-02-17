@@ -56,7 +56,7 @@
                                     {{ csrf_field() }} 
                                         <label>Customer Name</label>
                                         <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
-                                            <!-- <option value="0">WALK-IN</option> -->
+                                            <option value="0"></option>
                                             @if(isset($customers))
                                                 @foreach($customers as $customer)
                                                     @if(session('new_client') == $customer->cus_name || session('selected_customer') == $customer->cus_id)
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-default bg-danger form-control" data-toggle="modal" data-target="#order-modal"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        <button type="button" class="btn btn-default bg-danger form-control" onclick="selectUserFirst()"><i class="fa fa-plus-circle"></i> Select Products</button>
                     </div>
 
                     <div class="card">
@@ -880,6 +880,17 @@
         }
         else{
             document.getElementById(copy).value = orig;
+        }
+    }
+
+    function selectUserFirst(){
+        var client_id =  document.getElementById("client_id").value;
+
+        if(client_id == 0){
+            alert("Select customer first");
+        }
+        else{
+            $("#order-modal").modal('show');
         }
     }
 
