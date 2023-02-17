@@ -324,11 +324,13 @@
                         <div class="row">
                             <div class="col-12 text-center">
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#avatarUploadModal" height="150px" width="150px">
+                                @if(isset($supplier))
                                     @if($supplier->sup_image <> '')
                                         <img class="img-circle elevation-2" src="{{ asset('img/suppliers/' . $supplier->sup_image) }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                     @else
                                         <img class="img-circle elevation-2" src="{{ asset('img/suppliers/default.png') }}" alt="{{ $supplier->sup_image }}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
                                     @endif
+                                @endif  
                                 </a>
                                 <div class="col-12 text-center mb-4">
                                     <a href="javascript:void(0);" class="">

@@ -9,9 +9,9 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_transaction_reports))    
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Transaction  Reports</h3>
+            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction  Reports</h3>
             @else
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Transaction Report</h3>
+            <h3 class="card-title"><i  class="fa fa-bar-chart"></i> Transaction Report</h3>
             @endif
         </div>
             <div class="card-body">
@@ -34,14 +34,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($all_trasanction_reports as $all_trasanction_report)
+                        @foreach($all_transaction_reports as $all_transaction_report)
                         <tr>
                             <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_id}}</td>
-                            <td>{{$all_transaction_report->cus_id}}</td>
+                            <td>{{$all_transaction_report->usr_name}}</td>
+                            <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
-                            <td>{{$all_transaction_report->trx_total}}</td>
-                            <td>{{$all_transaction_report->trx_amount_paid}}</td>
+                            <td>₱ {{$all_transaction_report->trx_total}}</td>
+                            <td>₱ {{$all_transaction_report->trx_amount_paid}}</td>
+                            <td>₱ {{$all_transaction_report->trx_balance}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -66,11 +67,12 @@
                         @foreach($transaction_reports as $transaction_report)
                         <tr>
                             <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_id}}</td>
-                            <td>{{$all_transaction_report->cus_id}}</td>
+                            <td>{{$all_transaction_report->usr_name}}</td>
+                            <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
                             <td>{{$all_transaction_report->trx_total}}</td>
                             <td>{{$all_transaction_report->trx_amount_paid}}</td>
+                            <td>{{$all_transaction_report->trx_balance}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -82,5 +84,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
+    window.location.href = "{{ action('ReportsController@transactions') }}";
 </script>
 @endsection

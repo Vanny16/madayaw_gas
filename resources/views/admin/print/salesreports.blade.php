@@ -9,9 +9,9 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_sales_reports))    
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Sales Reports</h3>
+            <h3 class="card-title"><i class=" fa fa-bar-chart"></i> Sales Reports</h3>
             @else
-            <h3 class="card-title"><i class="fas fa-male"></i><i class="fas fa-female"></i> Sales Report</h3>
+            <h3 class="card-title"><i class=" fa fa-bar-chart"></i> Sales Report</h3>
             @endif
         </div>
             <div class="card-body">
@@ -34,12 +34,12 @@
                     <tbody>
                         @foreach($all_sales_reports as $all_sales_report)
                         <tr>
-                            <td>{{$all_sales_report->sales_date_from}}</td>
-                            <td>{{$all_sales_report->sales_date_to}}</td>
+                          
                             <td>{{$all_sales_report->prd_name}}</td>
                             <td>{{$all_sales_report->prd_description}}</td>
-                            <td>{{$all_sales_report->prd_price}}</td>
-                            <td>{{$all_sales_report->prd_quantity}}</td>
+                            <td>₱ {{ number_format($all_sales_report->prd_price, 2, '.', ',')}}</td>
+                            <td>{{ number_format($all_sales_report->total_sold, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($all_sales_report->total_sales, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -61,12 +61,12 @@
                     <tbody>
                         @foreach($sales_reports as $sales_report)
                         <tr>
-                            <td>{{$all_sales_report->sales_date_from}}</td>
-                            <td>{{$all_sales_report->sales_date_to}}</td>
+                          
                             <td>{{$sales_report->prd_name}}</td>
                             <td>{{$sales_report->prd_description}}</td>
-                            <td>{{$sales_report->prd_price}}</td>
-                            <td>{{$sales_report->prd_quantity}}</td>
+                            <td>₱ {{ number_format($sales_report->prd_price, 2, '.', ',')}}</td>
+                            <td>{{ number_format($sales_report->total_sold, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sales_report->total_sales, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -78,5 +78,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
+    window.location.href = "{{ action('ReportsController@sales') }}";
 </script>
 @endsection

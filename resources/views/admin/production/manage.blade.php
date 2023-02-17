@@ -702,18 +702,23 @@
     </section>
 </div>
 
-@if(session('getProductionValues'))
-    @php($prd_name = Session::get('getProductionValues')[0][0])
-    @php($prd_sku = Session::get('getProductionValues')[0][1])
-    @php($prd_price = Session::get('getProductionValues')[0][2])
-    @php($prd_description = Session::get('getProductionValues')[0][3])
-    @php($prd_reorder = Session::get('getProductionValues')[0][4])
-    @php($sup_name = Session::get('getProductionValues')[0][5])
-    @php($state = Session::get('getProductionValues')[0][6])
+
+@if(session('getProdValues'))
+    @php($prd_name = Session::get('getProdValues')[0][0])
+    @php($prd_sku = Session::get('getProdValues')[0][1])
+    @php($prd_price = Session::get('getProdValues')[0][2])
+    @php($prd_deposit = Session::get('getProdValues')[0][3])
+    @php($prd_weight = Session::get('getProdValues')[0][4])
+    @php($prd_description = Session::get('getProdValues')[0][5])
+    @php($prd_reorder = Session::get('getProdValues')[0][6])
+    @php($sup_name = Session::get('getProdValues')[0][7])
+    @php($state = Session::get('getProdValues')[0][8])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
     @php($prd_price = '')
+    @php($prd_deposit = '')
+    @php($prd_weight = '')
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
@@ -838,7 +843,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" id="form-add" action="{{ action('ProductController@createSupplier')}}">
+            <form method="POST" id="form-add" action="{{ action('ProductionController@createSupplier') }}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -957,6 +962,20 @@
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
         }
+    }
+
+    $(document).ready(function(){
+        $("#product-modal").modal('{{$state}}');
+    });
+
+    function getNewProductValue(prd_name, prd_sku, prd_price, prd_deposit, prd_weight, prd_description, prd_reorder){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_price').value = prd_price;
+        document.getElementById('sup_prd_deposit').value = prd_deposit;
+        document.getElementById('sup_prd_weight').value = prd_weight;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
     }
 </script>
 @endsection

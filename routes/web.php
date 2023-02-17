@@ -70,9 +70,9 @@ Route::group(['prefix' => 'print'], function()
     Route::get('salesdetails', 'PrintController@allsaleDetails');
     Route::get('oppositedetails', 'PrintController@alloppositeDetails');
 
-    Route::get('salesreports', 'PrintController@allsalesReports');
-
-    Route::get('transactionreports', 'PrintController@alltransactionReports');
+    Route::post('sales-reports', 'PrintController@allsalesReports');
+    Route::post('transaction-reports', 'PrintController@alltransactionReports');
+    Route::post('production-reports', 'PrintController@allproductionReports');
 });
 
 Route::group(['prefix' => 'production'], function()
@@ -83,6 +83,7 @@ Route::group(['prefix' => 'production'], function()
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
     
     Route::post('add-empty-goods', 'ProductionController@createProduct');
+    Route::post('add-supplier', 'ProductionController@createSupplier');
     Route::post('add-quantity', 'ProductionController@addQuantity');
     Route::post('edit-product', 'ProductionController@editItem');
 });
