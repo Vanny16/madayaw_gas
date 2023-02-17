@@ -42,13 +42,13 @@
                                 <div class="card-header">
                                     <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#raw-materials">Raw Materials</a>
+                                            <a id="raw_tab" class="nav-link" data-toggle="tab" href="#raw-materials" onclick="showInTabOne(0)">Raw Materials</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#empty-canisters">Crimped</a>
+                                            <a id="crimped_tab" class="nav-link" data-toggle="tab" href="#empty-canisters" onclick="showInTabOne(1)">Crimped</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#filled-canisters">Backflushed</a>
+                                            <a id="backflushed_tab" class="nav-link" data-toggle="tab" href="#filled-canisters" onclick="showInTabOne(2)">Backflushed</a>
                                         </li>
                                     </ul>
                                     <div class="card-tools">
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
-                                    <div id="raw-materials" class="tab-pane active">
+                                    <div id="raw-materials" class="tab-pane">
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(0)"><i class="fas fa-plus"></i> Add Raw Materials</button>
                                         </div>
@@ -702,22 +702,37 @@
     </section>
 </div>
 
-@if(session('getProductionValues'))
-    @php($prd_name = Session::get('getProductionValues')[0][0])
-    @php($prd_sku = Session::get('getProductionValues')[0][1])
-    @php($prd_price = Session::get('getProductionValues')[0][2])
-    @php($prd_description = Session::get('getProductionValues')[0][3])
-    @php($prd_reorder = Session::get('getProductionValues')[0][4])
-    @php($sup_name = Session::get('getProductionValues')[0][5])
-    @php($state = Session::get('getProductionValues')[0][6])
+
+@if(session('getProdValues'))
+    @php($prd_name = Session::get('getProdValues')[0][0])
+    @php($prd_sku = Session::get('getProdValues')[0][1])
+    @php($prd_price = Session::get('getProdValues')[0][2])
+    @php($prd_deposit = Session::get('getProdValues')[0][3])
+    @php($prd_weight = Session::get('getProdValues')[0][4])
+    @php($prd_description = Session::get('getProdValues')[0][5])
+    @php($prd_reorder = Session::get('getProdValues')[0][6])
+    @php($sup_name = Session::get('getProdValues')[0][7])
+    @php($sup_prd_is_production = Session::get('getProdValues')[0][8])
+    @php($sup_prd_is_refillable = Session::get('getProdValues')[0][9])
+    @php($state = Session::get('getProdValues')[0][10])
+    @php($show_modal = Session::get('getProdValues')[0][11])
+    @php($tab_1 = Session::get('getProdValues')[0][12])
+    @php($tab_2 = Session::get('getProdValues')[0][13])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
     @php($prd_price = '')
+    @php($prd_deposit = '')
+    @php($prd_weight = '')
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
+    @php($sup_prd_is_production = '')
+    @php($sup_prd_is_refillable = '')
     @php($state = '')
+    @php($show_modal = '')
+    @php($tab_1 = '')
+    @php($tab_2 = '')
 @endif
 
 <!-- Create Product Modal -->
@@ -750,21 +765,21 @@
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="{{ $prd_name }}" required/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="prd_price">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group"  id="prd_deposit">
                                 <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="" onkeypress="return isNumberKey(this, event);"/>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group" id="prd_weight">
                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="" onkeypress="return isNumberKey(this, event);"/>
+                                <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="{{ $prd_weight }}" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -790,8 +805,8 @@
                                                 <option value="{{ $supplier->sup_id }}" {{ $selected }}>{{ $supplier->sup_name }}</option>
                                             @endif
                                         @endforeach   
-                                    </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    </select>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_price.value, prd_deposit.value, prd_weight.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -800,6 +815,8 @@
                 </div>
                 <div class="modal-footer">
                     <input type="text" class="form-control" id="set_add_flag" name="add_flag" value="" hidden/>
+                    <input type="text" id="np_tab_1" name="tab_1"  hidden/>
+                    <input type="text" id="np_tab_2" name="tab_2"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -838,7 +855,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" id="form-add" action="{{ action('ProductController@createSupplier')}}">
+            <form method="POST" id="form-add" action="{{ action('ProductionController@createSupplier') }}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -871,8 +888,14 @@
                 </div>
                 <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_price" name="sup_prd_price" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_deposit" name="sup_prd_deposit" placeholder="Enter SKU" value="" hidden/>
+                <input type="text" id="sup_prd_weight" name="sup_prd_weight" placeholder="Enter SKU" value="" hidden/>
                 <input type="text" id="sup_prd_description" name="sup_prd_description"  hidden/>
                 <input type="text" id="sup_prd_reorder" name="sup_prd_reorder"  hidden/>
+                <input type="text" id="show_modal" name="show_modal"  hidden/>
+                <input type="text" id="tab_1" name="tab_1"  hidden/>
+                <input type="text" id="tab_2" name="tab_2"  hidden/>
             </form>
         </div>
     </div>
@@ -897,10 +920,10 @@
                                 <label for="quantity"id="lbl-add">Amount to add <span style="color:red">*</span></label>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate<span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity"/>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
                                 <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity"/>
+                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                             </div>
                         </div>
                     </div>
@@ -908,6 +931,7 @@
                 <div class="modal-footer">
                     <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
                     <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
+                    <input type="text" id="si_tab_1" name="tab_1"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -923,24 +947,15 @@
         if(flag === 0){
             $("#prd_deposit").hide();
             $("#prd_weight").hide();
+            $("#prd_price").hide();
+            document.getElementById('show_modal').value = 0;
         }else{
             $("#prd_deposit").show();
             $("#prd_weight").show();
+            $("#prd_price").show();
+            document.getElementById('show_modal').value = 1;
         }
-
     }
-
-    // function editItem(prd_id, prd_name, prd_sku, prd_price, prd_quantity, prd_description, prd_reorder_point, sup_id){
-    //     alert(prd_id);
-    //     document.getElementById('set_prd_id').value = prd_id;
-    //     document.getElementById('set_prd_name').value = prd_name;
-    //     // document.getElementById('set_prd_sku').value = prd_sku;
-    //     // document.getElementById('set_prd_price').value = prd_price;
-    //     // document.getElementById('set_prd_quantity').value = prd_quantity;
-    //     // document.getElementById('set_prd_description').value = prd_description;
-    //     // document.getElementById('set_prd_reorder').value = prd_reorder_point;
-    //     // document.getElementById('set_sup_id').value = sup_id;
-    // }
 
     function stockIn(prd_id, flag){
         document.getElementById('set_stockin_id').value = prd_id;
@@ -957,6 +972,73 @@
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
         }
+    }
+
+    $(document).ready(function(){
+
+        @if($tab_1 == 0)
+            $("#raw_tab").addClass("active");
+            $("#raw-materials").addClass("active");
+            document.getElementById('set_add_flag').value = 0;
+            document.getElementById('np_tab_1').value = 0;
+            document.getElementById('si_tab_1').value = 0;
+        @elseif($tab_1 == 1)
+            $("#crimped_tab").addClass("active");
+            $("#empty-canisters").addClass("active");
+            document.getElementById('set_add_flag').value = 1;
+            document.getElementById('np_tab_1').value = 1;
+            document.getElementById('si_tab_1').value = 1;
+        @elseif($tab_1 == 2)
+            $("#backflushed_tab").addClass("active");
+            $("#filled-canisters").addClass("active");
+            document.getElementById('si_tab_1').value = 2;
+        @else
+            $("#raw_tab").addClass("active");
+            $("#raw-materials").addClass("active");
+            document.getElementById('set_add_flag').value = 0;
+            document.getElementById('np_tab_1').value = 0;
+            document.getElementById('si_tab_1').value = 0;
+        @endif
+        
+        @if($show_modal == 0)
+            $("#prd_deposit").hide();
+            $("#prd_weight").hide();
+            $("#prd_price").hide();
+        @endif
+
+        $("#product-modal").modal('{{$state}}');
+
+    });
+
+    function noNegativeValue(id){
+
+        $("#"+id).on("input", function() {
+            if (/^0/.test(this.value)) {
+                this.value = this.value.replace(/^0/, "")
+            }
+        });
+
+        var value = document.getElementById(id).value;
+        if(value < 0 || value == ""){
+            document.getElementById(id).value ="0";
+        }
+    }
+
+    function getNewProductValue(prd_name, prd_sku, prd_price, prd_deposit, prd_weight, prd_description, prd_reorder){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_price').value = prd_price;
+        document.getElementById('sup_prd_deposit').value = prd_deposit;
+        document.getElementById('sup_prd_weight').value = prd_weight;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+    }
+
+    function showInTabOne(page){
+        document.getElementById('set_add_flag').value = page;
+        document.getElementById('tab_1').value = page;
+        document.getElementById('np_tab_1').value = page;
+        document.getElementById('si_tab_1').value = page;
     }
 </script>
 @endsection

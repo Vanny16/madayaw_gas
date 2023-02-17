@@ -83,6 +83,7 @@ Route::group(['prefix' => 'production'], function()
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
     
     Route::post('add-empty-goods', 'ProductionController@createProduct');
+    Route::post('add-supplier', 'ProductionController@createSupplier');
     Route::post('add-quantity', 'ProductionController@addQuantity');
     Route::post('edit-product', 'ProductionController@editItem');
 });
