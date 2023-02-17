@@ -60,10 +60,10 @@ class CustomerController extends Controller
         $accessibles_prices = "";
         $counter = 0;
         
-        // dd($cus_accessibles);
+        // dd(key($cus_accessibles));
         foreach($cus_accessibles as $cus_access)
         {
-            if(strpos($cus_access, ".") == false && $cus_access <> null){
+            if(strpos($cus_access, ".") == false || strpos($cus_access, ".") <> null && $cus_access <> null){
                 $accessibles =  $accessibles . $cus_access . ",";
                 $accessibles_prices = $accessibles_prices . $cus_accessibles[$counter + 1] . ",";
                 // continue;
@@ -74,9 +74,10 @@ class CustomerController extends Controller
             }
             
             $counter++;
+            // if($counter + 1 )
         }
 
-        // dd($accessibles);
+        dd($cus_accessibles);
 
         $check_cus_name = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))

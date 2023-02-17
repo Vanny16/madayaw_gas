@@ -335,8 +335,14 @@
                                                                                                 if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
 
                                                                                                 $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
-                                                                                                // if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){array_pop($accessibles_prices);}
-                                                                                                
+                                                                                                if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){}
+
+                                                                                                $all_accessibles = array();
+                                                                                                for($i = 0 ; $i < count($accessibles) ; $i++) 
+                                                                                                {
+                                                                                                    // array_push($all_accessibles,array($accessibles[$i],$accessibles_prices[$i]));
+                                                                                                }
+                                                                                                // dd($all_accessibles);
                                                                                                 $counter = 0;
                                                                                             ?>
                                                                                             <div class="col-md-12">
@@ -353,6 +359,7 @@
                                                                                                                     @php($displayed_price = "")
                                                                                                                     @if($product->prd_id == $accessible)
                                                                                                                         @php($check_indicator = "checked")
+                                                                                                                        @php($displayed_price = "")
                                                                                                                         @php($counter++)
                                                                                                                         @break
                                                                                                                     @else
@@ -361,7 +368,7 @@
                                                                                                                 @endforeach
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($counter)?>">
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
