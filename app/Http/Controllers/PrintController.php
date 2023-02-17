@@ -237,4 +237,30 @@ class PrintController extends Controller
         return view('admin.print.productionreport', compact('all_production_reports', 'production_date_from', 'production_date_to'));
     }
 
+    public function purchasesReports()
+    {
+        $purchases_reports = DB::table('purchases')
+        ->where('prd_id', '=', $prd_id)
+        ->get();
+
+        return view('admin.print.purchasesreport', compact('purchases_reports'));
+    }
+
+    public function allpurchasesReports()
+    {   
+        $latest_trx_id = session('latest_trx_id');
+
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->first();
+
+        $all_purchases_reports = DB::table('purchases')
+        ->join('products','products.prd_id','=','purchases.prd_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->get();
+        // dd($all_purchases_reports);
+        return view('admin.print.purchasesreport', compact('all_purchases_reports'));
+    }
+
 }
