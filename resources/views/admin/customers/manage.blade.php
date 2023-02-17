@@ -527,9 +527,9 @@
                                                     @if(is_array($products) || is_object($products))
                                                         @foreach($products as $product)
                                                         <tr>
-                                                            <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}"></td>
+                                                            <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" onclick = "storeProductPrice()" ></td>
                                                             <td><label for="">{{$product->prd_name}}</label></td>
-                                                            <td><input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_price}}"></td>
+                                                            <td><input type="number" id="price{{$product->prd_id}}" class="form-control" name="cus_accessibles[]" step="0.01" value="{{$product->prd_price}}"></td>
                                                         </tr>
                                                         @endforeach
                                                     @endif
@@ -591,6 +591,13 @@
         });
 
         document.getElementById("selected-customers").value = checkedValues;
+    }
+
+    function handleChange($input_id) {
+
+        const input = document.getElementById($input_id);
+        input.value = parseFloat(input.value).toFixed(2); // ensures 2 decimal places
+        input.value = parseFloat(input.value).toFixed(1); // ensures 1 decimal place
     }
 
     $(document).ready(function(){

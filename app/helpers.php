@@ -372,14 +372,14 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_active','<>','0')
         ->get();
 
-        if(isset($raw_materials))
-        {
-            $new_quantity= $raw_materials[$x]->prd_quantity - $qty;
-        }
-        else
-        {
-            $new_quantity = 0;
-        }
+        // if(isset($raw_materials))
+        // {
+           
+        // }
+        // else
+        // {
+        //     $new_quantity = 0;
+        // }
 
         for($x = 0 ; sizeOf($raw_materials) - 1 >= $x ; $x++)
         {
@@ -389,7 +389,7 @@ function subtract_qty($flag, $qty, $prd_id)
             ->where('prd_for_production','=','1')
             ->where('prd_is_refillable','=','0')
             ->update([
-                'prd_quantity' => $new_quantity
+                'prd_quantity' => $raw_materials[$x]->prd_quantity - $qty
             ]);
 
         }
@@ -404,9 +404,9 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->first();
 
-        if(isset($raw_materials))
+        if(isset($canister))
         {
-            $new_quantity= $canister[$x]->prd_quantity - $qty;
+            $new_quantity= $canister->prd_quantity - $qty;
         }
         else
         {
@@ -419,7 +419,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_empty_goods' => $canister->prd_empty_goods - $qty 
+            'prd_empty_goods' => $new_quantity
         ]);
     }
     //SUBTRACT LEAKERS FOR REVALVING
@@ -432,7 +432,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->first();
 
-        if(isset($raw_materials))
+        if(isset($revalves))
         {
             $new_quantity= $revalves[$x]->prd_quantity - $qty;
         }
@@ -447,7 +447,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_leakers' => $revalves->prd_leakers - $qty 
+            'prd_leakers' => $new_quantity
         ]);
     }
     //SUBTRACT LEAKERS FOR SCRAP
@@ -460,9 +460,9 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->first();
 
-        if(isset($raw_materials))
+        if(isset($scraps))
         {
-            $new_quantity= $scraps[$x]->prd_quantity - $qty;
+            $new_quantity= $scraps->prd_quantity - $qty;
         }
         else
         {
@@ -475,7 +475,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_leakers' => $scraps->prd_leakers - $qty 
+            'prd_leakers' => $new_quantity
         ]);
     }   
 }
