@@ -341,14 +341,13 @@
 
                                                                                                 $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
                                                                                                 if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){}
-                                                                                                dd($accessibles);
-                                                                                                // $check_indicator = "";
-                                                                                                // $displayed_price = "";
+                                                                                                $check_indicator = "";
+                                                                                                $displayed_price = "";
                                                                                                 ?>
                                                                                             <div class="col-md-12">
                                                                                                 @if(is_array($products) || is_object($products))
                                                                                                     @foreach($products as $product)
-                                                                                                        <div class="col-6">    
+                                                                                                        <div class="col-6 required-checkbox">    
                                                                                                             @if($accessibles == "")
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}">
                                                                                                                 <label for="">{{$product->prd_name}}</label>
@@ -368,7 +367,6 @@
                                                                                                                     @php($counter++)
                                                                                                                     @break
                                                                                                                 @else
-                                                                                                                @php(dd($product_price))
                                                                                                                     @php($displayed_price = $product->prd_price)
                                                                                                                 @endif
                                                                                                             @endforeach
@@ -523,7 +521,7 @@
                                     <div class="row">
                                         <table class="table table-lg table-borderless text-left">
                                             <tbody>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 required-checkbox">
                                                     @if(is_array($products) || is_object($products))
                                                         @foreach($products as $product)
                                                         <tr>
@@ -652,5 +650,7 @@
             }
         });
     });
+
+    
 </script>
 @endsection

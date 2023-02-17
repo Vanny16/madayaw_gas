@@ -165,7 +165,7 @@ class CustomerController extends Controller
         $cus_notes = $request->cus_notes;
         $cus_uuid = $request->cus_uuid;
         $cus_accessibles = $request->input('cus_accessibles');
-        dd($cus_accessibles);
+        
 
         $accessibles = "";
         $accessibles_prices = "";
