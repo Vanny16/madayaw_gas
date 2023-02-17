@@ -166,6 +166,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
+                                                            <form method="POST" action="{{ action('PrintController@allpurchasesReports')}}">
+                                                            {{ csrf_field() }}
+                                                                <button type="submit" class="btn btn-info float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
+                                                                <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
+                                                                <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
+                                                            </form>
                                                             <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
                                                         </div>
                                                     </div>

@@ -73,6 +73,7 @@ Route::group(['prefix' => 'print'], function()
     Route::post('sales-reports', 'PrintController@allsalesReports');
     Route::post('transaction-reports', 'PrintController@alltransactionReports');
     Route::post('production-reports', 'PrintController@allproductionReports');
+    Route::post('purchases-reports', 'PrintController@allpurchasesReports');
 });
 
 Route::group(['prefix' => 'production'], function()

@@ -40,9 +40,9 @@
                             <td>{{$all_transaction_report->usr_name}}</td>
                             <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
-                            <td>₱ {{$all_transaction_report->trx_total}}</td>
-                            <td>₱ {{$all_transaction_report->trx_amount_paid}}</td>
-                            <td>₱ {{$all_transaction_report->trx_balance}}</td>
+                            <td>₱ {{$all_transaction_report->trx_total, 2, '.', ','}}</td>
+                            <td>₱ {{$all_transaction_report->trx_amount_paid, 2, '.', ','}}</td>
+                            <td>₱ {{$all_transaction_report->trx_balance, 2, '.', ','}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -66,13 +66,13 @@
                     <tbody>
                         @foreach($transaction_reports as $transaction_report)
                         <tr>
-                            <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_name}}</td>
-                            <td>{{$all_transaction_report->cus_name}}</td>
-                            <td>{{$all_transaction_report->trx_datetime}}</td>
-                            <td>{{$all_transaction_report->trx_total}}</td>
-                            <td>{{$all_transaction_report->trx_amount_paid}}</td>
-                            <td>{{$all_transaction_report->trx_balance}}</td>
+                            <td>{{$transaction_report->trx_ref_id}}</td>
+                            <td>{{$transaction_report->usr_name}}</td>
+                            <td>{{$transaction_report->cus_name}}</td>
+                            <td>{{$transaction_report->trx_datetime}}</td>
+                            <td>₱ {{$transaction_report->trx_total, 2, '.', ','}}</td>
+                            <td>₱ {{$transaction_report->trx_amount_paid, 2, '.', ','}}</td>
+                            <td>₱ {{$transaction_report->trx_balance, 2, '.', ','}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
