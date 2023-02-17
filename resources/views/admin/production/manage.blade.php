@@ -765,13 +765,13 @@
                                 <label for="prd_name">Product Name <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_name" placeholder="Enter Product Name" value="{{ $prd_name }}" required/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="prd_price">
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);" required/>
+                                <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group"  id="prd_deposit">
                                 <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
@@ -920,10 +920,10 @@
                                 <label for="quantity"id="lbl-add">Amount to add <span style="color:red">*</span></label>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate<span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity"/>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
                                 <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity"/>
+                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                             </div>
                         </div>
                     </div>
@@ -947,10 +947,12 @@
         if(flag === 0){
             $("#prd_deposit").hide();
             $("#prd_weight").hide();
+            $("#prd_price").hide();
             document.getElementById('show_modal').value = 0;
         }else{
             $("#prd_deposit").show();
             $("#prd_weight").show();
+            $("#prd_price").show();
             document.getElementById('show_modal').value = 1;
         }
     }
@@ -1001,11 +1003,26 @@
         @if($show_modal == 0)
             $("#prd_deposit").hide();
             $("#prd_weight").hide();
+            $("#prd_price").hide();
         @endif
 
         $("#product-modal").modal('{{$state}}');
 
     });
+
+    function noNegativeValue(id){
+
+        $("#"+id).on("input", function() {
+            if (/^0/.test(this.value)) {
+                this.value = this.value.replace(/^0/, "")
+            }
+        });
+
+        var value = document.getElementById(id).value;
+        if(value < 0 || value == ""){
+            document.getElementById(id).value ="0";
+        }
+    }
 
     function getNewProductValue(prd_name, prd_sku, prd_price, prd_deposit, prd_weight, prd_description, prd_reorder){
         document.getElementById('sup_prd_name').value = prd_name;
