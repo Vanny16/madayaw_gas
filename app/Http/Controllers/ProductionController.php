@@ -278,7 +278,8 @@ class ProductionController extends Controller
             $request->tab_2
         );
 
-        
+        // dd($prodValues);
+
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS
@@ -633,7 +634,7 @@ class ProductionController extends Controller
         if($check_sup_name != null)
         {
             session()->flash('errorMessage','Supplier already exist');
-            session()->flash('getProductionValues', array( $productValues));
+            session()->flash('getProductionValues', array( $prodValues));
         }
         else{
             $usr_id = DB::table('suppliers')

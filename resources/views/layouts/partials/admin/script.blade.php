@@ -7,6 +7,7 @@
 </script>
 
 <script src="{{ asset('bootstrap/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/bootstrap/js/custom-js.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/chart.js/Chart.min.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/sparklines/sparkline.js') }}"></script>
 <script src="{{ asset('bootstrap/admin/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
