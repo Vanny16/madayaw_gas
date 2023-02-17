@@ -188,7 +188,10 @@
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                <li>
+                                                                    <a class="ml-3" id="cus_edit_button" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a>
+                                                                    <input type="hidden" name="cus_id" value="{{$customer->cus_id}}">
+                                                                </li>
                                                             @endif
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-customer-modal-{{$customer->cus_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                         </ul>
@@ -330,7 +333,7 @@
                                                                                 <div class="card">
                                                                                     <div class="col-12 p-2">
                                                                                         <div class="row">
-                                                                                            <?php 
+                                                                                            <?php
                                                                                                 $accessibles = explode(",",$customer->cus_accessibles);
                                                                                                 if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
 
@@ -342,9 +345,9 @@
                                                                                                 {
                                                                                                     // array_push($all_accessibles,array($accessibles[$i],$accessibles_prices[$i]));
                                                                                                 }
-                                                                                                // dd($all_accessibles);
-                                                                                                $counter = 0;
-                                                                                            ?>
+                                                                                                // dd($accessibles_prices);
+                                                                                                // $counter = 0
+                                                                                                ?>
                                                                                             <div class="col-md-12">
                                                                                                 @if(is_array($products) || is_object($products))
                                                                                                     @foreach($products as $product)
@@ -354,18 +357,24 @@
                                                                                                                 <label for="">{{$product->prd_name}}</label>
                                                                                                                 <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
                                                                                                             @else
-                                                                                                                @foreach($accessibles as $accessible)
-                                                                                                                    @php($check_indicator = "")
-                                                                                                                    @php($displayed_price = "")
-                                                                                                                    @if($product->prd_id == $accessible)
-                                                                                                                        @php($check_indicator = "checked")
-                                                                                                                        @php($displayed_price = "")
-                                                                                                                        @php($counter++)
-                                                                                                                        @break
+                                                                                                            @php($counter = 0)
+                                                                                                            @foreach($accessibles as $key => $accessible)
+                                                                                                                @php($check_indicator = "")
+                                                                                                                @php($displayed_price = "")
+                                                                                                                @if($product->prd_id == $accessible)
+                                                                                                                    @php($check_indicator = "checked")
+                                                                                                                    @if(array_key_exists($key, $accessibles_prices))
+                                                                                                                        @php($displayed_price = $accessibles_prices[$key])
                                                                                                                     @else
                                                                                                                         @php($displayed_price = $product->prd_price)
                                                                                                                     @endif
-                                                                                                                @endforeach
+                                                                                                                    @php($counter++)
+                                                                                                                    @break
+                                                                                                                @else
+                                                                                                                    @php($displayed_price = $product->prd_price)
+                                                                                                                @endif
+                                                                                                            @endforeach
+
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
                                                                                                                 <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">
@@ -634,6 +643,5 @@
             }
         });
     });
-
 </script>
 @endsection

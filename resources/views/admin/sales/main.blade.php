@@ -907,8 +907,10 @@
         }
     }
 
-    document.getElementById("client_id").addEventListener("change", function() {
-    document.getElementById("cus_form").submit(); });
+    document.getElementById("client_id").addEventListener("change", function() 
+    {
+        document.getElementById("cus_form").submit(); 
+    });
     
 </script>
 
