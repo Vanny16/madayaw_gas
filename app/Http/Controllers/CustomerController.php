@@ -60,29 +60,24 @@ class CustomerController extends Controller
         $accessibles_prices = "";
         $counter = 0;
         
-        // dd($cus_accessibles);
         foreach($cus_accessibles as $cus_access)
         {
-            if(strpos($cus_access, ".") === false || strpos($cus_access, ".") <> null && $cus_access <> null){
-                $accessibles =  $accessibles . $cus_access . ",";
+            
+            if(count($cus_access) == 2){
+                $accessibles =  $accessibles . $cus_access['prd_id'] . ",";
 
                 if(!isset($cus_accessibles[$counter + 1]))
                 {
                     break;
                 }
-                $accessibles_prices = $accessibles_prices . $cus_accessibles[$counter + 1] . ",";
+                $accessibles_prices = $accessibles_prices . $cus_access['price'] . ",";
                 // continue;
             }
             else
             {
                 continue;
             }
-            
-            $counter++;
-            // if($counter + 1 )
         }
-
-        dd($accessibles_prices);
 
         $check_cus_name = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -181,14 +176,24 @@ class CustomerController extends Controller
         $accessibles = "";
         $accessibles_prices = "";
         $counter = 0;
+
         foreach($cus_accessibles as $cus_access)
         {
-            if(strpos($cus_access, ".") === false && $cus_access <> null){
-                $accessibles =  $accessibles . $cus_access . ",";
-                $accessibles_prices = $accessibles_prices . $cus_accessibles[$counter + 1] . ",";
-            }
             
-            $counter++;
+            if(count($cus_access) == 2){
+                $accessibles =  $accessibles . $cus_access['prd_id'] . ",";
+
+                if(!isset($cus_accessibles[$counter + 1]))
+                {
+                    break;
+                }
+                $accessibles_prices = $accessibles_prices . $cus_access['price'] . ",";
+                // continue;
+            }
+            else
+            {
+                continue;
+            }
         }
         // dd($accessibles, $accessibles_prices);
 

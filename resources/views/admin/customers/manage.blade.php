@@ -238,6 +238,7 @@
                                                                         if(end($accessibles) == " " || end($accessibles) == "")
                                                                         {array_pop($accessibles);}
 
+                                                                        $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
                                                                         // dd(is_array($products));
                                                                     ?>
                                                                     <div class="col-md-6">
@@ -257,14 +258,15 @@
                                                                     </div>
                                                                     <div class="col-md-6"> 
                                                                         @if(is_array($products) || is_object($products))
-                                                                            @foreach($accessibles as $accessible)
+                                                                            @foreach($accessibles as $key => $accessible)
                                                                                 @foreach($products as $product)
                                                                                     @if($product->prd_id == $accessible)
-                                                                                        @php($prd_accessible = $product->prd_name) 
-                                                                                        <span class="badge badge-pill badge-primary">₱ </span>
-                                                                                        <a class="lead"> | </a>
-                                                                                        <span class="badge badge-light"><?php echo $product->prd_price + $product->prd_deposit ?></span>
-                                                                                        <br>
+                                                                                        {{--@php(dd($key))
+                                                                                        @php($prd_accessible = $product->prd_name)
+                                                                                            <span class="badge badge-pill badge-primary">₱ </span>
+                                                                                            <a class="lead"> | </a>
+                                                                                            <span class="badge badge-light"><?php echo (float)$accessibles_prices[$key] + $product->prd_deposit ?></span>
+                                                                                            <br>--}}
                                                                                     @endif
                                                                                 @endforeach    
                                                                             @endforeach
@@ -340,11 +342,6 @@
                                                                                                 $accessibles_prices = explode(",",$customer->cus_accessibles_prices);
                                                                                                 if(end($accessibles_prices) == " " || end($accessibles_prices) == ""){}
 
-                                                                                                $all_accessibles = array();
-                                                                                                for($i = 0 ; $i < count($accessibles) ; $i++) 
-                                                                                                {
-                                                                                                    // array_push($all_accessibles,array($accessibles[$i],$accessibles_prices[$i]));
-                                                                                                }
                                                                                                 // dd($accessibles_prices);
                                                                                                 // $counter = 0
                                                                                                 ?>
@@ -353,9 +350,9 @@
                                                                                                     @foreach($products as $product)
                                                                                                         <div class="col-6">    
                                                                                                             @if(is_null($accessibles))
-                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_id}}">
+                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}">
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessible[]" value="{{$product->prd_price}}">
+                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}">
                                                                                                             @else
                                                                                                             @php($counter = 0)
                                                                                                             @foreach($accessibles as $key => $accessible)
@@ -374,10 +371,12 @@
                                                                                                                     @php($displayed_price = $product->prd_price)
                                                                                                                 @endif
                                                                                                             @endforeach
-
-                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
+                                                                                                                <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">
+                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="<?php echo($displayed_price)?>">
+                                                                                                                {{--<input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
+                                                                                                                <label for="">{{$product->prd_name}}</label>
+                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">--}}
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
@@ -527,9 +526,11 @@
                                                     @if(is_array($products) || is_object($products))
                                                         @foreach($products as $product)
                                                         <tr>
-                                                            <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" onclick = "storeProductPrice()" ></td>
-                                                            <td><label for="">{{$product->prd_name}}</label></td>
-                                                            <td><input type="number" id="price{{$product->prd_id}}" class="form-control" name="cus_accessibles[]" step="0.01" value="{{$product->prd_price}}"></td>
+                                                            <div class="form-check">
+                                                                <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}"></td>
+                                                                <td><label for="">{{$product->prd_name}}</label></td>
+                                                                <td><input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}"></td>
+                                                            </div>
                                                         </tr>
                                                         @endforeach
                                                     @endif
