@@ -608,17 +608,17 @@
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
         
         if(prd_quantity != "" || prd_quantity > 0){
-            if(prd_in_quantity > prd_quantity){
-                alert("Canisters to be in must not be greater than quantity to be purchased");
-            }
-            else{
+            // if(prd_in_quantity > prd_quantity){
+            //     alert("Canisters to be in must not be greater than quantity to be purchased");
+            // }
+            // else{
                 //Calculations
                 var total = document.getElementById("lbl_total").innerHTML;
                 var gross_total = (prd_price * prd_quantity);
                 var total_deposit = prd_deposit * brd_new_prd_quantity;
                 var sub_total = gross_total - temp_discount + total_deposit;
                 total = parseFloat(total) + sub_total;
-            }
+            // }
 
             
             // Setter For Price
