@@ -169,6 +169,26 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $flag = $request->add_flag;
+
+        $prodValues = array(
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $request->show_modal, 
+            $request->tab_1,
+            $request->tab_2
+        );
+
+        // dd($prodValues, $flag);
+        
         
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
