@@ -102,7 +102,62 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
     }
+    //public function toggleProduction()
+    // {
+    //     $pdn_flag = check_production_log();
 
+        
+    //     $closing_stock = DB::table('production_logs')
+        
+    //     ->select('pdn_closing_stock')
+    //     ->orderBy('pdn_id', 'desc')
+    //     ->first();
+
+    //     $production_logs = DB::table('movement_logs')
+    //     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    //     ->where('movement_logs.acc_id', '=', session('acc_id'))
+    //     ->where('movement_logs.pdn_id','=', get_last_production_id())
+    //     ->sum(DB::raw('log_filled')) + $closing_stock;
+    //     dd($production_logs);
+
+
+    //     if($pdn_flag)
+    //     {
+    //         $closing_stock = DB::table('production_logs')
+    //         ->select('pdn_closing_stock')
+    //         ->orderBy('pdn_id', 'desc')
+    //         ->first();
+
+    //         if($closing_stock == null){$closing_stock = 0;}
+
+    //         DB::table('production_logs')
+    //         ->insert([
+    //             'acc_id' => session('acc_id'),
+    //             'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_opening_stock' => $closing_stock
+    //         ]);
+
+    //         session()->flash('successMessage','Production started!');
+    //         return redirect()->action('ProductionController@manage');
+    //     }
+    //     else
+    //     {
+    //         $production_logs = DB::table('movement_logs')
+    //         ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    //         ->where('movement_logs.acc_id', '=', session('acc_id'))
+    //         ->where('movement_logs.pdn_id','=', get_last_production_id())
+    //         ->sum(DB::raw('log_filled')) + $closing_stock;
+            
+    //         DB::table('production_logs')
+    //         ->update([
+    //             'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
+    //         ]);
+
+    //         session()->flash('successMessage','Production ended!');
+    //         return redirect()->action('ProductionController@manage');
+    //     }
+    // }
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;
@@ -114,6 +169,26 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $flag = $request->add_flag;
+
+        $prodValues = array(
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $request->show_modal, 
+            $request->tab_1,
+            $request->tab_2
+        );
+
+        // dd($prodValues, $flag);
+        
         
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
