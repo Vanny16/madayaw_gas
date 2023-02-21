@@ -16,7 +16,6 @@ class ProductionController extends Controller
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
         ->get();
         
         $canisters = DB::table('products')
@@ -25,7 +24,7 @@ class ProductionController extends Controller
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
-        // dd($canisters);
+        // dd($raw_materials);
 
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -163,12 +162,14 @@ class ProductionController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_type = $request->prd_type;
         $prd_price = $request->prd_price;
         $prd_deposit = $request->prd_deposit;
         $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
-        $flag = $request->add_flag;
+        $components = $request->input('components');
+        $prd_components = "";
 
         $prodValues = array(
             '',
@@ -182,12 +183,13 @@ class ProductionController extends Controller
             '',
             '',
             '',
-            $request->show_modal, 
+            $request->show_modal,
             $request->tab_1,
-            $request->tab_2
+            $request->tab_2,
+            $request->prd_type
         );
 
-        // dd($prodValues, $flag);
+        // dd($prd_type);
         
         
         $sku_checker = DB::table('products')
@@ -206,16 +208,15 @@ class ProductionController extends Controller
         // 0 = quantity raw materials
         // 1 = empty goods
 
-        if($flag == 0)
+        if($prd_type == 0)
         {
             DB::table('products')
             ->insert([
             'prd_name'=> $prd_name,
             'acc_id' => session('acc_id'),
             'prd_uuid' => generateuuid(),
-            'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
-            'prd_price' => $prd_price,
+            'prd_description' => $prd_description,
             'prd_reorder_point' => $prd_reorder,
             'prd_for_production' => 1,
             'prd_for_POS' => 0,
@@ -223,8 +224,19 @@ class ProductionController extends Controller
             'sup_id' => $sup_id
             ]);
         }
-        elseif($flag == 1)
+        elseif($prd_type == 1)
         {
+            $get_components = "";
+
+            if(!is_null($components)){
+                foreach ($components as $component) {
+                    $get_components =  $component .",". $get_components;
+                }
+                $prd_components = substr($get_components, 0, strlen($get_components) - 1);
+            }
+
+            // dd($prd_components);
+
             DB::table('products')
             ->insert([
             'prd_name'=> $prd_name,
@@ -239,6 +251,7 @@ class ProductionController extends Controller
             'prd_for_production' => 1,
             'prd_for_POS' => 1,
             'prd_is_refillable' => 1,
+            'prd_components' => $prd_components,
             'sup_id' => $sup_id
             ]);
         }
@@ -285,27 +298,13 @@ class ProductionController extends Controller
             ]);  
         }
 
-        $prodValues = array(
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            $request->show_modal, 
-            $request->tab_1,
-            $request->tab_2
-        );
-
         session()->flash('getProdValues', array( $prodValues));
         session()->flash('successMessage','Raw material has been added');
         return redirect()->action('ProductionController@manage');
     }
+
+
+
 
     //ADD QUANTITY FOR ITEMS
     public function addQuantity(Request $request)
@@ -346,8 +345,6 @@ class ProductionController extends Controller
             '',
             '',
             '',
-            '',
-            '',
             $request->show_modal, 
             $request->tab_1,
             $request->tab_2
@@ -358,18 +355,31 @@ class ProductionController extends Controller
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS
-            $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+            if($quantity->prd_is_refillable == 1){
+                $new_quantity = (float)$quantity->prd_raw_can_qty + $prd_quantity;
+                
+                DB::table('products')
+                ->where('prd_id','=',$prd_id)
+                ->update([
+                    'prd_raw_can_qty' => (float)$new_quantity
+                ]);  
+            }
+            else{
+                $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                
+                DB::table('products')
+                ->where('prd_id','=',$prd_id)
+                ->update([
+                    'prd_quantity' => (float)$new_quantity
+                ]);  
+            }
 
-            DB::table('products')
-            ->where('prd_id','=',$prd_id)
-            ->update([
-                'prd_quantity' => (float)$new_quantity
-            ]);  
 
             session()->flash('getProdValues', array( $prodValues));
             session()->flash('successMessage','Raw materials added');
             return redirect()->action('ProductionController@manage');
         }
+
         if($flag == 1)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))
@@ -382,6 +392,7 @@ class ProductionController extends Controller
                 ->update([
                     'prd_empty_goods' => $new_quantity
                 ]);
+                
 
                 // SUBTRACT FROM RAW MATERIALS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -674,6 +685,7 @@ class ProductionController extends Controller
         return view('admin.production.tank');
     }
 
+
     //CREATE SUPPLIER
     public function createSupplier(Request $request)
     {
@@ -696,8 +708,6 @@ class ProductionController extends Controller
             $request->sup_prd_description,
             $request->sup_prd_reorder,
             $request->sup_name,
-            $request->sup_prd_is_production,
-            $request->sup_prd_is_refillable,
             'show',
             $request->show_modal,
             $request->tab_1,

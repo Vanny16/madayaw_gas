@@ -58,7 +58,7 @@
                                 <div class="tab-content card-body">
                                     <div id="raw-materials" class="tab-pane">
                                         <div class="card-tools">
-                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New SKU</button>
+                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add Raw Materials</button>
                                         </div>
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
@@ -75,18 +75,10 @@
                                                 <tbody id="tbl-raw_materials">
                                                     @if(isset($raw_materials))
                                                         @foreach($raw_materials as $raw_material)
-                                                            @if($raw_material->prd_is_refillable == 1)
-                                                                @if($raw_material->prd_raw_can_qty < $raw_material->prd_reorder_point)
-                                                                    @php($reorder_indicator = "table-danger" )
-                                                                @else
-                                                                    @php($reorder_indicator = "")
-                                                                @endif
+                                                            @if($raw_material->prd_quantity < $raw_material->prd_reorder_point)
+                                                                @php($reorder_indicator = "table-danger" )
                                                             @else
-                                                                @if($raw_material->prd_quantity < $raw_material->prd_reorder_point)
-                                                                    @php($reorder_indicator = "table-danger" )
-                                                                @else
-                                                                    @php($reorder_indicator = "")
-                                                                @endif
+                                                                @php($reorder_indicator = "")
                                                             @endif
                                                             <tr class="{{ $reorder_indicator }}">
                                                                 <td>
@@ -97,26 +89,13 @@
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$raw_material->prd_name}}</td>
-                                                                <td>
-                                                                    @if($raw_material->prd_is_refillable == 1)
-                                                                        {{number_format($raw_material->prd_raw_can_qty, 0, '.', ',')}}
-                                                                        <br>
-                                                                        @if($reorder_indicator != "") 
-                                                                            @if($raw_material->prd_raw_can_qty == 0)
-                                                                                <span class="badge badge-danger">Restock now</span>
-                                                                            @elseif($raw_material->prd_raw_can_qty < $raw_material->prd_reorder_point)
-                                                                                <span class="badge badge-warning">Request for restock</span>
-                                                                            @endif
-                                                                        @endif
-                                                                    @else
-                                                                        {{number_format($raw_material->prd_quantity, 0, '.', ',')}}
-                                                                        <br>
-                                                                        @if($reorder_indicator != "") 
-                                                                            @if($raw_material->prd_quantity == 0)
-                                                                                <span class="badge badge-danger">Restock now</span>
-                                                                            @elseif($raw_material->prd_quantity < $raw_material->prd_reorder_point)
-                                                                                <span class="badge badge-warning">Request for restock</span>
-                                                                            @endif
+                                                                <td>{{$raw_material->prd_quantity}}
+                                                                    <br>
+                                                                    @if($reorder_indicator != "") 
+                                                                        @if($raw_material->prd_quantity == 0)
+                                                                            <span class="badge badge-danger">Restock now</span>
+                                                                        @elseif($raw_material->prd_quantity < $raw_material->prd_reorder_point)
+                                                                            <span class="badge badge-warning">Request for restock</span>
                                                                         @endif
                                                                     @endif
                                                                 </td>
@@ -436,7 +415,7 @@
                                     </ul>
                                     <div class="card-tools">
                                         {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
@@ -733,10 +712,13 @@
     @php($prd_description = Session::get('getProdValues')[0][5])
     @php($prd_reorder = Session::get('getProdValues')[0][6])
     @php($sup_name = Session::get('getProdValues')[0][7])
-    @php($state = Session::get('getProdValues')[0][8])
-    @php($show_modal = Session::get('getProdValues')[0][9])
-    @php($tab_1 = Session::get('getProdValues')[0][10])
-    @php($tab_2 = Session::get('getProdValues')[0][11])
+    @php($sup_prd_is_production = Session::get('getProdValues')[0][8])
+    @php($sup_prd_is_refillable = Session::get('getProdValues')[0][9])
+    @php($state = Session::get('getProdValues')[0][10])
+    @php($show_modal = Session::get('getProdValues')[0][11])
+    @php($tab_1 = Session::get('getProdValues')[0][12])
+    @php($tab_2 = Session::get('getProdValues')[0][13])
+    @php($prd_type = Session::get('getProdValues')[0][14])
 @else
     @php($prd_name = '')
     @php($prd_sku = '')
@@ -746,10 +728,13 @@
     @php($prd_description = '')
     @php($prd_reorder = '')
     @php($sup_name = '')
+    @php($sup_prd_is_production = '')
+    @php($sup_prd_is_refillable = '')
     @php($state = '')
     @php($show_modal = '')
     @php($tab_1 = '')
     @php($tab_2 = '')
+    @php($prd_type = '')
 @endif
 
 <!-- Create Product Modal -->
@@ -789,7 +774,7 @@
                             <div class="form-group" >
                                 <label for="prd_type">Material Type <span style="color:red">*</span></label>
                                 <select class="form-control" id="prd_type" name="prd_type">
-                                    @if($show_modal == 0)
+                                    @if($prd_type == 0)
                                         @php($select_non_refillable = "selected")
                                         @php($select_refillable = "")
                                     @else
@@ -804,13 +789,15 @@
                                 <label for="prd_type">Components <span style="color:red">*</span></label>
                                 <div class="form-check">
                                     <div class="row">
-                                        @foreach($raw_materials as $raw_material)
-                                            @if($raw_material->prd_is_refillable == 0)
-                                                <div class="col-4">
-                                                    <input type="checkbox" name="components[]" value="{{$raw_material->prd_id}}"/> {{$raw_material->prd_name}}
-                                                </div>
-                                            @endif
-                                        @endforeach
+                                        <div class="col-4">
+                                            <input type="checkbox" /> Valve 1
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="checkbox" /> Valve 2
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="checkbox" /> Seal
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -987,20 +974,6 @@
 
 <script>
 
-    function showRefillable(){
-        $("#prd_deposit").show();
-        $("#prd_weight").show();
-        $("#prd_price").show();
-        $("#prd_components").show();
-    }
-
-    function hideRefillable(){
-        $("#prd_deposit").hide();
-        $("#prd_weight").hide();
-        $("#prd_price").hide();
-        $("#prd_components").hide();
-    }
-
     $("#prd_type").on("change", function() {
         if (this.value === '0') {
             hideRefillable();
@@ -1022,6 +995,37 @@
             showRefillable();
             document.getElementById('show_modal').value = 1;
         }
+    }
+
+    function stockIn(prd_id, flag){
+        document.getElementById('set_stockin_id').value = prd_id;
+        document.getElementById('set_stockin_flag').value = flag;
+        
+        if(flag === 0){
+            $("#add-quantity-modal").find("#lbl-add").show();
+            $("#add-quantity-modal").find("#lbl-loose").hide();
+            $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#crate-quantity").hide();
+        }else{
+            $("#add-quantity-modal").find("#lbl-add").hide();
+            $("#add-quantity-modal").find("#lbl-loose").show();
+            $("#add-quantity-modal").find("#lbl-crate").show();
+            $("#add-quantity-modal").find("#crate-quantity").show();
+        }
+    }
+
+    function showRefillable(){
+        $("#prd_deposit").show();
+        $("#prd_weight").show();
+        $("#prd_price").show();
+        $("#prd_components").show();
+    }
+
+    function hideRefillable(){
+        $("#prd_deposit").hide();
+        $("#prd_weight").hide();
+        $("#prd_price").hide();
+        $("#prd_components").hide();
     }
 
     $(document).ready(function(){
@@ -1048,29 +1052,24 @@
         @endif
         
         @if($show_modal == 0)
-            hideRefillable()
-        @elseif($show_modal == 1)
-            showRefillable();
+            hideRefillable();
         @endif
 
         $("#product-modal").modal('{{$state}}');
 
     });
 
-    function stockIn(prd_id, flag){
-        document.getElementById('set_stockin_id').value = prd_id;
-        document.getElementById('set_stockin_flag').value = flag;
-        
-        if(flag === 0){
-            $("#add-quantity-modal").find("#lbl-add").show();
-            $("#add-quantity-modal").find("#lbl-loose").hide();
-            $("#add-quantity-modal").find("#lbl-crate").hide();
-            $("#add-quantity-modal").find("#crate-quantity").hide();
-        }else{
-            $("#add-quantity-modal").find("#lbl-add").hide();
-            $("#add-quantity-modal").find("#lbl-loose").show();
-            $("#add-quantity-modal").find("#lbl-crate").show();
-            $("#add-quantity-modal").find("#crate-quantity").show();
+    function noNegativeValue(id){
+
+        $("#"+id).on("input", function() {
+            if (/^0/.test(this.value)) {
+                this.value = this.value.replace(/^0/, "")
+            }
+        });
+
+        var value = document.getElementById(id).value;
+        if(value < 0 || value == ""){
+            document.getElementById(id).value ="0";
         }
     }
 
@@ -1089,21 +1088,6 @@
         document.getElementById('tab_1').value = page;
         document.getElementById('np_tab_1').value = page;
         document.getElementById('si_tab_1').value = page;
-    }
-
-    
-
-    function noNegativeValue(id){
-        $("#"+id).on("input", function() {
-            if (/^0/.test(this.value)) {
-                this.value = this.value.replace(/^0/, "")
-            }
-        });
-
-        var value = document.getElementById(id).value;
-        if(value < 0 || value == ""){
-            document.getElementById(id).value ="0";
-        }
     }
 </script>
 @endsection
