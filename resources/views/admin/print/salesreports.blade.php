@@ -9,9 +9,9 @@
         <div class="card">
             <div class="card-header">
             @if(isset($all_sales_reports))    
-            <h3 class="card-title"><i class=" fa fa-bar-chart"></i> Sales Reports</h3>
+            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Sales  Reports</h3>
             @else
-            <h3 class="card-title"><i class=" fa fa-bar-chart"></i> Sales Report</h3>
+            <h3 class="card-title"><i  class="fa fa-bar-chart"></i> Sale Report</h3>
             @endif
         </div>
             <div class="card-body">
@@ -20,11 +20,13 @@
                 @if(isset($all_sales_reports))
                     <thead>
                         <tr>
-                            <th>Prodcut Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity Sold</th>
-                            <th>Total Sales</th>
+                            <th>Reference ID</th>
+                            <th>User</th>
+                            <th>Customer</th>
+                            <th>Date & Time</th>
+                            <th>Total Sale</th>
+                            <th>Amount Received</th>
+                            <th>Change</th>
                             <th width="20px"></th>
                         </tr>
                         <tr>
@@ -34,12 +36,13 @@
                     <tbody>
                         @foreach($all_sales_reports as $all_sales_report)
                         <tr>
-                          
-                            <td>{{$all_sales_report->prd_name}}</td>
-                            <td>{{$all_sales_report->prd_description}}</td>
-                            <td>₱ {{ number_format($all_sales_report->prd_price, 2, '.', ',')}}</td>
-                            <td>{{ number_format($all_sales_report->total_sold, 2, '.', ',')}}</td>
-                            <td>₱ {{ number_format($all_sales_report->total_sales, 2, '.', ',')}}</td>
+                            <td>{{$all_sales_report->trx_ref_id}}</td>
+                            <td>{{$all_sales_report->usr_name}}</td>
+                            <td>{{$all_sales_report->cus_name}}</td>
+                            <td>{{$all_sales_report->trx_datetime}}</td>
+                            <td>₱ {{ number_format($all_sales_report->trx_total, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($all_sales_report->trx_amount_paid, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($all_sales_report->trx_balance, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -47,11 +50,13 @@
                 @elseif(isset($sales_reports))
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Descriptiom</th>
-                            <th>Price</th>
-                            <th>Quantity Sold</th>
-                            <th>Total Sales</th>
+                            <th>Reference ID</th>
+                            <th>User</th>
+                            <th>Customer</th>
+                            <th>Date & Time</th>
+                            <th>Total Sale</th>
+                            <th>Amount Received</th>
+                            <th>Change</th>
                             <th width="20px"></th>
                         </tr>
                         <tr>
@@ -61,12 +66,13 @@
                     <tbody>
                         @foreach($sales_reports as $sales_report)
                         <tr>
-                          
-                            <td>{{$sales_report->prd_name}}</td>
-                            <td>{{$sales_report->prd_description}}</td>
-                            <td>₱ {{ number_format($sales_report->prd_price, 2, '.', ',')}}</td>
-                            <td>{{ number_format($sales_report->total_sold, 2, '.', ',')}}</td>
-                            <td>₱ {{ number_format($sales_report->total_sales, 2, '.', ',')}}</td>
+                            <td>{{$sales_report->trx_ref_id}}</td>
+                            <td>{{$sales_report->usr_name}}</td>
+                            <td>{{$sales_report->cus_name}}</td>
+                            <td>{{$sales_report->trx_datetime}}</td>
+                            <td>₱ {{ number_format($salesreport->trx_total, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sales_report->trx_amount_paid, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sales_report->trx_balance, 2, '.', ',')}}</td>
                         </tr> 
                         @endforeach
                     </tbody>
