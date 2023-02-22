@@ -176,22 +176,34 @@
                                                     </td>
                                                 @else
                                                     <td>
-                                                        <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                        @if($product->prd_is_refillable == 0)
+                                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                        @else
+                                                            <badge class="badge bg-info">Refillable</badge>
+                                                        @endif
                                                     </td>
                                                 @endif
                                                 <td>
                                                     @if($product->prd_active == 1) 
                                                     <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                        @if($product->prd_is_refillable == 0)
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@deactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                        @endif
                                                     @else
                                                     <span class="badge badge-danger">Inactive</span>
-                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                    
+                                                        @if($product->prd_is_refillable == 0)
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@reactivateProduct',[$product->prd_id])}}" aria-hidden="true"></a>
+                                                        @endif
                                                     @endif
                                                 </td>
                                                 <td>
                                                 @if($product->prd_active == 0)
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                                @else   
+                                                @else
+                                                    @if($product->prd_is_refillable == 1)
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    @else
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
@@ -201,6 +213,7 @@
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                         </ul>
                                                     </div>
+                                                    @endif
                                                 @endif
                                                 </td>
 
@@ -246,14 +259,14 @@
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                             </div>
-                                                                            <div class="form-group">
+                                                                            <!-- <div class="form-group">
                                                                                 <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $product->prd_deposit}}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
