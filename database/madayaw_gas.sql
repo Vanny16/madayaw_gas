@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-18 03:52:07
+Date: 2023-02-21 18:02:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -146,7 +146,8 @@ CREATE TABLE `products` (
   `prd_for_production` tinyint(4) DEFAULT '1',
   `prd_for_POS` tinyint(4) DEFAULT NULL,
   `prd_weight` decimal(10,0) DEFAULT NULL,
-  `prd_type` tinyint(4) DEFAULT NULL,
+  `prd_raw_can_qty` int(11) DEFAULT '0',
+  `prd_components` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

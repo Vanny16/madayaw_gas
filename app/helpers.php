@@ -397,27 +397,52 @@ function subtract_qty($flag, $qty, $prd_id)
     //SUBTRACT RAW MATERIALS FOR EMPTY GOODS
     if($flag == 1)
     {
-        $raw_materials = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->where('prd_active','<>','0')
-        ->get();
 
-        for($x = 0 ; sizeOf($raw_materials) - 1 >= $x ; $x++)
-        {
-            DB::table('products')        
-            ->where('prd_id', '=', $raw_materials[$x]->prd_id)
+         
+         $product = DB::table('products')
+         ->where('prd_id','=', $prd_id)
+         ->first();
+ 
+         $components_list = $product->prd_components;
+         $component = explode(",", $components_list);
+ 
+
+         for($i = 0 ; $i < count($component) ; $i++)
+         {
+            
+            $item = DB::table('products')      
+            ->where('prd_id','=', $component[$i])
             ->where('acc_id', '=', session('acc_id'))
             ->where('prd_for_production','=','1')
-            ->where('prd_is_refillable','=','0')
-            ->update([
-                'prd_quantity' => $raw_materials[$x]->prd_quantity - $qty
-            ]);
+            ->first();
 
-        }
+            $new_quantity = $item->prd_quantity - $qty ;
+
+            DB::table('products')        
+            ->where('prd_id', '=', $component[$i])
+            ->update([
+                'prd_quantity' => $new_quantity
+            ]);
+         }
+
+         $can = DB::table('products')      
+            ->where('prd_id','=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_for_production','=','1')
+            ->first();
+
+         $new_quantity = $can->prd_raw_can_qty - $qty ;
+
+         DB::table('products')        
+         ->where('prd_id', '=', $prd_id)
+         ->update([
+             'prd_raw_can_qty' => $new_quantity
+         ]);
+
+
+
     }
+
     //SUBTRACT EMPTY GOODS FOR FILLED CANISTERS
     elseif($flag == 2)
     {

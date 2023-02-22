@@ -68,7 +68,7 @@
                     <a href="{{ action('ProductController@opposite') }}" class="nav-link">
                         <i class="nav-icon fa fa-bitbucket"></i>
                         <p>
-                            Opposite Canisters
+                            Opposition Canisters
                         </p>
                     </a>
                 </li>
