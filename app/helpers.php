@@ -175,8 +175,8 @@ function get_last_production_id()
     $production_logs = DB::table('production_logs')
     ->orderBy('pdn_id', 'desc')
     ->first();
-
-    // return $production_logs->pdn_id;
+    // dd($production_logs->pdn_id);
+    return $production_logs->pdn_id;
 }
 
 function get_quantity_of_canisters($prd_id, $flag)
@@ -197,7 +197,7 @@ function get_quantity_of_canisters($prd_id, $flag)
     if($flag == 1)
     {
         $query = $query->sum('log_empty_goods');
-
+        
         return $query;
     }
     elseif($flag == 2)
@@ -259,6 +259,7 @@ function get_stock_report($prd_id, $flag)
     {
         return $production_logs = $production_logs 
         ->where('movement_logs.prd_id', '=', $prd_id)
+        ->where('movement_logs.pdn_id', '=', get_last_production_id())
         ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
     }
 }
@@ -331,18 +332,48 @@ function check_materials($flag, $qty, $prd_id)
     //FOR REVALVING OR SCRAPPING LEAKERS 
     elseif($flag == 4 || $flag == 5)
     {
-        $leakers = DB::table('products')
+        $canisters = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id','=',$prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
 
-        if(isset($leakers))
+        if(isset($canisters))
         {
-            foreach ($leakers as $leaker)
+            foreach ($canisters as $canister)
             {
-                if((float)$leaker->prd_leakers >= $qty)
+                if((float)$canister->prd_leakers >= $qty)
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    //FOR LEAKERS FROM PRODUCTION
+    elseif($flag == 6)
+    {
+        $canisters = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->get();
+
+        if(isset($canisters))
+        {
+            foreach ($canisters as $canister)
+            {
+                if((float)$canister->prd_quantity >= $qty)
                 {
                     continue;
                 }
@@ -362,6 +393,7 @@ function check_materials($flag, $qty, $prd_id)
 
 function subtract_qty($flag, $qty, $prd_id)
 {
+    // dd($qty);
     //SUBTRACT RAW MATERIALS FOR EMPTY GOODS
     if($flag == 1)
     {
@@ -372,15 +404,6 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','0')
         ->where('prd_active','<>','0')
         ->get();
-
-        // if(isset($raw_materials))
-        // {
-           
-        // }
-        // else
-        // {
-        //     $new_quantity = 0;
-        // }
 
         for($x = 0 ; sizeOf($raw_materials) - 1 >= $x ; $x++)
         {
@@ -477,6 +500,34 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->update([
             'prd_leakers' => $new_quantity
+        ]);
+    }   
+    //SUBTRACT BACKFLUSHED FOR LEAKERS
+    elseif($flag == 6)
+    {
+        $leakers = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+        // dd($qty);
+        if(isset($leakers))
+        {
+            $new_quantity= $leakers->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
+
+        DB::table('products')        
+        ->where('prd_id', '=', $leakers->prd_id)
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->update([
+            'prd_quantity' => $new_quantity
         ]);
     }   
 }
