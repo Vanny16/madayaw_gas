@@ -190,7 +190,7 @@
                                 @else
                                     @php($prd_price = $product->prd_price)
                                 @endif
-                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">
+                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="setMovementId()">
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
@@ -279,6 +279,7 @@
                                                                     <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('loose_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                 </div>
                                                             @else
+                                                            
                                                                 <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('crates_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
 
                                                                 <div class="form-group col-12">
@@ -313,6 +314,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input class="form-control" type="text" id="movement_id" value="0" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
                 </div>
@@ -595,18 +597,25 @@
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
+    function setMovementId(){
+        var movement_id = document.getElementById("movement_id").value;
+        document.getElementById("movement_id").value = parseInt(movement_id) + 1;
+    }
+
     //Initialize Array for Sales Report in Add to Cart Function
     var total_discount = parseFloat(0);
     var details = new Array();
 
     function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
         
+        alert("HAHAHA");
+
         var crates_amount = parseInt(crates_amount);
         var loose_amount = parseInt(loose_amount);
         var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
         var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
-        
+
         if(prd_quantity != "" || prd_quantity > 0){
             // if(prd_in_quantity > prd_quantity){
             //     alert("Canisters to be in must not be greater than quantity to be purchased");
@@ -642,10 +651,11 @@
 
             //For Populating Selected Products Table 
 
+            var row_id = document.getElementById("movement_id").value;
             var table = document.getElementById("tbl-cart");
-            var row_count = (table.rows.length);
             var row = table.insertRow(0);
-            row.id = "row"+row_count;
+
+            row.id = "row"+row_id;
             row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
             row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
             row.insertCell(2).innerHTML = prd_price;
@@ -725,9 +735,10 @@
 
                 //For Populating Selected Products Table 
                 var table = document.getElementById("tbl-prd-in");
-                var row_count = (table.rows.length);
+                var row_id = document.getElementById("movement_id").value;
                 var row = table.insertRow(0);
-                row.id = "row_in"+row_count;
+
+                row.id = "row_in"+row_id;
                 row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
                 row.insertCell(1).innerHTML = "";
                 row.insertCell(2).innerHTML = display_crates;
@@ -747,6 +758,30 @@
         catch(e){
             alert("Item has been added");
         }
+    }
+    
+    function removeFromCart(row, sub_total) {
+        var total = document.getElementById("lbl_total").innerHTML; 
+        total = parseFloat(total) - sub_total;
+        
+        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+        document.getElementById("amount_payable").value = total.toFixed(2);
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow);
+    }
+
+    function removeFromCanisterIn(row, crate, loose){
+        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+        total_crate = parseFloat(total_crate) - crate;
+        total_loose = parseFloat(total_loose) - loose;
+
+        document.getElementById("lbl_total_crates").innerHTML = total_crate;
+        document.getElementById("lbl_total_loose").innerHTML = total_loose;
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow); 
     }
 
     function enterPayable(){
@@ -773,30 +808,6 @@
         // else{
         //     alert();
         // }
-    }
-
-    function removeFromCart(row, sub_total) {
-        var total = document.getElementById("lbl_total").innerHTML; 
-        total = parseFloat(total) - sub_total;
-        
-        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("amount_payable").value = total.toFixed(2);
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow);
-    }
-
-    function removeFromCanisterIn(row, crate, loose){
-        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
-        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
-        total_crate = parseFloat(total_crate) - crate;
-        total_loose = parseFloat(total_loose) - loose;
-
-        document.getElementById("lbl_total_crates").innerHTML = total_crate;
-        document.getElementById("lbl_total_loose").innerHTML = total_loose;
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow); 
     }
 
     $(document).ready(function(){
