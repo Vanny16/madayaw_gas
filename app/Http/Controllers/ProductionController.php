@@ -41,6 +41,8 @@ class ProductionController extends Controller
         ->orderBy('pdn_id', 'desc')
         ->first();
 
+        $customers = 
+
         $pdn_date = "";
         $pdn_start_time = "";
         $pdn_end_time = '-- : -- --'; 
@@ -311,7 +313,9 @@ class ProductionController extends Controller
         $prd_id = $request->stockin_prd_id;
         (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
-        
+
+        // dd($flag);
+
         record_stockin($prd_id, $prd_quantity);
         
         $quantity = DB::table('products')
@@ -330,9 +334,10 @@ class ProductionController extends Controller
         // 0 = quantity raw materials
         // 1 = empty goods
         // 2 = filled canisters
-        // 3 = leakers
+        // 3 = bad order
         // 4 = revalve
         // 5 = scrap
+        // 6 = leakers
         
         $prodValues = array(
             '',
@@ -534,6 +539,36 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }
             
+        }
+        elseif($flag == 6)
+        {
+            if(check_materials($flag, $prd_quantity, $prd_id))
+            {
+                //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
+                (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
+                            
+                DB::table('products')
+                ->where('prd_id','=',$prd_id)
+                ->update([
+                    'prd_leakers' => $new_quantity
+                ]);  
+
+                //SUBTRACT QUANTITY FROM LEAKERS
+                subtract_qty($flag, $prd_quantity, $prd_id);
+
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
+                
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('successMessage','Leakers added');
+                return redirect()->action('ProductionController@manage');
+            }
+            else
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Backflushed insufficient!');
+                return redirect()->action('ProductionController@manage');
+            }
         }
 
         session()->flash('getProdValues', array( $prodValues));
