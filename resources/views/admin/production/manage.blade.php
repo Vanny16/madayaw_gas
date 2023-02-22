@@ -166,7 +166,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-md-12">
-                                                                                    <div class="form-group">
+                                                                                        <div class="form-group">
                                                                                             <label for="prd_name">Product Name <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_name" name="prd_name" value="{{$raw_material->prd_name}}"/>
                                                                                         </div>
@@ -174,18 +174,38 @@
                                                                                             <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_sku" name="prd_sku" value="{{$raw_material->prd_sku}}"/>
                                                                                         </div>
-                                                                                        <div class="form-group">
-                                                                                            <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                            <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                                                                            <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$raw_material->prd_quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                                        </div>
+
+
+                                                                                        @php($quantity = "")
+                                                                                        @if($raw_material->prd_is_refillable == 1)
+                                                                                            @php($quantity = $raw_material->prd_raw_can_qty)
+
+                                                                                            <div class="form-group">
+                                                                                                <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
+                                                                                                <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
+                                                                                                <input type="text" class="form-control" id="set_prd_weight" name="prd_weight" placeholder="Enter Net Weight" value="{{ $raw_material->prd_weight }}" onkeypress="return isNumberKey(this, event);"/>
+                                                                                            </div>
+                                                                                        @else
+                                                                                            @php($quantity = $raw_material->prd_quantity)
+                                                                                        @endif
+                                                
                                                                                         <div class="form-group">
                                                                                             <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$raw_material->prd_description}}" />
+                                                                                        </div>                   
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                                         </div>
+
                                                                                         <div class="form-group">
                                                                                             <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_reorder" name="prd_reorder" value="{{$raw_material->prd_reorder_point}}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>

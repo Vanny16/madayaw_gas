@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-21 18:02:05
+Date: 2023-02-22 13:52:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -156,20 +156,6 @@ CREATE TABLE `products` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `purchases`
 -- ----------------------------
 DROP TABLE IF EXISTS `purchases`;
@@ -253,22 +239,6 @@ CREATE TABLE `stockin_logs` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `stock_statuses`
--- ----------------------------
-DROP TABLE IF EXISTS `stock_statuses`;
-CREATE TABLE `stock_statuses` (
-  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stk_opening` double DEFAULT NULL,
-  `stk_closing` double DEFAULT NULL,
-  `pdn_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`stk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of stock_statuses
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `suppliers`
 -- ----------------------------
 DROP TABLE IF EXISTS `suppliers`;
@@ -283,11 +253,12 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(11) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
+INSERT INTO `suppliers` VALUES ('1', 'd1ahwb5nw06e0na06tewgtt2q6pga1al', '1', 'UNSPECIFIED', 'UNSPECIFIED', '00000000000', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`

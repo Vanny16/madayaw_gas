@@ -466,14 +466,14 @@
                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $prd_deposit }}" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="prd_weight">Net Weight (g)<span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_description" placeholder="Enter Description" value="{{ $prd_description }}" required/>
@@ -499,7 +499,7 @@
                                             @endif
                                         @endforeach   
                                     </select> 
-                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_price.value, prd_deposit.value, prd_weight.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
+                                    <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#supplier-modal" onclick="getNewProductValue(prd_name.value, prd_sku.value, prd_price.value, prd_description.value, prd_reorder.value)"><i class="fa fa-plus-circle"></i> New Supplier</button>
                                 </div>
                             </div>
                         </div>
@@ -591,12 +591,12 @@
         $("#product-modal").modal('{{$state}}');
     });
 
-    function getNewProductValue(prd_name, prd_sku, prd_price, prd_deposit, prd_weight, prd_description, prd_reorder){
+    function getNewProductValue(prd_name, prd_sku, prd_price, prd_description, prd_reorder){
         document.getElementById('sup_prd_name').value = prd_name;
         document.getElementById('sup_prd_sku').value = prd_sku;
         document.getElementById('sup_prd_price').value = prd_price;
-        document.getElementById('sup_prd_deposit').value = prd_deposit;
-        document.getElementById('sup_prd_weight').value = prd_weight;
+        document.getElementById('sup_prd_deposit').value = 0;
+        document.getElementById('sup_prd_weight').value = 0;
         document.getElementById('sup_prd_description').value = prd_description;
         document.getElementById('sup_prd_reorder').value = prd_reorder;
     }

@@ -24,7 +24,6 @@ class ProductionController extends Controller
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->get();
-        // dd($raw_materials);
 
         $products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -36,7 +35,7 @@ class ProductionController extends Controller
         ->get();
 
         $pdn_flag = check_production_log();
-        // dd(get_stock_report());
+        // dd($raw_materials);
 
         $production_times = DB::table('production_logs')
         ->orderBy('pdn_id', 'desc')
