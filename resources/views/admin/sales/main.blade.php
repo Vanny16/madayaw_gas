@@ -314,7 +314,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input class="form-control" type="text" id="movement_id" value="0" />
+                    <input class="form-control" type="text" id="movement_id" value="0" hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
                 </div>
@@ -607,8 +607,6 @@
     var details = new Array();
 
     function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
-        
-        alert("HAHAHA");
 
         var crates_amount = parseInt(crates_amount);
         var loose_amount = parseInt(loose_amount);
@@ -666,7 +664,7 @@
             row.insertCell(7).innerHTML = sub_total.toFixed(2);
             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row.id+ "," +sub_total+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             var received = document.getElementById("received_amount").value;
 
@@ -686,6 +684,63 @@
             alert("Please input quantity");
         }
     }
+
+    function removeFromCart(row, sub_total, crate, loose) {
+
+        var deleteRowIn = document.getElementById("row_in" + row);
+        var deleteRow = document.getElementById("row" + row);
+
+        if (deleteRow && deleteRowIn) { // add error handling to check for null or undefined variables
+            
+            //IN
+            var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+            var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+            total_crate = parseFloat(total_crate) - crate;
+            total_loose = parseFloat(total_loose) - loose;
+
+            document.getElementById("lbl_total_crates").innerHTML = total_crate;
+            document.getElementById("lbl_total_loose").innerHTML = total_loose;
+
+            var parentElement1 = document.getElementById("tbl-prd-in");
+            parentElement1.removeChild(deleteRowIn);
+            
+            //CART
+            var total = document.getElementById("lbl_total").innerHTML;
+            total = parseFloat(total) - sub_total;
+
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
+
+            var parentElement2 = document.getElementById("tbl-cart");
+            parentElement2.removeChild(deleteRow);
+
+        } else {
+            
+            //CART
+            var total = document.getElementById("lbl_total").innerHTML;
+            total = parseFloat(total) - sub_total;
+
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
+
+            var parentElement2 = document.getElementById("tbl-cart");
+            parentElement2.removeChild(deleteRow);
+            
+        }
+    }
+
+    function removeFromCanisterIn(row, crate, loose){
+        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+        total_crate = parseFloat(total_crate) - crate;
+        total_loose = parseFloat(total_loose) - loose;
+
+        document.getElementById("lbl_total_crates").innerHTML = total_crate;
+        document.getElementById("lbl_total_loose").innerHTML = total_loose;
+
+        var deleteRow = document.getElementById(row.id);
+        row.parentElement.removeChild(deleteRow); 
+    }   
 
     function addCanistersIn(in_crate_id, in_loose_id, select_id){
 
@@ -758,30 +813,6 @@
         catch(e){
             alert("Item has been added");
         }
-    }
-    
-    function removeFromCart(row, sub_total) {
-        var total = document.getElementById("lbl_total").innerHTML; 
-        total = parseFloat(total) - sub_total;
-        
-        document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-        document.getElementById("amount_payable").value = total.toFixed(2);
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow);
-    }
-
-    function removeFromCanisterIn(row, crate, loose){
-        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
-        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
-        total_crate = parseFloat(total_crate) - crate;
-        total_loose = parseFloat(total_loose) - loose;
-
-        document.getElementById("lbl_total_crates").innerHTML = total_crate;
-        document.getElementById("lbl_total_loose").innerHTML = total_loose;
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow); 
     }
 
     function enterPayable(){

@@ -261,7 +261,6 @@ class ProductController extends Controller
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
         $prd_price = $request->prd_price;
-        $prd_deposit = $request->prd_deposit;
         $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
@@ -285,7 +284,6 @@ class ProductController extends Controller
         'prd_description' => $prd_description,
         'prd_sku' => $prd_sku,
         'prd_price' => $prd_price,
-        'prd_deposit' => $prd_deposit,
         'prd_weight' => $prd_weight,
         'prd_reorder_point' => $prd_reorder,
         'prd_for_production' => 0,
