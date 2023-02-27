@@ -126,7 +126,7 @@
                                                 @if($customer->cus_image <> '')
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/customers/' . $customer->cus_image) }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @else</a>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#img-customer-modal-{{$customer->cus_id}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/customers/default.png') }}" alt="{{ $customer->cus_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
                                                 @endif    
                                                 </td>
                                                 <td>   

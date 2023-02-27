@@ -125,6 +125,7 @@ Route::group(['prefix' => 'reports'], function()
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
+    Route::get('payments', 'SalesController@payments');
 
     Route::post('select-customer', 'SalesController@selectCustomer');
     Route::post('create-customer', 'SalesController@createCustomer');
