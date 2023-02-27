@@ -44,7 +44,7 @@ class ProductionController extends Controller
         $customers = 
 
         $pdn_date = "";
-        $pdn_start_time = "";
+        $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
 
         if(isset($production_times)){

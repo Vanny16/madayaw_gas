@@ -420,7 +420,7 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_quantity}}</td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>
+                                                                {{--<td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>--}}
                                                                 {{--<td>
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -593,6 +593,9 @@
                                     @endif
                                 </tr>
                             </table>
+                            {{--<div class="text-white">
+                                <a class="btn btn-primary" href=""> Edit Stocks</a>
+                            </div>--}}
                         </div>
 
                         <!-- Canisters -->
@@ -614,7 +617,8 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
-                                    <tr>
+                                    @php($stocks_flag = 1)
+                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
                                         <td><i>Opening Stocks</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
@@ -622,7 +626,8 @@
                                             @endforeach
                                         @endif
                                     </tr>
-                                    <tr>
+                                    @php($stocks_flag = 2)
+                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
                                         <td><i>Closing Stocks</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
@@ -1005,7 +1010,86 @@
     </div>
 </div>
 
+<!-- Opening / Closing Stocks Edit Confirmation Modal -->
+<div class="modal fade" id="edit-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <!-- <div class="modal-header text-danger">
+                <h5 class="modal-title"><i class="fa fa-exclamation mr-2 text-danger"> </i>Warning</h5>
+            </div>  -->
+            <div class="modal-body">
+                <div class="col-12">
+                    Do you want to change the stocks?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-toggle="modal" data-target="#edit-stocks-modal"><i class="fa fa-ban mr-1 text-danger"> </i>End Production</a>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Opening / Closing Stocks Modal -->
+<div class="modal fade" id="stocks-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="card-body" style="overflow-x:auto;">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Stock Status</th>
+                                    <th>Opening Stocks</th>
+                                    <th>Closing Stocks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-products">
+                                @if(isset($canisters))
+                                    @foreach($canisters as $canister)
+                                    <tr>    
+                                        <td><i>{{$canister->prd_name}}</i></td>
+                                        <td>{{$canister->prd_quantity}}</td>
+                                        <td>{{$canister->prd_quantity}}</td>
+                                    </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" id="production_stocks" name="production_stocks" value="" hidden/>
+                    <input type="text" id="si_tab_1" name="tab_1"  hidden/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+    $(document).ready(function() {
+        $('.clickable').click(function() {
+            // Get the data you want to use in the modal
+            var cellText = $(this).text();
+
+            // Set the data in the modal
+            $('#myModal .modal-body').text(cellText);
+
+            // Open the modal
+            $('#myModal').modal('show');
+        });
+    });
 
     function showRefillable(){
         $("#prd_deposit").show();
