@@ -912,7 +912,7 @@
 
 <!-- Add Supplier Modal -->
 <div class="modal fade" id="supplier-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Supplier Form</h5>
@@ -971,7 +971,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Quantity</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Quantity </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -982,9 +982,33 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="quantity"id="lbl-add">Amount to add <span style="color:red">*</span></label>
+                                <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
+                                <div class="form-inline">
+                                    <select  class="form-control col-md-6" name="tanks" id="tnk_id">
+                                        @if(isset($tanks))
+                                            @foreach($tanks as $tank)
+                                                @if($tank->tnk_id == 0)
+                                                    @continue
+                                                @else                            
+                                                    @if($tnk_name == $tank->tnk_name )
+                                                        @php($selected = "selected")
+                                                    @else
+                                                        @php($selected = "")
+                                                    @endif
+                                                    <option value="{{ $tank->tnk_id }}" {{ $selected }}>{{ $tank->tnk_name }}</option>
+                                                @endif
+                                            @endforeach
+                                        @endif 
+                                    </select>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-info form-control col-md-10 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-2" id="add-tank" data-toggle="modal" data-target="#tank-modal" onclick="getNewProductValue(tnk_name.value, tnk_name.value, tnk_quantity)"><i class="fa fa-plus-circle"></i> New Tank</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">   
+                                <label for="quantity" id="lbl-add">Amount to add <span style="color:red">*</span></label>
                                 <div id="crate">
-                                    <label for="quantity" id="lbl-crate">Crate<span style="color:red">*</span></label>
+                                    <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
                                 <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
@@ -997,6 +1021,42 @@
                     <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
                     <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
                     <input type="text" id="si_tab_1" name="tab_1"  hidden/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Tank Modal -->
+<div class="modal fade" id="tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tank Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" id="form-add" action="">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="tnk_name">Tank Name <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="tnk_name" placeholder="Enter Tank Name" value="" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="tnk_quantity">Quantity <span style="color:red">*</span></label>
+                                <input type="text" name="tnk_quantity" class="form-control" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -1109,6 +1169,18 @@
         document.getElementById('tab_1').value = page;
         document.getElementById('np_tab_1').value = page;
         document.getElementById('si_tab_1').value = page;
+        document.getElementById('set_stockin_flag').value = page;
+
+        if(page == 2){
+            $("#add-quantity-modal").find("#lbl-tank").show();
+            $("#add-quantity-modal").find("#tnk_id").show();
+            $("#add-quantity-modal").find("#add-tank").show();
+        }else{
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#tnk_id").hide();
+            $("#add-quantity-modal").find("#tnk_id").hide();
+            $("#add-quantity-modal").find("#add-tank").hide();
+        }
     }
 
     
