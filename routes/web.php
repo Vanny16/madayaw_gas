@@ -80,9 +80,9 @@ Route::group(['prefix' => 'production'], function()
 {
     Route::get('tank', 'ProductionController@tank');
     Route::get('manage', 'ProductionController@manage');
-    Route::get('toggle', 'ProductionController@toggleProduction');///{pdn_flag}
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
     
+    Route::post('toggle', 'ProductionController@toggleProduction');///{pdn_flag}
     Route::post('add-empty-goods', 'ProductionController@createProduct');
     Route::post('add-supplier', 'ProductionController@createSupplier');
     Route::post('add-quantity', 'ProductionController@addQuantity');
