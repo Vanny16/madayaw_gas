@@ -26,11 +26,11 @@
             <div class="row">
                 @if($pdn_flag)
                     <div class="col-12 text-white mb-3">
-                        <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "{{ action('ProductionController@toggleProduction')}}"><i class="fa fa-play mr-1"></i> Start Production</a>
+                        <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
                     </div>
                 @else
                     <div class="col-12 text-white mb-3">
-                        <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "{{ action('ProductionController@toggleProduction')}}" data-toggle="modal" data-target="#end-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
+                        <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
                     </div>
                 @endif
             </div>
@@ -617,12 +617,13 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
+                                    @php($production_id = get_last_production_id())
                                     @php($stocks_flag = 1)
                                     <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
                                         <td><i>Opening Stocks</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <td>{!! get_stock_report($canister->prd_id, 1) !!}</td>
+                                                <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -631,7 +632,7 @@
                                         <td><i>Closing Stocks</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <td>{!! get_stock_report($canister->prd_id, 2) !!}</td>
+                                                <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -895,20 +896,107 @@
     </div>
 </div>
 
-<!-- End Production Modal -->
-<div class="modal fade" id="end-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<?php
+    $canister_details = "";
+    foreach($canisters as $canister){$canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";}
+?>
+<!-- Toggle Production Modal -->
+<div class="modal fade" id="production-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <!-- <div class="modal-header text-danger">
-                <h5 class="modal-title"><i class="fa fa-exclamation mr-2 text-danger"> </i>Warning</h5>
-            </div>  -->
+            <div class="modal-header">
+                @if($pdn_flag)
+                    <h5 class="modal-title" id="exampleModalLabel">Start Production</h5>
+                @else
+                    <h5 class="modal-title" id="exampleModalLabel">End Production</h5>
+                @endif
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductionController@toggleProduction') }}" enctype="multipart/form-data">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-5">
+                                        @if($pdn_flag)
+                                            <label for="stocks_quantity">Confirm Opening Stocks</label>
+                                        @else
+                                            <label for="stocks_quantity">Confirm Closing Stocks</label>
+                                        @endif
+                                    </div>
+                                    <div class="col-7"></div>
+                                </div>
+                            </div>
+                            @foreach($canisters as $canister)
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <em>{{$canister->prd_name}}</em>
+                                        </div>
+                                        <div class="col-7">
+                                            <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="" required/>
+                                            <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if($pdn_flag)
+                        <strong>Are you sure you want to start the production?</strong>
+                        <div>
+                            <button type="submit" class="btn btn-success" ><i class="fa fa-check mr-1"> </i>Start Production</button>
+                            <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success">Cancel</a>
+                        </div>
+                    @else
+                        <strong>Are you sure you want to end the production?</strong>
+                        <div>
+                            <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>End Production</button>
+                            <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
+                        </div>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Opening / Closing Modal -->
+<div class="modal fade" id="stocks-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if($pdn_flag)
+                    <h5 class="modal-title" id="exampleModalLabel">Input Opening Stocks</h5>
+                @else
+                    <h5 class="modal-title" id="exampleModalLabel">Input Closing Stocks</h5>
+                @endif
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="modal-body">
-                <div class="col-12">
-                    Are you sure you want to end the Production?
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="tnk_name">Input Closing Stocks<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="tnk_name" placeholder="Enter Tank Name" value="" required/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>End Production</a>
+                @if($pdn_flag)
+                    <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>Start Production</a>
+                @else
+                    <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>End Production</a>
+                @endif
                 <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -1034,6 +1122,39 @@
     </div>
 </div>
 
+<!-- Opening / Closing Modal -->
+<div class="modal fade" id="stocks-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tank Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="tnk_name">Tank Name <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="tnk_name" placeholder="Enter Tank Name" value="" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="tnk_quantity">Quantity <span style="color:red">*</span></label>
+                            <input type="text" name="tnk_quantity" class="form-control" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11" required></input>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ action('ProductionController@toggleProduction') }}" type="button" class="btn btn-default text-danger"><i class="fa fa-ban mr-1 text-danger"> </i>End Production</a>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Add Tank Modal -->
 <div class="modal fade" id="tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
@@ -1071,19 +1192,6 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('.clickable').click(function() {
-            // Get the data you want to use in the modal
-            var cellText = $(this).text();
-
-            // Set the data in the modal
-            $('#myModal .modal-body').text(cellText);
-
-            // Open the modal
-            $('#myModal').modal('show');
-        });
-    });
-
     function showRefillable(){
         $("#prd_deposit").show();
         $("#prd_weight").show();

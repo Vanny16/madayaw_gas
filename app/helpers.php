@@ -170,6 +170,27 @@ function record_movement($prd_id, $quantity, $flag)
 
 }
 
+function get_opening_stock($prd_id, $pdn_id)
+{
+    $opening_stock = DB::table('stocks_logs')
+    ->where('prd_id', '=', $prd_id)
+    ->where('pdn_id', '=', $pdn_id)
+    ->first();
+
+    return $opening_stock->opening_stocks;
+}
+
+function get_closing_stock($prd_id, $pdn_id)
+{
+    $closing_stocks = DB::table('stocks_logs')
+    ->where('prd_id', '=', $prd_id)
+    ->where('pdn_id', '=', $pdn_id)
+    ->first();
+    
+    return $closing_stocks->closing_stocks;
+}
+
+
 function get_last_production_id()
 { 
     $production_logs = DB::table('production_logs')
