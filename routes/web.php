@@ -133,6 +133,7 @@ Route::group(['prefix' => 'sales'], function()
     Route::post('select-customer', 'SalesController@selectCustomer');
     Route::post('create-customer', 'SalesController@createCustomer');
     Route::post('payment', 'SalesController@paymentSales');
+    Route::post('pay', 'SalesController@payPending');
     Route::post('add-canister', 'SalesController@addCanister');
     Route::post('search-product', 'SalesController@searchProduct');
     //TEST
