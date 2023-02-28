@@ -101,9 +101,8 @@ class ReportsController extends Controller
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->get();
-                        
-        // dd($purchases);
 
+      
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
     }
 
@@ -121,8 +120,7 @@ class ReportsController extends Controller
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->get();
-
-        // dd($purchases);
+    
 
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
     }

@@ -124,13 +124,13 @@
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
                                                 <td>{{ $transaction->trx_datetime }}</td>
-                                                <td>{{ number_format($transaction->trx_madayaw_round, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->trx_madayaw_square, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->trx_botin, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->trx_gas_stove, 2, '.', ',') }}</td>
+                                                {{-- <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td> --}}
                                             </tr>
                                             <tr class="text-success bg-white">
-                                                <td colspan="5"></td>
+                                                <td colspan="6"></td>
                                                 <td class="text-success"><strong>Total</strong></td>
                                                 <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                             </tr>

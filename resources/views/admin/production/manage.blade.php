@@ -1077,7 +1077,7 @@
                             <div class="form-group">
                                 <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
                                 <div class="form-inline">
-                                    <select  class="form-control col-md-12" name="tanks" id="tnk_id">
+                                    <select  class="form-control col-md-12" name="tanks" id="tnk_name">
                                         @if(isset($tanks))
                                             @foreach($tanks as $tank)
                                                 @if($tank->tnk_id == 0)
@@ -1109,6 +1109,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_page" name="stockin_page" value="" hidden/>
                     <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
                     <input type="text" id="si_tab_1" name="tab_1"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1268,6 +1269,8 @@
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
             $("#add-quantity-modal").find("#crate-quantity").hide();
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#tnk_name").hide();
         }else{
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
@@ -1291,17 +1294,16 @@
         document.getElementById('tab_1').value = page;
         document.getElementById('np_tab_1').value = page;
         document.getElementById('si_tab_1').value = page;
-        document.getElementById('set_stockin_flag').value = page;
+        document.getElementById('set_stockin_page').value = page;
 
         if(page == 2){
             $("#add-quantity-modal").find("#lbl-tank").show();
-            $("#add-quantity-modal").find("#tnk_id").show();
-            $("#add-quantity-modal").find("#add-tank").show();
+            $("#add-quantity-modal").find("#tnk_name").show();
+            $("#add-quantity-modal").find("#lbl-add").hide();
         }else{
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk_id").hide();
-            $("#add-quantity-modal").find("#tnk_id").hide();
-            $("#add-quantity-modal").find("#add-tank").hide();
+            $("#add-quantity-modal").find("#tnk_name").hide();
+            $("#add-quantity-modal").find("#lbl-add").show();
         }
     }
 
