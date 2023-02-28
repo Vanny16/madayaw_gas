@@ -49,7 +49,7 @@
                                         @php($transaction_id += 1)
                                     @endif
                                     <label>Transaction</label>
-                                    <p class="text-danger fa-2x mr-2">TRX <?php echo date("Y").date("m").date("d"); ?>-{{ $transaction_id }}</p>
+                                    <p class="text-danger fa-2x mr-2">POS <?php echo date("Y").date("m").date("d"); ?>-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
                                     <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-info">
                             <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
                             <div class="col-md-12 text-right text-white order-lg-2 order-1 mb-1">
                             </div>   
@@ -141,7 +141,7 @@
                                             <td colspan="10"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="5"></td>
+                                            <td colspan="6"></td>
                                             <td class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                         </tr>
@@ -454,6 +454,10 @@
                                             <td><strong>Change</strong></td>
                                             <td><a id="rct_change">0.00</a></td>
                                         </tr>
+                                        <tr>
+                                            <td><strong>Balance</strong></td>
+                                            <td><a id="rct_balance">0.00</a></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -462,14 +466,29 @@
                             <div class="modal-header text-success">
                                 <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
                             </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="cus_address">Mode of Payment</label><br>
+                                <button id="btn_cash" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
+                                <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-credit-card"></i></button>
+                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="28rem"/></button>
+                                <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
+                            </div>
                             <div class="form-group">
                                 <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
                                 <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
                             </div>
-                            <div class="form-group">
-                                <label for="cus_address">Received Amount <span style="color:red">*</span></label>
+                            <div class="form-group" id="payment_input">
+                                <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
                                 <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
+                            </div>
+                            <div class="form-group" id="payment_attachment">
+                                <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01" required>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -486,66 +505,36 @@
     </div>
 </div>
 
-<!-- Receipt Modal -->
-<div class="modal fade" id="receipt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-info">
-                <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Receipt</h5>
-            </div> 
-            <div class="modal-body">
-                <div class="col-12">
-                    <div class="row">
-                        <table class="table table-sm table-borderless text-left">
-                            <thead>
-                                <th>Qty</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                            </thead>
-                            
-                            <tbody>
-                                <tr class="card-header">
-                                    <td colspan="6"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table table-sm table-borderless text-left">                   
-                            <tbody>
-                                <tr>
-                                    <td>Gross Total</td>
-                                    <td>20.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Discount</td>
-                                    <td>50.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Amount Payable</td>
-                                    <td>20.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Amount Paid</td>
-                                    <td>20.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Change</td>
-                                    <td>20.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="{{ action('SalesController@main') }}" type="button" class="btn btn-info"><i class="fa fa-print mr-1"> </i>Print</a>
-                <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-check mr-1"> </i> Finish</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
+    $(document).ready(function() {
+        $("#btn_cash").css("border-bottom", "4px solid green");
+        $("#payment_attachment").hide();
+        $("#mode_of_payment").val("1");
+
+        $("#btn_cash").on("click", function() {
+            $("#payment_label").text("Received Payment");
+            $("#mode_of_payment").val("1");
+            $("#payment_attachment").hide();
+            $(".btn-payment").css("border-bottom", "none");
+            $(this).css("border-bottom", "4px solid green");
+        });
+        $("#btn_credit").on("click", function() {
+            $("#payment_label").text("Downpayment");
+            $("#mode_of_payment").val("2");
+            $("#payment_attachment").hide();
+            $(".btn-payment").css("border-bottom", "none");
+            $(this).css("border-bottom", "4px solid green");
+        });
+        $("#btn_gcash").on("click", function() {
+            $("#payment_label").text("Received Payment");
+            $("#mode_of_payment").val("3");
+            $("#payment_attachment").show();
+            $(".btn-payment").css("border-bottom", "none");
+            $(this).css("border-bottom", "4px solid green");
+        });
+    });
+
+
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
@@ -729,19 +718,6 @@
         }
     }
 
-    function removeFromCanisterIn(row, crate, loose){
-        var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
-        var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
-        total_crate = parseFloat(total_crate) - crate;
-        total_loose = parseFloat(total_loose) - loose;
-
-        document.getElementById("lbl_total_crates").innerHTML = total_crate;
-        document.getElementById("lbl_total_loose").innerHTML = total_loose;
-
-        var deleteRow = document.getElementById(row.id);
-        row.parentElement.removeChild(deleteRow); 
-    }   
-
     function addCanistersIn(in_crate_id, in_loose_id, select_id){
 
         try{
@@ -821,6 +797,7 @@
         var amount = document.getElementById("amount_payable").value;
         var received = parseFloat(document.getElementById("received_amount").value);
         var change = document.getElementById("rct_change").value;
+        var balance = document.getElementById("rct_balance").value;
         document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
 
 
@@ -832,13 +809,14 @@
         }
 
         var final_change = received - amount;
+        var final_balance = amount - received;
 
-        // if(final_change != "" || final_change > 0){
-            document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
-        // }
-        // else{
-        //     alert();
-        // }
+        if(final_balance < 0){
+            final_balance = 0;
+        }
+
+        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
     }
 
     $(document).ready(function(){
@@ -951,13 +929,20 @@
     function noCredit(){
         var total = parseFloat(document.getElementById("amount_payable").value);
         var payment = parseFloat(document.getElementById("received_amount").value);
+        var mode_of_payment = document.getElementById("mode_of_payment").value;
 
-        if(payment = "" || total > payment){
+        if(mode_of_payment == 1){
+            if(payment = "" || total > payment){
             alert("Insufficient Payment");
+            }
+            else{
+                document.getElementById("form_payment").submit(); 
+            }
         }
         else{
             document.getElementById("form_payment").submit(); 
         }
+        
     }
 
     document.getElementById("client_id").addEventListener("change", function() 

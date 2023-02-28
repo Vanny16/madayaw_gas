@@ -37,6 +37,19 @@ class SalesController extends Controller
         return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
     }
 
+    public function payments()
+    {
+
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->get();
+
+        $payments = DB::table('payments')
+        ->get();
+
+        return view('admin.sales.payments', compact('payments', 'transactions'));
+    }
+
     public function selectCustomer(Request $request)
     {
         $client_id = $request->client_id;
@@ -187,7 +200,7 @@ class SalesController extends Controller
             $trx_id += 1;
         }
 
-        $trx_ref_id = date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $trx_ref_id = "POS" . date('Y') . date('m') . date('d') . "-" . $trx_id;
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
@@ -199,9 +212,10 @@ class SalesController extends Controller
         $pur_deposit = "";
         $cus_id = "";
         
+        $mode_of_payment = $request->mode_of_payment;
         $trx_total = $request->trx_total;
         $trx_amount_paid = $request->trx_amount_paid;
-        $trx_balance = (double)$trx_amount_paid - (double)$trx_total;
+        $trx_balance =  (double)$trx_total - (double)$trx_amount_paid;
 
         $list = $request->purchases;
         $selected_item_list  = $list;
@@ -282,6 +296,58 @@ class SalesController extends Controller
             'trx_amount_paid' => $trx_amount_paid,
             'trx_balance' => $trx_balance 
         ]);
+
+        DB::table('payments')
+        ->insert([
+            'acc_id' => session('acc_id'),
+            'usr_id' => session('usr_id'),
+            'trx_id' => $trx_id,
+            'trx_ref_id' => $trx_ref_id,
+            'trx_mode_of_payment' => $mode_of_payment,
+            'pmnt_amount' => $trx_amount_paid,
+            'pmnt_date' => date('Y-m-d'),
+            'pmnt_time' => date('h:i:s')
+        ]);
+
+        //IMAGE UPLOAD 
+        if($request->file('pmnt_attachment'))
+        {
+            $pmnt_id = DB::table('payments')
+            ->select('pmnt_id')
+            ->orderBy('pmnt_id', 'desc')
+            ->first();
+    
+            $file = $request->file('pmnt_attachment');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('payments')
+            ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+            ->update([
+                'pmnt_attachment' => $fileName,
+            ]);  
+    
+        }   
 
         session(['latest_trx_id' => $trx_id]);
 

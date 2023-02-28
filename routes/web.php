@@ -87,6 +87,9 @@ Route::group(['prefix' => 'production'], function()
     Route::post('add-supplier', 'ProductionController@createSupplier');
     Route::post('add-quantity', 'ProductionController@addQuantity');
     Route::post('edit-product', 'ProductionController@editItem');
+    Route::post('add-tank', 'ProductionController@createTank');
+    Route::post('edit-tank', 'ProductionController@editTank');
+    Route::post('refill-tank', 'ProductionController@refillTank');
 });
 
 Route::group(['prefix' => 'product'], function()
@@ -125,6 +128,7 @@ Route::group(['prefix' => 'reports'], function()
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
+    Route::get('payments', 'SalesController@payments');
 
     Route::post('select-customer', 'SalesController@selectCustomer');
     Route::post('create-customer', 'SalesController@createCustomer');
