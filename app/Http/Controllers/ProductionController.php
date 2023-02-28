@@ -44,7 +44,7 @@ class ProductionController extends Controller
         $customers = 
 
         $pdn_date = "";
-        $pdn_start_time = "";
+        $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
 
         if(isset($production_times)){
@@ -76,9 +76,17 @@ class ProductionController extends Controller
     }
 
     //PRODUCTION
-    public function toggleProduction()
+    public function toggleProduction(Request $request)
     {
         $pdn_flag = check_production_log();
+        $temp_details = explode(",", $request->canister_details);
+        array_pop($temp_details);
+
+        foreach($temp_details as $details)
+        {   
+            $detail = explode("|", $details);
+            $canister_details[$detail[0]] = $detail[1];
+        }
 
         if($pdn_flag)
         {
@@ -87,6 +95,19 @@ class ProductionController extends Controller
                 'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
                 'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
+
+            foreach($canister_details as $prd_id => $details)
+            {
+                $input_field = "stock_quantity" . $prd_id;
+
+                DB::table('stocks_logs')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'prd_id' => $prd_id,
+                    'opening_stocks' => $request->$input_field,
+                    'pdn_id' => get_last_production_id()
+                ]);
+            }
 
             session()->flash('successMessage','Production started!');
             return redirect()->action('ProductionController@manage');
@@ -97,6 +118,18 @@ class ProductionController extends Controller
             ->update([
                 'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
+
+            foreach($canister_details as $prd_id => $details)
+            {
+                $input_field = "stock_quantity" . $prd_id;
+
+                DB::table('stocks_logs')
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                    'closing_stocks' => $request->$input_field,
+                ]);
+
+            }
 
             session()->flash('successMessage','Production ended!');
             return redirect()->action('ProductionController@manage');

@@ -50,6 +50,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('SalesController@payments') }}" class="nav-link">
+                        <i class="nav-icon fas fa-coins"></i>
+                        <p>
+                            Payments
+                        </p>
+                    </a>
+                </li>
                 @endif
 
                 @if(session('typ_id') == '1')
