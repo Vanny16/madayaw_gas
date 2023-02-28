@@ -716,9 +716,102 @@ class ProductionController extends Controller
     //TANK CONTROLLER
     public function tank()
     {
-        return view('admin.production.tank');
+        $tanks = DB::table('tanks')
+        ->get();
+
+        return view('admin.production.tank', compact('tanks'));
     }
 
+    //ADD TANK CONTROLLER
+    public function createTank(Request $request)
+    {
+        $tnk_name = $request->tnk_name;
+        $tnk_capacity = $request->tnk_capacity;
+        $tnk_remaining = $request->tnk_remaining;
+        $tnk_notes = $request->tnk_notes;
+
+        $check_tank_name = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('tnk_name','=', $tnk_name)
+        ->first();
+
+        if($check_tank_name != null)
+        {
+            session()->flash('errorMessage','Tank already exist');
+            return redirect()->action('ProductionController@tank');
+        }
+
+        DB::table('tanks')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'tnk_name' => $tnk_name, 
+        'tnk_capacity' => $tnk_capacity,
+        'tnk_remaining' => $tnk_remaining,
+        'tnk_notes' => $tnk_notes
+        ]);
+
+        session()->flash('successMessage','Tank has been added');
+        return redirect()->action('ProductionController@tank');
+    }
+
+    //EDIT TANK CONTROLLER
+    public function editTank(Request $request)
+    {
+        $tnk_name = $request->tnk_name;
+        $tnk_capacity = $request->tnk_capacity;
+        $tnk_remaining = $request->tnk_remaining;
+        $tnk_notes = $request->tnk_notes;
+
+        $check_tank_name = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('tnk_name','=', $tnk_name)
+        ->first();
+
+        
+        if($check_tank_name != null)
+        {
+            session()->flash('errorMessage','Tank already exist');
+            return redirect()->action('ProductionController@tank');
+        }
+
+        DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->update([
+            'tnk_name' => $tnk_name,
+            'tnk_capacity' => $tnk_capacity,
+            'tnk_remaining' => $tnk_remaining,
+            'tnk_notes' => $tnk_notes
+        ]);
+        
+        session()->flash('successMessage','Tank details updated.');
+        return redirect()->action('ProductionController@tank');
+    }
+
+    //REFILL TANK CONTROLLER
+    public function refillTank(Request $request)
+    {
+        $tnk_id = $request->tnk_id;
+        $refill_cty = (float)$request->tnk_capacity;
+
+        $capacity = DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->first();
+        
+        $tnk_capacity = (float)$capacity->tnk_capacity + $refill_cty;
+
+        DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->update([
+            'tnk_capacity' => (float)$tnk_capacity,
+        ]);
+        
+        record_stockin($tnk_id, $refill_cty);
+
+        session()->flash('successMessage','Capacity added has been added');
+        return redirect()->action('ProductController@tank');
+    
+    }
+    
 
     //CREATE SUPPLIER
     public function createSupplier(Request $request)

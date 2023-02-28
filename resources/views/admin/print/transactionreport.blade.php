@@ -40,9 +40,10 @@
                             <td>{{$all_transaction_report->usr_name}}</td>
                             <td>{{$all_transaction_report->cus_name}}</td>
                             <td>{{$all_transaction_report->trx_datetime}}</td>
-                            <td>₱ {{$all_transaction_report->trx_total, 2, '.', ','}}</td>
-                            <td>₱ {{$all_transaction_report->trx_amount_paid, 2, '.', ','}}</td>
-                            <td>₱ {{$all_transaction_report->trx_balance, 2, '.', ','}}</td>
+                            <td>{{ number_format($all_transaction->trx_madayaw_round, 2, '.', ',') }}</td>
+                            <td>{{ number_format($all_transaction->trx_madayaw_square, 2, '.', ',') }}</td>
+                            <td>{{ number_format($all_transaction->trx_botin, 2, '.', ',') }}</td>
+                            <td>{{ number_format($all_transaction->trx_gas_stove, 2, '.', ',') }}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -70,9 +71,10 @@
                             <td>{{$transaction_report->usr_name}}</td>
                             <td>{{$transaction_report->cus_name}}</td>
                             <td>{{$transaction_report->trx_datetime}}</td>
-                            <td>₱ {{$transaction_report->trx_total, 2, '.', ','}}</td>
-                            <td>₱ {{$transaction_report->trx_amount_paid, 2, '.', ','}}</td>
-                            <td>₱ {{$transaction_report->trx_balance, 2, '.', ','}}</td>
+                            <td>{{ number_format($transaction->trx_madayaw_round, 2, '.', ',') }}</td>
+                            <td>{{ number_format($transaction->trx_madayaw_square, 2, '.', ',') }}</td>
+                            <td>{{ number_format($transaction->trx_botin, 2, '.', ',') }}</td>
+                            <td>{{ number_format($transaction->trx_gas_stove, 2, '.', ',') }}</td>
                         </tr> 
                         @endforeach
                     </tbody>

@@ -109,9 +109,10 @@
                                             <th>User</th>
                                             <th>Customer</th>
                                             <th>Date & Time</th>
-                                            <th>Total Sale</th>
-                                            <th>Amount Received</th>
-                                            <th>Change</th>
+                                            <th>Madayaw Round</th>
+                                            <th>Madayaw Square</th>
+                                            <th>Botin</th>
+                                            <th>Gas Stove</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -123,9 +124,15 @@
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
                                                 <td>{{ $transaction->trx_datetime }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_total, 2, '.', ',') }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_amount_paid, 2, '.', ',') }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_balance, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->trx_madayaw_round, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->trx_madayaw_square, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->trx_botin, 2, '.', ',') }}</td>
+                                                <td>{{ number_format($transaction->trx_gas_stove, 2, '.', ',') }}</td>
+                                            </tr>
+                                            <tr class="text-success bg-white">
+                                                <td colspan="5"></td>
+                                                <td class="text-success"><strong>Total</strong></td>
+                                                <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                             </tr>
 
                                             <!-- Purchases Modal -->

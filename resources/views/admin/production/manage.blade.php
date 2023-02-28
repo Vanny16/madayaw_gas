@@ -984,7 +984,7 @@
                             <div class="form-group">
                                 <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
                                 <div class="form-inline">
-                                    <select  class="form-control col-md-6" name="tanks" id="tnk_id">
+                                    <select  class="form-control col-md-12" name="tanks" id="tnk_id">
                                         @if(isset($tanks))
                                             @foreach($tanks as $tank)
                                                 @if($tank->tnk_id == 0)
@@ -1000,9 +1000,6 @@
                                             @endforeach
                                         @endif 
                                     </select>
-                                    <div class="row">
-                                        <button type="button" class="btn btn-info form-control col-md-10 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-2" id="add-tank" data-toggle="modal" data-target="#tank-modal" onclick="getNewProductValue(tnk_name.value, tnk_name.value, tnk_quantity)"><i class="fa fa-plus-circle"></i> New Tank</button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">   
