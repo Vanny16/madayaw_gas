@@ -172,12 +172,17 @@ function record_movement($prd_id, $quantity, $flag)
 
 function get_opening_stock($prd_id, $pdn_id)
 {
-    $opening_stock = DB::table('stocks_logs')
+    $opening_stocks = DB::table('stocks_logs')
     ->where('prd_id', '=', $prd_id)
     ->where('pdn_id', '=', $pdn_id)
     ->first();
+    
+    if($opening_stocks == null)
+    { 
+        return 0;
+    }
 
-    return $opening_stock->opening_stocks;
+    return $opening_stocks->opening_stocks;
 }
 
 function get_closing_stock($prd_id, $pdn_id)
@@ -187,6 +192,11 @@ function get_closing_stock($prd_id, $pdn_id)
     ->where('pdn_id', '=', $pdn_id)
     ->first();
     
+    if($closing_stocks == null)
+    { 
+        return 0;
+    }
+
     return $closing_stocks->closing_stocks;
 }
 
