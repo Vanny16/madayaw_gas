@@ -177,7 +177,7 @@ function get_opening_stock($prd_id, $pdn_id)
     ->where('pdn_id', '=', $pdn_id)
     ->first();
     
-    if($opening_stocks == null)
+    if($opening_stocks->opening_stocks == null)
     { 
         return 0;
     }
@@ -191,8 +191,8 @@ function get_closing_stock($prd_id, $pdn_id)
     ->where('prd_id', '=', $prd_id)
     ->where('pdn_id', '=', $pdn_id)
     ->first();
-    
-    if($closing_stocks == null)
+
+    if($closing_stocks->closing_stocks == null)
     { 
         return 0;
     }
