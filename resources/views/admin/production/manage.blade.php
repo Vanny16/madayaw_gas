@@ -919,31 +919,33 @@
                 <div class="modal-body">
                     <div class="col-md-12">
                         <div class="col-12">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-5">
-                                        @if($pdn_flag)
-                                            <label for="stocks_quantity">Confirm Opening Stocks</label>
-                                        @else
-                                            <label for="stocks_quantity">Confirm Closing Stocks</label>
-                                        @endif
-                                    </div>
-                                    <div class="col-7"></div>
-                                </div>
-                            </div>
-                            @foreach($canisters as $canister)
+                            @if(isset($canisters[0]))
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-5">
-                                            <em>{{$canister->prd_name}}</em>
+                                            @if($pdn_flag)
+                                                <label for="stocks_quantity">Confirm Opening Stocks</label>
+                                            @else
+                                                <label for="stocks_quantity">Confirm Closing Stocks</label>
+                                            @endif
                                         </div>
-                                        <div class="col-7">
-                                            <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="" required/>
-                                            <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
-                                        </div>
+                                        <div class="col-7"></div>
                                     </div>
                                 </div>
-                            @endforeach
+                                @foreach($canisters as $canister)
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <em>{{$canister->prd_name}}</em>
+                                            </div>
+                                            <div class="col-7">
+                                                <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="" required/>
+                                                <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
