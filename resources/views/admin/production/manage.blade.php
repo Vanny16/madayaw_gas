@@ -1075,9 +1075,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
                                 <div class="form-inline">
-                                    <select  class="form-control col-md-12" name="tanks" id="tnk_name">
+                                    <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
+                                    <select  class="form-control col-md-12" name="tnk_name" id="tnk-name">
                                         @if(isset($tanks))
                                             @foreach($tanks as $tank)
                                                 @if($tank->tnk_id == 0)
@@ -1153,7 +1153,7 @@
     </div>
 </div>
 
-<!-- Add Tank Modal -->
+<!-- Add Tank Modal
 <div class="modal fade" id="tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -1187,7 +1187,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 <script>
     function showRefillable(){
@@ -1265,17 +1265,35 @@
         document.getElementById('set_stockin_flag').value = flag;
         
         if(flag === 0){
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#tnk-name").hide();
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
-            $("#add-quantity-modal").find("#crate-quantity").hide();
-            $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk_name").hide();
+            $("#add-quantity-modal").find("#crate-quantity").hide();     
+            
         }else{
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#tnk-name").hide();
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
+        }
+
+        if(flag === 2){
+            $("#add-quantity-modal").find("#lbl-tank").show();
+            $("#add-quantity-modal").find("#tnk-name").show();
+            $("#add-quantity-modal").find("#lbl-crate").show();
+            $("#add-quantity-modal").find("#lbl-loose").show();
+            $("#add-quantity-modal").find("#crate-quantity").show();
+
+        // }else{
+        //     $("#add-quantity-modal").find("#lbl-tank").show();
+        //     $("#add-quantity-modal").find("#tnk-name").show();
+        //     $("#add-quantity-modal").find("#lbl-crate").hide();
+        //     $("#add-quantity-modal").find("#lbl-loose").hide();
+        //     $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
 
@@ -1296,18 +1314,21 @@
         document.getElementById('si_tab_1').value = page;
         document.getElementById('set_stockin_page').value = page;
 
-        if(page == 2){
+        if(page === 2){
             $("#add-quantity-modal").find("#lbl-tank").show();
-            $("#add-quantity-modal").find("#tnk_name").show();
-            $("#add-quantity-modal").find("#lbl-add").hide();
-        }else{
-            $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk_name").hide();
-            $("#add-quantity-modal").find("#lbl-add").show();
+            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#lbl-crate").show();
+            $("#add-quantity-modal").find("#lbl-loose").show();
+            $("#add-quantity-modal").find("#crate-quantity").hide();
+
+        // }else{
+        //     $("#add-quantity-modal").find("#lbl-tank").show();
+        //     $("#add-quantity-modal").find("#tnk-name").show();
+        //     $("#add-quantity-modal").find("#lbl-crate").hide();
+        //     $("#add-quantity-modal").find("#lbl-loose").hide();
+        //     $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
-
-    
 
     function noNegativeValue(id){
         $("#"+id).on("input", function() {
