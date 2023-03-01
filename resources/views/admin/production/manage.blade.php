@@ -1316,12 +1316,12 @@
         document.getElementById('si_tab_1').value = page;
         document.getElementById('set_stockin_page').value = page;
 
-        if(page === 2){
-            $("#add-quantity-modal").find("#lbl-tank").show();
-            $("#add-quantity-modal").find("#tnk-name").hide();
-            $("#add-quantity-modal").find("#lbl-crate").show();
-            $("#add-quantity-modal").find("#lbl-loose").show();
-            $("#add-quantity-modal").find("#crate-quantity").hide();
+        // if(page === 2){
+        //     $("#add-quantity-modal").find("#lbl-tank").show();
+        //     $("#add-quantity-modal").find("#tnk-name").hide();
+        //     $("#add-quantity-modal").find("#lbl-crate").show();
+        //     $("#add-quantity-modal").find("#lbl-loose").show();
+        //     $("#add-quantity-modal").find("#crate-quantity").hide();
 
         // }else{
         //     $("#add-quantity-modal").find("#lbl-tank").show();
@@ -1329,7 +1329,7 @@
         //     $("#add-quantity-modal").find("#lbl-crate").hide();
         //     $("#add-quantity-modal").find("#lbl-loose").hide();
         //     $("#add-quantity-modal").find("#crate-quantity").hide();
-        }
+        // }
     }
 
     function noNegativeValue(id){
