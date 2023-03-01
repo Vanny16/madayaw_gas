@@ -81,6 +81,7 @@ class ProductionController extends Controller
         $pdn_flag = check_production_log();
         $temp_details = explode(",", $request->canister_details);
         array_pop($temp_details);
+        $canister_details[] = array('0');
 
         foreach($temp_details as $details)
         {   
@@ -88,6 +89,7 @@ class ProductionController extends Controller
             $canister_details[$detail[0]] = $detail[1];
         }
 
+        // dd($temp_details <> "");
         if($pdn_flag)
         {
             DB::table('production_logs')
@@ -96,17 +98,20 @@ class ProductionController extends Controller
                 'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
-            foreach($canister_details as $prd_id => $details)
+            if($temp_details <> "")
             {
-                $input_field = "stock_quantity" . $prd_id;
+                foreach($canister_details as $prd_id => $details)
+                {
+                    $input_field = "stock_quantity" . $prd_id;
 
-                DB::table('stocks_logs')
-                ->insert([
-                    'acc_id' => session('acc_id'),
-                    'prd_id' => $prd_id,
-                    'opening_stocks' => $request->$input_field,
-                    'pdn_id' => get_last_production_id()
-                ]);
+                    DB::table('stocks_logs')
+                    ->insert([
+                        'acc_id' => session('acc_id'),
+                        'prd_id' => $prd_id,
+                        'opening_stocks' => $request->$input_field,
+                        'pdn_id' => get_last_production_id()
+                    ]);
+                }
             }
 
             session()->flash('successMessage','Production started!');
@@ -119,16 +124,19 @@ class ProductionController extends Controller
                 'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
-            foreach($canister_details as $prd_id => $details)
+            if($temp_details <> "")
             {
-                $input_field = "stock_quantity" . $prd_id;
+                foreach($canister_details as $prd_id => $details)
+                {
+                    $input_field = "stock_quantity" . $prd_id;
 
-                DB::table('stocks_logs')
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                    'closing_stocks' => $request->$input_field,
-                ]);
+                    DB::table('stocks_logs')
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'closing_stocks' => $request->$input_field,
+                    ]);
 
+                }
             }
 
             session()->flash('successMessage','Production ended!');
