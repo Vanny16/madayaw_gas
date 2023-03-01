@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-02-22 13:52:14
+Date: 2023-03-01 10:51:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,6 +102,45 @@ CREATE TABLE `oppositions` (
 -- ----------------------------
 -- Records of oppositions
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `payments`
+-- ----------------------------
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `acc_id` int(10) NOT NULL,
+  `pmnt_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pmnt_ref_id` varchar(30) DEFAULT NULL,
+  `trx_id` int(10) unsigned NOT NULL,
+  `pmnt_amount` double(30,0) NOT NULL,
+  `pmnt_attachment` varchar(70) DEFAULT NULL,
+  `usr_id` int(10) NOT NULL,
+  `pmnt_date` varchar(20) DEFAULT NULL,
+  `pmnt_time` varchar(20) DEFAULT NULL,
+  `trx_mode_of_payment` int(2) DEFAULT NULL,
+  PRIMARY KEY (`pmnt_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payments
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `payment_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_types`;
+CREATE TABLE `payment_types` (
+  `mode_of_payment` int(2) NOT NULL,
+  `payment_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`mode_of_payment`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_types
+-- ----------------------------
+INSERT INTO `payment_types` VALUES ('1', 'Cash');
+INSERT INTO `payment_types` VALUES ('2', 'Credit');
+INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -239,6 +278,24 @@ CREATE TABLE `stockin_logs` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `stocks_logs`
+-- ----------------------------
+DROP TABLE IF EXISTS `stocks_logs`;
+CREATE TABLE `stocks_logs` (
+  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
+  `opening_stocks` int(11) DEFAULT NULL,
+  `closing_stocks` int(11) DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`stk_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of stocks_logs
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `suppliers`
 -- ----------------------------
 DROP TABLE IF EXISTS `suppliers`;
@@ -253,12 +310,30 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(11) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
-INSERT INTO `suppliers` VALUES ('1', 'd1ahwb5nw06e0na06tewgtt2q6pga1al', '1', 'UNSPECIFIED', 'UNSPECIFIED', '00000000000', null, null, '1');
+
+-- ----------------------------
+-- Table structure for `tanks`
+-- ----------------------------
+DROP TABLE IF EXISTS `tanks`;
+CREATE TABLE `tanks` (
+  `tnk_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) NOT NULL,
+  `tnk_name` varchar(255) DEFAULT NULL,
+  `tnk_capacity` decimal(11,0) DEFAULT NULL,
+  `tnk_remaining` decimal(11,0) DEFAULT NULL,
+  `tnk_notes` varchar(255) DEFAULT NULL,
+  `tnk_uuid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tnk_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tanks
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `tank_logs`
@@ -319,7 +394,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, null, '1', '1');
+INSERT INTO `users` VALUES ('1', '1', 'ribjm16on9j2hewbnp7f957tmckj7o58', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', 'University of Malagos', '1.jpg', '1', '1');
 
 -- ----------------------------
 -- Table structure for `user_types`
