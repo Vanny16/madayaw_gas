@@ -792,11 +792,12 @@ class ProductionController extends Controller
     {
         $tnk_name = $request->tnk_name;
         $tnk_capacity = $request->tnk_capacity;
-        $tnk_remaining = $request->tnk_remaining;
         $tnk_notes = $request->tnk_notes;
+        $tnk_uuid = $request->tnk_uuid;
 
         $check_tank_name = DB::table('tanks')
-        ->where('acc_id', '=', session('acc_id'))
+        ->where('acc_id','=', session('acc_id'))
+        ->where('tnk_uuid','<>', $tnk_uuid)
         ->where('tnk_name','=', $tnk_name)
         ->first();
 
@@ -812,7 +813,6 @@ class ProductionController extends Controller
         ->update([
             'tnk_name' => $tnk_name,
             'tnk_capacity' => $tnk_capacity,
-            'tnk_remaining' => $tnk_remaining,
             'tnk_notes' => $tnk_notes
         ]);
         
@@ -824,28 +824,27 @@ class ProductionController extends Controller
     public function refillTank(Request $request)
     {
         $tnk_id = $request->tnk_id;
-        $refill_cty = (float)$request->tnk_capacity;
+        $refill_cty = (float)$request->tnk_remaining;
 
-        $capacity = DB::table('tanks')
+        $remaining = DB::table('tanks')
         ->where('tnk_id', '=', $tnk_id)
         ->first();
         
-        $tnk_capacity = (float)$capacity->tnk_capacity + $refill_cty;
+        $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
 
         DB::table('tanks')
         ->where('tnk_id', '=', $tnk_id)
         ->update([
-            'tnk_capacity' => (float)$tnk_capacity,
+            'tnk_remaining' => (float)$tnk_remaining,
         ]);
         
         record_stockin($tnk_id, $refill_cty);
 
-        session()->flash('successMessage','Capacity added has been added');
-        return redirect()->action('ProductController@tank');
+        session()->flash('successMessage','Remaining has been added');
+        return redirect()->action('ProductionController@tank');
     
     }
     
-
     //CREATE SUPPLIER
     public function createSupplier(Request $request)
     {

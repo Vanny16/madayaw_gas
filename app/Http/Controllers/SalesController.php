@@ -45,6 +45,9 @@ class SalesController extends Controller
         ->get();
 
         $payments = DB::table('payments')
+        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
 
         return view('admin.sales.payments', compact('payments', 'transactions'));
@@ -200,7 +203,18 @@ class SalesController extends Controller
             $trx_id += 1;
         }
 
+        $pmnt_id = DB::table('payments')
+        ->max('pmnt_id');
+
+        if($pmnt_id == null){
+            $pmnt_id = 1;
+        }
+        else{
+            $pmnt_id += 1;
+        }
+
         $trx_ref_id = "POS" . date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $trx_id;
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
@@ -302,7 +316,7 @@ class SalesController extends Controller
             'acc_id' => session('acc_id'),
             'usr_id' => session('usr_id'),
             'trx_id' => $trx_id,
-            'trx_ref_id' => $trx_ref_id,
+            'pmnt_ref_id' => $pmt_ref_id,
             'trx_mode_of_payment' => $mode_of_payment,
             'pmnt_amount' => $trx_amount_paid,
             'pmnt_date' => date('Y-m-d'),
@@ -353,6 +367,93 @@ class SalesController extends Controller
 
         session()->flash('successMessage','Transaction complete!');
         return redirect()->action('PrintController@receiptDetails');
+    }
+
+    public function payPending(Request $request){
+
+        $pmnt_id = DB::table('payments')
+        ->max('pmnt_id');
+
+        if($pmnt_id == null){
+            $pmnt_id = 1;
+        }
+        else{
+            $pmnt_id += 1;
+        }
+
+        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
+
+        $transaction = DB::table('transactions')
+        ->where('trx_id','=',$request->trx_id)
+        ->first();
+
+        $trx_balance = $transaction->trx_balance;
+        $pmnt_amount = $request->pmnt_amount;
+        $new_trx_balance = $trx_balance - $pmnt_amount;
+    
+        DB::table('payments')
+        ->insert([
+            'acc_id' => session('acc_id'),
+            'usr_id' => session('usr_id'),
+            'trx_id' => $request->trx_id,
+            'pmnt_ref_id' => $pmt_ref_id,
+            'trx_mode_of_payment' => $request->mode_of_payment,
+            'pmnt_amount' => $pmnt_amount,
+            'pmnt_date' => date('Y-m-d'),
+            'pmnt_time' => date('h:i:s')
+        ]);
+
+        //IMAGE UPLOAD 
+        if($request->file('pmnt_attachment'))
+        {
+            $pmnt_id = DB::table('payments')
+            ->select('pmnt_id')
+            ->orderBy('pmnt_id', 'desc')
+            ->first();
+    
+            $file = $request->file('pmnt_attachment');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('payments')
+            ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+            ->update([
+                'pmnt_attachment' => $fileName,
+            ]);  
+    
+        }   
+
+        DB::table('transactions')
+        ->where('trx_id','=',$request->trx_id)
+            ->update([
+                'trx_balance' => $new_trx_balance,
+        ]);  
+
+        
+        session()->flash('successMessage','Payment saved');
+        return redirect()->action('SalesController@payments');
+
+
     }
 
     public function addCanister(Request $request)

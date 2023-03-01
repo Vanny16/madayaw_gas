@@ -206,6 +206,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-sm fa-info-circle"></i> Order Details</h5>
+                                                <h5>Remaining Stocks: <strong class="text-danger">{{$product->prd_quantity}}</strong></h5>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">

@@ -111,17 +111,17 @@
                                                 @if($tank->tnk_remaining)
                                                     <td>
                                                         {{$tank->tnk_remaining}} kgs &nbsp;
-                                                    
-                                                    <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
+                                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @else
-                                                    <td>0 kg &nbsp;                                                    
+                                                    <td>
+                                                        0 kg &nbsp;                                                    
                                                         <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @endif
                                                 @if($tank->tnk_notes)
                                                     <td>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#tank-notes-modal"><i class="fa fa-eye"></i></a>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#tank-notes-modal-{{$tank->tnk_id}}"><i class="fa fa-eye"></i></a>
                                                     </td>
                                                 @else
                                                     <td>
@@ -132,14 +132,14 @@
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <!-- Refill Tank Modal -->
-                                            <div class="modal fade" id="tank-refill-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="tank-refill-modal-{{$tank->tnk_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-sm" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -159,20 +159,21 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" required/>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kgs" onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}}" readonly required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Enter Remaining" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_notes" value="{{$tank->tnk_notes}}" class="form-control" readonly required/>
+                                                                            <input type="text" name="tnk_notes" class="form-control" value="{{$tank->tnk_notes}}" readonly required/>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
+                                                            <input type="text" class="form-control" name="tnk_id" value="{{ $tank->tnk_id }}"  hidden/> 
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                             </div>
@@ -182,7 +183,7 @@
                                             </div>
 
                                             <!-- Edit Tank Modal -->
-                                            <div class="modal fade" id="tank-edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="tank-edit-modal-{{$tank->tnk_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-sm" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -202,15 +203,15 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}}" readonly required/>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kgs" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}}" readonly required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}} kgs" onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_notes" value="{{$tank->tnk_notes}}" class="form-control" required/>
+                                                                            <input type="text" name="tnk_notes" class="form-control" value="{{$tank->tnk_notes}}" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -224,32 +225,27 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Notes Tank Modal -->
-                                            <div class="modal fade" id="tank-notes-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-sm" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Notes Form</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label for="tnk_notes">Notes <span style="color:red">*</span></label>
-                                                                        <input name="tnk_notes" value="{{$tank->tnk_notes}}" class="form-control" readonly required/>
-                                                                    </div>
-                                                                </div>
+                                            <!--Notes Modal -->
+                                            <div class="modal fade" id="tank-notes-modal-{{$tank->tnk_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Notes</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <div class="modal-body">
+                                                                    <div class="col-md-12">
+                                                                        {{ $tank->tnk_notes }}
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                         @endforeach
                                     @endif    
                                 </tbody>
@@ -354,11 +350,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
-                                <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" required/>
+                                <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                <input type="text" name="tnk_remaining" class="form-control" placeholder="Enter Remaining" required/>
+                                <input type="text" name="tnk_remaining" class="form-control" placeholder="Enter Remaining" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="tnk_notes">Notes <span style="color:red">*</span></label>
