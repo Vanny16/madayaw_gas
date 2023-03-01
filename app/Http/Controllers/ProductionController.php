@@ -790,8 +790,10 @@ class ProductionController extends Controller
     //EDIT TANK CONTROLLER
     public function editTank(Request $request)
     {
+        $tnk_id = $request->tnk_id;
         $tnk_name = $request->tnk_name;
         $tnk_capacity = $request->tnk_capacity;
+        $tnk_remaining = $request->tnk_remainning;
         $tnk_notes = $request->tnk_notes;
         $tnk_uuid = $request->tnk_uuid;
 
@@ -813,6 +815,7 @@ class ProductionController extends Controller
         ->update([
             'tnk_name' => $tnk_name,
             'tnk_capacity' => $tnk_capacity,
+            'tnk_remaining' => $tnk_remaining,
             'tnk_notes' => $tnk_notes
         ]);
         

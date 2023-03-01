@@ -86,7 +86,12 @@
                                 <tbody id="tbl-tanks">
                                     @if(isset($tanks))
                                         @foreach($tanks as $tank)
-                                            <tr>
+                                            @if($tank->tnk_remaining < $tank->tnk_capacity)
+                                                @php($refill_indicator = "table-danger" )
+                                            @else
+                                                @php($refill_indicator = "")
+                                            @endif
+                                            <tr class=" {{ $refill_indicator }} ">
                                                 @if($tank->tnk_id)
                                                     <td class="text-danger">
                                                         {{$tank->tnk_id}}
@@ -116,7 +121,7 @@
                                                 @else
                                                     <td>
                                                         0 kg &nbsp;                                                    
-                                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
+                                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @endif
                                                 @if($tank->tnk_notes)
@@ -148,7 +153,7 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form method="POST" id="form-add" action="{{ action('ProductionController@refillTank') }}">
+                                                        <form method="POST" id="form-add" action="{{ action('ProductionController@refillTank', [$tank->tnk_id]) }}">
                                                         {{ csrf_field() }} 
                                                             <div class="modal-body">
                                                                 <div class="row">
@@ -173,7 +178,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                            <input type="text" class="form-control" name="tnk_id" value="{{ $tank->tnk_id }}"  hidden/> 
+                                                                <input type="text" class="form-control" name="tnk_uuid" value="{{ $tank->tnk_uuid }}"  hidden/> 
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                             </div>
@@ -192,7 +197,7 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form method="POST" id="form-add" action="{{ action('ProductionController@editTank') }}">
+                                                        <form method="POST" id="form-add" action="{{ action('ProductionController@editTank', [$tank->tnk_id]) }}">
                                                         {{ csrf_field() }} 
                                                             <div class="modal-body">
                                                                 <div class="row">
@@ -203,7 +208,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kgs" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}}" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
@@ -217,6 +222,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
+                                                                <input type="text" class="form-control" name="tnk_uuid" value="{{ $tank->tnk_uuid }}"  hidden/>                            
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                                                             </div>
@@ -351,10 +357,6 @@
                             <div class="form-group">
                                 <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
                                 <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" onkeypress="return isNumberKey(this, event);" required/>
-                            </div>
-                            <div class="form-group">
-                                <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                <input type="text" name="tnk_remaining" class="form-control" placeholder="Enter Remaining" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
                                 <label for="tnk_notes">Notes <span style="color:red">*</span></label>
