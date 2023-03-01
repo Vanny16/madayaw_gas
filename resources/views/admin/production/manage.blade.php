@@ -1289,13 +1289,6 @@
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
-
-        // }else{
-        //     $("#add-quantity-modal").find("#lbl-tank").show();
-        //     $("#add-quantity-modal").find("#tnk-name").show();
-        //     $("#add-quantity-modal").find("#lbl-crate").hide();
-        //     $("#add-quantity-modal").find("#lbl-loose").hide();
-        //     $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
 
