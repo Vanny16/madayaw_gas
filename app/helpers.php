@@ -206,7 +206,12 @@ function get_last_production_id()
     $production_logs = DB::table('production_logs')
     ->orderBy('pdn_id', 'desc')
     ->first();
-    // dd($production_logs->pdn_id);
+    
+    if($production_logs == null)
+    {
+        return 0;
+    }
+
     return $production_logs->pdn_id;
 }
 

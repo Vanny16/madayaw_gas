@@ -139,7 +139,36 @@ class ReportsController extends Controller
                     ->orderBy('movement_logs.pdn_id', 'desc')
                     ->paginate(10);
 
-        return view('admin.reports.production', compact('productions','production_date_from','production_date_to'));
+        $pdn_date = "September 18, 2023";
+        $pdn_start_time = '-- : -- --';
+        $pdn_end_time = '-- : -- --'; 
+
+        if(isset($production_times)){
+            if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
+            {
+                if($production_times->pdn_end_time <> 0)
+                {
+                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                    $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                }
+                else
+                {
+                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                    $pdn_end_time = '-- : -- --'; 
+                    // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+                }   
+            }
+            else
+            {
+                $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+                $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+            }
+        }
+
+        return view('admin.reports.production', compact('productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
     }
 
     public function productionFilter(Request $request)
