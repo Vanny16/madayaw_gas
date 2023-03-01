@@ -34,7 +34,7 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
-                                <div class="col-12 col-md-3"> 
+                                <div class="col-12 col-md-3`"> 
                                     <label>Status</label>
                                     <select class="form-control">
                                         <option>Pending</option>
