@@ -88,8 +88,8 @@ Route::group(['prefix' => 'production'], function()
     Route::post('add-quantity', 'ProductionController@addQuantity');
     Route::post('edit-product', 'ProductionController@editItem');
     Route::post('add-tank', 'ProductionController@createTank');
-    Route::post('edit-tank', 'ProductionController@editTank');
-    Route::post('refill-tank', 'ProductionController@refillTank');
+    Route::post('edit-tank/{tnk_id}', 'ProductionController@editTank');
+    Route::post('refill-tank/{tnk_id}', 'ProductionController@refillTank');
 });
 
 Route::group(['prefix' => 'product'], function()
