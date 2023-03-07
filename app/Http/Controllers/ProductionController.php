@@ -40,6 +40,10 @@ class ProductionController extends Controller
         $production_times = DB::table('production_logs')
         ->orderBy('pdn_id', 'desc')
         ->first();
+        
+        $tanks = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
 
         $customers = 
 
@@ -72,7 +76,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks'));
     }
 
     //PRODUCTION

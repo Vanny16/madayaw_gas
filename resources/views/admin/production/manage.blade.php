@@ -308,6 +308,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            
                                                             <!-- Edit Products Modal -->
                                                             <div class="modal fade" id="edit-empty-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                                 <div class="modal-dialog modal-md" role="document">
@@ -387,6 +388,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -1084,20 +1086,15 @@
                                 <div class="form-inline">
                                     <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
                                     <select  class="form-control col-md-12" name="tnk_name" id="tnk-name">
-                                        @if(isset($tanks))
-                                            @foreach($tanks as $tank)
-                                                @if($tank->tnk_id == 0)
-                                                    @continue
-                                                @else                            
-                                                    @if($tnk_name == $tank->tnk_name )
-                                                        @php($selected = "selected")
-                                                    @else
-                                                        @php($selected = "")
-                                                    @endif
-                                                    <option value="{{ $tank->tnk_id }}" {{ $selected }}>{{ $tank->tnk_name }}</option>
-                                                @endif
-                                            @endforeach
-                                        @endif 
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            @if($tank->tnk_active == 0)
+                                                @continue
+                                            @else
+                                                <option value="{{ $tank->tnk_id }}" {{ $selected }}>{{ $tank->tnk_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                     </select>
                                 </div>
                             </div>
@@ -1125,6 +1122,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Opening / Closing Modal -->
 <div class="modal fade" id="stocks-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
