@@ -170,6 +170,20 @@ function record_movement($prd_id, $quantity, $flag)
 
 }
 
+function get_last_production_id()
+{ 
+    $production_logs = DB::table('production_logs')
+    ->orderBy('pdn_id', 'desc')
+    ->first();
+    
+    if($production_logs == null)
+    {
+        return 0;
+    }
+
+    return $production_logs->pdn_id;
+}
+
 function get_opening_stock($prd_id, $pdn_id)
 {
     $opening_stocks = DB::table('stocks_logs')
@@ -200,19 +214,17 @@ function get_closing_stock($prd_id, $pdn_id)
     return $closing_stocks->closing_stocks;
 }
 
-
-function get_last_production_id()
-{ 
-    $production_logs = DB::table('production_logs')
-    ->orderBy('pdn_id', 'desc')
+function get_tank_quantity($tnk_id, $prd_id)
+{
+    $tanks = DB::table('tanks')
     ->first();
-    
-    if($production_logs == null)
+
+    if($tanks->tnk_remaining == null)
     {
-        return 0;
+        return 'N/A';
     }
 
-    return $production_logs->pdn_id;
+    return $tanks->tnk_remaining;
 }
 
 function get_quantity_of_canisters($prd_id, $flag)

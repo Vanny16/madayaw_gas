@@ -142,7 +142,6 @@
                     </div>
                     <div class="row">
                         <div class="col-3">
-                            
                             <div class="card card-stretch">
                                 <div class="d-flex align-items-center">
                                     <div class="col-12 mt-3 text-center">
@@ -176,23 +175,59 @@
                                     <table class="table table-hover table-condensed">
                                         <thead>
                                             <tr>
+                                                <th>Stock Status</th>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <th>{{$canister->prd_name}}</th>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbl-products">
+                                            @php($production_id = get_last_production_id())
+                                            <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                                <td><i>Opening Stocks</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                                <td><i>Closing Stocks</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-body" style="overflow-x:auto;">
+                                    <table class="table table-hover table-condensed">
+                                        <thead>
+                                            <tr>
                                                 <th>Tank Name</th>
-                                                <th>Tank Opening</th>
-                                                <th>Tank Closing</th>
+                                                @if(isset($tanks))
+                                                    @foreach($tanks as $tank)
+                                                        <th>{{$tank->tnk_name}}</th>
+                                                    @endforeach
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><i>Tank 1</i></td>
-                                                <td>5000 kgs</td>
-                                                <td>2345 kgs</td>
-                                                </td>
+                                                <td><i>Opening Tank</i></td>
+                                                @foreach($tanks as $tank)
+                                                    <td>{{$tank->tnk_remaining}}</td>
+                                                @endforeach
                                             </tr>
                                             <tr>
-                                                <td><i>Tank 2</i></td>
-                                                <td>5000 kgs</td>
-                                                <td>2245 kgs</td>
-                                                </td>
+                                                <td><i>Closing Tank</i></td>
+                                                @foreach($tanks as $tank)
+                                                    <td>{{$tank->tnk_remaining}}</td>
+                                                @endforeach
                                             </tr>
                                         </tbody>
                                     </table>
@@ -201,183 +236,74 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body" style="overflow-x:auto;">
+                                    <table class="table table-hover table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Canister</th>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <th>{{$canister->prd_name}}</th>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><i>Empty</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <tr>
+                                                <td><i>Filled</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <tr>
+                                                <td><i>Leakers</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <tr>
+                                                <td><i>For Revalving</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <tr>
+                                                <td><i>Scrap</i></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</td>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                            <hr>
+                                            <tr>
+                                                <td><b>Total Stocks</b></td>
+                                                @if(isset($canisters))
+                                                    @foreach($canisters as $canister)
+                                                        <strong><th>{!! get_stock_report($canister->prd_id, 3) !!}</th></strong>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 mt-3 text-center">
-                            <strong class="mx-auto">{{$pdn_date}}</strong>
-                            <table class="table table-sm table-borderless">
-                                <tr>
-                                    <th width="50%"></th>
-                                    <th width="50%"></th>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">Start Time:  </td>
-                                    <td class="text-left text-success">{{$pdn_start_time}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">End Time:  </td>
-                                    @if(empty($pdn_end_time))
-                                        <td class="text-left text-danger">-- : -- : -- --</td>
-                                    @else    
-                                        <td class="text-left text-danger">{{$pdn_end_time}}</td>
-                                    @endif
-                                </tr>
-                            </table>
-                            {{--<div class="text-white">
-                                <a class="btn btn-primary" href=""> Edit Stocks</a>
-                            </div>--}}
-                        </div>
-
-                        <!-- Canisters -->
-                        <div class="row mb-3 mt-5">
-                            <div class="col-12 text-center bg-info">
-                                <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
-                            </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Stock Status</th>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{{$canister->prd_name}}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody id="tbl-products">
-                                    @php($production_id = get_last_production_id())
-                                    @php($stocks_flag = 1)
-                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
-                                        <td><i>Opening Stocks</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    @php($stocks_flag = 2)
-                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
-                                        <td><i>Closing Stocks</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Canisters -->
-                        <div class="row mb-3">
-                            <div class="col-12 text-center bg-info">
-                                <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
-                            </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Canister</th>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{{$canister->prd_name}}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i>Empty</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Filled</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Leakers</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>For Revalving</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Scrap</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <hr>
-                                    <tr>
-                                        <td><b>Total Stocks</b></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <strong><td>{!! get_stock_report($canister->prd_id, 3) !!}</td></strong>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Tank -->
-                        <div class="row mb-3">
-                            <div class="col-12 text-center bg-info">
-                                <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
-                            </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Tank Name</th>
-                                        <th>Tank Opening</th>
-                                        <th>Tank Closing</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i>Tank 1</i></td>
-                                        <td>5000 kgs</td>
-                                        <td>2345 kgs</td>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i>Tank 2</i></td>
-                                        <td>5000 kgs</td>
-                                        <td>2245 kgs</td>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
