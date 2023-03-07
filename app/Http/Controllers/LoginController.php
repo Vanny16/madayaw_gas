@@ -27,19 +27,8 @@ class LoginController extends Controller
         ->join('accounts','accounts.acc_id','=','users.acc_id')
         ->join('user_types','user_types.typ_id','=','users.typ_id')
         ->where('usr_name','=',$username)
-        ->where('usr_password','=',$password)
-        //->where('password','=',md5($password)) COMMENTED FOR TESTING
+        ->where('usr_password','=',md5($password))// COMMENTED FOR TESTING
         ->first();
-
-        if($users == null)
-        {
-            $users = DB::table('users')
-            ->join('accounts','accounts.acc_id','=','users.acc_id')
-            ->join('user_types','user_types.typ_id','=','users.typ_id')
-            ->where('usr_name','=',$username)
-            ->where('usr_password','=',md5($password))
-            ->first();
-        }
 
         if($users)
         {

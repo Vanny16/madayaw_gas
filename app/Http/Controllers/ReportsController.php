@@ -127,6 +127,13 @@ class ReportsController extends Controller
 
     public function production()
     {
+        $canisters = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->get();
+
         $production_date_from = "";
         $production_date_to = "";
 
@@ -142,6 +149,10 @@ class ReportsController extends Controller
         $pdn_date = "September 18, 2023";
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
+
+        $tanks = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
 
         if(isset($production_times)){
             if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
@@ -168,7 +179,7 @@ class ReportsController extends Controller
             }
         }
 
-        return view('admin.reports.production', compact('productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time'));
+        return view('admin.reports.production', compact('canisters', 'productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks'));
     }
 
     public function productionFilter(Request $request)
