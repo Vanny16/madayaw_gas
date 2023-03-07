@@ -109,31 +109,28 @@
                                             <th>User</th>
                                             <th>Customer</th>
                                             <th>Date & Time</th>
-                                            <th>Madayaw Round</th>
-                                            <th>Madayaw Square</th>
-                                            <th>Botin</th>
-                                            <th>Gas Stove</th>
+                                            <th>Product Name</th>
+                                            <th>Crate</th>
+                                            <th>Loose</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php($total_sold = 0)
-                                        @php($total_sales = 0)
                                         @foreach($transactions as $transaction)
                                             <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
                                                 <td>{{ $transaction->trx_ref_id }}</td>
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
                                                 <td>{{ $transaction->trx_datetime }}</td>
-                                                {{-- <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td>
-                                                <td>{{ number_format($transaction->pur_total, 2, '.', ',') }}</td> --}}
+                                                {{--<td>{{ $transaction->prd_name }}</td>
+                                                <td>{{ number_format($transaction->pur_crate, 0, '', ',') }}</td>
+                                                <td>{{ number_format($transaction->pur_loose, 0, '', ',') }}</td>--}}
                                             </tr>
-                                            <tr class="text-success bg-white">
-                                                <td colspan="6"></td>
+                                        {{--<tr class="text-success bg-white">
+                                                <td colspan="5"></td>
                                                 <td class="text-success"><strong>Total</strong></td>
                                                 <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            </tr>
+                                            </tr>--}}
+                                    
 
                                             <!-- Purchases Modal -->
                                             <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -141,7 +138,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header text-info">
                                                             <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Purchases</h5>
-                                                            <p class="text-danger mr-2">TRX {{ $transaction->trx_ref_id }}</p>
+                                                            <p class="text-danger mr-2">{{ $transaction->trx_ref_id }}</p>
                                                         </div> 
                                                         <div class="modal-body">
                                                             <div class="col-12">
