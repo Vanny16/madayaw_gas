@@ -135,7 +135,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header text-info">
                                                             <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Purchases</h5>
-                                                            <p class="text-danger mr-2">TRX {{ $sale->trx_ref_id }}</p>
+                                                            <p class="text-danger mr-2">{{ $sale->trx_ref_id }}</p>
                                                         </div> 
                                                         <div class="modal-body">
                                                             <div class="col-12">
