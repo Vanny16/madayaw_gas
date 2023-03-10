@@ -116,24 +116,29 @@
                                     </thead>
                                     <tbody>
                                         @foreach($transactions as $transaction)
-                                            <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
-                                                <td>{{ $transaction->trx_ref_id }}</td>
-                                                <td>{{ $transaction->usr_full_name }}</td>
-                                                <td>{{ $transaction->cus_name }}</td>
-                                                <td>{{ $transaction->trx_datetime }}</td>
-                                                {{--<td>{{ $transaction->prd_name }}</td>
-                                                <td>{{ number_format($transaction->pur_crate, 0, '', ',') }}</td>
-                                                <td>{{ number_format($transaction->pur_loose, 0, '', ',') }}</td>--}}
-                                            </tr>
-                                        {{--<tr class="text-success bg-white">
-                                                <td colspan="5"></td>
-                                                <td class="text-success"><strong>Total</strong></td>
-                                                <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                            </tr>--}}
-                                    
+                                            @foreach($purchases as $purchase)
+                                                @if($purchase->trx_id == $transaction->trx_id)
+                                                    <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
+                                                        <td>{{ $transaction->trx_ref_id }}</td>
+                                                        <td>{{ $transaction->usr_full_name }}</td>
+                                                        <td>{{ $transaction->cus_name }}</td>
+                                                        <td>{{ $transaction->trx_datetime }}</td>
+                                                        <td>{{ $purchase->prd_name }}</td>
+                                                        <td>{{ number_format($purchase->pur_crate, 0, '', ',') }}</td>
+                                                        <td>{{ number_format($purchase->pur_loose, 0, '', ',') }}</td>
+                                                
+                                                    </tr>
+                                                    @endif
+                                                @endforeach
+                                                    {{--<tr class="text-success bg-white">
+                                                            <td colspan="5"></td>
+                                                            <td class="text-success"><strong>Total</strong></td>
+                                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
+                                                        </tr>--}}
+                                           
 
                                             <!-- Purchases Modal -->
-                                            <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            {{-- <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header text-info">
@@ -180,7 +185,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         @endforeach
                                         <tr class="bg-light" height="1px">
                                             <td colspan="7"></td>
