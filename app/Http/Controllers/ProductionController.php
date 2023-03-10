@@ -35,7 +35,6 @@ class ProductionController extends Controller
         ->get();
 
         $pdn_flag = check_production_log();
-        // dd($raw_materials);
 
         $production_times = DB::table('production_logs')
         ->orderBy('pdn_id', 'desc')
@@ -45,7 +44,9 @@ class ProductionController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get();
 
-        $customers = 
+        $tank_logs = DB::table('tank_logs')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get(); 
 
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
@@ -84,16 +85,25 @@ class ProductionController extends Controller
     {
         $pdn_flag = check_production_log();
         $temp_details = explode(",", $request->canister_details);
+        $temp_tank_details = explode(",", $request->tank_details);
         array_pop($temp_details);
-        $canister_details[] = array('0');
+        array_pop($temp_tank_details);
 
+        $canister_details = [];
+        $tank_details = [];
+        
         foreach($temp_details as $details)
         {   
             $detail = explode("|", $details);
-            $canister_details[$detail[0]] = $detail[1];
+            array_push($canister_details, $detail[0]);
         }
 
-        // dd($temp_details <> "");
+        foreach($temp_tank_details as $details)
+        {   
+            $detail = explode("|", $details);
+            array_push($tank_details, $detail[0]);
+        }
+
         if($pdn_flag)
         {
             DB::table('production_logs')
@@ -102,17 +112,30 @@ class ProductionController extends Controller
                 'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
-            if($temp_details <> "")
+            if($temp_details <> "" && $temp_tank_details <> "")
             {
-                foreach($canister_details as $prd_id => $details)
+                foreach($canister_details as $prd_id)
                 {
                     $input_field = "stock_quantity" . $prd_id;
-
+                    
                     DB::table('stocks_logs')
                     ->insert([
                         'acc_id' => session('acc_id'),
                         'prd_id' => $prd_id,
                         'opening_stocks' => $request->$input_field,
+                        'pdn_id' => get_last_production_id()
+                    ]);
+                }
+
+                foreach($tank_details as $tnk_id)
+                {
+                    $input_field = "tank_remaining" . $tnk_id;
+
+                    DB::table('tank_logs')
+                    ->insert([
+                        'acc_id' => session('acc_id'),
+                        'tnk_id' => $tnk_id,
+                        'log_tnk_opening' => $request->$input_field,
                         'pdn_id' => get_last_production_id()
                     ]);
                 }
@@ -128,18 +151,28 @@ class ProductionController extends Controller
                 'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
             ]);
 
-            if($temp_details <> "")
+            if($temp_details <> "" && $temp_tank_details <> "")
             {
-                foreach($canister_details as $prd_id => $details)
+                foreach($canister_details as $prd_id)
                 {
                     $input_field = "stock_quantity" . $prd_id;
-
+                  
                     DB::table('stocks_logs')
                     ->where('pdn_id', '=', get_last_production_id())
                     ->update([
                         'closing_stocks' => $request->$input_field,
                     ]);
+                }
 
+                foreach($tank_details as $tnk_id)
+                {
+                    $input_field = "tank_remaining" . $tnk_id;
+
+                    DB::table('tank_logs')
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'log_tnk_closing' => $request->$input_field,
+                    ]);
                 }
             }
 
@@ -147,62 +180,7 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
     }
-    //public function toggleProduction()
-    // {
-    //     $pdn_flag = check_production_log();
-
-        
-    //     $closing_stock = DB::table('production_logs')
-        
-    //     ->select('pdn_closing_stock')
-    //     ->orderBy('pdn_id', 'desc')
-    //     ->first();
-
-    //     $production_logs = DB::table('movement_logs')
-    //     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    //     ->where('movement_logs.acc_id', '=', session('acc_id'))
-    //     ->where('movement_logs.pdn_id','=', get_last_production_id())
-    //     ->sum(DB::raw('log_filled')) + $closing_stock;
-    //     dd($production_logs);
-
-
-    //     if($pdn_flag)
-    //     {
-    //         $closing_stock = DB::table('production_logs')
-    //         ->select('pdn_closing_stock')
-    //         ->orderBy('pdn_id', 'desc')
-    //         ->first();
-
-    //         if($closing_stock == null){$closing_stock = 0;}
-
-    //         DB::table('production_logs')
-    //         ->insert([
-    //             'acc_id' => session('acc_id'),
-    //             'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
-    //             'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP'),
-    //             'pdn_opening_stock' => $closing_stock
-    //         ]);
-
-    //         session()->flash('successMessage','Production started!');
-    //         return redirect()->action('ProductionController@manage');
-    //     }
-    //     else
-    //     {
-    //         $production_logs = DB::table('movement_logs')
-    //         ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    //         ->where('movement_logs.acc_id', '=', session('acc_id'))
-    //         ->where('movement_logs.pdn_id','=', get_last_production_id())
-    //         ->sum(DB::raw('log_filled')) + $closing_stock;
-            
-    //         DB::table('production_logs')
-    //         ->update([
-    //             'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
-    //         ]);
-
-    //         session()->flash('successMessage','Production ended!');
-    //         return redirect()->action('ProductionController@manage');
-    //     }
-    // }
+    
     public function createProduct(Request $request)
     {
         $prd_name = $request->prd_name;

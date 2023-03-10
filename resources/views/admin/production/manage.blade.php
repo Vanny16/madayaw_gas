@@ -729,18 +729,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><i>Tank 1</i></td>
-                                        <td>5000 kgs</td>
-                                        <td>2345 kgs</td>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i>Tank 2</i></td>
-                                        <td>5000 kgs</td>
-                                        <td>2245 kgs</td>
-                                        </td>
-                                    </tr>
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            <tr>
+                                                <td><i>{{$tank->tnk_name}}</i></td>
+                                                <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -900,11 +897,13 @@
 
 <?php
     $canister_details = "";
+    $tank_details = "";
     foreach($canisters as $canister){$canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";}
+    foreach($tanks as $tank){$tank_details = $tank_details . $tank->tnk_id . "|" . $tank->tnk_name . ",";}
 ?>
 <!-- Toggle Production Modal -->
 <div class="modal fade" id="production-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 @if($pdn_flag)
@@ -919,8 +918,8 @@
             <form method="POST" action="{{ action('ProductionController@toggleProduction') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
                             @if(isset($canisters[0]))
                                 <div class="form-group">
                                     <div class="row">
@@ -947,6 +946,39 @@
                                                     <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_stock($canister->prd_id, get_last_production_id()) !!}" required>
                                                 @endif
                                                 <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="col-6">
+                            @if(isset($tanks))
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            @if($pdn_flag)
+                                                <label for="stocks_quantity">Confirm Opening Tank</label>
+                                            @else
+                                                <label for="stocks_quantity">Confirm Closing Tank</label>
+                                            @endif
+                                        </div>
+                                        <div class="col-7"></div>
+                                    </div>
+                                </div>
+                                @foreach($tanks as $tank)
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <em>{{$tank->tnk_name}}</em>
+                                            </div>
+                                            <div class="col-7">
+                                                @if($pdn_flag)
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                @else
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                @endif
+                                                <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                             </div>
                                         </div>
                                     </div>
