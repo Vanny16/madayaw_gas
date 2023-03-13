@@ -17,68 +17,74 @@
             <div class="card-body">
                 <table class="table table-hover table-condensed">
 
-                @if(isset($all_transaction_reports))
-                    <thead>
-                        <tr>
-                            <th>Reference ID</th>
-                            <th>User</th>
-                            <th>Customer</th>
-                            <th>Date & Time</th>
-                            <th>Total Sale</th>
-                            <th>Amount Received</th>
-                            <th>Change</th>
-                            <th width="20px"></th>
-                        </tr>
-                        <tr>
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($all_transaction_reports as $all_transaction_report)
-                        <tr>
-                            <td>{{$all_transaction_report->trx_ref_id}}</td>
-                            <td>{{$all_transaction_report->usr_name}}</td>
-                            <td>{{$all_transaction_report->cus_name}}</td>
-                            <td>{{$all_transaction_report->trx_datetime}}</td>
-                            <td>{{ number_format($all_transaction->trx_madayaw_round, 2, '.', ',') }}</td>
-                            <td>{{ number_format($all_transaction->trx_madayaw_square, 2, '.', ',') }}</td>
-                            <td>{{ number_format($all_transaction->trx_botin, 2, '.', ',') }}</td>
-                            <td>{{ number_format($all_transaction->trx_gas_stove, 2, '.', ',') }}</td>
-                        </tr> 
-                        @endforeach
-                    </tbody>
-
-                @elseif(isset($transaction_reports))
-                    <thead>
-                        <tr>
-                            <th>Reference ID</th>
-                            <th>User</th>
-                            <th>Customer</th>
-                            <th>Date & Time</th>
-                            <th>Total Sale</th>
-                            <th>Amount Received</th>
-                            <th>Change</th>
-                            <th width="20px"></th>
-                        </tr>
-                        <tr>
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($transaction_reports as $transaction_report)
-                        <tr>
-                            <td>{{$transaction_report->trx_ref_id}}</td>
-                            <td>{{$transaction_report->usr_name}}</td>
-                            <td>{{$transaction_report->cus_name}}</td>
-                            <td>{{$transaction_report->trx_datetime}}</td>
-                            <td>{{ number_format($transaction->trx_madayaw_round, 2, '.', ',') }}</td>
-                            <td>{{ number_format($transaction->trx_madayaw_square, 2, '.', ',') }}</td>
-                            <td>{{ number_format($transaction->trx_botin, 2, '.', ',') }}</td>
-                            <td>{{ number_format($transaction->trx_gas_stove, 2, '.', ',') }}</td>
-                        </tr> 
-                        @endforeach
-                    </tbody>
-                @endif
+                    @if(isset($all_transaction_reports))
+                        <thead>
+                            <tr>
+                                <th>Reference ID</th>
+                                <th>User</th>
+                                <th>Customer</th>
+                                <th>Date & Time</th>
+                                <th>Product Name</th>
+                                <th>Crate</th>
+                                <th>Loose</th>
+                                <th width="20px"></th>
+                            </tr>
+                            <tr>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($all_transaction_reports as $all_transaction_report)
+                                @foreach($all_purchase_reports as $all_purchase_report)
+                                    @if($all_purchase_report->trx_id == $all_transaction_report->trx_id)
+                                        <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}">
+                                            <td>{{ $all_transaction_report->trx_ref_id }}</td>
+                                            <td>{{ $all_transaction_report->usr_full_name }}</td>
+                                            <td>{{ $all_transaction_report->cus_name }}</td>
+                                            <td>{{ $all_transaction_report->trx_datetime }}</td>
+                                            <td>{{ $all_purchase_report->prd_name }}</td>
+                                            <td>{{ number_format($all_purchase_report->pur_crate, 0, '', ',') }}</td>
+                                            <td>{{ number_format($all_purchase_report->pur_loose, 0, '', ',') }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endforeach 
+                        </tbody>  
+                    @elseif(isset($transaction_reports))
+                       
+                        <thead>
+                            <tr>
+                                <th>Reference ID</th>
+                                <th>User</th>
+                                <th>Customer</th>
+                                <th>Date & Time</th>
+                                <th>Product Name</th>
+                                <th>Crate</th>
+                                <th>Loose</th>
+                                <th width="20px"></th>
+                            </tr>
+                            <tr>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($transaction_reports as $transaction_report)
+                                @foreach($purchase_reports as $purchase_report)
+                                    @if($purchase->trx_id == $transaction->trx_id)
+                                        <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
+                                            <td>{{ $transaction_report->trx_ref_id }}</td>
+                                            <td>{{ $transaction_report->usr_full_name }}</td>
+                                            <td>{{ $transaction_report->cus_name }}</td>
+                                            <td>{{ $transaction_report->trx_datetime }}</td>
+                                            <td>{{ $purchase_report->prd_name }}</td>
+                                            <td>{{ number_format($purchase_report->pur_crate, 0, '', ',') }}</td>
+                                            <td>{{ number_format($purchase_report->pur_loose, 0, '', ',') }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach 
+                            @endforeach
+                        </tbody>  
+                    @endif
                 </table>
             </div>
         </div>
