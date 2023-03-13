@@ -37,7 +37,7 @@
                             @foreach($all_transaction_reports as $all_transaction_report)
                                 @foreach($all_purchase_reports as $all_purchase_report)
                                     @if($all_purchase_report->trx_id == $all_transaction_report->trx_id)
-                                        <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}">
+                                        <tr>
                                             <td>{{ $all_transaction_report->trx_ref_id }}</td>
                                             <td>{{ $all_transaction_report->usr_full_name }}</td>
                                             <td>{{ $all_transaction_report->cus_name }}</td>
@@ -71,7 +71,7 @@
                             @foreach($transaction_reports as $transaction_report)
                                 @foreach($purchase_reports as $purchase_report)
                                     @if($purchase->trx_id == $transaction->trx_id)
-                                        <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
+                                        <tr>
                                             <td>{{ $transaction_report->trx_ref_id }}</td>
                                             <td>{{ $transaction_report->usr_full_name }}</td>
                                             <td>{{ $transaction_report->cus_name }}</td>
