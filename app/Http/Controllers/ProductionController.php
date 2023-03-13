@@ -475,7 +475,7 @@ class ProductionController extends Controller
             //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
             (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
                         
-            DB::table('products')
+            DB::table('products') 
             ->where('prd_id','=',$prd_id)
             ->update([
                 'prd_leakers' => $new_quantity
