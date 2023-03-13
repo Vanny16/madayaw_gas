@@ -34,6 +34,10 @@ class ProductionController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get();
 
+        $transactions = DB::table('transactions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
+
         $pdn_flag = check_production_log();
 
         $production_times = DB::table('production_logs')
@@ -77,7 +81,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks'));
     }
 
     //PRODUCTION
@@ -473,8 +477,17 @@ class ProductionController extends Controller
         elseif($flag == 3)
         {
             //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
+            $trx_ref_id = $request->trx_ref_id;
             (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
-                        
+            
+            $bo_transaction = DB::table('transactions')
+            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('trx_ref_id', '=', $trx_ref_id)
+            ->get();
+
+            dd(array($bo_transaction));
+
             DB::table('products') 
             ->where('prd_id','=',$prd_id)
             ->update([

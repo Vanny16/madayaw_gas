@@ -403,7 +403,7 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
-                                                        <th></th>
+                                                        <th width="240px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-filled-canisters">
@@ -1130,9 +1130,14 @@
                             </div>
                             <div class="form-group">   
                                 <label for="quantity" id="lbl-add">Amount to add <span style="color:red">*</span></label>
-                                <div id="trx_ref_id">
-                                    <label for="quantity" id="lbl-crate">Transaction <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-000000-0"/>
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
+                                    <table>
+                                        <tr>
+                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
+                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
+                                        <tr>
+                                    </table>
                                 </div>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
@@ -1303,28 +1308,44 @@
         document.getElementById('set_stockin_flag').value = flag;
         
         if(flag === 0){
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
             $("#add-quantity-modal").find("#tnk-name").hide();
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").hide();     
             
         }else{
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
             $("#add-quantity-modal").find("#tnk-name").hide();
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
         }
 
         if(flag === 2){
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#lbl-tank").show();
             $("#add-quantity-modal").find("#tnk-name").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#lbl-loose").show();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
+        }
+        else if(flag === 3){
+            $("#add-quantity-modal").find("#trx_ref_no").show();
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#lbl-add").hide();
+            $("#add-quantity-modal").find("#lbl-loose").hide();
+            $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#quantity").hide();
+            $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
 
@@ -1371,6 +1392,30 @@
         var value = document.getElementById(id).value;
         if(value < 0 || value == ""){
             document.getElementById(id).value ="0";
+        }
+    }
+
+    function verifyTransaction(){
+        var trx_ref_id = document.getElementById("trx_ref_id").value;
+        var verified = false;
+
+        @foreach($transactions as $transaction)
+            if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
+                verified = true;
+                $("#add-quantity-modal").find("#lbl-crate").show();
+                $("#add-quantity-modal").find("#lbl-loose").show();
+                $("#add-quantity-modal").find("#quantity").show();
+                $("#add-quantity-modal").find("#crate-quantity").show();
+            }
+        @endforeach
+
+        if(!verified){
+            if(trx_ref_id == ""){
+                alert("Input required field");
+            }
+            else{
+                alert("No transactions referenced to this code");
+            }
         }
     }
 </script>
