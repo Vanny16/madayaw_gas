@@ -140,12 +140,15 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('ReportsController@production') }}" class="nav-link">
-                        <i class="nav-icon fa fa-bar-chart"></i>
-                        <p>
-                            Production Reports
-                        </p>
-                    </a>
+                    <form id="go_productions" method="POST" action="{{ action('ReportsController@production') }}">
+                    {{ csrf_field() }}
+                        <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_productions.submit()">
+                            <i class="nav-icon fa fa-bar-chart"></i>
+                            <p>
+                                Production Reports
+                            </p>
+                        </button>
+                    </form>
                 </li>
                 
                 <li class="nav-header">ACCOUNTS</li>
