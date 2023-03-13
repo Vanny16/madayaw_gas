@@ -404,8 +404,6 @@
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
                                                         <th></th>
-                                                        <th></th>
-                                                        <th width="50px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-filled-canisters">
@@ -862,7 +860,7 @@
                             <div class="form-group">
                                 <label for="sup_id">Supplier <span style="color:red">*</span></label>
                                 <div class="form-inline">
-                                    <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')">
+                                    <select class="form-control col-md-7" id="suppliers" name="sup_id" oninvalid="this.setCustomValidity('You have no suppliers yet. Please create atleast 1.')" oninput="setCustomValidity('')" required>
                                         @foreach($suppliers as $supplier)
                                             @if($supplier->sup_active == 0)
                                                 @continue
@@ -1132,6 +1130,10 @@
                             </div>
                             <div class="form-group">   
                                 <label for="quantity" id="lbl-add">Amount to add <span style="color:red">*</span></label>
+                                <div id="trx_ref_id">
+                                    <label for="quantity" id="lbl-crate">Transaction <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-000000-0"/>
+                                </div>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>

@@ -213,7 +213,7 @@ class SalesController extends Controller
             $pmnt_id += 1;
         }
 
-        $trx_ref_id = "POS" . date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
         $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $trx_id;
         $prd_id = "";
         $prd_price = "";
