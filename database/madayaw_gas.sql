@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-01 10:51:13
+Date: 2023-03-13 16:04:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -340,15 +340,21 @@ CREATE TABLE `tanks` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tank_logs`;
 CREATE TABLE `tank_logs` (
-  `tnk_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tnk_quantity` decimal(10,0) DEFAULT NULL,
-  `tnk_datetime` datetime DEFAULT NULL,
-  PRIMARY KEY (`tnk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `tnk_id` int(11) DEFAULT NULL,
+  `log_tnk_opening` decimal(10,0) DEFAULT NULL,
+  `log_tnk_closing` decimal(10,0) DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tank_logs
 -- ----------------------------
+INSERT INTO `tank_logs` VALUES ('1', '1', '0', null, null, '17');
+INSERT INTO `tank_logs` VALUES ('2', '1', '1', null, null, '19');
+INSERT INTO `tank_logs` VALUES ('3', '1', '1', '3', '3', '20');
 
 -- ----------------------------
 -- Table structure for `transactions`

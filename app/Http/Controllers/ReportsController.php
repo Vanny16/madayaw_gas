@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use DB;
 
 use Illuminate\Http\Request;
@@ -111,34 +112,54 @@ class ReportsController extends Controller
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
     }
 
-    public function production()
+    public function production(Request $request)
     {
-        $canisters = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+        $selectedDate = $request->selectedDate ?? ''; 
 
-        $production_date_from = "";
-        $production_date_to = "";
+        // dd($selectedDate);
+
+        $canisters = DB::table('products')
+                    ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                    ->where('products.acc_id', '=', session('acc_id'))
+                    ->where('prd_for_production','=','1')
+                    ->where('prd_is_refillable','=','1')
+                    ->get();
 
         $productions = DB::table('movement_logs')
-                    ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-                    ->join('products','products.prd_id','=','movement_logs.prd_id')
-                    ->where('movement_logs.acc_id','=', session('acc_id'))
-                    ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-                    ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-                    ->orderBy('movement_logs.pdn_id', 'desc')
-                    ->paginate(10);
+                        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+                        ->join('products','products.prd_id','=','movement_logs.prd_id')
+                        ->where('movement_logs.acc_id','=', session('acc_id'))
+                        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
+                        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
+                        ->orderBy('movement_logs.pdn_id', 'desc')
+                        ->paginate(10);
 
-        $pdn_date = "September 18, 2023";
-        $pdn_start_time = '-- : -- --';
-        $pdn_end_time = '-- : -- --'; 
+        $production_datetime = DB::table('production_logs')
+                                ->where('pdn_id', '=', get_last_production_id())
+                                ->first();
+                                
+        $production_date_from = "";
+        $production_date_to = "";
+                        
+        $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
+        $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
+        $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
+        
+        $production_list = DB::table('production_logs')
+                            ->select('pdn_id', 'pdn_date')
+                            ->get();
+
+        $production_list_status = '';
+        if($production_list == null) {$production_list_status = 'disabled';}
 
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
+
+        $query_Day = DB::table('production_logs')
+                    ->where('pdn_date', '=', date('m', strtotime($selectedYear)))
+                    ->get();
+        // dd($query_Day);
 
         if(isset($production_times)){
             if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
@@ -165,7 +186,33 @@ class ReportsController extends Controller
             }
         }
 
-        return view('admin.reports.production', compact('canisters', 'productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks'));
+        $months = []; 
+        $days = []; 
+        $years = [];
+
+        foreach($production_list as $row)
+        {
+            if(!in_array(date("Y", strtotime($row->pdn_date)), $years))
+            {
+                array_push($years, date("Y", strtotime($row->pdn_date)));
+            }
+
+            if(!in_array(date("F", strtotime($row->pdn_date)), $months))
+            {
+                array_push($months, date("F", strtotime($row->pdn_date)));
+            }
+
+            if(!in_array(date("j", strtotime($row->pdn_date)), $days))
+            {
+                array_push($days, date("j", strtotime($row->pdn_date)));
+            }
+        }
+        // dd($years, $months, $days);
+
+        $production_years = $request->input('year') ?? Carbon::now()->year;
+        $production_months = $request->input('year') ?? Carbon::now()->month;
+
+        return view('admin.reports.production', compact('canisters', 'productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'production_list', 'production_list_status', 'tanks', 'selectedDate'));
     }
 
     public function productionFilter(Request $request)
@@ -186,40 +233,43 @@ class ReportsController extends Controller
         return view('admin.reports.production', compact('productions','production_date_from','production_date_to'));
     }
 
-    // public function testProductions(Request $request)
-    // {
-    //     // $date_from = Carbon::now();
-    //     // $date_to = $date_from->format('Y-m-d');
-    //     // dd($date_to);
-    //     $test_productions = DB::table('movement_logs')
-    //                 ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-    //                 ->join('products','products.prd_id','=','movement_logs.prd_id')
-    //                 // ->where('movement_logs.log_date','=', $date_to)
-    //                 ->where('movement_logs.acc_id','=', session('acc_id'))
-    //                 ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-    //                 ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-    //                 ->orderBy('movement_logs.pdn_id', 'desc')
-    //                 ->get();
-    //                 // ->paginate(10);
-    //     // dd($test_productions);
-    //     return response()->json($test_productions);
-    // }
+    public function testProductions(Request $request)
+    {
+        // $date_from = Carbon::now();
+        // $date_to = $date_from->format('Y-m-d');
+        // dd($date_to);
+        $test_productions = DB::table('movement_logs')
+                    ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+                    ->join('products','products.prd_id','=','movement_logs.prd_id')
+                    // ->where('movement_logs.log_date','=', $date_to)
+                    ->where('movement_logs.acc_id','=', session('acc_id'))
+                    ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
+                    ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
+                    ->orderBy('movement_logs.pdn_id', 'desc')
+                    ->get();
+                    // ->paginate(10);
+        // dd($test_productions);
+        dd(response()->json($test_productions));
+        return response()->json($test_productions);
 
-    // public function testproductionFilter(Request $request)
-    // {
-    //     $date_from = $request->date_from;
-    //     $date_to = $request->date_to;
+
+    }
+
+    public function testproductionFilter(Request $request)
+    {
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
         
-    //     $filter_productions = DB::table('movement_logs')
-    //                     ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-    //                     ->join('products','products.prd_id','=','movement_logs.prd_id')
-    //                     ->where('movement_logs.acc_id','=', session('acc_id'))
-    //                     // ->whereBetween('movement_logs.log_date','=', [$date_from, $date_to])
-    //                     ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-    //                     ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-    //                     ->orderBy('movement_logs.pdn_id', 'desc')
-    //                     ->get();
+        $filter_productions = DB::table('movement_logs')
+                        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
+                        ->join('products','products.prd_id','=','movement_logs.prd_id')
+                        ->where('movement_logs.acc_id','=', session('acc_id'))
+                        // ->whereBetween('movement_logs.log_date','=', [$date_from, $date_to])
+                        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
+                        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
+                        ->orderBy('movement_logs.pdn_id', 'desc')
+                        ->get();
 
-    //     return response()->json($filter_productions);
-    // }
+        return response()->json($filter_productions);
+    }
 }

@@ -25,118 +25,44 @@
                     @include('layouts.partials.alert')
                 </div>
             </div>
-            
-            @if($production_date_from != "" && $production_date_to != "")
-                @php
-                    $date_from = $production_date_from;
-                    $date_to = $production_date_to;
-                @endphp
-            @else
-                @php
-                    $date_from = Carbon\Carbon::parse()->format('Y-m-d');
-                    $date_to = Carbon\Carbon::parse()->format('Y-m-d');
-                @endphp
-            @endif
-
             <div class="row">
                 <div class="col-md-12"> 
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-calendar"></i> Selected Date</h3>
-                        </div>
-                        <div class="card-body">
-                            <form method="POST" action="{{ action('ReportsController@productionFilter')}}">
-                            {{ csrf_field() }} 
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_from">From</label>
-                                        <input type="date" class="form-control" name="production_date_from" value="{{ $date_from }}" required/>     
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_to">To</label>
-                                        <input type="date" class="form-control" name="production_date_to" value="{{ $date_to }}" required/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12">
+                                    <form method="POST" action="{{ action('ReportsController@production') }}">
+                                    {{ csrf_field() }}
+                                        <div class="row">
 
-                                @if($production_date_from != "" && $production_date_to != "")
-                                    @if($production_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
-                                        <h5>Today's sales</h5>
-                                    @else
-                                        <h5>Production from <span class="text-info">{{ \Carbon\Carbon::parse($production_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($production_date_to)->format('F d, Y') }}</span></h5>
-                                    @endif
-                                @else
-                                    <h5>Production Summary</h5>
-                                @endif
+                                            {{-- <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle w-100 {{$production_list_status}}" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        @if($selectedMonth <> '')
+                                                            {{$selectedMonth}}
+                                                        @else
+                                                            Month
+                                                        @endif
+                                                    </button>
+                                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMonthButton" style="max-height: 200px; overflow-y: scroll;">
+                                                        @foreach($months as $month)
+                                                            <a class="dropdown-item" href="#" data-value="{{$month}}">{{$month}}</a>
+                                                        @endforeach
+                                                    </div>
+                                                    <input type="hidden" name="month" value="{{$selectedMonth}}" />
+                                                </div> --}}
+
+                                            <div class="col-md-4 mb-3">
+                                                <label for="selectedDate">Production Date</label>
+                                                <input type="date" class="form-control" name="selectedDate" value="" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-6">
-                                    <a href="{{ action('ReportsController@production') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time production</button></a>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                               {{\Carbon\Carbon::parse($date_from)->format('F d, Y')}}
-                            </div>
-                        </div>
-                    </div>
-                    {{--<div class="row">
-                        <div class="col-md-12 mb-3"> 
-                            <form method="POST" action="{{ action('PrintController@allproductionReports')}}">
-                            {{ csrf_field() }}
-                                <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
-                                <input type="date_from" class="form-control" id="production_date_from" name="production_date_from" value="{{ $date_from }}" hidden/>
-                                <input type="date_to" class="form-control" id="production_date_to" name="production_date_to" value="{{ $date_to }}" hidden/>
-                            </form>
-                        </div>
-                    </div>--}}
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-bar-chart"></i> Production Reports</h3>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <div class="row">
-                                <table class="table table-hover table-condensed" id="tbl-cart">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Product Name</th>
-                                            <th>Empty Goods</th>
-                                            <th>Filled Canisters</th>
-                                            <th>Leakers</th>
-                                            <th>For Revalving</th>
-                                            <th>Scrap</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($productions))
-                                            @foreach($productions as $production)
-                                                <tr>
-                                                    <td>{{$production->log_date}}</td>
-                                                    <td>{{$production->prd_name}}</td>
-                                                    <td>{{$production->log_empty_goods}}</td>
-                                                    <td>{{$production->log_filled}}</td>
-                                                    <td>{{$production->log_leakers}}</td>
-                                                    <td>{{$production->log_for_revalving}}</td>
-                                                    <td>{{$production->log_scraps}}</td>
-                                                    <td></td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                    </tbody>
-                                </table>
-                            {{ $productions->links() }}
                             </div>
                         </div>
                     </div>
@@ -220,13 +146,13 @@
                                             <tr>
                                                 <td><i>Opening Tank</i></td>
                                                 @foreach($tanks as $tank)
-                                                    <td>{{$tank->tnk_remaining}}</td>
+                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
                                                 @endforeach
                                             </tr>
                                             <tr>
                                                 <td><i>Closing Tank</i></td>
                                                 @foreach($tanks as $tank)
-                                                    <td>{{$tank->tnk_remaining}}</td>
+                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
                                                 @endforeach
                                             </tr>
                                         </tbody>
@@ -239,7 +165,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body" style="overflow-x:auto;">
-                                    <table class="table table-hover table-condensed">
+                                    <table class="table table-hover table-condensed" id="tbl-canister-movement">
                                         <thead>
                                             <tr>
                                                 <th>Canister</th>
@@ -333,61 +259,14 @@ $(document).ready(function() {
 
     // Set the height of all cards to the max height
     cards.css('height', maxHeight + 'px');
+    
+    $(document).on("click", ".dropdown-menu a", function () {
+        var value = $(this).attr("data-value");
+        var dropdown = $(this).closest(".dropdown");
+        dropdown.find(".btn").text(value);
+        dropdown.find("input").val(value);
+    });
 });
 
-// $(document).ready(function () {
-//     // alert('asdf');
-//     $.ajax({
-//         type: "GET",
-//         url: "/reports/test-production",
-//         dataType: "json",
-//         success: function(test_productions) {
-//             $.each(test_productions, function(index, value) {
-//                 $('#tbl-cart tbody').append(
-//                     '<tr>' +
-//                     '<td>' + value.log_date + '</td>' +
-//                     '<td>' + value.prd_name + '</td>' +
-//                     '<td>' + value.log_empty_goods + '</td>' +
-//                     '<td>' + value.log_filled + '</td>' +
-//                     '<td>' + value.log_leakers + '</td>' +
-//                     '<td>' + value.log_for_revalving + '</td>' +
-//                     '<td>' + value.log_scraps+ '</td>' +
-//                     '</tr>'
-//                 );
-//             });
-//         }
-//     });
-    
-//     $('#filter_date_from').on("change", function (e) {
-//         var date_from = $("#filter_date_from").val();
-//         var date_to = $("#filter_date_to").val();
-//         alert(date_to);
-//         $.ajax({
-//             type: "POST",
-//             url: "/reports/filter-production",
-//             data: {date_from: date_from, date_to: date_to},
-//             success: function(filter_productions) {
-//                 console.log(filter_productions);
-//                 $('#tbl-cart tbody').empty();
-//                 // $.each(filter_productions, function(index, value) {
-//                 //     $('#tbl-cart tbody').append(
-//                 //         '<tr>' +
-//                 //         '<td>' + value.log_date + '</td>' +
-//                 //         '<td>' + value.prd_name + '</td>' +
-//                 //         '<td>' + value.log_empty_goods + '</td>' +
-//                 //         '<td>' + value.log_filled + '</td>' +
-//                 //         '<td>' + value.log_leakers + '</td>' +
-//                 //         '<td>' + value.log_for_revalving + '</td>' +
-//                 //         '<td>' + value.log_scraps+ '</td>' +
-//                 //         '</tr>'
-//                 //     );
-//                 // });
-//             }
-//         });
-//     });
-
-    
-
-//   });
 </script>
 @endsection 
