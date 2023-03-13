@@ -130,7 +130,7 @@
                                             </tr>
 
                                             <!-- Purchases Modal -->
-                                            <div class="modal fade" id="purchases-modal{{ $sale->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            {{-- <div class="modal fade" id="purchases-modal{{ $sale->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header text-info">
@@ -177,7 +177,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         @endforeach
                                         <tr class="bg-light" height="1px">
                                             <td colspan="7"></td>
