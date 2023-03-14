@@ -56,18 +56,11 @@
                                         <tr>
                                             <td>{{$tank->tnk_name}}</td>
                                             <td>
-                                                <div class="row bg-dark" style="width: 100%;">
-                                                    <div class="bg-white text-center" style="width: 2%;">
-                                                        <small class="float-left">{{ $tank_percentage }}%</small>
-                                                    </div>
-                                                    <div class="bg-dark text-center" style="width: 98%;">
-                                                        <div class="bg-success text-center" style="width: {{ $tank_percentage }}%;">
-                                                            &nbsp;
-                                                        </div>
-                                                    </div>
+                                                <div class="progress">
+                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$tank_percentage}}%</div>
                                                 </div>
                                                 <small class="float-left">{{$tank->tnk_remaining}}/{{$tank->tnk_capacity}} g</small>
-                                                <small class="float-right">{{$tank_percentage}}/{{ (float)$tank->tnk_capacity / 1000 }} kg</small>
+                                                <small class="float-right">{{$tank->tnk_remaining / 1000}}/{{ (float)$tank->tnk_capacity / 1000 }} kg</small>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -104,7 +97,7 @@
                                 <tbody id="tbl-tanks">
                                     @if(isset($tanks))
                                         @foreach($tanks as $tank)
-                                            @if($tank->tnk_remaining < $tank->tnk_capacity)
+                                            @if($tank->tnk_remaining == 0)
                                                 @php($refill_indicator = "table-danger" )
                                             @else
                                                 @php($refill_indicator = "")
@@ -133,7 +126,7 @@
                                                 @endif
                                                 @if($tank->tnk_remaining)
                                                     <td>
-                                                        {{$tank->tnk_remaining}} kg &nbsp;
+                                                    {{ (float)$tank->tnk_remaining / 1000 }} kg
                                                         <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @else
