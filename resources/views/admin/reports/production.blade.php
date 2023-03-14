@@ -34,30 +34,33 @@
                                     <form method="POST" action="{{ action('ReportsController@production') }}">
                                     {{ csrf_field() }}
                                         <div class="row">
-
-                                            {{-- <div class="dropdown">
-                                                    <button class="btn btn-primary dropdown-toggle w-100 {{$production_list_status}}" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        @if($selectedMonth <> '')
-                                                            {{$selectedMonth}}
-                                                        @else
-                                                            Month
-                                                        @endif
-                                                    </button>
-                                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMonthButton" style="max-height: 200px; overflow-y: scroll;">
-                                                        @foreach($months as $month)
-                                                            <a class="dropdown-item" href="#" data-value="{{$month}}">{{$month}}</a>
-                                                        @endforeach
-                                                    </div>
-                                                    <input type="hidden" name="month" value="{{$selectedMonth}}" />
-                                                </div> --}}
-
                                             <div class="col-md-4 mb-3">
                                                 <label for="selectedDate">Production Date</label>
-                                                <input type="date" class="form-control" name="selectedDate" value="" required/>
+                                                <input type="date" class="form-control" name="selectedDate" value="{{$selectedDate}}" required/>
+                                            </div>
+                                            <div class="col-md-2"> 
+                                                @if(count($production_id) > 1)
+                                                    <label for="selectedDate">Production IDs</label>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            @if($selectedID <> '')
+                                                                {{$selectedID}}
+                                                            @else
+                                                                IDs
+                                                            @endif
+                                                        </button>
+                                                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMonthButton" style="max-height: 200px; overflow-y: scroll;">
+                                                            @foreach($production_id as $id)
+                                                                <a class="dropdown-item" href="#" data-value="{{$id->pdn_id}}">{{$id->pdn_id}}</a>
+                                                            @endforeach
+                                                        </div>
+                                                        <input type="hidden" name="selectedID" value="{{$selectedID}}" />
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-2 mb-3">
                                                 <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
                                             </div>
                                         </div>
@@ -181,7 +184,7 @@
                                                 <td><i>Empty</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 1) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -189,7 +192,7 @@
                                                 <td><i>Filled</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 2) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -197,7 +200,7 @@
                                                 <td><i>Leakers</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 3) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -205,7 +208,7 @@
                                                 <td><i>For Revalving</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 4) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -213,7 +216,7 @@
                                                 <td><i>Scrap</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 5) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -222,7 +225,7 @@
                                                 <td><b>Total Stocks</b></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <strong><th>{!! get_stock_report($canister->prd_id, 3) !!}</th></strong>
+                                                        <strong><th>{!! get_total_stock_report($canister->prd_id, $selectedID) !!}</th></strong>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -268,5 +271,8 @@ $(document).ready(function() {
     });
 });
 
+function selectDate() {
+
+}
 </script>
 @endsection 
