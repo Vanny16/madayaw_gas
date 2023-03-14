@@ -184,7 +184,7 @@
                                                 <td><i>Empty</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 1) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -192,7 +192,7 @@
                                                 <td><i>Filled</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 2) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -200,7 +200,7 @@
                                                 <td><i>Leakers</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 3) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -208,7 +208,7 @@
                                                 <td><i>For Revalving</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 4) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -216,7 +216,7 @@
                                                 <td><i>Scrap</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 5) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -225,7 +225,7 @@
                                                 <td><b>Total Stocks</b></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <strong><th>{!! get_stock_report($canister->prd_id, 3) !!}</th></strong>
+                                                        <strong><th>{!! get_total_stock_report($canister->prd_id, $selectedID) !!}</th></strong>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -272,7 +272,7 @@ $(document).ready(function() {
 });
 
 function selectDate() {
-    
+
 }
 </script>
 @endsection 

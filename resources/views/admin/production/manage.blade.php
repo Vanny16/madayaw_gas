@@ -662,7 +662,7 @@
                                         <td><i>Empty</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</th>
+                                                <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(),  1) !!}</th>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -670,7 +670,7 @@
                                         <td><i>Filled</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</th>
+                                                <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 2) !!}</th>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -678,7 +678,7 @@
                                         <td><i>Leakers</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</th>
+                                                <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 3) !!}</th>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -686,7 +686,7 @@
                                         <td><i>For Revalving</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</th>
+                                                <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 4) !!}</th>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -694,7 +694,7 @@
                                         <td><i>Scrap</i></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</th>
+                                                <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 5) !!}</th>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -703,7 +703,7 @@
                                         <td><b>Total Stocks</b></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <strong><td>{!! get_stock_report($canister->prd_id, 3) !!}</td></strong>
+                                                <strong><td>{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}</td></strong>
                                             @endforeach
                                         @endif
                                     </tr>

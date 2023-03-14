@@ -137,7 +137,7 @@ class ReportsController extends Controller
 
         if(count($production_id) < 2)
         {
-            $selectedID = $production_id->pdn_id;
+            $selectedID = $production_id[0]->pdn_id;
         }
         
         $canisters = DB::table('products')
