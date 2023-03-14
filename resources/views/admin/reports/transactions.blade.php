@@ -128,8 +128,8 @@
                                                         <td>{{ number_format($purchase->pur_loose, 0, '', ',') }}</td>
                                                 
                                                     </tr>
-                                                    @endif
-                                                @endforeach
+                                                @endif
+                                            @endforeach
                                                     {{--<tr class="text-success bg-white">
                                                             <td colspan="5"></td>
                                                             <td class="text-success"><strong>Total</strong></td>
