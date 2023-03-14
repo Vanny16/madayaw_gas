@@ -114,10 +114,25 @@ class ReportsController extends Controller
 
     public function production(Request $request)
     {
-        $selectedDate = $request->selectedDate ?? ''; 
+        $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d'); 
+        $selectedID = $request->selectedID ?? '';
 
-        // dd($selectedDate);
+        $production_id = DB::table('production_logs')
+                        ->where('pdn_date', '=', $selectedDate);
 
+        if($selectedID <> '')
+        {
+            $production_id = $production_id->where('pdn_id', '=', $selectedID);
+        }
+        $production_id = $production_id->get();
+
+        // dd($production_id);
+
+        if(count($production_id) < 2)
+        {
+            $selectedID = $production_id->pdn_id;
+        }
+        
         $canisters = DB::table('products')
                     ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
                     ->where('products.acc_id', '=', session('acc_id'))
@@ -125,94 +140,88 @@ class ReportsController extends Controller
                     ->where('prd_is_refillable','=','1')
                     ->get();
 
-        $productions = DB::table('movement_logs')
-                        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-                        ->join('products','products.prd_id','=','movement_logs.prd_id')
-                        ->where('movement_logs.acc_id','=', session('acc_id'))
-                        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-                        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-                        ->orderBy('movement_logs.pdn_id', 'desc')
-                        ->paginate(10);
+        $production_datetime = DB::table('production_logs');
 
-        $production_datetime = DB::table('production_logs')
-                                ->where('pdn_id', '=', get_last_production_id())
-                                ->first();
-                                
+        if($selectedID <> '')
+        {
+            $production_datetime = $production_datetime ->where('pdn_id', '=', $selectedID);
+        }
+        elseif(!empty($production_id[0]))
+        {
+            $production_datetime = $production_datetime ->where('pdn_id', '=', $production_id[0]->pdn_id);
+        }
+        
+        $production_datetime = $production_datetime ->first();
+        
         $production_date_from = "";
         $production_date_to = "";
                         
         $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
         $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
         $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
-        
-        $production_list = DB::table('production_logs')
-                            ->select('pdn_id', 'pdn_date')
-                            ->get();
-
-        $production_list_status = '';
-        if($production_list == null) {$production_list_status = 'disabled';}
 
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
 
-        $query_Day = DB::table('production_logs')
-                    ->where('pdn_date', '=', date('m', strtotime($selectedYear)))
-                    ->get();
-        // dd($query_Day);
+        // if(isset($production_times)){
+        //     if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
+        //     {
+        //         if($production_times->pdn_end_time <> 0)
+        //         {
+        //             $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+        //             $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+        //             $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+        //         }
+        //         else
+        //         {
+        //             $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+        //             $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+        //             $pdn_end_time = '-- : -- --'; 
+        //             // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+        //         }   
+        //     }
+        //     else
+        //     {
+        //         $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
+        //         $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
+        //         $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
+        //     }
+        // }
 
-        if(isset($production_times)){
-            if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
-            {
-                if($production_times->pdn_end_time <> 0)
-                {
-                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                    $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-                }
-                else
-                {
-                    $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-                    $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                    $pdn_end_time = '-- : -- --'; 
-                    // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-                }   
-            }
-            else
-            {
-                $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-                $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-                $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-            }
-        }
+        // $production_list = DB::table('production_logs')
+        //                     ->select('pdn_id', 'pdn_date')
+        //                     ->get();
 
-        $months = []; 
-        $days = []; 
-        $years = [];
+        // $months = []; 
+        // $days = []; 
+        // $years = [];
 
-        foreach($production_list as $row)
-        {
-            if(!in_array(date("Y", strtotime($row->pdn_date)), $years))
-            {
-                array_push($years, date("Y", strtotime($row->pdn_date)));
-            }
+        // foreach($production_list as $row)
+        // {
+        //     if(!in_array(date("Y", strtotime($row->pdn_date)), $years))
+        //     {
+        //         array_push($years, date("Y", strtotime($row->pdn_date)));
+        //     }
 
-            if(!in_array(date("F", strtotime($row->pdn_date)), $months))
-            {
-                array_push($months, date("F", strtotime($row->pdn_date)));
-            }
+        //     if(!in_array(date("F", strtotime($row->pdn_date)), $months))
+        //     {
+        //         array_push($months, date("F", strtotime($row->pdn_date)));
+        //     }
 
-            if(!in_array(date("j", strtotime($row->pdn_date)), $days))
-            {
-                array_push($days, date("j", strtotime($row->pdn_date)));
-            }
-        }
-        // dd($years, $months, $days);
+        //     if(!in_array(date("j", strtotime($row->pdn_date)), $days))
+        //     {
+        //         array_push($days, date("j", strtotime($row->pdn_date)));
+        //     }
+        // }
+        // // dd($years, $months, $days);
 
-        $production_years = $request->input('year') ?? Carbon::now()->year;
-        $production_months = $request->input('year') ?? Carbon::now()->month;
+        // $production_years = $request->input('year') ?? Carbon::now()->year;
+        // $production_months = $request->input('year') ?? Carbon::now()->month;
 
-        return view('admin.reports.production', compact('canisters', 'productions','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'production_list', 'production_list_status', 'tanks', 'selectedDate'));
+        // dd($production_id);
+
+        return view('admin.reports.production', compact('canisters','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id','selectedDate', 'selectedID'));
     }
 
     public function productionFilter(Request $request)
