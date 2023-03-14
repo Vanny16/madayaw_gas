@@ -52,7 +52,7 @@
                                         </li>
                                     </ul>
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
@@ -443,7 +443,8 @@
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
-                                    <ul class="nav nav-pills card-header-pills">
+                                    <h5>Leakers</h5>
+                                    <!-- <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#leakers">Leakers</a>
                                         </li>
@@ -453,10 +454,10 @@
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#scrap">Scrap</a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                     <div class="card-tools">
                                         {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
@@ -487,8 +488,8 @@
                                                                 <td>{{$canister->prd_leakers}}</td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalve</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrap</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalved</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
                                                             </tr>
                                                         @endforeach
                                                     @endif
@@ -1393,7 +1394,7 @@
             $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
@@ -1404,7 +1405,7 @@
             $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
@@ -1416,7 +1417,7 @@
             $("#add-quantity-modal").find("#trx_ref_no").hide();
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").show();
-            $("#add-quantity-modal").find("#tnk-name").show();
+            $("#add-quantity-modal").find("#selected-tank").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#quantity").show();
@@ -1426,7 +1427,7 @@
             $("#add-quantity-modal").find("#trx_ref_no").show();
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();

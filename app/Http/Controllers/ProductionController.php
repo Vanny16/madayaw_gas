@@ -444,6 +444,7 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }  
         }
+        
         elseif($flag == 2)
         {
             if($this->check_gas_quantity($tnk_id, $prd_id, $prd_quantity))
@@ -494,6 +495,7 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }
         }
+
         elseif($flag == 3)
         {
             //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
@@ -545,8 +547,8 @@ class ProductionController extends Controller
                     return redirect()->action('ProductionController@manage');
                 }
             }
-
         }
+
         elseif($flag == 4)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))
@@ -558,14 +560,14 @@ class ProductionController extends Controller
                 ->where('prd_id','=',$prd_id)
                 ->update([
                     'prd_for_revalving' => $new_quantity
-                ]);  
+                ]);
 
                 $search_string = 'valve';
 
                 $valve_details = DB::table('products')
                 ->where('acc_id', '=', session('acc_id'))
                 ->where('prd_name', 'LIKE', '%valve%')
-                ->first();  
+                ->first();
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -591,6 +593,7 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }
         }
+
         elseif($flag == 5)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))

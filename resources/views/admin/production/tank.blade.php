@@ -57,10 +57,10 @@
                                             <td>{{$tank->tnk_name}}</td>
                                             <td>
                                                 <div class="progress">
-                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$tank_percentage}}%</div>
+                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{number_format($tank_percentage, 2)}}%</div>
                                                 </div>
-                                                <small class="float-left">{{$tank->tnk_remaining}}/{{$tank->tnk_capacity}} g</small>
-                                                <small class="float-right">{{$tank->tnk_remaining / 1000}}/{{ (float)$tank->tnk_capacity / 1000 }} kg</small>
+                                                <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
+                                                <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -119,14 +119,14 @@
                                                 @endif
                                                 @if($tank->tnk_capacity)
                                                     <td>
-                                                        {{ (float)$tank->tnk_capacity / 1000 }} kg
+                                                        {{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg
                                                     </td>
                                                 @else
                                                     <td>0 kg</td>
                                                 @endif
                                                 @if($tank->tnk_remaining)
                                                     <td>
-                                                    {{ (float)$tank->tnk_remaining / 1000 }} kg
+                                                    {{ number_format((float)$tank->tnk_remaining / 1000, 2) }} kg
                                                         <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @else

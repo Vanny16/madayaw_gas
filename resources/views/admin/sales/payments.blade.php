@@ -38,13 +38,21 @@
                                     <label for="search_string">Find</label>
                                         <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
                                 </div>
-                                <div class="col-12 col-md-3"> 
+                                <div class="col-md-3 mb-3">
                                     <label>Status</label>
                                     <select id="status_filter" class="form-control">
                                         <option value="POS">All</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Paid">Paid</option>
                                     </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_from">From</label>
+                                    <input type="date" class="form-control" name="payments_date_from" value="{{ date('Y-m-d') }}" required/>     
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_to">To</label>
+                                    <input type="date" class="form-control" name="payments_date_to" value="{{ date('Y-m-d') }}" required/>
                                 </div>
                             </div>
                         </div>
@@ -222,17 +230,15 @@
 </div>
 
 <script>
-$("#status_filter").on("change", function() {
-    var value = $(this).val().toLowerCase();
+$("#status_filter, #search_payments").on("change keyup", function() {
+    var searchValue = $("#search_payments").val().toLowerCase();
+    var statusValue = $("#status_filter").val().toLowerCase();
+    
     $("#tbl-payments tr").filter(function() {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-});
-
-$("#search_payments").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#tbl-payments tr").filter(function() {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        var rowText = $(this).text().toLowerCase();
+        var statusMatch = rowText.indexOf(statusValue) > -1;
+        var searchMatch = rowText.indexOf(searchValue) > -1;
+        $(this).toggle(statusMatch && searchMatch);
     });
 });
 </script>
