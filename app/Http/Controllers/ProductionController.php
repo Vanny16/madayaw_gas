@@ -341,8 +341,9 @@ class ProductionController extends Controller
         $prd_id = $request->stockin_prd_id;
         (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
+        $tnk_id = $request->selected_tank;
 
-        // dd($flag);
+        // dd($tnk_id);
 
         record_stockin($prd_id, $prd_quantity);
         
@@ -442,36 +443,54 @@ class ProductionController extends Controller
                 session()->flash('errorMessage','Raw materials insufficient!');
                 return redirect()->action('ProductionController@manage');
             }  
-
-            
         }
         elseif($flag == 2)
         {
-            if(check_materials($flag, $prd_quantity, $prd_id))
+            if($this->check_gas_quantity($tnk_id, $prd_id, $prd_quantity))
             {
-                //ADD QUANTITY TO FILLED 
-                (float)$new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                if(check_materials($flag, $prd_quantity, $prd_id))
+                {
+                    //ADD QUANTITY TO FILLED 
+                    (float)$new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
 
-                DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_quantity' => $new_quantity
-                ]);  
+                    $tank = DB::table('tanks')
+                    ->where('tnk_id', '=', $tnk_id)
+                    ->first();
 
-                //SUBTRACT FROM RAW MATERIALS
-                subtract_qty($flag, $prd_quantity, $prd_id);
+                    $tank_quantity = $tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity);
 
-                //LOG ACTION IN PRODUCTION
-                record_movement($prd_id, $prd_quantity, $flag);
+                    DB::table('tanks')
+                    ->where('tnk_id', '=', $tnk_id)
+                    ->update([
+                        'tnk_remaining' => $tank_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Canister added');
-                return redirect()->action('ProductionController@manage');
-            } 
+                    DB::table('products')
+                    ->where('prd_id','=',$prd_id)
+                    ->update([
+                        'prd_quantity' => $new_quantity
+                    ]);  
+
+                    //SUBTRACT FROM RAW MATERIALS
+                    subtract_qty($flag, $prd_quantity, $prd_id);
+
+                    //LOG ACTION IN PRODUCTION
+                    record_movement($prd_id, $prd_quantity, $flag);
+
+                    session()->flash('getProdValues', array( $prodValues));
+                    session()->flash('successMessage','Canister added');
+                    return redirect()->action('ProductionController@manage');
+                } 
+                else
+                {
+                    session()->flash('getProdValues', array( $prodValues));
+                    session()->flash('errorMessage','Empty goods insufficient!');
+                    return redirect()->action('ProductionController@manage');
+                }
+            }
             else
             {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Empty goods insufficient!');
+                session()->flash('errorMessage','Tank LPG insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
         }
@@ -928,5 +947,25 @@ class ProductionController extends Controller
             session()->flash('getProdValues', array( $prodValues));
         }
         return redirect()->action('ProductionController@manage');
+    }
+
+    private function check_gas_quantity($tnk_id, $prd_id, $prd_quantity)
+    {
+        $tank = DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->first();
+
+        $canister = DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->first();
+
+        if($tank->tnk_remaining < ($canister->prd_weight * $prd_quantity))
+        {
+            return false;
+        }  
+        else
+        {
+            return true;
+        }
     }
 }
