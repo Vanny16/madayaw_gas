@@ -41,18 +41,36 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tank 1</td>
-                                        <td>
-                                            <div class="bg-dark" style="width: 100%;">
-                                                <div class="bg-success text-center" style="width: 30%;">&nbsp;
+                                    
+                                    @foreach($tanks as $tank)
+                                        @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
+                                        @php($tank_bg = "bg-success")
+
+                                        @if($tank_percentage > 50)
+                                            @php($tank_bg = "bg-success")
+                                        @elseif($tank_percentage < 50)
+                                            @php($tank_bg = "bg-warning")
+                                        @elseif($tank_percentage < 25)
+                                            @php($tank_bg = "bg-danger")
+                                        @endif
+                                        <tr>
+                                            <td>{{$tank->tnk_name}}</td>
+                                            <td>
+                                                <div class="row bg-dark" style="width: 100%;">
+                                                    <div class="bg-white text-center" style="width: 2%;">
+                                                        <small class="float-left">{{ $tank_percentage }}%</small>
+                                                    </div>
+                                                    <div class="bg-dark text-center" style="width: 98%;">
+                                                        <div class="bg-success text-center" style="width: {{ $tank_percentage }}%;">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <strong class="mr-2">30%</strong>
-                                            <small class="float-right">1500/5000 kgs</small>
-                                        </td>
-                                        </td>
-                                    </tr>
+                                                <small class="float-left">{{$tank->tnk_remaining}}/{{$tank->tnk_capacity}} g</small>
+                                                <small class="float-right">{{$tank_percentage}}/{{ (float)$tank->tnk_capacity / 1000 }} kg</small>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>      
@@ -108,14 +126,14 @@
                                                 @endif
                                                 @if($tank->tnk_capacity)
                                                     <td>
-                                                        {{$tank->tnk_capacity}} kgs
+                                                        {{ (float)$tank->tnk_capacity / 1000 }} kg
                                                     </td>
                                                 @else
                                                     <td>0 kg</td>
                                                 @endif
                                                 @if($tank->tnk_remaining)
                                                     <td>
-                                                        {{$tank->tnk_remaining}} kgs &nbsp;
+                                                        {{$tank->tnk_remaining}} kg &nbsp;
                                                         <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @else
@@ -163,8 +181,8 @@
                                                                             <input type="text" name="tnk_name" class="form-control" value="{{$tank->tnk_name}}" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kgs" onkeypress="return isNumberKey(this, event);" readonly required/>
+                                                                            <label for="tnk_capacity">Capacity (kg)<span style="color:red">*</span></label>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kg" onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
@@ -207,12 +225,12 @@
                                                                             <input type="text" name="tnk_name" class="form-control" value="{{$tank->tnk_name}}" required/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
+                                                                            <label for="tnk_capacity">Capacity (kg)<span style="color:red">*</span></label>
                                                                             <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}}" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}} kgs" onkeypress="return isNumberKey(this, event);" readonly required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}} " onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>
@@ -292,7 +310,7 @@
                                         <td class="text-danger">1</td>
                                         <td>Tank 1</td>
                                         <td>6:00 AM</td>
-                                        <td>5000 kgs</td>
+                                        <td>5000 kg</td>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -321,7 +339,7 @@
                                         <td class="text-danger">1</td>
                                         <td>Tank 1</td>
                                         <td>3:00 PM</td>
-                                        <td>2567 kgs</td>
+                                        <td>2567 kg</td>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -355,7 +373,7 @@
                                 <input type="text" name="tnk_name" class="form-control" placeholder="Enter Tank Name" required/>
                             </div>
                             <div class="form-group">
-                                <label for="tnk_capacity">Capacity <span style="color:red">*</span></label>
+                                <label for="tnk_capacity">Capacity (kg)<span style="color:red">*</span></label>
                                 <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">

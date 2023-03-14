@@ -35,7 +35,8 @@ class ProductionController extends Controller
         ->get();
 
         $transactions = DB::table('transactions')
-        ->where('acc_id', '=', session('acc_id'))
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('transactions.acc_id', '=', session('acc_id'))
         ->get();
 
         $pdn_flag = check_production_log();
@@ -479,6 +480,7 @@ class ProductionController extends Controller
             //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
             $trx_ref_id = $request->trx_ref_id;
             (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
+            (float)$deduct_backflushed = (float)$quantity->prd_quantity - $prd_quantity;
             
             $bo_transaction = DB::table('transactions')
             ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
@@ -486,20 +488,45 @@ class ProductionController extends Controller
             ->where('trx_ref_id', '=', $trx_ref_id)
             ->get();
 
-            dd(array($bo_transaction));
+            // dd($bo_transaction[0]->trx_id);
 
-            DB::table('products') 
-            ->where('prd_id','=',$prd_id)
-            ->update([
-                'prd_leakers' => $new_quantity
-            ]);  
+            if(empty($bo_transaction[0])) {
+                session()->flash('warningMessage','Please check your inputs');
+                return redirect()->action('ProductionController@manage');
+            }
+            else{
+                $crate_quantity = $request->crate_quantity;
+                $quantity = $request->quantity;
 
-            //LOG ACTION IN PRODUCTION
-            record_movement($prd_id, $prd_quantity, $flag);
-            
-            session()->flash('getProdValues', array( $prodValues));
-            session()->flash('successMessage','Leakers added');
-            return redirect()->action('ProductionController@manage');
+                if($crate_quantity == null && $quantity == null){
+                    session()->flash('warningMessage','Please check your inputs');
+                    return redirect()->action('ProductionController@manage');
+                }
+                else{
+                    DB::table('products') 
+                    ->where('prd_id','=',$prd_id)
+                    ->update([
+                        'prd_leakers' => $new_quantity,
+                        'prd_quantity' => $deduct_backflushed
+                    ]);
+
+                    DB::table('bad_orders')
+                    ->insert([
+                        'acc_id' => session('acc_id'),
+                        'trx_id' => $bo_transaction[0]->trx_id,
+                        'bo_crates' => $request->crate_quantity,
+                        'bo_loose' => $request->quantity
+                    ]);
+    
+                    //LOG ACTION IN PRODUCTION
+                    record_movement($prd_id, $prd_quantity, $flag);
+                    
+                    session()->flash('getProdValues', array( $prodValues));
+                    session()->flash('successMessage','Leakers added');
+                    return redirect()->action('ProductionController@manage');
+                }
+            }
+
         }
         elseif($flag == 4)
         {
@@ -781,8 +808,7 @@ class ProductionController extends Controller
         ->insert([
         'acc_id' => session('acc_id'),
         'tnk_name' => $tnk_name, 
-        'tnk_capacity' => $tnk_capacity,
-        'tnk_remaining' => $tnk_remaining,
+        'tnk_capacity' => (float)$tnk_capacity * 1000,
         'tnk_notes' => $tnk_notes
         ]);
 
@@ -830,7 +856,7 @@ class ProductionController extends Controller
     public function refillTank(Request $request)
     {
         $tnk_id = $request->tnk_id;
-        $refill_cty = (float)$request->tnk_remaining;
+        $refill_cty = (float)$request->tnk_remaining * 1000;
 
         $remaining = DB::table('tanks')
         ->where('tnk_id', '=', $tnk_id)
