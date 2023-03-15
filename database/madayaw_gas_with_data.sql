@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-15 14:11:39
+Date: 2023-03-15 21:33:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `bad_orders` (
   `bo_time` varchar(20) DEFAULT NULL,
   `bo_datetime` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`bo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_orders
@@ -59,6 +59,7 @@ INSERT INTO `bad_orders` VALUES ('2', 'BO-20230315-2', '1', '1', null, '2', null
 INSERT INTO `bad_orders` VALUES ('3', 'BO-20230315-3', '1', '1', null, '1', null, null, null);
 INSERT INTO `bad_orders` VALUES ('4', 'BO-20230315-4', '1', '1', null, '1', '2023-03-15', '13:19:23', '2023-03-15 13:19:23');
 INSERT INTO `bad_orders` VALUES ('5', 'BO-20230315-5', '1', '1', null, '1', '2023-03-15', '14:07:01', '2023-03-15 14:07:01');
+INSERT INTO `bad_orders` VALUES ('6', 'BO-20230315-6', '1', '1', null, '1', '2023-03-15', '14:43:41', '2023-03-15 14:43:41');
 
 -- ----------------------------
 -- Table structure for `customers`
@@ -104,7 +105,7 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -121,6 +122,7 @@ INSERT INTO `movement_logs` VALUES ('9', '1', '3', '0', '2', '0', '0', '0', '1',
 INSERT INTO `movement_logs` VALUES ('10', '1', '4', '0', '1', '0', '0', '0', '1', '2023-03-15', '1');
 INSERT INTO `movement_logs` VALUES ('11', '1', '4', '0', '1', '0', '0', '0', '1', '2023-03-15', '1');
 INSERT INTO `movement_logs` VALUES ('12', '1', '4', '0', '1', '0', '0', '0', '1', '2023-03-15', '1');
+INSERT INTO `movement_logs` VALUES ('13', '1', '3', '0', '1', '0', '0', '0', '1', '2023-03-15', '1');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -256,16 +258,17 @@ CREATE TABLE `products` (
   `prd_raw_can_qty` int(11) DEFAULT '0',
   `prd_components` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
 INSERT INTO `products` VALUES ('1', '1', 'x8eo9otjvcd011hhko84mw987qyk0uts', 'MR Valve', 'MR Valve', 'MRV', null, null, '0', '870.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '1', '1', '0', '1', '0', null, '0', null);
 INSERT INTO `products` VALUES ('2', '1', 'jsiln0zk20v0j6cslrmpztnr3bmsfdcf', 'MS Valve', 'MS Valve', 'MSV', null, null, '0', '880.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '1', '1', '0', '1', '0', null, '0', null);
-INSERT INTO `products` VALUES ('3', '1', 'a1gwsynlidh4xiq51uu0qgckz8e9obdh', 'Madayaw Round', 'MR LPG 170G', 'MR170G', null, '20.00', '35', '33.00', '3.00', '94.00', '0.00', '0', '1000.00', null, '1', '1', '1', '1', '1', '170', '870', '1');
+INSERT INTO `products` VALUES ('3', '1', 'a1gwsynlidh4xiq51uu0qgckz8e9obdh', 'Madayaw Round', 'MR LPG 170G', 'MR170G', null, '20.00', '35', '32.00', '4.00', '94.00', '0.00', '0', '1000.00', null, '1', '1', '1', '1', '1', '170', '870', '1');
 INSERT INTO `products` VALUES ('4', '1', '755jzm0ud820ysxlz9c7nbdw7uuc2mk5', 'Madayaw Square', 'MS LPG 170G', 'MS170G', null, '20.00', '35', '33.00', '3.00', '84.00', '0.00', '0', '1000.00', null, '1', '1', '1', '1', '1', '170', '880', '2');
 INSERT INTO `products` VALUES ('5', '1', 'j7akyk13xkh2i21r4a2yjwm7um8o1wjq', 'Gas Stove', 'Gas Stove', 'GS2B', null, '500.00', '0', '998.00', '0.00', '84.00', '0.00', '0', '100.00', null, '2', '1', '0', '0', '1', null, '0', null);
+INSERT INTO `products` VALUES ('6', '1', '8210pcf21a1vt9vzgve5uvn2mf0qicyu', 'Madayaw Universal', 'MU170G', 'MU170G', null, '40.00', '50', '0.00', '0.00', '0.00', '0.00', '0', '1000.00', null, '1', '1', '1', '1', '1', '170', '0', '2,1');
 
 -- ----------------------------
 -- Table structure for `product_types`
@@ -322,7 +325,7 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -346,6 +349,7 @@ INSERT INTO `quantity_logs` VALUES ('16', '1', '3', '1', '2', '2023-03-15 12:59:
 INSERT INTO `quantity_logs` VALUES ('17', '1', '4', '1', '1', '2023-03-15 13:05:43', '1');
 INSERT INTO `quantity_logs` VALUES ('18', '1', '4', '1', '1', '2023-03-15 13:19:23', '1');
 INSERT INTO `quantity_logs` VALUES ('19', '1', '4', '1', '1', '2023-03-15 14:07:01', '1');
+INSERT INTO `quantity_logs` VALUES ('20', '1', '3', '1', '1', '2023-03-15 14:43:41', '1');
 
 -- ----------------------------
 -- Table structure for `sales_reports`

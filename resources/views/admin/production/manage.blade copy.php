@@ -175,67 +175,8 @@
                                                                                             <input type="text" class="form-control" id="set_prd_sku" name="prd_sku" value="{{$raw_material->prd_sku}}"/>
                                                                                         </div>
 
-                                                                                        <div class="form-group" >
-                                                                                            <label for="edit_prd_type">Material Type <span style="color:red">*</span></label>
-                                                                                            <select class="form-control" id="edit_prd_type{{$raw_material->prd_id}}" name="prd_type">
-                                                                                                @if($raw_material->prd_is_refillable == 0)
-                                                                                                    @php($select_non_refillable = "selected")
-                                                                                                    @php($select_refillable = "")
-                                                                                                @else
-                                                                                                    @php($select_non_refillable = "")
-                                                                                                    @php($select_refillable = "selected")
-                                                                                                @endif
-                                                                                                <option value="0" {{ $select_non_refillable }}>Non-refillable</option>
-                                                                                                <option value="1" {{ $select_refillable }}>Refillable</option>
-                                                                                            </select>
-                                                                                        </div>
 
                                                                                         @php($quantity = "")
-                                                                                        @if($raw_material->prd_is_refillable == 1)
-                                                                                            @php($quantity = $raw_material->prd_raw_can_qty)
-                                                                                        @else
-                                                                                            @php($quantity = $raw_material->prd_quantity)
-                                                                                        @endif
-
-                                                                                        <div id="edit_refillables{{$raw_material->prd_id}}">
-                                                                                            <div class="form-group">
-                                                                                                <label for="">Components <span style="color:red">*</span></label>
-                                                                                                <div class="form-check">
-                                                                                                    <div class="row">
-                                                                                                        @php($item_components = explode(',', $raw_material->prd_components))
-                                                                                                        
-                                                                                                        @foreach($raw_materials as $component)
-                                                                                                            @if($component->prd_is_refillable == 0)
-                                                                                                                @php($checked = '')
-                                                                                                                @foreach($item_components as $item_component)
-                                                                                                                    @if($item_component == $component->prd_id)
-                                                                                                                        @php($checked = 'checked')
-                                                                                                                    @endif
-                                                                                                                @endforeach
-                                                                                                                <div class="col-4">
-                                                                                                                    <input type="checkbox" name="components[]" value="{{$component->prd_id}}" {{ $checked }}/> {{$component->prd_name}}
-                                                                                                                </div>
-                                                                                                            @endif
-                                                                                                        @endforeach
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <label for="set_prd_price">Price <span style="color:red">*</span></label>
-                                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                                            </div>
-                                                                                            <div class="form-group">
-                                                                                                <label for="set_prd_deposit">Deposit Price <span style="color:red">*</span></label>
-                                                                                                <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
-                                                                                            </div>
-                                                                                            <div class="form-group">
-                                                                                                <label for="set_prd_weight">Net Weight (g) <span style="color:red">*</span></label>
-                                                                                                <input type="text" class="form-control" id="set_prd_weight" name="prd_weight" placeholder="Enter Net Weight" value="{{ $raw_material->prd_weight }}" onkeypress="return isNumberKey(this, event);"/>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        
-                                                                                        <!-- {{--@php($quantity = "")
                                                                                         @if($raw_material->prd_is_refillable == 1)
                                                                                             @php($quantity = $raw_material->prd_raw_can_qty)
 
@@ -253,7 +194,7 @@
                                                                                             </div>
                                                                                         @else
                                                                                             @php($quantity = $raw_material->prd_quantity)
-                                                                                        @endif--}} -->
+                                                                                        @endif
                                                 
                                                                                         <div class="form-group">
                                                                                             <label for="prd_description">Description <span style="color:red">*</span></label>
@@ -298,38 +239,6 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            <script>
-                                                                function showEditRefillable{{$raw_material->prd_id}}(){
-                                                                    $("#edit_refillables{{$raw_material->prd_id}}").show();
-                                                                }
-
-                                                                function hideEditRefillable{{$raw_material->prd_id}}(){
-                                                                    $("#edit_refillables{{$raw_material->prd_id}}").hide();
-                                                                }
-
-                                                                $(document).ready(function(){
-                                                                    var selectedType = $("#edit_prd_type{{$raw_material->prd_id}}").val();
-                                                                    if(selectedType === '0'){
-                                                                        hideEditRefillable{{$raw_material->prd_id}}();
-                                                                        document.getElementById('show_modal').value = 0;
-                                                                    } else if(selectedType === '1'){
-                                                                        showEditRefillable{{$raw_material->prd_id}}();
-                                                                        document.getElementById('show_modal').value = 1;
-                                                                    }
-                                                                });
-
-                                                                $("#edit_prd_type{{$raw_material->prd_id}}").on("change", function() {
-                                                                    if (this.value === '0') {
-                                                                        hideEditRefillable{{$raw_material->prd_id}}();
-                                                                        document.getElementById('show_modal').value = 0;
-                                                                    } else if (this.value === '1') {
-                                                                        showEditRefillable{{$raw_material->prd_id}}();
-                                                                        document.getElementById('show_modal').value = 1;
-                                                                    }
-                                                                });
-                                                            </script>
-
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -348,6 +257,7 @@
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
                                                         <th></th>
+                                                        <th width="50px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-empty-canisters">
@@ -377,7 +287,108 @@
                                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$canister->prd_uuid])}}" aria-hidden="true"></a>
                                                                     @endif
                                                                 </td>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-empty-modal-{{$canister->prd_id}}"
+                                                                                onclick="editItem(
+                                                                                {{$canister->prd_id}},
+                                                                                {{$canister->prd_name}},
+                                                                                {{$canister->prd_sku}},
+                                                                                {{$canister->prd_price}},
+                                                                                {{$canister->prd_quantity}},
+                                                                                {{$canister->prd_description}},
+                                                                                {{$canister->prd_reorder_point}},
+                                                                                {{$canister->sup_id}}
+                                                                                )">
+                                                                                <i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
+                                                            
+                                                            <!-- Edit Products Modal -->
+                                                            <div class="modal fade" id="edit-empty-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                <div class="modal-dialog modal-md" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <form method="POST" action="{{ action('ProductionController@editItem') }}" enctype="multipart/form-data">
+                                                                        {{ csrf_field() }} 
+                                                                            <div class="modal-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-12 text-center">
+                                                                                            <img class="img-circle elevation-2" src="{{ asset('img/products/default.png') }}" alt="{{-- $product->prd_image --}}" style="max-height:150px; max-width:150px; min-height:150px; min-width:150px; object-fit:cover;"/>
+                                                                                        <div class="col-12 text-center mb-4">
+                                                                                        <a href="javascript:void(0);" class="">
+                                                                                            <label class="btn btn-transparent btn-file">
+                                                                                                <i id="btn_choose_file" class="fa fa-solid fa-camera mr-2"></i><small>Upload Photo</small>
+                                                                                                <input type="file" class="custom-file-input" id="choose_file" name='prd_image' value="{{-- old('prd_image') --}}" aria-describedby="inputGroupFileAddon01" style="display: none;">
+                                                                                            </label>
+                                                                                        </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                            <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_name" name="prd_name" value="{{$canister->prd_name}}"/>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_sku" name="prd_sku" value="{{$canister->prd_sku}}"/>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="prd_price">Price <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$canister->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$canister->prd_quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="prd_description">Description <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$canister->prd_description}}" />
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
+                                                                                            <input type="text" class="form-control" id="set_prd_reorder" name="prd_reorder" value="{{$canister->prd_reorder_point}}" placeholder="Enter Reorder Point" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11" required></input>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="sup_id">Supplier <span style="color:red">*</span></label>
+                                                                                            <select class="form-control" id="suppliers" name="sup_id" required>
+                                                                                                @foreach($suppliers as $supplier)
+                                                                                                    @if($supplier->sup_active == 0)
+                                                                                                        @continue
+                                                                                                    @else
+                                                                                                        @if($canister->sup_id == $supplier->sup_id)
+                                                                                                            <option value="{{ $supplier->sup_id }}" selected>{{ $supplier->sup_name }}</option>
+                                                                                                        @else
+                                                                                                            <option value="{{ $supplier->sup_id }}">{{ $supplier->sup_name }}</option>
+                                                                                                        @endif
+                                                                                                    @endif
+                                                                                                @endforeach
+                                                                                            </select> 
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>        
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
                                                         @endforeach
                                                     @endif
                                                 </tbody>
