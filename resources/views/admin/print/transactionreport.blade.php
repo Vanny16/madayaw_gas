@@ -50,8 +50,7 @@
                                 @endforeach
                             @endforeach 
                         </tbody>  
-                    @elseif(isset($transaction_reports))
-                       
+                    @elseif(isset($transaction_reports))  
                         <thead>
                             <tr>
                                 <th>Reference ID</th>
