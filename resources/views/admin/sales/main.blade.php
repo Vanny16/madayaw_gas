@@ -265,7 +265,7 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', ',') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', '') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
                                                        
                                                         <div class="row">
