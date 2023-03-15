@@ -1395,6 +1395,7 @@
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
             $("#add-quantity-modal").find("#selected-tank").hide();
+            $("#add-quantity-modal #selected-tank").prop("required", false);
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
@@ -1406,6 +1407,7 @@
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
             $("#add-quantity-modal").find("#selected-tank").hide();
+            $("#add-quantity-modal #selected-tank").prop("required", false);
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
@@ -1418,6 +1420,7 @@
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").show();
             $("#add-quantity-modal").find("#selected-tank").show();
+            $("#add-quantity-modal #selected-tank").prop("required", true);
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#quantity").show();
@@ -1428,6 +1431,7 @@
             $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
             $("#add-quantity-modal").find("#selected-tank").hide();
+            $("#add-quantity-modal #selected-tank").prop("required", false);
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();

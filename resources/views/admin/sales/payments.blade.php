@@ -131,7 +131,31 @@
                                                                                     <div class="col">{{ $payment->pmnt_date }}</div>
                                                                                     <div class="col">{{ $payment->pmnt_time }}</div>
                                                                                     <div class="col">₱ {{ number_format($payment->pmnt_amount, 2, '.', ',') }}</div>
-                                                                                    <div class="col">{{ $payment->payment_name }}</div>
+                                                                                    <div class="col">
+                                                                                        @if($payment->pmnt_attachment <> '')
+                                                                                            <!--Product-Profile Modal -->
+                                                                                            <div class="modal fade" id="pmnt_attachment-modal-{{$payment->pmnt_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                                                    <div class="modal-content bg-transparent">
+                                                                                                        <div class="modal-body">
+                                                                                                            <button type="button" class="close text-white" data-dismiss="modal" data-target="#pmnt_attachment-modal-{{$payment->pmnt_id}}" aria-label="Close">
+                                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                                            </button>
+                                                                                                        
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-12 text-center">
+                                                                                                                    <img src="{{ asset('img/payments/' . $payment->pmnt_attachment) }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#pmnt_attachment-modal-{{$payment->pmnt_id}}">{{ $payment->payment_name }}</a>
+                                                                                        @else
+                                                                                            {{ $payment->payment_name }}
+                                                                                        @endif
+                                                                                    </div>
                                                                                     <div class="col">{{ $payment->usr_full_name }}</div>
                                                                                 </div>
                                                                             @endif
@@ -178,7 +202,7 @@
                                                                             <input type="text" class="form-control" name="trx_id" value="{{ $transaction->trx_id }}" onkeypress="return isNumberKey(this, event);" hidden/>
                                                                             <input type="hidden" id="mode_of_payment{{ $transaction->trx_id }}" name="mode_of_payment" class="form-control"></input>
                                                                         </div>
-                                                                        <div class="form-group" id="payment_attachment{{ $transaction->trx_id }}">
+                                                                        <div class="form-group" id="pmnt_attachment{{ $transaction->trx_id }}">
                                                                             <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
                                                                             <div class="custom-file">
                                                                                 <label class="custom-file-label" for="inputGroupFile01{{ $transaction->trx_id }}">Choose file</label>
@@ -200,18 +224,18 @@
                                             <script>
                                                 $(document).ready(function() {
                                                     $("#btn_cash{{ $transaction->trx_id }}").css("border-bottom", "4px solid green");
-                                                    $("#payment_attachment{{ $transaction->trx_id }}").hide();
+                                                    $("#pmnt_attachment{{ $transaction->trx_id }}").hide();
                                                     $("#mode_of_payment{{ $transaction->trx_id }}").val("1");
 
                                                     $("#btn_cash{{ $transaction->trx_id }}").on("click", function() {
                                                         $("#mode_of_payment{{ $transaction->trx_id }}").val("1");
-                                                        $("#payment_attachment{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_attachment{{ $transaction->trx_id }}").hide();
                                                         $(".btn-payment").css("border-bottom", "none");
                                                         $(this).css("border-bottom", "4px solid green");
                                                     });
                                                     $("#btn_gcash{{ $transaction->trx_id }}").on("click", function() {
                                                         $("#mode_of_payment{{ $transaction->trx_id }}").val("3");
-                                                        $("#payment_attachment{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_attachment{{ $transaction->trx_id }}").show();
                                                         $(".btn-payment").css("border-bottom", "none");
                                                         $(this).css("border-bottom", "4px solid green");
                                                     });

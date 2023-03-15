@@ -175,11 +175,11 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_capacity">Capacity (kg)<span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}} kg" onkeypress="return isNumberKey(this, event);" readonly required/>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity / 1000}} kg" onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Enter Remaining" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <label for="tnk_remaining">Volume (kg) <span style="color:red">*</span></label>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Input Volume" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>

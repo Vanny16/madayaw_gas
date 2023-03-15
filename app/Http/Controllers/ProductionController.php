@@ -531,12 +531,22 @@ class ProductionController extends Controller
                         'prd_quantity' => $deduct_backflushed
                     ]);
 
+                    $max_bo_id = DB::table('bad_orders')
+                    ->max('bo_id');
+
+                    $new_bo_id = $max_bo_id + 1;
+                    $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
+
                     DB::table('bad_orders')
                     ->insert([
                         'acc_id' => session('acc_id'),
+                        'bo_ref_id' => $bo_ref_id,
                         'trx_id' => $bo_transaction[0]->trx_id,
                         'bo_crates' => $request->crate_quantity,
-                        'bo_loose' => $request->quantity
+                        'bo_loose' => $request->quantity,
+                        'bo_date' => date('Y-m-d'),
+                        'bo_time' => date('H:i:s'),
+                        'bo_datetime' => date('Y-m-d H:i:s')
                     ]);
     
                     //LOG ACTION IN PRODUCTION
