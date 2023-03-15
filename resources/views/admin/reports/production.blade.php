@@ -16,10 +16,8 @@
             </div>
         </div>
     </div>
-
     <section class="content">
         <div class="container-fluid">
- 
             <div class="row">
                 <div class="col-md-12">
                     @include('layouts.partials.alert')
@@ -27,47 +25,71 @@
             </div>
             <div class="row">
                 <div class="col-md-12"> 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <form method="POST" action="{{ action('ReportsController@production') }}">
-                                    {{ csrf_field() }}
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="selectedDate">Production Date</label>
-                                                <input type="date" class="form-control" name="selectedDate" value="{{$selectedDate}}" required/>
-                                            </div>
-                                            <div class="col-md-2"> 
-                                                @if(count($production_id) > 1)
-                                                    <label for="selectedDate">Production IDs</label>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            @if($selectedID <> '')
-                                                                {{$selectedID}}
-                                                            @else
-                                                                IDs
-                                                            @endif
-                                                        </button>
-                                                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMonthButton" style="max-height: 200px; overflow-y: scroll;">
-                                                            @foreach($production_id as $id)
-                                                                <a class="dropdown-item" href="#" data-value="{{$id->pdn_id}}">{{$id->pdn_id}}</a>
-                                                            @endforeach
-                                                        </div>
-                                                        <input type="hidden" name="selectedID" value="{{$selectedID}}" />
+                    <div class="row">
+                        <div class="col-md-12"> 
+                            <div class="card card-top-stretch">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form method="POST" action="{{ action('ReportsController@production') }}">
+                                            {{ csrf_field() }}
+                                                <div class="row">
+                                                    <div class="col-md-5 mb-3">
+                                                        <label for="selectedDate">Production Date</label>
+                                                        <input type="date" class="form-control" name="selectedDate" value="{{$selectedDate}}" required/>
                                                     </div>
-                                                @endif
-                                            </div>
+                                                    <div class="col-md-3"> 
+                                                        @if(count($production_id) > 1)
+                                                            <label for="selectedDate">Production IDs</label>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    @if($selectedID <> '')
+                                                                        {{$selectedID}}
+                                                                    @else
+                                                                        IDs
+                                                                    @endif
+                                                                </button>
+                                                                <div class="dropdown-menu w-100" aria-labelledby="dropdownMonthButton" style="max-height: 200px; overflow-y: scroll;">
+                                                                    @foreach($production_id as $id)
+                                                                        <a class="dropdown-item" href="#" data-value="{{$id->pdn_id}}">{{$id->pdn_id}}</a>
+                                                                    @endforeach
+                                                                </div>
+                                                                <input type="hidden" name="selectedID" value="{{$selectedID}}" />
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-2 mb-3">
-                                                <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {{-- <div class="col-md-4"> 
+                            <div class="card card-top-stretch">
+                                <div class="card-header">
+                                    <strong>Scrapped Canisters</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12 d-flex align-items-center justify-content-center">
+                                            <h5><strong>{{$scrapped_month}}</strong></h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-12 d-flex align-items-center justify-content-center">
+                                            <h2 style="color: #1c7192;"><strong>208</strong></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-3">
@@ -165,8 +187,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
+                        <div class="col-md-8">
+                            <div class="card card-bot-stretch">
                                 <div class="card-body" style="overflow-x:auto;">
                                     <table class="table table-hover table-condensed" id="tbl-canister-movement">
                                         <thead>
@@ -234,6 +256,33 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="card card-bot-stretch">
+                                <div class="card-header">
+                                    <strong>{{$scrapped_month}}</strong> 
+                                    &nbsp 
+                                    Scrapped Canisters
+                                </div>
+                                <div class="card-body" style="overflow-y:auto;">
+                                    <table class="table table-hover table-condensed" id="tbl-canister-movement">
+                                        <thead>
+                                            <tr>
+                                                <th>Canister</th>
+                                                <th>Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($canisters as $canister)
+                                                <tr>
+                                                    <td>{{ $canister->prd_name}}</td>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 5) !!}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -245,9 +294,14 @@
 $(document).ready(function() {
     // Get the cards with the class 'card-stretch'
     var cards = $('.card-stretch');
+    var topCards = $('.card-top-stretch');
+    var botCards = $('.card-bot-stretch');
+    
 
     // Set the initial max height to 0
     var maxHeight = 0;
+    var topMaxHeight = 0;
+    var botMaxHeight = 0;
 
     // Loop through each card
     cards.each(function() {
@@ -260,9 +314,31 @@ $(document).ready(function() {
         }
     });
 
+    topCards.each(function() {
+        // Get the height of the card
+        var cardHeight = $(this).outerHeight();
+
+        // If the height of the card is greater than the current max height, update the max height
+        if (cardHeight > topMaxHeight) {
+            topMaxHeight = cardHeight;
+        }
+    });
+
+    botCards.each(function() {
+        // Get the height of the card
+        var cardHeight = $(this).outerHeight();
+
+        // If the height of the card is greater than the current max height, update the max height
+        if (cardHeight > botMaxHeight) {
+            botMaxHeight = cardHeight;
+        }
+    });
+
     // Set the height of all cards to the max height
     cards.css('height', maxHeight + 'px');
-    
+    topCards.css('height', topMaxHeight + 'px');
+    botCards.css('height', botMaxHeight + 'px');
+
     $(document).on("click", ".dropdown-menu a", function () {
         var value = $(this).attr("data-value");
         var dropdown = $(this).closest(".dropdown");
