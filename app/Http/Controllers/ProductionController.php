@@ -220,7 +220,6 @@ class ProductionController extends Controller
 
         // dd($prd_type);
         
-        
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_sku','=',$prd_sku)
@@ -676,11 +675,34 @@ class ProductionController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_type = $request->prd_type;
         $prd_price = $request->prd_price;
+        $prd_deposit = $request->prd_deposit;
+        $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
         $prd_quantity = (float)$request->prd_quantity;
+        $components = $request->input('components');
+        $prd_components = "";
+
+        $prodValues = array(
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $request->show_modal,
+            $request->tab_1,
+            $request->tab_2,
+            $request->prd_type
+        );
 
         // $check_uuid = DB::table('products')
         // ->where('prd_id', '=', $prd_id)
@@ -727,16 +749,51 @@ class ProductionController extends Controller
             record_stockin($prd_id, $prd_quantity);
         }
 
-        DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->update([
-            'prd_name' => $prd_name,
-            'prd_description' => $prd_description,
-            'prd_sku' => $prd_sku,
-            'prd_price' => $prd_price,
-            'prd_reorder_point' => $prd_reorder, 
-            'sup_id' => $sup_id
-        ]);
+
+        
+        if($prd_type == 0)
+        {
+            DB::table('products')
+            ->where('prd_id', '=', $prd_id)
+            ->update([
+                'prd_name' => $prd_name,
+                'prd_description' => $prd_description,
+                'prd_sku' => $prd_sku,
+                'prd_reorder_point' => $prd_reorder,
+                'prd_for_POS' => 0,
+                'prd_is_refillable' => 0, 
+                'prd_components' => null, 
+                'sup_id' => $sup_id
+            ]);
+        }
+        elseif($prd_type == 1)
+        {
+            $get_components = "";
+
+            if(!is_null($components)){
+                foreach ($components as $component) {
+                    $get_components =  $component .",". $get_components;
+                }
+                $prd_components = substr($get_components, 0, strlen($get_components) - 1);
+            }
+
+            DB::table('products')
+            ->where('prd_id', '=', $prd_id)
+            ->update([
+                'prd_name'=> $prd_name,
+                'prd_description' => $prd_description,
+                'prd_sku' => $prd_sku,
+                'prd_price' => $prd_price,
+                'prd_deposit' => $prd_deposit,
+                'prd_weight' => $prd_weight,
+                'prd_reorder_point' => $prd_reorder,
+                'prd_for_production' => 1,
+                'prd_for_POS' => 1,
+                'prd_is_refillable' => 1,
+                'prd_components' => $prd_components,
+                'sup_id' => $sup_id
+            ]);
+        }
 
         if($request->file('prd_image'))
         {

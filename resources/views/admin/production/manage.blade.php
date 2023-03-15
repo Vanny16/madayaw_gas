@@ -260,10 +260,10 @@
                                                                                             <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$raw_material->prd_description}}" />
                                                                                         </div>                   
 
-                                                                                        <div class="form-group">
+                                                                                        <!-- <div class="form-group">
                                                                                             <label for="prd_price">Quantity <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                                        </div>
+                                                                                        </div> -->
 
                                                                                         <div class="form-group">
                                                                                             <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
