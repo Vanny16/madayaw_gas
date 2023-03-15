@@ -52,7 +52,7 @@
                                         </li>
                                     </ul>
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
@@ -403,7 +403,7 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
-                                                        <th></th>
+                                                        <th width="240px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-filled-canisters">
@@ -443,7 +443,8 @@
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
-                                    <ul class="nav nav-pills card-header-pills">
+                                    <h5>Leakers</h5>
+                                    <!-- <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#leakers">Leakers</a>
                                         </li>
@@ -453,10 +454,10 @@
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#scrap">Scrap</a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                     <div class="card-tools">
                                         {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
                                     </div>
                                 </div>
                                 <div class="tab-content card-body">
@@ -487,8 +488,8 @@
                                                                 <td>{{$canister->prd_leakers}}</td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalve</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrap</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalved</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
                                                             </tr>
                                                         @endforeach
                                                     @endif
@@ -565,182 +566,186 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-md-5 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                @if($pdn_flag == 1)
+                    <div class="col-md-12 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
+                @else
+                    <div class="col-md-5 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
+                @endif
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 mt-3 text-center">
-                            <strong class="mx-auto">{{$pdn_date}}</strong>
-                            <table class="table table-sm table-borderless">
-                                <tr>
-                                    <th width="50%"></th>
-                                    <th width="50%"></th>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">Start Time:  </td>
-                                    <td class="text-left text-success">{{$pdn_start_time}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">End Time:  </td>
-                                    @if(empty($pdn_end_time))
-                                        <td class="text-left text-danger">-- : -- : -- --</td>
-                                    @else    
-                                        <td class="text-left text-danger">{{$pdn_end_time}}</td>
-                                    @endif
-                                </tr>
-                            </table>
-                            {{--<div class="text-white">
-                                <a class="btn btn-primary" href=""> Edit Stocks</a>
-                            </div>--}}
-                        </div>
+                            <div class="col-12 mt-3 text-center">
+                                <strong class="mx-auto">{{$pdn_date}}</strong>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <th width="50%"></th>
+                                        <th width="50%"></th>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">Start Time:  </td>
+                                        <td class="text-left text-success">{{$pdn_start_time}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">End Time:  </td>
+                                        @if(empty($pdn_end_time))
+                                            <td class="text-left text-danger">-- : -- : -- --</td>
+                                        @else    
+                                            <td class="text-left text-danger">{{$pdn_end_time}}</td>
+                                        @endif
+                                    </tr>
+                                </table>
+                                {{--<div class="text-white">
+                                    <a class="btn btn-primary" href=""> Edit Stocks</a>
+                                </div>--}}
+                            </div>
 
-                        <!-- Canisters -->
-                        <div class="row mb-3 mt-5">
-                            <div class="col-12 text-center bg-info">
-                                <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
+                            <!-- Canisters -->
+                            <div class="row mb-3 mt-5">
+                                <div class="col-12 text-center bg-info">
+                                    <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Stock Status</th>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{{$canister->prd_name}}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody id="tbl-products">
-                                    @php($production_id = get_last_production_id())
-                                    @php($stocks_flag = 1)
-                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
-                                        <td><i>Opening Stocks</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    @php($stocks_flag = 2)
-                                    <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
-                                        <td><i>Closing Stocks</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Canisters -->
-                        <div class="row mb-3">
-                            <div class="col-12 text-center bg-info">
-                                <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
+                            <div class="card-body" style="overflow-x:auto;">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Stock Status</th>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{{$canister->prd_name}}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-products">
+                                        @php($production_id = get_last_production_id())
+                                        @php($stocks_flag = 1)
+                                        <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                            <td><i>Opening Stocks</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        @php($stocks_flag = 2)
+                                        <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                            <td><i>Closing Stocks</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Canister</th>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{{$canister->prd_name}}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i>Empty</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 1) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Filled</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 2) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Leakers</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 3) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>For Revalving</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 4) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <tr>
-                                        <td><i>Scrap</i></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <th>{!! get_quantity_of_canisters($canister->prd_id, 5) !!}</th>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                    <hr>
-                                    <tr>
-                                        <td><b>Total Stocks</b></td>
-                                        @if(isset($canisters))
-                                            @foreach($canisters as $canister)
-                                                <strong><td>{!! get_stock_report($canister->prd_id, 3) !!}</td></strong>
-                                            @endforeach
-                                        @endif
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <!-- Canisters -->
+                            <div class="row mb-3">
+                                <div class="col-12 text-center bg-info">
+                                    <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
+                                </div>
+                            </div>
+                            <div class="card-body" style="overflow-x:auto;">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Canister</th>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{{$canister->prd_name}}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i>Empty</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(),  1) !!}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Filled</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 2) !!}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Leakers</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 3) !!}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>For Revalving</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 4) !!}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Scrap</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 5) !!}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <hr>
+                                        <tr>
+                                            <td><b>Total Stocks</b></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <strong><td>{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}</td></strong>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                        <!-- Tank -->
-                        <div class="row mb-3">
-                            <div class="col-12 text-center bg-info">
-                                <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
+                            <!-- Tank -->
+                            <div class="row mb-3">
+                                <div class="col-12 text-center bg-info">
+                                    <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Tank Name</th>
-                                        <th>Tank Opening</th>
-                                        <th>Tank Closing</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if(isset($tanks))
-                                        @foreach($tanks as $tank)
-                                            <tr>
-                                                <td><i>{{$tank->tnk_name}}</i></td>
-                                                <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
-                                                <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
+                            <div class="card-body" style="overflow-x:auto;">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Tank Name</th>
+                                            <th>Tank Opening</th>
+                                            <th>Tank Closing</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(isset($tanks))
+                                            @foreach($tanks as $tank)
+                                                <tr>
+                                                    <td><i>{{$tank->tnk_name}}</i></td>
+                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </section>
@@ -1115,7 +1120,7 @@
                             <div class="form-group">
                                 <div class="form-inline">
                                     <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
-                                    <select  class="form-control col-md-12" name="tnk_name" id="tnk-name">
+                                    <select class="form-control col-md-12" name="selected_tank" id="selected-tank">
                                     @if(isset($tanks))
                                         @foreach($tanks as $tank)
                                             @if($tank->tnk_active == 0)
@@ -1130,16 +1135,25 @@
                             </div>
                             <div class="form-group">   
                                 <label for="quantity" id="lbl-add">Amount to add <span style="color:red">*</span></label>
-                                <div id="trx_ref_id">
-                                    <label for="quantity" id="lbl-crate">Transaction <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-000000-0"/>
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
+                                    <table>
+                                        <tr>
+                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
+                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
+                                        <tr>
+                                    </table>
+                                </div>
+                                <div id="customer">
+                                    <label for="cus_name">Customer <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="cus_name" name="cus_name" readonly/>
                                 </div>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
                                 <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                             </div>
                         </div>
                     </div>
@@ -1190,6 +1204,80 @@
         </div>
     </div>
 </div>
+
+<!-- Bad Order Modal -->
+<!-- <div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bad Order Modal </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{-- action('ProductionController@addQuantity') --}}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div id="reference_data" class="col-md-6 col-12">
+                            <div class="form-group">   
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
+                                    <table class="col-12">
+                                        <tr>
+                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
+                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
+                                        <tr>
+                                    </table>
+                                </div>
+                                <div id="crate">
+                                    <label for="quantity" id="lbl-crate">Ordered Crate <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+                                
+                                <div id="loose">
+                                    <label for="quantity"id="lbl-loose">Ordered Loose <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+
+                                <div id="customer">
+                                    <label for="quantity"id="lbl-loose">Customer <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">   
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Issuance <span style="color:red">*</span></label>
+                                    <select class="form-control">
+                                        <option>Madayaw Round</option>
+                                        <option>Madayaw Square</option>
+                                    </select>
+                                </div>
+                                <div id="crate">
+                                    <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_page" name="stockin_page" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
+                    <input type="text" id="si_tab_1" name="tab_1"  hidden/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
 
 <!-- Add Tank Modal
 <div class="modal fade" id="tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1303,28 +1391,48 @@
         document.getElementById('set_stockin_flag').value = flag;
         
         if(flag === 0){
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
+            $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
             $("#add-quantity-modal").find("#lbl-add").show();
             $("#add-quantity-modal").find("#lbl-loose").hide();
             $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").hide();     
             
         }else{
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
+            $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").hide();
-            $("#add-quantity-modal").find("#tnk-name").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
             $("#add-quantity-modal").find("#lbl-add").hide();
             $("#add-quantity-modal").find("#lbl-loose").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
         }
 
         if(flag === 2){
+            $("#add-quantity-modal").find("#trx_ref_no").hide();
+            $("#add-quantity-modal").find("#customer").hide();
             $("#add-quantity-modal").find("#lbl-tank").show();
-            $("#add-quantity-modal").find("#tnk-name").show();
+            $("#add-quantity-modal").find("#selected-tank").show();
             $("#add-quantity-modal").find("#lbl-crate").show();
             $("#add-quantity-modal").find("#lbl-loose").show();
+            $("#add-quantity-modal").find("#quantity").show();
             $("#add-quantity-modal").find("#crate-quantity").show();
+        }
+        else if(flag === 3){
+            $("#add-quantity-modal").find("#trx_ref_no").show();
+            $("#add-quantity-modal").find("#customer").hide();
+            $("#add-quantity-modal").find("#lbl-tank").hide();
+            $("#add-quantity-modal").find("#selected-tank").hide();
+            $("#add-quantity-modal").find("#lbl-add").hide();
+            $("#add-quantity-modal").find("#lbl-loose").hide();
+            $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#quantity").hide();
+            $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
 
@@ -1371,6 +1479,39 @@
         var value = document.getElementById(id).value;
         if(value < 0 || value == ""){
             document.getElementById(id).value ="0";
+        }
+    }
+
+    function verifyTransaction(){
+        var trx_ref_id = document.getElementById("trx_ref_id").value;
+        var verified = false;
+
+        @foreach($transactions as $transaction)
+            if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
+                verified = true;
+                $("#cus_name").val("{{ $transaction->cus_name }}");
+
+                $("#add-quantity-modal").find("#customer").show();
+                $("#add-quantity-modal").find("#lbl-crate").show();
+                $("#add-quantity-modal").find("#lbl-loose").show();
+                $("#add-quantity-modal").find("#quantity").show();
+                $("#add-quantity-modal").find("#crate-quantity").show();
+            }
+        @endforeach
+
+        if(!verified){
+            if(trx_ref_id == ""){
+                alert("Input required field");
+            }
+            else{
+                alert("No transactions referenced to this code");
+            }
+            
+            $("#add-quantity-modal").find("#customer").hide();
+            $("#add-quantity-modal").find("#lbl-crate").hide();
+            $("#add-quantity-modal").find("#lbl-loose").hide();
+            $("#add-quantity-modal").find("#quantity").hide();
+            $("#add-quantity-modal").find("#crate-quantity").hide();
         }
     }
 </script>

@@ -34,13 +34,25 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
-                                <div class="col-12 col-md-3`"> 
+                                <div class="col-md-3 mb-3">
+                                    <label for="search_string">Find</label>
+                                        <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
+                                </div>
+                                <div class="col-md-3 mb-3">
                                     <label>Status</label>
-                                    <select class="form-control">
-                                        <option>Pending</option>
-                                        <option>Paid</option>
-                                        <option>All</option>
+                                    <select id="status_filter" class="form-control">
+                                        <option value="POS">All</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Paid">Paid</option>
                                     </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_from">From</label>
+                                    <input type="date" class="form-control" name="payments_date_from" value="{{ date('Y-m-d') }}" required/>     
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_to">To</label>
+                                    <input type="date" class="form-control" name="payments_date_to" value="{{ date('Y-m-d') }}" required/>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +78,7 @@
                                             <th width="35px"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tbl-payments">
                                         @foreach($transactions as $transaction)
                                             @if($transaction->trx_balance > 0)
                                                 @php($status = '<badge class="badge badge-sm">PENDING<badge>')
@@ -118,8 +130,8 @@
                                                                                     <div class="col">{{ $payment->pmnt_ref_id }}</div>
                                                                                     <div class="col">{{ $payment->pmnt_date }}</div>
                                                                                     <div class="col">{{ $payment->pmnt_time }}</div>
-                                                                                    <div class="col">{{ $payment->pmnt_amount }}</div>
-                                                                                    <div class="col">{{ $payment->trx_mode_of_payment }}</div>
+                                                                                    <div class="col">₱ {{ number_format($payment->pmnt_amount, 2, '.', ',') }}</div>
+                                                                                    <div class="col">{{ $payment->payment_name }}</div>
                                                                                     <div class="col">{{ $payment->usr_full_name }}</div>
                                                                                 </div>
                                                                             @endif
@@ -216,4 +228,18 @@
         </div>
     </section>
 </div>
+
+<script>
+$("#status_filter, #search_payments").on("change keyup", function() {
+    var searchValue = $("#search_payments").val().toLowerCase();
+    var statusValue = $("#status_filter").val().toLowerCase();
+    
+    $("#tbl-payments tr").filter(function() {
+        var rowText = $(this).text().toLowerCase();
+        var statusMatch = rowText.indexOf(statusValue) > -1;
+        var searchMatch = rowText.indexOf(searchValue) > -1;
+        $(this).toggle(statusMatch && searchMatch);
+    });
+});
+</script>
 @endsection 

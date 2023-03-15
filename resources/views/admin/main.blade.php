@@ -64,46 +64,72 @@
 										<span class="text-gray ml-4"><i class="fa fa-thumbtack"></i></span>
 										<button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createNews"><i class="fa fa-pen mr-2"></i>Compose</button>
 									</div>
-									<div>
-										<i class="fas fa-newspaper bg-blue"></i>
-										<div class="timeline-item">
-											<span class="time"><i class="fas fa-clock"></i> 6 days ago</span>
-											<h3 class="timeline-header"><strong>Welcome</strong></h3>
-											<div class="timeline-body">
-												<div class="thumbnail">
-													<div class="caption ml-3 mt-3">
-														<p>Hello, everyone!.</p>
+
+									@foreach($news as $news_item)
+									<?php 
+										$createdAt = new DateTime($news_item->news_datetime);
+										$now = new DateTime();
+										$diff = $now->diff($createdAt);
+
+										// Use the $diff object to format the time passed since the post was created
+										if ($diff->y > 0) {
+											$timePassed = $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . ' ago';
+										} elseif ($diff->m > 0) {
+											$timePassed = $diff->m . ' month' . ($diff->m > 1 ? 's' : '') . ' ago';
+										} elseif ($diff->d > 0) {
+											$timePassed = $diff->d . ' day' . ($diff->d > 1 ? 's' : '') . ' ago';
+										} elseif ($diff->h > 0) {
+											$timePassed = $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ago';
+										} elseif ($diff->i > 0) {
+											$timePassed = $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') . ' ago';
+										} else {
+											$timePassed = 'just now';
+										}
+									?>
+										<div>
+											<i class="fas fa-newspaper bg-blue"></i>
+											<div class="timeline-item">
+												<span class="time"><i class="fas fa-clock"></i> {{ $timePassed }}</span>
+												<h3 class="timeline-header"><strong>{{ $news_item->news_title }}</strong></h3>
+												<div class="timeline-body">
+													<div class="thumbnail">
+														<div class="caption ml-3 mt-3">
+															<p>{{ $news_item->news_content }}</p>
+														</div>
+														<div class="col-12 text-center">
+															@if($news_item->news_img != null)
+															<a href="{{-- asset('images/news/' . $news_item->nws_image) --}}">
+																<img src="{{ asset('img/news/' .$news_item->news_img) }}" style="width:50%"/>
+															</a>
+															@endif
+														</div>
 													</div>
-													<div class="col-12 text-center">
-														<a href="{{-- asset('images/news/' . $news_item->nws_image) --}}">
-															<img src="{{ asset('img/landing/logo-1.png') }}" alt="ss" style="width:50%"/>
-														</a>
+												</div>
+												<div class="timeline-footer">
+														<a style="color:#dc3545;" href="javascript:void(0)" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i></a>
+												
+												</div>
+											</div>
+											<div class="modal fade" id="removeNews">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title">Confirm Deletion</h4>
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														</div>
+														<div class="modal-body">
+															<p>Are you sure you want to delete this news/announcement?</p>
+														</div>
+														<div class="modal-footer justify-content-between">
+															<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															<a class="btn btn-danger btn-sm" href="{{ action('MainController@removeNews',[$news_item->news_id]) }}"><i class="fa fa-trash"></i> Delete</a>
+														</div>
 													</div>
 												</div>
 											</div>
-											<div class="timeline-footer">
-													<a style="color:#dc3545;" href="javascript:void(0)" data-toggle="modal" data-target="#removeNews"><i class="fa fa-trash"></i></a>
-											
-											</div>
 										</div>
-										<div class="modal fade" id="removeNews">
-											<div class="modal-dialog">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h4 class="modal-title">Confirm Deletion</h4>
-														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-													</div>
-													<div class="modal-body">
-														<p>Are you sure you want to delete this news/announcement?</p>
-													</div>
-													<div class="modal-footer justify-content-between">
-														<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-														<a class="btn btn-danger btn-sm" href=""><i class="fa fa-trash"></i> Delete</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+									@endforeach		
+
 								</div>
 							</div>
 						</div>
@@ -186,28 +212,28 @@
 					<h4 class="modal-title">Compose Announcement</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
-				<form action="" method="POST" enctype="multipart/form-data">
+				<form action="{{ action('MainController@createNews') }}" method="POST" enctype="multipart/form-data">
 				{{ csrf_field() }}
 					<div class="modal-body">
 						<div class="form-group">
 							<div class="row">
 								<div class="col-md-12 mb-3">
 									<label for="nws_title">Title <span style="color:red;">*</span></label>
-									<input type="text" class="form-control" id="nws_title" name="nws_title" placeholder="Title" value="" required>
+									<input type="text" class="form-control" id="news_title" name="news_title" placeholder="Title" value="" required>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3">
 									<label for="nws_content">Message Content <span style="color:red;">*</span></label>
-									<textarea class="form-control" id="nws_content" name="nws_content" rows="4"></textarea>
+									<textarea class="form-control" id="news_content" name="news_content" rows="4"></textarea>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3"> 
 									<label for="nws_image">Image</label>
 									<div class="custom-file">
-										<input type="file" class="custom-file-input" id="nws_image" name="nws_image" value="" aria-describedby="inputGroupFileAddon01">
-										<label class="custom-file-label" for="nws_image">Choose file</label>
+										<input type="file" class="custom-file-input" id="news_image" name="news_image" value="" aria-describedby="inputGroupFileAddon01">
+										<label class="custom-file-label" for="news_image">Choose file</label>
 									</div>
 									<small id="fileHelp" class="form-text text-muted">Please upload a valid image file in jpg or png format. Size of image should not be more than 1MB.</small>
 								</div>

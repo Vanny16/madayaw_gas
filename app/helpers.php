@@ -257,13 +257,13 @@ function get_closing_tank($tnk_id, $pdn_id)
     return $closing_tank->log_tnk_closing;
 }
 
-function get_quantity_of_canisters($prd_id, $flag)
+function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 { 
     $query = DB::table('movement_logs')
     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
     ->where('movement_logs.acc_id', '=', session('acc_id'))
     ->where('prd_id','=', $prd_id)
-    ->where('movement_logs.pdn_id','=', get_last_production_id());
+    ->where('movement_logs.pdn_id','=', $pdn_id);
 
     //FLAGS
     // 1 = emptygoods
@@ -304,42 +304,14 @@ function get_quantity_of_canisters($prd_id, $flag)
     }
 }
 
-function get_stock_report($prd_id, $flag)
+function get_total_stock_report($prd_id, $pdn_id)
 {
     $production_logs = DB::table('movement_logs')
     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    ->where('movement_logs.acc_id', '=', session('acc_id'));
-
-    //FLAGS
-    // 1 = OPENING
-    // 2 = CLOSING 
-    // 3 = TOTAL
-    if($flag == 1)
-    {
-        return $production_logs = $production_logs 
-        ->where('prd_id','=', $prd_id)
-        ->where('movement_logs.pdn_id','<>', get_last_production_id())
-        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
-    }
-    elseif($flag == 2)
-    {
-        if(check_production_log())
-        {
-            return $production_logs = $production_logs 
-            ->where('prd_id','=', $prd_id)
-            ->where('movement_logs.pdn_id','=', get_last_production_id())
-            ->sum(DB::raw('log_filled')) + get_stock_report($prd_id, 1);
-        }
-
-        return 0;
-    }    
-    elseif($flag == 3)
-    {
-        return $production_logs = $production_logs 
-        ->where('movement_logs.prd_id', '=', $prd_id)
-        ->where('movement_logs.pdn_id', '=', get_last_production_id())
-        ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
-    }
+    ->where('movement_logs.acc_id', '=', session('acc_id'))
+    ->where('movement_logs.prd_id', '=', $prd_id)
+    ->where('movement_logs.pdn_id', '=', $pdn_id)
+    ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
 }
 
 function check_materials($flag, $qty, $prd_id)

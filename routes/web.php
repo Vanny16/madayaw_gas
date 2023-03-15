@@ -22,6 +22,8 @@ Route::group(['prefix' => 'home'], function()
 {
     Route::get('main', 'MainController@home');
     Route::get('toggle', 'MainController@toggleProduction');
+    Route::post('create-news', 'MainController@createNews');
+    Route::get('remove-news/{news_id}', 'MainController@removeNews');
 });
 
 Route::group(['prefix' => 'user'], function()
