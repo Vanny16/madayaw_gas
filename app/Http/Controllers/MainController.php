@@ -18,11 +18,22 @@ class MainController extends Controller
         ->orderByDesc('news_id')
         ->get();
 
+        $canisters = DB::table('products')
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->get();
+
+        $tanks = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
+
         if(session('typ_id') == null){
             return redirect()->action('LoginController@login');
         }
         else{
-            return view('admin.main', compact('pdn_flag', 'news')); 
+            return view('admin.main', compact('pdn_flag', 'news', 'canisters', 'tanks')); 
         }
     }
     
