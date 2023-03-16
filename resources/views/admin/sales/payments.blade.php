@@ -133,12 +133,12 @@
                                                                                     <div class="col">₱ {{ number_format($payment->pmnt_amount, 2, '.', ',') }}</div>
                                                                                     <div class="col">
                                                                                         @if($payment->pmnt_attachment <> '')
-                                                                                            <!--Product-Profile Modal -->
+                                                                                            <!--Attachment Modal -->
                                                                                             <div class="modal fade" id="pmnt_attachment-modal-{{$payment->pmnt_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                                                <div class="modal-dialog modal-md" role="document">
                                                                                                     <div class="modal-content bg-transparent">
                                                                                                         <div class="modal-body">
-                                                                                                            <button type="button" class="close text-white" data-dismiss="modal" data-target="#pmnt_attachment-modal-{{$payment->pmnt_id}}" aria-label="Close">
+                                                                                                            <button type="button" class="close text-dark" data-dismiss="modal" data-target="#pmnt_attachment-modal-{{$payment->pmnt_id}}" aria-label="Close">
                                                                                                                 <span aria-hidden="true">&times;</span>
                                                                                                             </button>
                                                                                                         

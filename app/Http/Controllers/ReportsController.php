@@ -133,9 +133,9 @@ class ReportsController extends Controller
         }
         $production_id = $production_id->get();
 
-        // dd($production_id);
+        // dd(empty($production_id));
 
-        if(count($production_id) < 2)
+        if(count($production_id) < 2 && count($production_id) > 0 )
         {
             $selectedID = $production_id[0]->pdn_id;
         }
@@ -160,132 +160,48 @@ class ReportsController extends Controller
         
         $production_datetime = $production_datetime ->first();
         
+        if(!empty($production_datetime))
+        {
+            $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
+            $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
+            $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
+            $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
+        }
+        else
+        {
+            $pdn_date = Carbon::now()->format('F j, Y');
+            $pdn_start_time = "--:--  --";
+            $pdn_end_time = "--:--  --";
+            $scrapped_month = Carbon::now()->format('F Y');
+        }
+        
+        $production_list = DB::table('production_logs')
+                            ->select('pdn_id', 'pdn_date')
+                            ->get();
+
+        $months = []; 
+        $years = [];
+
+        foreach($production_list as $row)
+        {
+            if(!in_array(date("F", strtotime($row->pdn_date)), $months))
+            {
+                array_push($months, date("F", strtotime($row->pdn_date)));
+            }
+
+            if(!in_array(date("Y", strtotime($row->pdn_date)), $years))
+            {
+                array_push($years, date("Y", strtotime($row->pdn_date)));
+            }
+        }
+
         $production_date_from = "";
         $production_date_to = "";
                         
-        $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
-        $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
-        $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
-
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
 
-        // if(isset($production_times)){
-        //     if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
-        //     {
-        //         if($production_times->pdn_end_time <> 0)
-        //         {
-        //             $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-        //             $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-        //             $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-        //         }
-        //         else
-        //         {
-        //             $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-        //             $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-        //             $pdn_end_time = '-- : -- --'; 
-        //             // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-        //         }   
-        //     }
-        //     else
-        //     {
-        //         $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
-        //         $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
-        //         $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-        //     }
-        // }
-
-        // $production_list = DB::table('production_logs')
-        //                     ->select('pdn_id', 'pdn_date')
-        //                     ->get();
-
-        // $months = []; 
-        // $days = []; 
-        // $years = [];
-
-        // foreach($production_list as $row)
-        // {
-        //     if(!in_array(date("Y", strtotime($row->pdn_date)), $years))
-        //     {
-        //         array_push($years, date("Y", strtotime($row->pdn_date)));
-        //     }
-
-        //     if(!in_array(date("F", strtotime($row->pdn_date)), $months))
-        //     {
-        //         array_push($months, date("F", strtotime($row->pdn_date)));
-        //     }
-
-        //     if(!in_array(date("j", strtotime($row->pdn_date)), $days))
-        //     {
-        //         array_push($days, date("j", strtotime($row->pdn_date)));
-        //     }
-        // }
-        // // dd($years, $months, $days);
-
-        // $production_years = $request->input('year') ?? Carbon::now()->year;
-        // $production_months = $request->input('year') ?? Carbon::now()->month;
-
-        // dd($production_id);
-
-        return view('admin.reports.production', compact('canisters','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id','selectedDate', 'selectedID'));
-    }
-
-    public function productionFilter(Request $request)
-    {
-        $production_date_from = $request->production_date_from;
-        $production_date_to = $request->production_date_to;
-        
-        $productions = DB::table('movement_logs')
-                    ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-                    ->join('products','products.prd_id','=','movement_logs.prd_id')
-                    ->where('movement_logs.acc_id','=', session('acc_id'))
-                    ->whereBetween('movement_logs.log_date', [date("Y-m-d", strtotime($production_date_from)), date("Y-m-d", strtotime($production_date_to))])
-                    ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-                    ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-                    ->orderBy('movement_logs.pdn_id', 'desc')
-                    ->paginate(10);
-
-        return view('admin.reports.production', compact('productions','production_date_from','production_date_to'));
-    }
-
-    public function testProductions(Request $request)
-    {
-        // $date_from = Carbon::now();
-        // $date_to = $date_from->format('Y-m-d');
-        // dd($date_to);
-        $test_productions = DB::table('movement_logs')
-                    ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-                    ->join('products','products.prd_id','=','movement_logs.prd_id')
-                    // ->where('movement_logs.log_date','=', $date_to)
-                    ->where('movement_logs.acc_id','=', session('acc_id'))
-                    ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-                    ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-                    ->orderBy('movement_logs.pdn_id', 'desc')
-                    ->get();
-                    // ->paginate(10);
-        // dd($test_productions);
-        dd(response()->json($test_productions));
-        return response()->json($test_productions);
-
-
-    }
-
-    public function testproductionFilter(Request $request)
-    {
-        $date_from = $request->date_from;
-        $date_to = $request->date_to;
-        
-        $filter_productions = DB::table('movement_logs')
-                        ->join('production_logs','production_logs.pdn_id','=','movement_logs.pdn_id')
-                        ->join('products','products.prd_id','=','movement_logs.prd_id')
-                        ->where('movement_logs.acc_id','=', session('acc_id'))
-                        // ->whereBetween('movement_logs.log_date','=', [$date_from, $date_to])
-                        ->selectRaw('log_date, products.prd_name, sum(movement_logs.log_empty_goods) as log_empty_goods, sum(movement_logs.log_filled) as log_filled, sum(movement_logs.log_leakers) as log_leakers, sum(movement_logs.log_for_revalving) as log_for_revalving, sum(movement_logs.log_scraps) as log_scraps, movement_logs.pdn_id')
-                        ->groupBy('log_date', 'products.prd_name', 'movement_logs.pdn_id')
-                        ->orderBy('movement_logs.pdn_id', 'desc')
-                        ->get();
-
-        return response()->json($filter_productions);
+        return view('admin.reports.production', compact('canisters','production_date_from','production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id', 'selectedDate', 'selectedID', 'months', 'years', 'scrapped_month'));
     }
 }
