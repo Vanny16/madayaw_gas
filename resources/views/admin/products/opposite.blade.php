@@ -363,7 +363,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="ops_quantity">Quantity <span style="color:red"> *</span></label>
-                                <input type="text" class="form-control" name="ops_quantity" value="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                <input type="text" class="form-control" name="ops_quantity" placeholder="Enter Quantity" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                             </div>
                             <div class="form-group">
                                 <label for="notes">Notes </label>

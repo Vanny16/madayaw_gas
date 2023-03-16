@@ -51,15 +51,14 @@
                     </thead>
                     <tbody>
                         @foreach($purchases as $purchase)
-
-                        <tr>
-                            <td style="border: 1px solid black; border-collapse:collapse;">IN</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->trx_ref_id }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;"><strong>{{ $purchase->pur_loose }}</strong></td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->pur_qty }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_name }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_price }}</td>
-                        </tr>
+                            <tr>
+                                <td style="border: 1px solid black; border-collapse:collapse;">IN</td>
+                                {{--<td style="border: 1px solid black; border-collapse:collapse;">{{ $bad_order->bo_ref_id }}</td>--}}
+                                <td style="border: 1px solid black; border-collapse:collapse;"><strong>{{ $purchase->pur_loose }}</strong></td>
+                                <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->pur_qty }}</td>
+                                <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_name }}</td>
+                                <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_price }}</td>
+                            </tr>
                         @endforeach
                         {{--<tr class="text-success bg-white">
                             <td colspan="6"></td>

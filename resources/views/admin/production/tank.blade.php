@@ -179,7 +179,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Volume (kg) <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Input Volume" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Input Volume" value="{{$tank->tnk_remaining / 1000}}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>
@@ -294,18 +294,19 @@
                                     <tr>
                                         <th width="50px">#</th>
                                         <th>Tank Name</th>
-                                        <th>Time Start</th>
                                         <th>Tank Opening</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
-                                    <tr>
-                                        <td class="text-danger">1</td>
-                                        <td>Tank 1</td>
-                                        <td>6:00 AM</td>
-                                        <td>5000 kg</td>
-                                        </td>
-                                    </tr>
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            <tr>
+                                                <td><i>{{$tank->tnk_id}}</i></td>
+                                                <td><i>{{$tank->tnk_name}}</i></td>
+                                                <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -323,18 +324,19 @@
                                     <tr>
                                         <th width="50px">#</th>
                                         <th>Tank Name</th>
-                                        <th>Time End</th>
                                         <th>Tank Closing</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbl-products">
-                                    <tr>
-                                        <td class="text-danger">1</td>
-                                        <td>Tank 1</td>
-                                        <td>3:00 PM</td>
-                                        <td>2567 kg</td>
-                                        </td>
-                                    </tr>
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            <tr>
+                                                <td><i>{{$tank->tnk_id}}</i></td>
+                                                <td><i>{{$tank->tnk_name}}</i></td>
+                                                <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

@@ -583,17 +583,22 @@ class ProductionController extends Controller
 
                 $search_string = 'valve';
 
+                $canister_details = DB::table('products')
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_id', '=', $prd_id)
+                ->first();
+                
                 $valve_details = DB::table('products')
                 ->where('acc_id', '=', session('acc_id'))
-                ->where('prd_name', 'LIKE', '%valve%')
+                ->where('prd_id', '=', $canister_details->prd_components)
                 ->first();
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
 
-                $valve_details = DB::table('products')
+                DB::table('products')
                 ->where('acc_id', '=', session('acc_id'))
-                ->where('prd_name', 'LIKE', '%valve%')
+                ->where('prd_id', '=', $valve_details->prd_id)
                 ->update([
                     'prd_quantity' => $valve_qty = $valve_details->prd_quantity - 1
                 ]);
