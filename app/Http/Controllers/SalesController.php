@@ -366,7 +366,7 @@ class SalesController extends Controller
         session(['latest_trx_id' => $trx_id]);
 
         session()->flash('successMessage','Transaction complete!');
-        return redirect()->action('PrintController@receiptDetails');
+        return redirect()->action('PrintController@salesReceipt');
     }
 
     public function payPending(Request $request){

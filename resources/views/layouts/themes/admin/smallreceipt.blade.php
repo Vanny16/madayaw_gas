@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    @include('layouts.partials.admin.head')
+    <style>
+        html{
+            font-size: 10px;
+        }
+    </style>
 </head>
     <body>
         @yield('content')
