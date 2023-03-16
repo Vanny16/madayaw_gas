@@ -149,7 +149,7 @@
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{--$product->prd_id--}}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -219,14 +219,14 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_capacity">Capacity (kg)<span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity}}" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <input type="text" name="tnk_capacity" class="form-control" value="{{$tank->tnk_capacity/1000}}" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
                                                                             <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}} " onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="tnk_notes">Notes <span style="color:red">*</span></label>
+                                                                            <label for="tnk_notes">Notes</label>
                                                                             <input type="text" name="tnk_notes" class="form-control" value="{{$tank->tnk_notes}}" />
                                                                         </div>
                                                                     </div>
@@ -372,7 +372,7 @@
                                 <input type="text" name="tnk_capacity" class="form-control" placeholder="Enter Capacity" onkeypress="return isNumberKey(this, event);" required/>
                             </div>
                             <div class="form-group">
-                                <label for="tnk_notes">Notes <span style="color:red">*</span></label>
+                                <label for="tnk_notes">Notes</label>
                                 <textarea name="tnk_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>

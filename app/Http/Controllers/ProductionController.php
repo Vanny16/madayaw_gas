@@ -947,12 +947,32 @@ class ProductionController extends Controller
         ->where('tnk_id', '=', $tnk_id)
         ->update([
             'tnk_name' => $tnk_name,
-            'tnk_capacity' => $tnk_capacity,
+            'tnk_capacity' => $tnk_capacity *1000,
             'tnk_remaining' => $tnk_remaining,
             'tnk_notes' => $tnk_notes
         ]);
         
         session()->flash('successMessage','Tank details updated.');
+        return redirect()->action('ProductionController@tank');
+    }
+
+    //EDIT TANK CONTROLLER
+    public function tankActivation($tnk_id, $tnk_active)
+    {
+        dd();
+        DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->update([
+            'tnk_active' => $tnk_active
+        ]);
+
+        if($tnk_active==0){
+            session()->flash('successMessage','Tank deactivated.');
+        }
+        else if($tnk_active==1){
+            session()->flash('successMessage','Tank activated.');
+        }
+        
         return redirect()->action('ProductionController@tank');
     }
 

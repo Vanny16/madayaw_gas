@@ -69,7 +69,7 @@
     </div>
 </div>
 <script type="text/javascript"> 
-    // window.addEventListener("load", window.print());
-    // window.location.href = "{{ action('SalesController@main') }}";
+    window.addEventListener("load", window.print());
+    window.location.href = "{{ action('SalesController@main') }}";
 </script>
 @endsection
