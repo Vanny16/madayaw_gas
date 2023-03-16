@@ -1,6 +1,6 @@
 @extends('layouts.themes.admin.print')
 @section('content')
-<div class="row">
+{{--<div class="row">
     <div class="col-md-12"> 
         <h3 style="text-align:center;"></h3>
         <p style="text-align:center;"></p>
@@ -60,25 +60,25 @@
                                 <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_price }}</td>
                             </tr>
                         @endforeach
-                        {{--<tr class="text-success bg-white">
+                        <tr class="text-success bg-white">
                             <td colspan="6"></td>
                             <td class="text-success"><strong>Total</strong></td>
                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">₱ {{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
-                        </tr>--}}
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            {{--<div class="row">
+            <div class="row">
                 <div class="col-md-2 col-12 mb-3">
                     <p>Issued By: </p>
                 </div>
                 <div class="col-md-8 col-12 mb-6" style="text-align:right;">
                     <p>Receive By: </p>
                 </div>
-            </div>--}}
+            </div>
         </div>
     </div>
-</div>
+</div>--}}
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
     // window.location.href = "{{ action('SalesController@main') }}";
