@@ -304,12 +304,8 @@ class PrintController extends Controller
 
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        // ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
-
-        // $bad_orders = DB::table('bad_orders')
-        // ->get();
       
         session()->flash('successMessage','Transaction complete!');
         return view('admin.print.badorderreceipt', compact('transactions', 'purchases'));
