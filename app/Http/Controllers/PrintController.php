@@ -290,7 +290,26 @@ class PrintController extends Controller
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
         // dd($all_purchases_reports);
-        return view('admin.print.purchasesreport', compact('all_purchases_reports'));
+        return view('admin.print.purchasesreport', compact('all_purchases_reports', 'transactions'));
+    }
+
+    public function badorderReceipt()
+    {
+        $latest_trx_id = session('latest_trx_id');
+
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->first();
+
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->get();
+
+      
+        session()->flash('successMessage','Transaction complete!');
+        return view('admin.print.badorderreceipt', compact('transactions', 'purchases'));
     }
 
 }

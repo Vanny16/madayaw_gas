@@ -495,7 +495,7 @@
                     </div>
                 </div>  
                 <div class="modal-footer">
-                    <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"> </i>Pay</button>
+                    <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"></i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
                 <!-- <div class="col-md-2 col-12 mb-3">

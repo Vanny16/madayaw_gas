@@ -338,6 +338,16 @@ class ProductionController extends Controller
     //ADD QUANTITY FOR ITEMS
     public function addQuantity(Request $request)
     {
+        $trx_id = DB::table('transactions')
+        ->max('trx_id');
+
+        if($trx_id == null){
+            $trx_id = 1;
+        }
+        else{
+            $trx_id += 1;
+        }
+
         $prd_id = $request->stockin_prd_id;
         (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
@@ -554,7 +564,7 @@ class ProductionController extends Controller
                     
                     session()->flash('getProdValues', array( $prodValues));
                     session()->flash('successMessage','Leakers added');
-                    return redirect()->action('ProductionController@manage');
+                    return redirect()->action('PrintController@badorderReceipt');
                 }
             }
         }
