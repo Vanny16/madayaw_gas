@@ -957,7 +957,7 @@ class ProductionController extends Controller
     }
 
     //EDIT TANK CONTROLLER
-    public function tankActivation($tnk_id, $tnk_active)
+    public function tankActivation()
     {
         dd();
         DB::table('tanks')

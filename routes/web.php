@@ -94,7 +94,7 @@ Route::group(['prefix' => 'production'], function()
     Route::post('edit-product', 'ProductionController@editItem');
     Route::post('add-tank', 'ProductionController@createTank');
     Route::post('edit-tank/{tnk_id}', 'ProductionController@editTank');
-    Route::get('tank-activation/{tnk_id}/{tnk_active}', 'ProductionController@tankActivation');
+    Route::get('tank-activation', 'ProductionController@tankActivation');
     Route::post('refill-tank/{tnk_id}', 'ProductionController@refillTank');
 
     Route::get('print', 'PrintController@badorderReceipt');
