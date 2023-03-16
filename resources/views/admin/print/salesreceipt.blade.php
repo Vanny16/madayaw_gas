@@ -6,8 +6,12 @@
             <p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p>
             <p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p>
         </div>
-        <small>{{ $transactions->trx_datetime }}</small>
-        <p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p>
+        <table width="100%">
+            <tr>
+                <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
+                <td width="50%"><small>{{ $transactions->trx_datetime }}</small></td>
+            </tr>
+        </table>
     </div>
 
     <div class="row">
@@ -54,10 +58,12 @@
                 <td colspan="5"><br></td>
             </tr>
             <tr>
-                <td colspan="5">Issued by:</td>
+                <td colspan="2">Issued by:</td>
+                <td colspan="3">{{session('usr_full_name')}}</td>
             </tr>
             <tr>
-                <td colspan="5">Received by:</td>
+                <td colspan="2">Received by:</td>
+                <td colspan="3 ">{{ $transactions->cus_name }}</td>
             </tr>
         </table>
     </div>
