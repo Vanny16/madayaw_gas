@@ -35,6 +35,8 @@ Route::group(['prefix' => 'user'], function()
 
     Route::post('search-user', 'UserController@searchUser');
     Route::post('create-user', 'UserController@createUser');
+    Route::post('forgot-password', 'UserController@forgotPassword');
+    Route::post('reset-password', 'UserController@resetPassword');
     Route::post('edit-user/{usr_id}', 'UserController@editUser');
     Route::post('upload-avatar/{usr_id}', 'UserController@uploadAvatar');
     Route::post('user-password', 'UserController@savePassword');
@@ -94,7 +96,7 @@ Route::group(['prefix' => 'production'], function()
     Route::post('edit-product', 'ProductionController@editItem');
     Route::post('add-tank', 'ProductionController@createTank');
     Route::post('edit-tank/{tnk_id}', 'ProductionController@editTank');
-    Route::get('tank-activation', 'ProductionController@tankActivation');
+    Route::get('tank-activation/{tnk_id}/{tnk_active}', 'ProductionController@tankActivation');
     Route::post('refill-tank/{tnk_id}', 'ProductionController@refillTank');
 
     Route::get('print', 'PrintController@badorderReceipt');

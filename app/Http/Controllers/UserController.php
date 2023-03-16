@@ -20,6 +20,17 @@ class UserController extends Controller
         $user_types = DB::table('user_types')
         ->get();
 
+        $reset_passwords = DB::table('reset_password')
+        ->join('users', 'users.usr_id', '=', 'reset_password.usr_id')
+        ->where('rst_active', '=', 1)
+        ->get();
+        
+        $reset_passwords_count = DB::table('reset_password')
+        ->where('rst_active', '=', 1)
+        ->count();
+        
+        session(['reset_passwords_count' => $reset_passwords_count]);
+
         $typ_id = '0';
 
         $statuses = array(
@@ -30,7 +41,7 @@ class UserController extends Controller
 
         $default_status = '0';
          
-        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status'));
+        return view('admin.user.manage',compact('users','user_types','typ_id','statuses','default_status','reset_passwords'));
     }
 
     public function createUser(Request $request)
@@ -248,6 +259,58 @@ class UserController extends Controller
         }
 
         return redirect()->action('UserController@profile');
+    }
+
+    public function forgotPassword(Request $request){
+
+        $user = DB::table('users')
+        ->where('usr_name','=',$request->usr_name)
+        ->first();
+
+        if($user != null){
+            
+            $has_pending_request = DB::table('reset_password')
+            ->where('usr_id','=',$user->usr_id)
+            ->where('rst_active','=', 1)
+            ->first();
+
+            if($has_pending_request == null){
+                DB::table('reset_password')
+                ->insert([
+                    'usr_id' => $user->usr_id
+                ]); 
+                
+                session()->flash('successMessage', 'Please wait for an admin to validate your request');
+            }
+            else{
+                session()->flash('errorMessage', 'You already requested for password reset. \nPlease wait until an admin validates your request.');
+            }
+
+        }
+        else{
+            session()->flash('errorMessage', 'Username not found');
+        }
+
+        return redirect()->action('LoginController@login');
+    }
+
+    
+    public function resetPassword(Request $request){
+
+        DB::table('reset_password')
+        ->where('rst_id','=',$request->rst_id)
+        ->update([
+            'rst_active' => 0
+        ]); 
+
+        DB::table('users')
+        ->where('usr_id','=',$request->usr_id)
+        ->update([
+            'usr_password' => md5($request->usr_name)
+        ]); 
+
+        session()->flash('successMessage', "Password has been reset");
+        return redirect()->action('UserController@user');
     }
 
     public function uploadAvatar(Request $request, $usr_id)

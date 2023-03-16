@@ -91,6 +91,7 @@
                                         <th>Capacity</th>
                                         <th>Remaining</th>
                                         <th>Notes</th>
+                                        <th></th>
                                         <th width="50px"></th>
                                     </tr>
                                 </thead>
@@ -127,12 +128,12 @@
                                                 @if($tank->tnk_remaining)
                                                     <td>
                                                     {{ number_format((float)$tank->tnk_remaining / 1000, 2) }} kg
-                                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
+                                                        <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
                                                     </td>
                                                 @else
                                                     <td>
                                                         0 kg &nbsp;                                                    
-                                                        <a class="btn btn-default btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
+                                                        <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i> Refill</a>
                                                     </td>
                                                 @endif
                                                 @if($tank->tnk_notes)
@@ -144,12 +145,22 @@
                                                         <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
                                                     </td>
                                                 @endif
+                                                
+                                                <td>
+                                                    @if($tank->tnk_active == 1) 
+                                                    <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation') }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                            <!-- <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li> -->
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -223,7 +234,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining}} " onkeypress="return isNumberKey(this, event);" readonly required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining/1000}} " onkeypress="return isNumberKey(this, event);" readonly required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes</label>

@@ -3,8 +3,16 @@
 <div style="width:50mm;">
     <div class="card">
         <div class="card-header">
-            <p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p>
-            <p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p>
+            
+            <table width="100%">
+                <tr>
+                    <td><p><img src="{{ asset('img/accounts/logo-1.jpg' ) }}" style="width:30px;"></p></td>
+                    <td><p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p></td>
+                </tr>
+            </table>
         </div>
         <table width="100%">
             <tr>
@@ -23,6 +31,10 @@
             <tr>
                 <td width="50%">Address:</td>
                 <td width="50%">{{ $transactions->cus_address }}</td>
+            </tr>
+            <tr>
+                <td width="50%">Contact:</td>
+                <td width="50%">{{ $transactions->cus_contact }}</td>
             </tr>
         </table>
         <hr>
@@ -55,6 +67,21 @@
                 <td colspan="1"><strong>{{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
+                <td colspan="1">M.O.P.</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ $transactions->payment_name }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Paid</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($transactions->pmnt_amount, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Balance</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($transactions->trx_balance, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
                 <td colspan="5"><br></td>
             </tr>
             <tr>
@@ -69,7 +96,7 @@
     </div>
 </div>
 <script type="text/javascript"> 
-    window.addEventListener("load", window.print());
-    window.location.href = "{{ action('SalesController@main') }}";
+    // window.addEventListener("load", window.print());
+    // window.location.href = "{{ action('SalesController@main') }}";
 </script>
 @endsection

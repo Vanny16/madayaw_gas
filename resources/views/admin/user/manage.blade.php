@@ -104,7 +104,8 @@
                                         <th>User Type</th>
                                         <th width="100px">Status</th>
                                         @if(session('typ_id') == '1')
-                                        <th width="100px"></th>
+                                        <th width="10px"></th>
+                                        <th width="70px"></th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -153,6 +154,7 @@
                                                             @endif
                                                         </td> 
                                                     @endif
+
                                                 
                                                     <td>
                                                     @if($user->usr_active == 0)
@@ -160,8 +162,7 @@
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                                         @endif
                                                     @else   
-                                                        @if(session('typ_id') != '1')
-                                                        @else
+                                                        @if(session('typ_id') == '1')
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                                 <ul class="dropdown-menu">
@@ -171,6 +172,39 @@
                                                                 </ul>
                                                             </div>
                                                         @endif
+                                                    </td>
+
+                                                    
+                                                    <td>
+                                                        @foreach($reset_passwords as $reset_password)
+                                                            @if($reset_password->usr_id == $user->usr_id)
+                                                                <button class="btn btn-transparent text-warning btn-sm" data-toggle="modal" data-target="#resetPasswordModal{{$user->usr_id}}"><i class="fa fa-key"></i><i class="fa fa-unlock fa-sm"></i></button>
+                                                                
+                                                                <!--Reset Password Modal-->
+                                                                <div id="resetPasswordModal{{$user->usr_id}}" class="modal fade" role="dialog">
+                                                                    <form method="POST" action="{{action('UserController@resetPassword')}}">
+                                                                    {{ csrf_field() }} 
+                                                                        <div class="modal-dialog modal-sm">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="text-warning"><span class="fa fa-warning"></span> Warning</5>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p><strong>Confirm reset password for {{$user->usr_full_name}}?</strong> <br><br>Username: <strong>{{$user->usr_name}}</strong><br>Password: <strong>{{$user->usr_name}}</strong><br><br>Please click '<span class="fa fa-key"></span> RESET' button to confirm.</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="hidden" name="rst_id" value="{{$reset_password->rst_id}}"/>
+                                                                                    <input type="hidden" name="usr_id" value="{{$reset_password->usr_id}}"/>
+                                                                                    <input type="hidden" name="usr_name" value="{{$reset_password->usr_name}}"/>
+                                                                                    <button type="submit" class="btn btn-default"><span class="fa fa-key"></span> RESET</button> 
+                                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times-circle"></span> BACK</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
                                                     </td>
                                                     @endif
 
