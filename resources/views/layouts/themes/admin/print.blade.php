@@ -2,8 +2,9 @@
 <html>
 <head>
     <style>
-        @page {
+        html {
         size: 57mm 50mm;
+        font-size: 12px;
         }
     </style>
     @include('layouts.partials.admin.head')
