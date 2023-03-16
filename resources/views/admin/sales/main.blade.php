@@ -498,9 +498,6 @@
                     <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"></i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
-                <!-- <div class="col-md-2 col-12 mb-3">
-                    <a class="btn btn-info col-md-12 col-12 form-control" href="{{ action('PrintController@receiptDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print Receipt</a>
-                </div> -->
             </form>
         </div>  
     </div>
