@@ -220,10 +220,11 @@ class SalesController extends Controller
         $pur_qty = "";
         $pur_crate = "";
         $pur_loose = "";
+        $pur_discount = "";
+        $pur_deposit = "";
         $pur_total = "";
         $pur_crate_in = "";
         $pur_loose_in = "";
-        $pur_deposit = "";
         $cus_id = "";
         
         $mode_of_payment = $request->mode_of_payment;
@@ -239,8 +240,6 @@ class SalesController extends Controller
         $deduct_qty = 0;
         $add_empty_good_qty = 0;
 
-        // dd($purchase_row);
-
         for($i = 0 ; $i < count($purchase_row) ; $i++)
         {
             $purchase_data = explode(",", $purchase_row[$i]);
@@ -252,6 +251,7 @@ class SalesController extends Controller
                 $pur_crate = $purchase_data[3];
                 $pur_loose = $purchase_data[4];
                 $pur_qty = (int)($purchase_data[3] * 12) + (int)($purchase_data[4]);
+                $pur_discount = $purchase_data[5];
                 $pur_deposit = $purchase_data[6];
                 $pur_total = $purchase_data[7];
                 $pur_crate_in = $purchase_data[8];
@@ -268,6 +268,7 @@ class SalesController extends Controller
                 'pur_crate' => $pur_crate,
                 'pur_loose' => $pur_loose,
                 'pur_qty' => $pur_qty,
+                'pur_discount' => $pur_discount,
                 'pur_deposit' => $pur_deposit,
                 'pur_crate_in' => $pur_crate_in,
                 'pur_loose_in' => $pur_loose_in,
@@ -450,10 +451,10 @@ class SalesController extends Controller
         ]);  
 
         
+        session(['latest_pmnt_id' => $pmnt_id]);
+
         session()->flash('successMessage','Payment saved');
-        return redirect()->action('SalesController@payments');
-
-
+        return redirect()->action('PrintController@paymentReceipt');
     }
 
     public function addCanister(Request $request)

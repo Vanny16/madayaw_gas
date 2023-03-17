@@ -17,8 +17,8 @@
         </div>
         <table width="100%">
             <tr>
-                <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
-                <td width="50%"><small>{{ $transactions->trx_datetime }}</small></td>
+                <td width="50%"><p><strong><i>{{ $payments->pmnt_ref_id }}</i></strong></p></td>
+                <td width="50%"><small>{{ $payments->pmnt_date }} {{ $payments->pmnt_time }}</small></td>
             </tr>
         </table>
     </div>
@@ -26,67 +26,59 @@
     <div class="row">
         <table>
             <tr>
+                <td width="50%">Reference No.:</td>
+                <td width="50%">{{ $payments->trx_ref_id }}</td>
+            </tr>
+            <tr>
                 <td width="50%">Customer Name:</td>
-                <td width="50%">{{ $transactions->cus_name }}</td>
+                <td width="50%">{{ $payments->cus_name }}</td>
             </tr>
             <tr>
                 <td width="50%">Address:</td>
-                <td width="50%">{{ $transactions->cus_address }}</td>
+                <td width="50%">{{ $payments->cus_address }}</td>
             </tr>
             <tr>
                 <td width="50%">Contact:</td>
-                <td width="50%">{{ $transactions->cus_contact }}</td>
+                <td width="50%">{{ $payments->cus_contact }}</td>
             </tr>
         </table>
         <hr>
         <table>
             <tr>
-                <td width="20%"><strong>Item</strong></td>
-                <td width="20%"><strong>Price</strong></td>
-                <td width="20%"><strong>Qty</strong></td>
-                <td width="20%"><strong>Deposit</strong></td>
-                <td width="20%"><strong>Sub</strong></td>
+                <td width="60%"><strong>Payment for</strong></td>
+                <td width="40%"><strong>Amount Paid</strong></td>
             </tr>
-            @php($total_discount=0)
-            @foreach($purchases as $purchase)
-                @php($total_discount += $purchase->pur_discount)
-                    @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
-                    <tr>
-                        <td width="20%">{{ $purchase->prd_name }}</td>
-                        <td width="20%">{{ $purchase->prd_price }}</td>
-                        <td width="20%">{{ $purchase->pur_qty }}</td>
-                        <td width="20%">{{ number_format($purchase->pur_deposit, 2, '.', ',') }}</td>
-                        <td width="20%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
-                    </tr>
-            @endforeach
-            
+            <tr>
+                <td width="60%"><i>Pending Balance</i></td>
+                <td width="40%">{{ number_format($payments->pmnt_amount, 2, '.', ',') }}</td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td width="20%"></td>
+                <td width="20%"></td>
+                <td width="20%"></td>
+                <td width="20%"></td>
+                <td width="20%"></td>
+            </tr>
             <tr>
                 <td colspan="5"><hr></td>
             </tr>
             <tr>
-                <td colspan="1">Total</td>
-                <td colspan="3"><hr></td>
-                <td colspan="1"><strong>{{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
-            </tr>
-            <tr>
-                <td colspan="1">Discount</td>
-                <td colspan="3"><hr></td>
-                <td colspan="1"><strong>{{ number_format($total_discount, 2, '.', ',') }}</strong></td>
-            </tr>
-            <tr>
                 <td colspan="1">M.O.P.</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ $transactions->payment_name }}</td>
+                <td colspan="1">{{ $payments->payment_name }}</td>
             </tr>
             <tr>
                 <td colspan="1">Paid</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ number_format($transactions->pmnt_amount, 2, '.', ',') }}</td>
+                <td colspan="1">{{ number_format($payments->pmnt_amount, 2, '.', ',') }}</td>
             </tr>
             <tr>
                 <td colspan="1">Balance</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ number_format($transactions->trx_balance, 2, '.', ',') }}</td>
+                <td colspan="1">{{ number_format($payments->trx_balance, 2, '.', ',') }}</td>
             </tr>
             <tr>
                 <td colspan="5"><br></td>
@@ -97,7 +89,7 @@
             </tr>
             <tr>
                 <td colspan="2">Received by:</td>
-                <td colspan="3 ">{{ $transactions->cus_name }}</td>
+                <td colspan="3 ">{{ $payments->cus_name }}</td>
             </tr>
         </table>
     </div>
@@ -117,7 +109,7 @@
             }, 500);
         }
         else{
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('SalesController@payments') }}";
         }
     }
 
@@ -128,7 +120,7 @@
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('SalesController@payments') }}";
         }, 500);
     });
 </script>

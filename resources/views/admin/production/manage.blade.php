@@ -1115,7 +1115,7 @@
                                             @if($tank->tnk_active == 0)
                                                 @continue
                                             @else
-                                                <option value="{{ $tank->tnk_id }}" {{ $selected }}>{{ $tank->tnk_name }}</option>
+                                                <option value="{{ $tank->tnk_id }}">{{ $tank->tnk_name }}</option>
                                             @endif
                                         @endforeach
                                     @endif

@@ -187,6 +187,25 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    Reference:
+                                                                                </div>
+                                                                                <div class="col-6 text-danger">
+                                                                                    {{ $transaction->trx_ref_id }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    Customer:
+                                                                                </div>
+                                                                                <div class="col-6 text-danger">
+                                                                                    {{ $transaction->cus_name }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                        </div>
+                                                                        <div class="form-group">
                                                                             <label for="cus_address">Mode of Payment</label><br>
                                                                             <button id="btn_cash{{ $transaction->trx_id }}" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
                                                                             <button id="btn_gcash{{ $transaction->trx_id }}" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="28rem"/></button>

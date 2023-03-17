@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-17 11:19:44
+Date: 2023-03-17 13:50:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -233,20 +233,6 @@ CREATE TABLE `products` (
 
 -- ----------------------------
 -- Records of products
--- ----------------------------
-
--- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
 -- ----------------------------
 
 -- ----------------------------
@@ -476,14 +462,15 @@ CREATE TABLE `users` (
   `usr_password` varchar(255) DEFAULT NULL,
   `usr_address` varchar(255) DEFAULT NULL,
   `usr_image` varchar(255) DEFAULT NULL,
-  `usr_active` tinyint(4) DEFAULT '1',
+  `usr_active` tinyint(255) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
 
 -- ----------------------------
 -- Table structure for `user_types`
