@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-17 18:25:15
+Date: 2023-03-17 18:23:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,11 +49,12 @@ CREATE TABLE `bad_orders` (
   `bo_time` varchar(20) DEFAULT NULL,
   `bo_datetime` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`bo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_orders
 -- ----------------------------
+INSERT INTO `bad_orders` VALUES ('1', 'BO-20230317-1', '1', '2', null, '1', '2023-03-17', '18:15:17', '2023-03-17 18:15:17');
 
 -- ----------------------------
 -- Table structure for `customers`
@@ -73,11 +74,14 @@ CREATE TABLE `customers` (
   `cus_image` varchar(255) DEFAULT NULL,
   `cus_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`cus_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
+INSERT INTO `customers` VALUES ('1', '1', 'p1rt404y1w386gezhilhayemydwvuq9z', 'Kim Dahyun', 'Seoul Tan Kudarat', '09800989080', '0', '3,4,5,', '20.00,20.00,700.00,', null, null, '1');
+INSERT INTO `customers` VALUES ('2', '1', '716joaaj3uoueo9r1aw84dw8k6gz54or', 'Im Nayeon', 'Seuolup', '09123123122', '0', '3,4,', '20.00,30.00,', null, null, '1');
+INSERT INTO `customers` VALUES ('3', '1', '54bb7u217nax70v809f5yubgxzrzgp6u', 'Myoui Mina', 'Gangnam', '09234234234', '0', '4,5,', '10.00,700.00,', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `movement_logs`
@@ -96,11 +100,19 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
 -- ----------------------------
+INSERT INTO `movement_logs` VALUES ('1', '1', '3', '0', '0', '120', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('2', '1', '4', '0', '0', '120', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('3', '1', '4', '0', '0', '30', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('4', '1', '3', '1', '0', '0', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('5', '1', '3', '119', '0', '0', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('6', '1', '3', '0', '0', '120', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('7', '1', '4', '120', '0', '0', '0', '0', '1', '2023-03-17', '1');
+INSERT INTO `movement_logs` VALUES ('8', '1', '3', '0', '1', '0', '0', '0', '1', '2023-03-17', '1');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -160,11 +172,37 @@ CREATE TABLE `payments` (
   `pmnt_time` varchar(20) DEFAULT NULL,
   `trx_mode_of_payment` int(11) DEFAULT NULL,
   PRIMARY KEY (`pmnt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of payments
 -- ----------------------------
+INSERT INTO `payments` VALUES ('1', '1', 'PMT20230317-1', '1', '0', null, '1', '2023-03-17', '02:10:28', '2');
+INSERT INTO `payments` VALUES ('1', '2', 'PMT20230317-2', '2', '0', null, '1', '2023-03-17', '02:44:30', '2');
+INSERT INTO `payments` VALUES ('1', '3', 'PMT20230317-3', '3', '0', null, '1', '2023-03-17', '02:47:48', '2');
+INSERT INTO `payments` VALUES ('1', '4', 'PMT20230317-4', '4', '915', null, '1', '2023-03-17', '02:52:39', '1');
+INSERT INTO `payments` VALUES ('1', '5', 'PMT20230317-5', '5', '915', null, '1', '2023-03-17', '02:59:57', '3');
+INSERT INTO `payments` VALUES ('1', '6', 'PMT20230317-6', '6', '1000', null, '1', '2023-03-17', '03:07:44', '1');
+INSERT INTO `payments` VALUES ('1', '7', 'PMT20230317-7', '7', '0', null, '1', '2023-03-17', '03:19:34', '2');
+INSERT INTO `payments` VALUES ('1', '8', 'PMT20230317-8', '8', '0', null, '1', '2023-03-17', '03:20:45', '2');
+INSERT INTO `payments` VALUES ('1', '9', 'PMT20230317-9', '9', '0', null, '1', '2023-03-17', '03:27:03', '2');
+INSERT INTO `payments` VALUES ('1', '10', 'PMT20230317-10', '10', '0', null, '1', '2023-03-17', '03:28:09', '2');
+INSERT INTO `payments` VALUES ('1', '11', 'PMT20230317-11', '11', '0', null, '1', '2023-03-17', '03:33:53', '2');
+INSERT INTO `payments` VALUES ('1', '12', 'PMT20230317-12', '12', '0', null, '1', '2023-03-17', '03:37:18', '2');
+INSERT INTO `payments` VALUES ('1', '13', 'PMT20230317-13', '13', '0', null, '1', '2023-03-17', '03:43:48', '2');
+INSERT INTO `payments` VALUES ('1', '14', 'PMT20230317-14', '14', '0', null, '1', '2023-03-17', '03:48:21', '2');
+INSERT INTO `payments` VALUES ('1', '15', 'PMT20230317-15', '15', '0', null, '1', '2023-03-17', '03:49:48', '2');
+INSERT INTO `payments` VALUES ('1', '16', 'PMT20230317-16', '16', '0', null, '1', '2023-03-17', '03:51:10', '2');
+INSERT INTO `payments` VALUES ('1', '17', 'PMT20230317-17', '17', '0', null, '1', '2023-03-17', '03:53:54', '2');
+INSERT INTO `payments` VALUES ('1', '18', 'PMT20230317-18', '18', '0', null, '1', '2023-03-17', '03:58:21', '2');
+INSERT INTO `payments` VALUES ('1', '19', 'PMT20230317-19', '19', '0', null, '1', '2023-03-17', '04:05:02', '2');
+INSERT INTO `payments` VALUES ('1', '20', 'PMT20230317-20', '7', '12', null, '1', '2023-03-17', '04:19:14', '1');
+INSERT INTO `payments` VALUES ('1', '21', 'PMT20230317-21', '7', '88', null, '1', '2023-03-17', '04:30:39', '1');
+INSERT INTO `payments` VALUES ('1', '22', 'PMT20230317-22', '10', '8', null, '1', '2023-03-17', '04:42:16', '1');
+INSERT INTO `payments` VALUES ('1', '23', 'PMT20230317-23', '7', '100', null, '1', '2023-03-17', '04:44:17', '1');
+INSERT INTO `payments` VALUES ('1', '24', 'PMT20230317-24', '7', '100', null, '1', '2023-03-17', '04:59:30', '1');
+INSERT INTO `payments` VALUES ('1', '25', 'PMT20230317-25', '1', '320', null, '1', '2023-03-17', '05:24:23', '1');
+INSERT INTO `payments` VALUES ('1', '26', 'PMT20230317-26', '1', '12', null, '1', '2023-03-17', '05:25:09', '1');
 
 -- ----------------------------
 -- Table structure for `payment_types`
@@ -193,11 +231,12 @@ CREATE TABLE `production_logs` (
   `pdn_start_time` time DEFAULT NULL,
   `pdn_end_time` time DEFAULT NULL,
   PRIMARY KEY (`pdn_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of production_logs
 -- ----------------------------
+INSERT INTO `production_logs` VALUES ('1', '2023-03-17', '13:50:42', null);
 
 -- ----------------------------
 -- Table structure for `products`
@@ -229,11 +268,16 @@ CREATE TABLE `products` (
   `prd_raw_can_qty` int(11) DEFAULT '0',
   `prd_components` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
+INSERT INTO `products` VALUES ('1', '1', '0xkbu1ip9lgdw4l1ecsbxayq46soxke2', 'MR Valve', 'MR Valve', 'MRV170', null, null, '0', '760.00', '0.00', '0.00', '0.00', '0', '100.00', null, '1', '1', '0', '1', '0', null, '0', null);
+INSERT INTO `products` VALUES ('2', '1', 'luu8wi3rcedqis6it2wpysczqzl5ausr', 'MS Valve', 'MS Valve', 'MSV170', null, null, '0', '850.00', '0.00', '0.00', '0.00', '0', '100.00', null, '1', '1', '0', '1', '0', null, '0', null);
+INSERT INTO `products` VALUES ('3', '1', 'fl05e7ri2bh7g248bkztqrioxuq7we8e', 'Madayaw Round', 'MR LPG 170G', 'MR170G', null, '20.00', '35', '35.00', '1.00', '204.00', '0.00', '0', '100.00', null, '1', '1', '1', '1', '1', '170', '760', '1');
+INSERT INTO `products` VALUES ('4', '1', 'mdpa9mwfvs9duyriqsa791rllp8h4b0n', 'Madayaw Square', 'MS LPG 170G', 'MS170G', null, '20.00', '35', '96.00', '0.00', '54.00', '0.00', '0', '100.00', null, '1', '1', '1', '1', '1', '170', '850', '2');
+INSERT INTO `products` VALUES ('5', '1', 'pmhw46v2un03w2r7oirgirh8ff7f0f6j', 'Gas Stove 1 Burner', 'GS 1 Burner', 'GS1', null, '700.00', '0', '984.00', '0.00', '0.00', '0.00', '0', '100.00', null, '2', '1', '0', '0', '1', null, '0', null);
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -253,11 +297,36 @@ CREATE TABLE `purchases` (
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
 -- ----------------------------
+INSERT INTO `purchases` VALUES ('1', '1', '4', '1', '0', null, '0.00', '120.00', '12', '10.00', '1', '0');
+INSERT INTO `purchases` VALUES ('2', '1', '5', '0', '1', null, '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('3', '2', '4', '1', '0', null, '0.00', '227.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('4', '2', '3', '1', '0', null, '0.00', '228.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('5', '3', '5', '0', '1', null, '13.00', '687.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('6', '3', '3', '1', '0', null, '12.00', '228.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('7', '4', '5', '0', '1', null, '13.00', '687.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('8', '4', '3', '1', '0', null, '12.00', '228.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('9', '5', '5', '0', '1', '13.00', '0.00', '687.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('10', '5', '3', '1', '0', '12.00', '0.00', '228.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('11', '6', '5', '0', '1', '13.00', '0.00', '687.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('12', '6', '3', '1', '0', '12.00', '0.00', '228.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('13', '7', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('14', '8', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('15', '9', '3', '1', '0', '2.00', '0.00', '238.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('16', '10', '3', '1', '0', '2.00', '0.00', '238.00', '12', '20.00', '1', '0');
+INSERT INTO `purchases` VALUES ('17', '11', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('18', '12', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('19', '13', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('20', '14', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('21', '15', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('22', '16', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('23', '17', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('24', '18', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
+INSERT INTO `purchases` VALUES ('25', '19', '5', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -272,11 +341,27 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
 -- ----------------------------
+INSERT INTO `quantity_logs` VALUES ('1', '1', '1', '1', '5000000', '2023-03-17 13:51:10', '1');
+INSERT INTO `quantity_logs` VALUES ('2', '1', '2', '1', '2500000', '2023-03-17 13:51:15', '1');
+INSERT INTO `quantity_logs` VALUES ('3', '1', '1', '1', '1000', '2023-03-17 14:00:12', '1');
+INSERT INTO `quantity_logs` VALUES ('4', '1', '2', '1', '1000', '2023-03-17 14:00:16', '1');
+INSERT INTO `quantity_logs` VALUES ('5', '1', '3', '1', '1000', '2023-03-17 14:00:19', '1');
+INSERT INTO `quantity_logs` VALUES ('6', '1', '4', '1', '1000', '2023-03-17 14:00:23', '1');
+INSERT INTO `quantity_logs` VALUES ('7', '1', '3', '1', '120', '2023-03-17 14:00:33', '1');
+INSERT INTO `quantity_logs` VALUES ('8', '1', '4', '1', '120', '2023-03-17 14:00:39', '1');
+INSERT INTO `quantity_logs` VALUES ('9', '1', '4', '1', '30', '2023-03-17 14:00:56', '1');
+INSERT INTO `quantity_logs` VALUES ('10', '1', '3', '1', '1', '2023-03-17 14:01:22', '1');
+INSERT INTO `quantity_logs` VALUES ('11', '1', '3', '1', '119', '2023-03-17 14:02:04', '1');
+INSERT INTO `quantity_logs` VALUES ('12', '1', '3', '1', '120', '2023-03-17 14:02:10', '1');
+INSERT INTO `quantity_logs` VALUES ('13', '1', '4', '1', '120', '2023-03-17 14:02:46', '1');
+INSERT INTO `quantity_logs` VALUES ('14', '1', '5', '1', '1000', '2023-03-17 14:08:40', '1');
+INSERT INTO `quantity_logs` VALUES ('15', '1', '4', '1', '0', '2023-03-17 18:14:59', '1');
+INSERT INTO `quantity_logs` VALUES ('16', '1', '3', '1', '1', '2023-03-17 18:15:17', '1');
 
 -- ----------------------------
 -- Table structure for `reset_password`
@@ -383,11 +468,13 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
+INSERT INTO `suppliers` VALUES ('1', 'mrrg06e1aur2lmbhfm26skwvdm7pnu40', '1', 'Madayaw Gas', 'Bunawan', '09856645643', null, null, '1');
+INSERT INTO `suppliers` VALUES ('2', 'jc4z92d8os9zgiq9r2wlemleul9gur6z', '1', 'Davao Supplier', 'Bunawan', '09234234234', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tanks`
@@ -403,11 +490,13 @@ CREATE TABLE `tanks` (
   `tnk_uuid` int(11) DEFAULT NULL,
   `tnk_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`tnk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tanks
 -- ----------------------------
+INSERT INTO `tanks` VALUES ('1', '1', 'Tank 1', '5000000', '4979600', null, null, '1');
+INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '2479600', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`
@@ -444,11 +533,30 @@ CREATE TABLE `transactions` (
   `trx_balance` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
+INSERT INTO `transactions` VALUES ('1', 'POS-20230317-1', '1', '1', '3', '2023-03-17 02:10:28', '2023-03-17', '02:10:28', '0', '488', '820');
+INSERT INTO `transactions` VALUES ('2', 'POS-20230317-2', '1', '1', '1', '2023-03-17 02:44:30', '2023-03-17', '02:44:30', '0', '455', '455');
+INSERT INTO `transactions` VALUES ('3', 'POS-20230317-3', '1', '1', '1', '2023-03-17 02:47:48', '2023-03-17', '02:47:48', '0', '915', '915');
+INSERT INTO `transactions` VALUES ('4', 'POS-20230317-4', '1', '1', '1', '2023-03-17 02:52:39', '2023-03-17', '02:52:39', '915', '0', '915');
+INSERT INTO `transactions` VALUES ('5', 'POS-20230317-5', '1', '1', '1', '2023-03-17 02:59:57', '2023-03-17', '02:59:57', '915', '0', '915');
+INSERT INTO `transactions` VALUES ('6', 'POS-20230317-6', '1', '1', '1', '2023-03-17 03:07:44', '2023-03-17', '03:07:44', '1000', '-85', '915');
+INSERT INTO `transactions` VALUES ('7', 'POS-20230317-7', '1', '1', '1', '2023-03-17 03:19:34', '2023-03-17', '03:19:34', '0', '400', '700');
+INSERT INTO `transactions` VALUES ('8', 'POS-20230317-8', '1', '1', '1', '2023-03-17 03:20:45', '2023-03-17', '03:20:45', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('9', 'POS-20230317-9', '1', '1', '2', '2023-03-17 03:27:03', '2023-03-17', '03:27:03', '0', '238', '238');
+INSERT INTO `transactions` VALUES ('10', 'POS-20230317-10', '1', '1', '2', '2023-03-17 03:28:09', '2023-03-17', '03:28:09', '0', '230', '238');
+INSERT INTO `transactions` VALUES ('11', 'POS-20230317-11', '1', '1', '3', '2023-03-17 03:33:53', '2023-03-17', '03:33:53', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('12', 'POS-20230317-12', '1', '1', '3', '2023-03-17 03:37:18', '2023-03-17', '03:37:18', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('13', 'POS-20230317-13', '1', '1', '3', '2023-03-17 03:43:48', '2023-03-17', '03:43:48', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('14', 'POS-20230317-14', '1', '1', '1', '2023-03-17 03:48:21', '2023-03-17', '03:48:21', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('15', 'POS-20230317-15', '1', '1', '3', '2023-03-17 03:49:48', '2023-03-17', '03:49:48', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('16', 'POS-20230317-16', '1', '1', '1', '2023-03-17 03:51:10', '2023-03-17', '03:51:10', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('17', 'POS-20230317-17', '1', '1', '1', '2023-03-17 03:53:54', '2023-03-17', '03:53:54', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('18', 'POS-20230317-18', '1', '1', '3', '2023-03-17 03:58:21', '2023-03-17', '03:58:21', '0', '700', '700');
+INSERT INTO `transactions` VALUES ('19', 'POS-20230317-19', '1', '1', '3', '2023-03-17 04:05:02', '2023-03-17', '04:05:02', '0', '700', '700');
 
 -- ----------------------------
 -- Table structure for `users`
