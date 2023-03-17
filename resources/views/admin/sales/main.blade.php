@@ -74,8 +74,23 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-12 mb-3">
-                        <button type="button" class="btn btn-default bg-danger form-control" onclick="selectUserFirst()"><i class="fa fa-plus-circle"></i> Select Products</button>
+                    <div class="row">
+                        <div class="col-md-2 col-12 mb-3">
+                            <button type="button" class="btn btn-default bg-danger form-control" onclick="selectUserFirst()"><i class="fa fa-plus-circle"></i> Select Products</button>
+                        </div>
+
+                        <div class="col-md-8 col-0"></div>
+
+                        <div class="col-md-2 col-12 mb-3">
+                            <div class="dropdown float-right">
+                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown">
+                                    <i class="fa fa-ellipsis-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu float-left dropdown-menu-right" style="left: auto; right: 0;">
+                                    <li><a id="btn_bad_order" href="javascript:void(0)" data-toggle="modal" data-target="#bad-order-modal"><i class="fa fa-exchange ml-2"></i> Return Bad Order</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -243,11 +258,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                                                                <input type="number" class="form-control" id="in_crates{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_crates{{$product->prd_id}}')" onkeyup="noNegativeValue('in_crates{{$product->prd_id}}'); set_onkeyup(in_crates{{$product->prd_id}}.value,crates_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required></input>
+                                                                <input type="number" class="form-control" id="in_crates{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_crates{{$product->prd_id}}')" onkeyup="noNegativeValue('in_crates{{$product->prd_id}}'); set_onkeyup(in_crates{{$product->prd_id}}.value,crates_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" required></input>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                                                                <input type="number" class="form-control" id="in_loose{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_loose{{$product->prd_id}}')" onkeyup="noNegativeValue('in_loose{{$product->prd_id}}'); set_onkeyup(in_loose{{$product->prd_id}}.value,loose_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" required/></input>
+                                                                <input type="number" class="form-control" id="in_loose{{$product->prd_id}}" value="0" min="" max="" onclick="this.select()" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue('in_loose{{$product->prd_id}}')" onkeyup="noNegativeValue('in_loose{{$product->prd_id}}'); set_onkeyup(in_loose{{$product->prd_id}}.value,loose_amount{{$product->prd_id}}.id); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" required/></input>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -272,27 +287,27 @@
                                                             @if($product->prd_is_refillable == 1)
                                                                 <div class="form-group col-6">
                                                                     <label for="cus_address"># of Crates <span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('crates_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                    <input type="number" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('crates_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                 </div>
 
                                                                 <div class="form-group col-6">
                                                                     <label for="cus_address"># of Loose <span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('loose_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('loose_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                 </div>
                                                             @else
                                                             
-                                                                <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('crates_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                <input type="hidden" class="form-control" id="crates_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('crates_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('crates_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
 
                                                                 <div class="form-group col-12">
                                                                     <label for="cus_address">Quantity<span style="color:red">*</span></label>
-                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('loose_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                                    <input type="number" class="form-control" id="loose_amount{{$product->prd_id}}" value="0" min="" max="{{$product->prd_quantity}}" onchange="noNegativeValue('loose_amount{{$product->prd_id}}')" onkeyup="noNegativeValue('loose_amount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                                 </div>
                                                             @endif
                                                         </div>
 
                                                         <div class="form-group">
                                                             <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onchange="noNegativeValue('temp_discount{{$product->prd_id}}')" onkeyup="noNegativeValue('temp_discount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onchange="noNegativeValue('temp_discount{{$product->prd_id}}')" onkeyup="noNegativeValue('temp_discount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
                                                         
                                                         <div class="form-group">
@@ -503,6 +518,61 @@
     </div>
 </div>
 
+<!-- Bad Order Modal -->
+<div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Quantity </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">   
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
+                                    <table>
+                                        <tr>
+                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
+                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
+                                        <tr>
+                                    </table>
+                                </div>
+                                <div id="customer">
+                                    <label for="cus_name">Customer <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="cus_name" name="cus_name" readonly/>
+                                </div>
+                                <div id="products">
+                                    <label for="cus_name">Product <span style="color:red">*</span></label>
+                                    <select class="form-control" id="pur_products" name="stockin_prd_id" required="">
+                                    </select>
+                                </div>
+                                <div id="crate">
+                                    <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="3" hidden/>
+                    <input type="text" class="form-control" id="return_page" name="return_page" value="pos" hidden/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         $("#btn_cash").css("border-bottom", "4px solid green");
@@ -559,14 +629,29 @@
             });
         });
     });
+    
+    function set_onkeyup(orig,copy){
+        if(orig < 0 || orig == ""){
+            document.getElementById(copy).value ="0";
+        }
+        else{
+            document.getElementById(copy).value = orig;
+        }
+    }
 
-    function getTotal(prd_price_id, crates_id, loose_id, temp_discount_id, txt_sub_total){
+    function getTotal(prd_price_id, crates_id, loose_id, temp_discount_id, txt_sub_total, remaining_stocks){
         var prd_price = parseFloat(document.getElementById(prd_price_id).value);
         var crates_amount = parseFloat(document.getElementById(crates_id).value);
         var loose_amount = parseFloat(document.getElementById(loose_id).value);
 
         var total_quantity = ((crates_amount * 12));
         total_quantity = parseInt(total_quantity) + parseInt(loose_amount);
+
+        if(total_quantity > remaining_stocks){
+            document.getElementById(crates_id).value = remaining_stocks;
+            document.getElementById(loose_id).value = remaining_stocks;
+            alert("Order quantity must not exceed to the remaining stocks, " + remaining_stocks + " left.");
+        }
         
         var temp_discount = document.getElementById(temp_discount_id).value;
         var sub_total = (prd_price * total_quantity) - temp_discount;
@@ -576,11 +661,6 @@
             document.getElementById(temp_discount_id).value = "0.00";
             sub_total = 0;
         }
-        // if(prd_quantity == "" || prd_quantity < 1 || crates_amount < 1 || loose_amount < 1){
-        //     alert("Quantity cannot be zero");
-        //     document.getElementById(prd_quantity_id).value = "1";
-        // }
-
         document.getElementById(txt_sub_total).value = sub_total.toFixed(2);
     }
 
@@ -894,15 +974,6 @@
         }
     }
 
-    function set_onkeyup(orig,copy){
-        if(orig < 0 || orig == ""){
-            document.getElementById(copy).value ="0";
-        }
-        else{
-            document.getElementById(copy).value = orig;
-        }
-    }
-
     function selectUserFirst(){
         var client_id =  document.getElementById("client_id").value;
 
@@ -949,6 +1020,58 @@
     {
         document.getElementById("cus_form").submit(); 
     });
+
+
+    $("#btn_bad_order").on("click", function() {
+        $("#bad-order-modal").find("#customer").hide();
+        $("#bad-order-modal").find("#products").hide();
+        $("#bad-order-modal").find("#lbl-crate").hide();
+        $("#bad-order-modal").find("#lbl-loose").hide();
+        $("#bad-order-modal").find("#quantity").hide();
+        $("#bad-order-modal").find("#crate-quantity").hide();
+    });
+
+    function verifyTransaction(){
+        var trx_ref_id = document.getElementById("trx_ref_id").value;
+        var verified = false;
+
+        @foreach($transactions as $transaction)
+            if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
+                verified = true;
+                $("#cus_name").val("{{ $transaction->cus_name }}");
+
+                $("#bad-order-modal").find("#customer").show();
+                $("#bad-order-modal").find("#products").show();
+                $("#bad-order-modal").find("#lbl-crate").show();
+                $("#bad-order-modal").find("#lbl-loose").show();
+                $("#bad-order-modal").find("#quantity").show();
+                $("#bad-order-modal").find("#crate-quantity").show();
+
+                $("#pur_products").empty();
+                @foreach($purchased_products as $purchased_product)
+                    @if($purchased_product->trx_id == $transaction->trx_id)
+                        $("#pur_products").append("<option value='{{ $purchased_product->prd_id }}'>{{ $purchased_product->prd_name }}</option>");
+                    @endif
+                @endforeach
+            }
+        @endforeach
+
+        if(!verified){
+            if(trx_ref_id == ""){
+                alert("Input required field");
+            }
+            else{
+                alert("No transactions referenced to this code");
+            }
+            
+            $("#bad-order-modal").find("#customer").hide();
+            $("#bad-order-modal").find("#products").hide();
+            $("#bad-order-modal").find("#lbl-crate").hide();
+            $("#bad-order-modal").find("#lbl-loose").hide();
+            $("#bad-order-modal").find("#quantity").hide();
+            $("#bad-order-modal").find("#crate-quantity").hide();
+        }
+    }
     
 </script>
 

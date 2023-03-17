@@ -41,9 +41,6 @@ Route::group(['prefix' => 'user'], function()
     Route::post('upload-avatar/{usr_id}', 'UserController@uploadAvatar');
     Route::post('user-password', 'UserController@savePassword');
     Route::post('save-profile/{usr_id}', 'UserController@saveProfile');
-
-
-
 });
 
 Route::group(['prefix' => 'customer'], function()
@@ -79,7 +76,7 @@ Route::group(['prefix' => 'print'], function()
     Route::post('production-reports', 'PrintController@allproductionReports');
     Route::post('purchases-reports', 'PrintController@allpurchasesReports');
     Route::get('sales-receipt', 'PrintController@salesReceipt');
-    Route::get('sales-receipt', 'PrintController@paymentReceipt');
+    Route::get('payment-receipt', 'PrintController@paymentReceipt');
     Route::get('delivery-receipt', 'PrintController@deliveryReceipt');
 });
 

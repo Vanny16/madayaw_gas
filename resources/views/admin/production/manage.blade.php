@@ -1151,6 +1151,7 @@
                     <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
                     <input type="text" class="form-control" id="set_stockin_page" name="stockin_page" value="" hidden/>
                     <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
+                    <input type="text" class="form-control" id="return_page" name="return_page" value="production" hidden/>
                     <input type="text" id="si_tab_1" name="tab_1"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
@@ -1193,80 +1194,6 @@
         </div>
     </div>
 </div>
-
-<!-- Bad Order Modal -->
-<!-- <div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Bad Order Modal </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="{{-- action('ProductionController@addQuantity') --}}">
-            {{ csrf_field() }} 
-                <div class="modal-body">
-                    <div class="row">
-                        <div id="reference_data" class="col-md-6 col-12">
-                            <div class="form-group">   
-                                <div id="trx_ref_no">
-                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
-                                    <table class="col-12">
-                                        <tr>
-                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
-                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
-                                        <tr>
-                                    </table>
-                                </div>
-                                <div id="crate">
-                                    <label for="quantity" id="lbl-crate">Ordered Crate <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
-                                </div>
-                                
-                                <div id="loose">
-                                    <label for="quantity"id="lbl-loose">Ordered Loose <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
-                                </div>
-
-                                <div id="customer">
-                                    <label for="quantity"id="lbl-loose">Customer <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">   
-                                <div id="trx_ref_no">
-                                    <label for="quantity" id="lbl-trx_ref_id">Issuance <span style="color:red">*</span></label>
-                                    <select class="form-control">
-                                        <option>Madayaw Round</option>
-                                        <option>Madayaw Square</option>
-                                    </select>
-                                </div>
-                                <div id="crate">
-                                    <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
-                                </div>
-                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
-                    <input type="text" class="form-control" id="set_stockin_page" name="stockin_page" value="" hidden/>
-                    <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
-                    <input type="text" id="si_tab_1" name="tab_1"  hidden/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
 
 <!-- Add Tank Modal
 <div class="modal fade" id="tank-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

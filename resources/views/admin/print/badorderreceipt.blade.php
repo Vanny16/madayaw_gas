@@ -14,14 +14,11 @@
             </table>
         </div>
         <table width="100%">
-            
-                <tr>   
-                    <td width="50%"><p><strong><i>{{ $bad_order->bo_ref_id }}</i></strong></p></td>
-                    <td width="50%"><small>{{ $bad_order->bo_datetime }}</small></td>
-                </tr>
-        
-    
-    </table>  
+            <tr>   
+                <td width="50%"><p><strong><i>{{ $bad_order->bo_ref_id }}</i></strong></p></td>
+                <td width="50%"><small>{{ $bad_order->bo_datetime }}</small></td>
+            </tr>
+        </table>  
     </div>
     <div class="row">
         <table>

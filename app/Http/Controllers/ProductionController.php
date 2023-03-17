@@ -349,11 +349,9 @@ class ProductionController extends Controller
         }
 
         $prd_id = $request->stockin_prd_id;
-        (float)$prd_quantity = $request->quantity + ($request->crate_quantity * 12);
+        (float)$prd_quantity = (float)$request->quantity + ((float)$request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
-
-        // dd($tnk_id);
 
         record_stockin($prd_id, $prd_quantity);
         
@@ -526,48 +524,73 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }
             else{
-                $crate_quantity = $request->crate_quantity;
-                $quantity = $request->quantity;
+                $has_this_prd = DB::table('transactions')
+                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                ->where('trx_ref_id', '=', $trx_ref_id)
+                ->where('purchases.prd_id', '=', $prd_id)
+                ->get();
 
-                if($crate_quantity == null && $quantity == null){
-                    session()->flash('warningMessage','Please check your inputs');
-                    return redirect()->action('ProductionController@manage');
+                if(empty($has_this_prd[0])) {
+                    session()->flash('errorMessage','No purchases with this product');
                 }
                 else{
-                    DB::table('products') 
-                    ->where('prd_id','=',$prd_id)
-                    ->update([
-                        'prd_leakers' => $new_quantity,
-                        'prd_quantity' => $deduct_backflushed
-                    ]);
-
-                    $max_bo_id = DB::table('bad_orders')
-                    ->max('bo_id');
-
-                    $new_bo_id = $max_bo_id + 1;
-                    $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
-
-                    DB::table('bad_orders')
-                    ->insert([
-                        'acc_id' => session('acc_id'),
-                        'bo_ref_id' => $bo_ref_id,
-                        'trx_id' => $bo_transaction[0]->trx_id,
-                        'bo_crates' => $request->crate_quantity,
-                        'bo_loose' => $request->quantity,
-                        'bo_date' => date('Y-m-d'),
-                        'bo_time' => date('H:i:s'),
-                        'bo_datetime' => date('Y-m-d H:i:s')
-                    ]);
-    
-                    //LOG ACTION IN PRODUCTION
-                    record_movement($prd_id, $prd_quantity, $flag);
-
-                    session(['bo_trx_id' => $bo_transaction[0]->trx_id]);
-                    
-                    session()->flash('getProdValues', array( $prodValues));
-                    session()->flash('successMessage','Leakers added');
-                    return redirect()->action('PrintController@badorderReceipt');
+                    if($prd_quantity > 0){
+                        if($prd_quantity <= $has_this_prd[0]->pur_qty){
+                            $crate_quantity = $request->crate_quantity;
+                            $quantity = $request->quantity;
+            
+                            if($crate_quantity == null && $quantity == null){
+                                session()->flash('warningMessage','Please check your inputs');
+                            }
+                            else{
+                                DB::table('products') 
+                                ->where('prd_id','=',$prd_id)
+                                ->update([
+                                    'prd_leakers' => $new_quantity,
+                                    'prd_quantity' => $deduct_backflushed
+                                ]);
+            
+                                $max_bo_id = DB::table('bad_orders')
+                                ->max('bo_id');
+            
+                                $new_bo_id = $max_bo_id + 1;
+                                $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
+            
+                                DB::table('bad_orders')
+                                ->insert([
+                                    'acc_id' => session('acc_id'),
+                                    'bo_ref_id' => $bo_ref_id,
+                                    'trx_id' => $bo_transaction[0]->trx_id,
+                                    'bo_crates' => $request->crate_quantity,
+                                    'bo_loose' => $request->quantity,
+                                    'bo_date' => date('Y-m-d'),
+                                    'bo_time' => date('H:i:s'),
+                                    'bo_datetime' => date('Y-m-d H:i:s')
+                                ]);
+                
+                                //LOG ACTION IN PRODUCTION
+                                record_movement($prd_id, $prd_quantity, $flag);
+                                
+                                session()->flash('successMessage','Leakers added');
+                            }
+                        }
+                        else{
+                            session()->flash('errorMessage','Number of leakers must not exceed to the purchased quantity');
+                        }
+                    }
+                    else{
+                        session()->flash('errorMessage','Invalid input');
+                    }
                 }
+            }
+            
+            session()->flash('getProdValues', array( $prodValues));
+            if($request->return_page == "pos"){
+                return redirect()->action('SalesController@main');
+            }
+            else{
+                return redirect()->action('ProductionController@manage');
             }
         }
 

@@ -26,6 +26,15 @@ class SalesController extends Controller
         ->orderBy('cus_id')
         ->get();
 
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('transactions.acc_id', '=', session('acc_id'))
+        ->get();
+
+        $purchased_products = DB::table('products')
+        ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+        ->get();
+
         $oppositions = DB::table('oppositions')
         ->get();
 
@@ -34,7 +43,7 @@ class SalesController extends Controller
 
         session()->forget('selected_customer');
 
-        return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
     }
 
     public function payments()
@@ -108,13 +117,22 @@ class SalesController extends Controller
         ->orderBy('cus_id')
         ->get();
 
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('transactions.acc_id', '=', session('acc_id'))
+        ->get();
+
+        $purchased_products = DB::table('products')
+        ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+        ->get();
+
         $oppositions = DB::table('oppositions')
         ->get();
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
-        return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
     }
 
     public function createCustomer(Request $request)
