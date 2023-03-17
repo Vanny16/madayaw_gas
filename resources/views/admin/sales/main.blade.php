@@ -590,7 +590,7 @@
     }
 
     //Initialize Array for Sales Report in Add to Cart Function
-    var total_discount = parseFloat(0);
+    var total_discount = 0;
     var details = new Array();
 
     function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
@@ -627,7 +627,9 @@
             if(temp_discount == ""){
                 temp_discount = 0.00;
             }
-            total_discount = total_discount + temp_discount;
+            else{
+                total_discount = total_discount + parseFloat(temp_discount);
+            }
 
             //Setter For Amount to be Paid
             var client_id = document.getElementById("client_id").value;
@@ -656,7 +658,7 @@
             var received = document.getElementById("received_amount").value;
 
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-            document.getElementById("rct_discount").innerHTML = parseFloat(temp_discount).toFixed(2);
+            document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
             document.getElementById("rct_amount_paid").innerHTML = received;
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);

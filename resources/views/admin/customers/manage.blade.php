@@ -311,11 +311,11 @@
 
                                                                             <div class="form-group">
                                                                                 <label for="cus_contact">Contact # <span style="color:red">*</span></label>
-                                                                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11"></input>
+                                                                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" value="{{$customer->cus_contact}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11"></input>
                                                                             </div>
                                                                             
                                                                             <div class="form-group">
-                                                                                <label> Select Accessible Canisters<span style="color:red"> *</span></label>
+                                                                                <label> Select Accessible Products<span style="color:red"> *</span></label>
                                                                                 <div class="card">
                                                                                     <div class="col-12 p-2">
                                                                                         <div class="row">
@@ -499,10 +499,10 @@
 
                             <div class="form-group">
                                 <label for="cus_address">Contact # <span style="color:red">*</span></label>
-                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" minlength="11" maxlength="11"></input>
+                                <input type="text" name="cus_contact" class="form-control" placeholder="Enter Contact #" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="11"></input>
                             </div>
 
-                            <label> Select Accessible Canisters<span style="color:red"> *</span></label>
+                            <label> Select Accessible Products<span style="color:red"> *</span></label>
                             <div class="card">
                                 <div class="col-12 p-2">
                                     <div class="row">

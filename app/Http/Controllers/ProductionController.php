@@ -561,6 +561,8 @@ class ProductionController extends Controller
     
                     //LOG ACTION IN PRODUCTION
                     record_movement($prd_id, $prd_quantity, $flag);
+
+                    session(['bo_trx_id' => $bo_transaction[0]->trx_id]);
                     
                     session()->flash('getProdValues', array( $prodValues));
                     session()->flash('successMessage','Leakers added');
@@ -926,33 +928,36 @@ class ProductionController extends Controller
     {
         $tnk_id = $request->tnk_id;
         $tnk_name = $request->tnk_name;
-        $tnk_capacity = $request->tnk_capacity;
-        $tnk_remaining = $request->tnk_remaining * 1000;
+        $tnk_capacity = (float)$request->tnk_capacity * 1000;
+        $tnk_remaining = (float)$request->tnk_remaining * 1000;
         $tnk_notes = $request->tnk_notes;
         $tnk_uuid = $request->tnk_uuid;
 
-        $check_tank_name = DB::table('tanks')
+        $tank = DB::table('tanks')
         ->where('acc_id','=', session('acc_id'))
-        ->where('tnk_uuid','<>', $tnk_uuid)
         ->where('tnk_name','=', $tnk_name)
         ->first();
-
         
-        if($check_tank_name != null)
+        if($tank != null && $tank->tnk_id != $tnk_id)
         {
             session()->flash('errorMessage','Tank already exist');
-            return redirect()->action('ProductionController@tank');
         }
-
-        DB::table('tanks')
-        ->where('tnk_id', '=', $tnk_id)
-        ->update([
-            'tnk_name' => $tnk_name,
-            'tnk_capacity' => $tnk_capacity *1000,
-            'tnk_notes' => $tnk_notes
-        ]);
+        else{
+            if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
+                DB::table('tanks')
+                ->where('tnk_id', '=', $tnk_id)
+                ->update([
+                    'tnk_name' => $tnk_name,
+                    'tnk_capacity' => $tnk_capacity,
+                    'tnk_notes' => $tnk_notes
+                ]);
+                session()->flash('successMessage','Tank details updated.');
+            }
+            else{
+                session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
+            }
+        }
         
-        session()->flash('successMessage','Tank details updated.');
         return redirect()->action('ProductionController@tank');
     }
 
@@ -990,19 +995,29 @@ class ProductionController extends Controller
         ->where('tnk_id', '=', $tnk_id)
         ->first();
         
+        $tnk_capacity = (float)$remaining->tnk_capacity;
         $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
 
-        DB::table('tanks')
-        ->where('tnk_id', '=', $tnk_id)
-        ->update([
-            'tnk_remaining' => (float)$tnk_remaining,
-        ]);
-        
-        record_stockin($tnk_id, $refill_cty);
+        if($tnk_remaining > $tnk_capacity){
+            session()->flash('errorMessage','Refill must not be greater than tank capacity');
+        }
+        else if($tnk_remaining < 0 || $refill_cty < 0){
+            session()->flash('errorMessage','Refill must not be less than zero');
+        }
+        else{
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_remaining' => (float)$tnk_remaining,
+            ]);
+            
+            record_stockin($tnk_id, $refill_cty);
 
-        session()->flash('successMessage','Remaining has been added');
+            session()->flash('successMessage','Tank refilled');
+
+        }
+
         return redirect()->action('ProductionController@tank');
-    
     }
     
     //CREATE SUPPLIER

@@ -190,7 +190,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Volume (kg) <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Input Volume" value="{{$tank->tnk_remaining / 1000}}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" placeholder="Input Volume" value="" onclick="this.select();" onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes <span style="color:red">*</span></label>

@@ -3,19 +3,31 @@
 <div style="width:50mm;">
     <div class="card">
         <div class="card-header">
-            <p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p>
-            <p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p>
+            <table width="100%">
+                <tr>
+                    <td><p><img src="{{ asset('img/accounts/logo-1.jpg' ) }}" style="width:30px;"></p></td>
+                    <td><p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p></td>
+                </tr>
+            </table>
         </div>
         <table width="100%">
-            <tr>
-                <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
-                <td width="50%"><small>{{ $transactions->trx_datetime }}</small></td>
+    
+            <tr>   
+                <td width="50%"><p><strong><i>{{ $bad_orders->bo_ref_id }}</i></strong></p></td>
+                <td width="50%"><small>{{ $bad_orders->bo_datetime }}</small></td>
             </tr>
-        </table>
+        
+        </table>  
     </div>
-
     <div class="row">
         <table>
+            <tr>
+                <td width="50%">Transaction ID:</td>
+                <td width="50%">{{ $transactions->trx_ref_id }}</td>
+            </tr>
             <tr>
                 <td width="50%">Customer Name:</td>
                 <td width="50%">{{ $transactions->cus_name }}</td>
@@ -24,11 +36,14 @@
                 <td width="50%">Address:</td>
                 <td width="50%">{{ $transactions->cus_address }}</td>
             </tr>
+            <tr>
+                <td width="50%">Contact:</td>
+                <td width="50%">{{ $transactions->cus_contact }}</td>
+            </tr>
         </table>
         <hr>
         <table>
             <tr>
-                <td width="20%"><strong>Unit</strong></td>
                 <td width="20%"><strong>Item</strong></td>
                 <td width="20%"><strong>Price</strong></td>
                 <td width="20%"><strong>Qty</strong></td>
@@ -37,18 +52,16 @@
             </tr>
             
             @foreach($purchases as $purchase)
-                @foreach($bad_orders as $bad_order)
-                    @if($bad_order->pur_id == $purchase->pur_id)
-                    <tr>
-                        <td width="20%">IN</td>
-                        <td width="20%">{{ $purchase->prd_name }}</td>
-                        <td width="20%">{{ $purchase->prd_price }}</td>
-                        <td width="20%">{{ $bad_order->bo_loose }}</td>
-                        <td width="20%">{{ number_format($purchase->pur_deposit, 2, '.', ',') }}</td>
-                        <td width="20%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
-                    </tr>
-                    @endif
-                @endforeach
+
+            @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
+            <tr>
+                <td width="20%">{{ $purchase->prd_name }}</td>
+                <td width="20%">{{ $purchase->prd_price }}</td>
+                <td width="20%">{{ $bad_orders->bo_loose }}</td>
+                <td width="20%">{{ number_format($purchase->pur_deposit, 2, '.', ',') }}</td>
+                <td width="20%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
+            </tr>
+            
             @endforeach
             
             <tr>
@@ -58,6 +71,21 @@
                 <td colspan="1">Total</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1"><strong>{{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="1">M.O.P.</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ $transactions->payment_name }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Paid</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($transactions->pmnt_amount, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Balance</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($transactions->trx_balance, 2, '.', ',') }}</td>
             </tr>
             <tr>
                 <td colspan="5"><br></td>
@@ -72,6 +100,7 @@
             </tr>
         </table>
     </div>
+    
 </div>
 <!-- <div class="row">
     <div class="col-md-12"> 

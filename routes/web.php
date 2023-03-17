@@ -79,8 +79,8 @@ Route::group(['prefix' => 'print'], function()
     Route::post('production-reports', 'PrintController@allproductionReports');
     Route::post('purchases-reports', 'PrintController@allpurchasesReports');
     Route::get('sales-receipt', 'PrintController@salesReceipt');
+    Route::get('sales-receipt', 'PrintController@paymentReceipt');
     Route::get('delivery-receipt', 'PrintController@deliveryReceipt');
-    Route::get('badorder-receipt', 'PrintController@badorderReceipt');
 });
 
 Route::group(['prefix' => 'production'], function()
