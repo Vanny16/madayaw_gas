@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80030
 File Encoding         : 65001
 
-Date: 2023-03-15 22:50:55
+Date: 2023-03-17 01:57:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -292,6 +292,21 @@ CREATE TABLE `quantity_logs` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `reset_password`
+-- ----------------------------
+DROP TABLE IF EXISTS `reset_password`;
+CREATE TABLE `reset_password` (
+  `rst_id` int NOT NULL AUTO_INCREMENT,
+  `usr_id` int NOT NULL,
+  `rst_active` tinyint NOT NULL DEFAULT '1',
+  PRIMARY KEY (`rst_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of reset_password
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sales_reports`
 -- ----------------------------
 DROP TABLE IF EXISTS `sales_reports`;
@@ -469,7 +484,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', 'ribjm16on9j2hewbnp7f957tmckj7o58', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', 'University of Malagos', '1.jpg', '1', '1');
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
 
 -- ----------------------------
 -- Table structure for `user_types`

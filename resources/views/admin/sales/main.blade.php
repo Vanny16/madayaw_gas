@@ -80,7 +80,7 @@
 
                     <div class="card">
                         <div class="card-header bg-info">
-                            <h3 class="card-title"><i class="fa fa-cart-arrow-down"></i> Canisters In</h3>
+                            <h3 class="card-title"><i class="fa fa-arrow-down"></i> IN</h3>
                             <div class="col-md-12 text-right text-white order-lg-2 order-1 mb-1">
                             </div>   
                         </div>
@@ -116,7 +116,7 @@
 
                     <div class="card">
                         <div class="card-header bg-success">
-                            <h3 class="card-title"><i class="fa fa-shopping-cart"></i> Selected Products</h3>
+                            <h3 class="card-title"><i class="fa fa-arrow-up"></i> OUT</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">

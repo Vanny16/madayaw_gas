@@ -28,11 +28,16 @@ class MainController extends Controller
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
+        
+        $reset_passwords_count = DB::table('reset_password')
+        ->where('rst_active', '=', 1)
+        ->count();
 
         if(session('typ_id') == null){
             return redirect()->action('LoginController@login');
         }
         else{
+            session(['reset_passwords_count' => $reset_passwords_count]);
             return view('admin.main', compact('pdn_flag', 'news', 'canisters', 'tanks')); 
         }
     }

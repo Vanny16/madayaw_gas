@@ -49,7 +49,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 mb-2">
-                            <p class="text-center"><a href="javascript:void(0)" data-toggle="modal" data-target="#forgotModal" style="color:#17a2b8;">Forgot Password</a></p>
+                            <p class="text-center"><a href="javascript:void(0)" data-toggle="modal" data-target="#usernameModal" style="color:#17a2b8;">Reset Password</a></p>
                         </div>
                     </div>
                 </form>
@@ -60,25 +60,40 @@
     </div>
 </section>
 
-<div id="forgotModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form method="POST" action="#">
-            {{ csrf_field() }} 
+
+<form method="POST" action="{{action('UserController@forgotPassword')}}">
+{{ csrf_field() }} 
+    <div id="usernameModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
                 <div class="modal-body">
-                    <p>Enter your tracking code:</p>
-                    <input class="form-control" type="text" name="tracking_code" placeholder="Enter Tracking Code Here"/>
+                    <label for="usr_name">Enter Username</label>
+                    <input class="form-control" type="text" name="usr_name" required/>
+                    <button type="button" class="btn form-control bg-info text-white btn-info mt-2"  data-toggle="modal" data-target="#forgotModal">Confirm</button> 
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn" style="color:white;background:maroon;"><span class="fa fa-search"></span> Track</button> 
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times-circle"></span> Close</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+
+    <div id="forgotModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="text-warning"><span class="fa fa-warning"></span> Warning</5>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Are you sure you want to reset your password?</strong> <br><br>Please click '<span class="fa fa-key"></span> RESET' button, and wait for an admin to validate your request.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default"><span class="fa fa-key"></span> RESET</button> 
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times-circle"></span> BACK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 @endsection

@@ -926,7 +926,7 @@ class ProductionController extends Controller
         $tnk_id = $request->tnk_id;
         $tnk_name = $request->tnk_name;
         $tnk_capacity = $request->tnk_capacity;
-        $tnk_remaining = $request->tnk_remainning;
+        $tnk_remaining = $request->tnk_remaining * 1000;
         $tnk_notes = $request->tnk_notes;
         $tnk_uuid = $request->tnk_uuid;
 
@@ -947,12 +947,35 @@ class ProductionController extends Controller
         ->where('tnk_id', '=', $tnk_id)
         ->update([
             'tnk_name' => $tnk_name,
-            'tnk_capacity' => $tnk_capacity,
-            'tnk_remaining' => $tnk_remaining,
+            'tnk_capacity' => $tnk_capacity *1000,
             'tnk_notes' => $tnk_notes
         ]);
         
         session()->flash('successMessage','Tank details updated.');
+        return redirect()->action('ProductionController@tank');
+    }
+
+    //EDIT TANK CONTROLLER
+    public function tankActivation($tnk_id, $tnk_active)
+    {
+
+        if($tnk_active==1){
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_active' => 0
+            ]);
+            session()->flash('successMessage','Tank deactivated.');
+        }
+        else if($tnk_active==0){
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_active' => 1
+            ]);
+            session()->flash('successMessage','Tank activated.');
+        }
+        
         return redirect()->action('ProductionController@tank');
     }
 

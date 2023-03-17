@@ -157,7 +157,7 @@
                     <a href="{{ action('UserController@user') }}" class="nav-link">
                         <i class="nav-icon fa fa-users"></i>
                         <p>
-                            Users
+                            Users @if(session('reset_passwords_count') != 0)<span class="badge badge-danger ml-2">{{ session('reset_passwords_count') }}</span>@endif
                         </p>
                     </a>
                 </li>
