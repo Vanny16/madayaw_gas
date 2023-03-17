@@ -560,6 +560,8 @@ class ProductionController extends Controller
     
                     //LOG ACTION IN PRODUCTION
                     record_movement($prd_id, $prd_quantity, $flag);
+
+                    session(['bo_trx_id' => $bo_transaction[0]->trx_id]);
                     
                     session()->flash('getProdValues', array( $prodValues));
                     session()->flash('successMessage','Leakers added');
