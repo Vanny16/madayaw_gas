@@ -384,10 +384,11 @@ INSERT INTO `quantity_logs` VALUES ('37', '1', '1', '1', '4000000', '2023-03-16 
 DROP TABLE IF EXISTS `reset_password`;
 CREATE TABLE `reset_password` (
   `rst_id` int NOT NULL AUTO_INCREMENT,
-  `usr_id` int NOT NULL,
-  `rst_active` tinyint NOT NULL DEFAULT '1',
+  `usr_id` int,
+  `rst_active` tinyint DEFAULT '1',
   PRIMARY KEY (`rst_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- ----------------------------
 -- Records of reset_password
