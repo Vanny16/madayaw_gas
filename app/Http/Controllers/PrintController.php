@@ -291,26 +291,19 @@ class PrintController extends Controller
 
     public function badorderReceipt()
     {
-        $latest_trx_id = session('bo_trx_id');
+        $latest_bo_id = session('bo_trx_id');
 
-        $transactions = DB::table('transactions')
-        ->join('payments', 'payments.trx_id', '=', 'transactions.trx_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('transactions.trx_id', '=' ,$latest_trx_id)
-        ->first();
-
-        $purchases = DB::table('purchases')
+        $bad_order = DB::table('bad_orders')
+        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->where('trx_id', '=' ,$latest_trx_id)
-        ->get();
-
-        $bad_orders = DB::table('bad_orders')
-        ->get();
-        // dd($latest_trx_id);
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')        
+        ->where('bo_id', '=' ,$latest_bo_id)
+        ->first();
+        // dd($bad_order);
       
         session()->flash('successMessage','Transaction complete!');
-        return view('admin.print.badorderreceipt', compact('transactions', 'purchases', 'bad_orders'));
+        return view('admin.print.badorderreceipt', compact('bad_order'));
     }
 
 }
