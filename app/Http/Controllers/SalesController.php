@@ -246,6 +246,7 @@ class SalesController extends Controller
         $cus_id = "";
         
         $mode_of_payment = $request->mode_of_payment;
+        $trx_gross = $request->trx_gross;
         $trx_total = $request->trx_total;
         $trx_amount_paid = $request->trx_amount_paid;
         $trx_balance =  (double)$trx_total - (double)$trx_amount_paid;
@@ -325,6 +326,7 @@ class SalesController extends Controller
             'trx_datetime' => date('Y-m-d h:i:s'),
             'trx_date' => date('Y-m-d'),
             'trx_time' => date('h:i:s'),
+            'trx_gross' => $trx_gross,
             'trx_total' => $trx_total,
             'trx_amount_paid' => $trx_amount_paid,
             'trx_balance' => $trx_balance 

@@ -381,19 +381,19 @@ class ProductController extends Controller
         ->select('prd_quantity')
         ->first();
 
-        if($qty_checker->prd_quantity > $prd_quantity)
-        {
-            $subtracted_qty = $qty_checker->prd_quantity - $prd_quantity;
-            (float)$prd_quantity = "-" . $subtracted_qty;
+        // if($qty_checker->prd_quantity > $prd_quantity)
+        // {
+        //     $subtracted_qty = $qty_checker->prd_quantity - $prd_quantity;
+        //     (float)$prd_quantity = "-" . $subtracted_qty;
             
-            DB::table('products')
-            ->where('prd_id', '=', $prd_id)
-            ->update([
-                'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
-            ]);
+        //     DB::table('products')
+        //     ->where('prd_id', '=', $prd_id)
+        //     ->update([
+        //         'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
+        //     ]);
             
-            record_stockin($prd_id, $prd_quantity);//, 
-        }
+        //     record_stockin($prd_id, $prd_quantity);
+        // }
 
         DB::table('products')
         ->where('prd_id', '=', $prd_id)
@@ -402,7 +402,7 @@ class ProductController extends Controller
             'prd_description' => $prd_description,
             'prd_sku' => $prd_sku,
             'prd_price' => $prd_price,
-            'prd_deposit' => $prd_deposit,
+            // 'prd_deposit' => $prd_deposit,
             'prd_reorder_point' => $prd_reorder, 
             'prd_weight' => $prd_weight,
             'sup_id' => $sup_id

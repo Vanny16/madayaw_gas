@@ -776,24 +776,23 @@ class ProductionController extends Controller
         ->select('prd_quantity')
         ->first();
 
-        if($qty_checker->prd_quantity > $prd_quantity)
-        {
-            $subtracted_qty = $qty_checker->prd_quantity - $prd_quantity;
-            (float)$prd_quantity = "-" . $subtracted_qty;
+        // if($qty_checker->prd_quantity > $prd_quantity)
+        // {
+        //     $subtracted_qty = $qty_checker->prd_quantity - $prd_quantity;
+        //     (float)$prd_quantity = "-" . $subtracted_qty;
             
-            DB::table('products')
-            ->where('prd_id', '=', $prd_id)
-            ->update([
-                'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
-            ]);
+        //     DB::table('products')
+        //     ->where('prd_id', '=', $prd_id)
+        //     ->update([
+        //         'prd_quantity' => $qty_checker->prd_quantity - $subtracted_qty
+        //     ]);
             
-            record_stockin($prd_id, $prd_quantity);
-        }
-
-
+        //     record_stockin($prd_id, $prd_quantity);
+        // }
         
         if($prd_type == 0)
         {
+            dd("asd");
             DB::table('products')
             ->where('prd_id', '=', $prd_id)
             ->update([

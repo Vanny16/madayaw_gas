@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80030
 File Encoding         : 65001
 
-Date: 2023-03-18 02:02:08
+Date: 2023-03-19 23:15:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -442,6 +442,7 @@ CREATE TABLE `transactions` (
   `trx_time` varchar(20) DEFAULT NULL,
   `trx_amount_paid` decimal(11,0) DEFAULT NULL,
   `trx_balance` decimal(11,0) DEFAULT NULL,
+  `trx_gross` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;

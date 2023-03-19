@@ -144,7 +144,7 @@
                                             <th>Crates</th>
                                             <th>Loose</th>
                                             <th>Discount</th>
-                                            <th>Total Deposit</th>
+                                            <th>Deposit</th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
@@ -431,6 +431,7 @@
                                         <th>Qty</th>
                                         <th>Description</th>
                                         <th>Price</th>
+                                        <th>Subtotal</th>
                                         <th></th>
                                     </thead>
                                     <tbody id="tbl-rct">
@@ -453,13 +454,18 @@
                                         <tr>
                                             <td><strong>Gross Total</strong></td>
                                             <td><a id="rct_gross_total">0.00</a></td>
+                                            <input type="hidden" id="trx_gross" name="trx_gross">
                                         </tr>
                                         <tr>
                                             <td><strong>Discount</strong></td>
                                             <td><a id="rct_discount">0.00</a></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Amount Payable</strong></td>
+                                            <td><strong>Total Deposit</strong></td>
+                                            <td><a id="rct_deposit">0.00</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Net Total</strong></td>
                                             <td><a id="rct_amount_payable">0.00</a></td>
                                         </tr>
                                         <tr>
@@ -648,8 +654,8 @@
         total_quantity = parseInt(total_quantity) + parseInt(loose_amount);
 
         if(total_quantity > remaining_stocks){
-            document.getElementById(crates_id).value = remaining_stocks;
-            document.getElementById(loose_id).value = remaining_stocks;
+            document.getElementById(crates_id).value = Math.floor(remaining_stocks / 12);
+            document.getElementById(loose_id).value = 0;
             alert("Order quantity must not exceed to the remaining stocks, " + remaining_stocks + " left.");
         }
         
@@ -667,135 +673,6 @@
     function setMovementId(){
         var movement_id = document.getElementById("movement_id").value;
         document.getElementById("movement_id").value = parseInt(movement_id) + 1;
-    }
-
-    //Initialize Array for Sales Report in Add to Cart Function
-    var total_discount = 0;
-    var details = new Array();
-
-    function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
-
-        var crates_amount = parseInt(crates_amount);
-        var loose_amount = parseInt(loose_amount);
-        var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
-        var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
-        var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
-
-        if(prd_quantity != "" || prd_quantity > 0){
-            // if(prd_in_quantity > prd_quantity){
-            //     alert("Canisters to be in must not be greater than quantity to be purchased");
-            // }
-            // else{
-                //Calculations
-                var total = document.getElementById("lbl_total").innerHTML;
-                var gross_total = (prd_price * prd_quantity);
-                var total_deposit = prd_deposit * brd_new_prd_quantity;
-                var sub_total = gross_total - temp_discount + total_deposit;
-                total = parseFloat(total) + sub_total;
-            // }
-
-            
-            // Setter For Price
-            if(prd_price == "" || prd_price < 1){
-                prd_price = "<small class='bg-warning badge'>Free</small>";
-            }
-            else{
-                prd_price = parseFloat(prd_price).toFixed(2);
-            }
-            
-            // Setter For Discount
-            if(temp_discount == ""){
-                temp_discount = 0.00;
-            }
-            else{
-                total_discount = total_discount + parseFloat(temp_discount);
-            }
-
-            //Setter For Amount to be Paid
-            var client_id = document.getElementById("client_id").value;
-            var amount = document.getElementById("amount_payable");
-            amount.value = total.toFixed(2);
-
-            //For Populating Selected Products Table 
-
-            var row_id = document.getElementById("movement_id").value;
-            var table = document.getElementById("tbl-cart");
-            var row = table.insertRow(0);
-
-            row.id = "row"+row_id;
-            row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-            row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
-            row.insertCell(2).innerHTML = prd_price;
-            row.insertCell(3).innerHTML = parseFloat(crates_amount);
-            row.insertCell(4).innerHTML = parseFloat(loose_amount);
-            row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = total_deposit.toFixed(2);
-            row.insertCell(7).innerHTML = sub_total.toFixed(2);
-            row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-            row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
-
-            var received = document.getElementById("received_amount").value;
-
-            document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-            document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
-            document.getElementById("rct_amount_payable").innerHTML = sub_total.toFixed(2);
-            document.getElementById("rct_amount_paid").innerHTML = received;
-            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            modal.hidden = true;
-            
-            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // session()->flash('successMessage','Transaction complete!');
-            
-            checkCart();
-        }
-        else{
-            alert("Please input quantity");
-        }
-    }
-
-    function removeFromCart(row, sub_total, crate, loose) {
-
-        var deleteRowIn = document.getElementById("row_in" + row);
-        var deleteRow = document.getElementById("row" + row);
-
-        if (deleteRow && deleteRowIn) { // add error handling to check for null or undefined variables
-            
-            //IN
-            var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
-            var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
-            total_crate = parseFloat(total_crate) - crate;
-            total_loose = parseFloat(total_loose) - loose;
-
-            document.getElementById("lbl_total_crates").innerHTML = total_crate;
-            document.getElementById("lbl_total_loose").innerHTML = total_loose;
-
-            var parentElement1 = document.getElementById("tbl-prd-in");
-            parentElement1.removeChild(deleteRowIn);
-            
-            //CART
-            var total = document.getElementById("lbl_total").innerHTML;
-            total = parseFloat(total) - sub_total;
-
-            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            document.getElementById("amount_payable").value = total.toFixed(2);
-
-            var parentElement2 = document.getElementById("tbl-cart");
-            parentElement2.removeChild(deleteRow);
-
-        } else {
-            
-            //CART
-            var total = document.getElementById("lbl_total").innerHTML;
-            total = parseFloat(total) - sub_total;
-
-            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-            document.getElementById("amount_payable").value = total.toFixed(2);
-
-            var parentElement2 = document.getElementById("tbl-cart");
-            parentElement2.removeChild(deleteRow);
-            
-        }
     }
 
     function addCanistersIn(in_crate_id, in_loose_id, select_id){
@@ -871,6 +748,135 @@
         }
     }
 
+    //Initialize Array for Sales Report in Add to Cart Function
+    var total_discount = 0;
+    var details = new Array();
+
+    function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
+
+        var crates_amount = parseInt(crates_amount);
+        var loose_amount = parseInt(loose_amount);
+        var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
+        var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
+        var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
+
+        if(prd_quantity != "" || prd_quantity > 0){
+            // if(prd_in_quantity > prd_quantity){
+            //     alert("Canisters to be in must not be greater than quantity to be purchased");
+            // }
+            // else{
+                //Calculations
+                var total = document.getElementById("lbl_total").innerHTML;
+                var gross_total = (prd_price * prd_quantity);
+                var total_deposit = prd_deposit * brd_new_prd_quantity;
+                var sub_total = gross_total - temp_discount + total_deposit;
+                total = parseFloat(total) + sub_total;
+            // }
+
+            
+            // Setter For Price
+            if(prd_price == "" || prd_price < 1){
+                prd_price = "<small class='bg-warning badge'>Free</small>";
+            }
+            else{
+                prd_price = parseFloat(prd_price).toFixed(2);
+            }
+            
+            // Setter For Discount
+            if(temp_discount == ""){
+                temp_discount = 0.00;
+            }
+            else{
+                total_discount = total_discount + parseFloat(temp_discount);
+            }
+
+            //Setter For Amount to be Paid
+            var client_id = document.getElementById("client_id").value;
+            var amount = document.getElementById("amount_payable");
+            amount.value = total.toFixed(2);
+
+            //For Populating Selected Products Table 
+
+            var row_id = document.getElementById("movement_id").value;
+            var table = document.getElementById("tbl-cart");
+            var row = table.insertRow(0);
+
+            row.id = "row"+row_id;
+            row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
+            row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
+            row.insertCell(2).innerHTML = prd_price;
+            row.insertCell(3).innerHTML = parseFloat(crates_amount);
+            row.insertCell(4).innerHTML = parseFloat(loose_amount);
+            row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+            row.insertCell(6).innerHTML = total_deposit.toFixed(2);
+            row.insertCell(7).innerHTML = sub_total.toFixed(2);
+            row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+            row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+
+            var received = document.getElementById("received_amount").value;
+
+            document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+            document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
+            document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
+            document.getElementById("rct_amount_paid").innerHTML = received;
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            modal.hidden = true;
+            
+            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+            // session()->flash('successMessage','Transaction complete!');
+            
+            checkCart();
+        }
+        else{
+            alert("Please input quantity");
+        }
+    }
+
+    function removeFromCart(row, sub_total, crate, loose) {
+
+        var deleteRowIn = document.getElementById("row_in" + row);
+        var deleteRow = document.getElementById("row" + row);
+
+        if (deleteRow && deleteRowIn) { // add error handling to check for null or undefined variables
+            
+            //IN
+            var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
+            var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+            total_crate = parseFloat(total_crate) - crate;
+            total_loose = parseFloat(total_loose) - loose;
+
+            document.getElementById("lbl_total_crates").innerHTML = total_crate;
+            document.getElementById("lbl_total_loose").innerHTML = total_loose;
+
+            var parentElement1 = document.getElementById("tbl-prd-in");
+            parentElement1.removeChild(deleteRowIn);
+            
+            //CART
+            var total = document.getElementById("lbl_total").innerHTML;
+            total = parseFloat(total) - sub_total;
+
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
+
+            var parentElement2 = document.getElementById("tbl-cart");
+            parentElement2.removeChild(deleteRow);
+
+        } else {
+            
+            //CART
+            var total = document.getElementById("lbl_total").innerHTML;
+            total = parseFloat(total) - sub_total;
+
+            document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
+
+            var parentElement2 = document.getElementById("tbl-cart");
+            parentElement2.removeChild(deleteRow);
+            
+        }
+    }
+
     function enterPayable(){
         // alert("test");
         //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
@@ -930,7 +936,10 @@
         
         var item_qty = "";
         var item_des = "";
+        var item_price = "";
         var item_tot = "";
+        var item_deposit = 0;
+        var gross_total = 0;
 
         for(let i=0; i <= (cart_item.length)-1; i++){
             let row_text = cart_item[i];
@@ -944,14 +953,23 @@
                 
                 item_qty = prd_quantity;
                 item_des = row_item[1];
-                item_tot = row_item[6];
+                item_price = row_item[2];
+                item_tot = row_item[7];
         
             }
 
             try{
                 rct_row.insertCell(0).innerHTML = item_qty;
                 rct_row.insertCell(1).innerHTML = item_des;
-                rct_row.insertCell(2).innerHTML = item_tot;
+                rct_row.insertCell(2).innerHTML = item_price;
+                rct_row.insertCell(3).innerHTML = item_tot;
+                
+                item_deposit += parseFloat(row_item[6]);
+                gross_total = gross_total + (parseFloat(row_item[2]) * prd_quantity);
+
+                document.getElementById("trx_gross").value = gross_total;
+                document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+                document.getElementById("rct_deposit").innerHTML = item_deposit.toFixed(2);
             }
             catch(e){
                 alert("Please select products first");

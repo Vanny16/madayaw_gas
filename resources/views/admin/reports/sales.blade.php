@@ -111,20 +111,28 @@
                                             <th>Customer</th>
                                             <th>Date & Time</th>
                                             <th>Total Sale</th>
+                                            <th>Total Discount</th>
                                             <th>Amount Received</th>
                                             <th>Change</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php($total_sold = 0)
-                                        @php($total_sales = 0)
                                         @foreach($sales as $sale)
+                                            @php($total_discount = 0)
+
+                                            @foreach($purchases as $purchase)
+                                                @if($purchase->trx_id == $sale->trx_id)
+                                                     @php($total_discount += $purchase->pur_discount)
+                                                @endif
+                                            @endforeach
+
                                             <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $sale->trx_ref_id }}" >
                                                 <td>{{ $sale->trx_ref_id }}</td>
                                                 <td>{{ $sale->usr_full_name }}</td>
                                                 <td>{{ $sale->cus_name }}</td>
                                                 <td>{{ $sale->trx_datetime }}</td>
                                                 <td>₱ {{ number_format($sale->trx_total, 2, '.', ',') }}</td>
+                                                <td>₱ {{ number_format($total_discount, 2, '.', ',') }}</td>
                                                 <td>₱ {{ number_format($sale->trx_amount_paid, 2, '.', ',') }}</td>
                                                 <td>₱ {{ number_format($sale->trx_balance, 2, '.', ',') }}</td>
                                             </tr>
@@ -147,6 +155,7 @@
                                                                             <div class="col"><strong>Crates</strong></div>
                                                                             <div class="col"><strong>Loose</strong></div>
                                                                             <div class="col"><strong>Deposit</strong></div>
+                                                                            <div class="col"><strong>Discount</strong></div>
                                                                             <div class="col"><strong>Subtotal</strong></div>
                                                                         </div>
                                                                         @foreach($purchases as $purchase)
@@ -158,6 +167,7 @@
                                                                                     <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
                                                                                     <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
                                                                                     <div class="col">₱ {{ number_format($purchase->pur_deposit, 2, '.', ',') }}</div>
+                                                                                    <div class="col">₱ {{ number_format($purchase->pur_discount, 2, '.', ',') }}</div>
                                                                                     <div class="col">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</div>
                                                                                 </div>
                                                                             @endif
@@ -180,7 +190,7 @@
                                             </div>
                                         @endforeach
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="7"></td>
+                                            <td colspan="8"></td>
                                         </tr>
                                     </tbody>
                                 </table>
