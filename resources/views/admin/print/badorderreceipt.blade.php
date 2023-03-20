@@ -54,7 +54,7 @@
             <tr>
                 <td width="20%">{{ $bad_orders->prd_name }}</td>
                 <td colspan="6"></td>
-                <td width="20%">{{ number_format($bo_qty, 2, '.', ',') }}</td>
+                <td width="20%">{{ ($bo_qty) }}</td>
             </tr>
             
      

@@ -590,7 +590,7 @@ class ProductionController extends Controller
                 return redirect()->action('SalesController@main');
             }
             else{
-                return redirect()->action('ProductionController@manage');
+                return redirect()->action('PrintController@badorderReceipt');
             }
         }
 
