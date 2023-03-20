@@ -325,7 +325,7 @@ CREATE TABLE `reset_password` (
   `usr_id` int DEFAULT NULL,
   `rst_active` tinyint DEFAULT '1',
   PRIMARY KEY (`rst_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of reset_password
