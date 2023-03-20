@@ -15,6 +15,7 @@
                 </tr>
             </table>
         </div>
+        <h3>SALES RECEIPT</h3>
         <table width="100%">
             <tr>
                 <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
@@ -122,7 +123,7 @@
             }, 500);
         }
         else{
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }
     }
 
@@ -133,7 +134,7 @@
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }, 500);
     });
 </script>

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80030
+Source Server         : server
+Source Server Version : 50610
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 80030
+Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-19 23:13:33
+Date: 2023-03-20 18:04:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,12 +20,12 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
-  `acc_id` int NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) NOT NULL AUTO_INCREMENT,
   `acc_uuid` varchar(255) DEFAULT NULL,
   `acc_name` varchar(255) DEFAULT NULL,
   `acc_image` varchar(255) DEFAULT NULL,
   `acc_website` varchar(255) DEFAULT NULL,
-  `acc_active` tinyint DEFAULT '1',
+  `acc_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`acc_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
@@ -39,17 +39,17 @@ INSERT INTO `accounts` VALUES ('1', null, 'Madayaw Gas', null, null, '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `bad_orders`;
 CREATE TABLE `bad_orders` (
-  `bo_id` int NOT NULL AUTO_INCREMENT,
+  `bo_id` int(11) NOT NULL AUTO_INCREMENT,
   `bo_ref_id` varchar(30) DEFAULT NULL,
-  `acc_id` int DEFAULT NULL,
-  `trx_id` int NOT NULL,
-  `bo_crates` int DEFAULT '0',
-  `bo_loose` int DEFAULT '0',
+  `acc_id` int(11) DEFAULT NULL,
+  `trx_id` int(11) NOT NULL,
+  `bo_crates` int(11) DEFAULT '0',
+  `bo_loose` int(11) DEFAULT '0',
   `bo_date` varchar(20) DEFAULT NULL,
   `bo_time` varchar(20) DEFAULT NULL,
   `bo_datetime` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`bo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_orders
@@ -60,8 +60,8 @@ CREATE TABLE `bad_orders` (
 -- ----------------------------
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
-  `cus_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int NOT NULL,
+  `cus_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) NOT NULL,
   `cus_uuid` varchar(255) DEFAULT NULL,
   `cus_name` varchar(255) DEFAULT NULL,
   `cus_address` varchar(255) DEFAULT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `customers` (
   `cus_accessibles_prices` varchar(255) DEFAULT NULL,
   `cus_notes` varchar(255) DEFAULT NULL,
   `cus_image` varchar(255) DEFAULT NULL,
-  `cus_active` tinyint DEFAULT '1',
+  `cus_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`cus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
@@ -93,19 +93,19 @@ INSERT INTO `customers` VALUES ('9', '1', 'gul4ltv29a4xr77q4s482vpcezgprr37', 'C
 -- ----------------------------
 DROP TABLE IF EXISTS `movement_logs`;
 CREATE TABLE `movement_logs` (
-  `log_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
   `prd_id` varchar(255) DEFAULT NULL,
   `log_filled` decimal(11,0) DEFAULT '0',
   `log_leakers` decimal(10,0) DEFAULT '0',
   `log_empty_goods` decimal(10,0) DEFAULT '0',
   `log_for_revalving` decimal(10,0) DEFAULT '0',
   `log_scraps` decimal(10,0) DEFAULT '0',
-  `usr_id` int DEFAULT NULL,
+  `usr_id` int(11) DEFAULT NULL,
   `log_date` date DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -121,16 +121,16 @@ INSERT INTO `movement_logs` VALUES ('5', '1', '4', '120', '0', '0', '0', '0', '1
 -- ----------------------------
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
-  `news_id` int NOT NULL AUTO_INCREMENT,
+  `news_id` int(11) NOT NULL AUTO_INCREMENT,
   `news_title` varchar(255) DEFAULT NULL,
   `news_content` longtext,
   `news_date` varchar(20) DEFAULT NULL,
   `news_time` varchar(20) DEFAULT NULL,
   `news_datetime` varchar(20) DEFAULT NULL,
   `news_img` varchar(255) DEFAULT NULL,
-  `news_active` tinyint DEFAULT '1',
+  `news_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`news_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of news
@@ -141,16 +141,16 @@ CREATE TABLE `news` (
 -- ----------------------------
 DROP TABLE IF EXISTS `oppositions`;
 CREATE TABLE `oppositions` (
-  `ops_id` int NOT NULL AUTO_INCREMENT,
+  `ops_id` int(11) NOT NULL AUTO_INCREMENT,
   `ops_uuid` varchar(255) DEFAULT NULL,
   `ops_name` varchar(255) DEFAULT NULL,
   `ops_sku` varchar(255) DEFAULT NULL,
   `ops_description` varchar(255) DEFAULT NULL,
-  `ops_quantity` int DEFAULT NULL,
+  `ops_quantity` int(11) DEFAULT NULL,
   `ops_image` varchar(255) DEFAULT NULL,
   `ops_notes` varchar(255) DEFAULT NULL,
-  `acc_id` int DEFAULT NULL,
-  `ops_active` int DEFAULT '1',
+  `acc_id` int(11) DEFAULT NULL,
+  `ops_active` int(11) DEFAULT '1',
   PRIMARY KEY (`ops_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -163,33 +163,35 @@ CREATE TABLE `oppositions` (
 -- ----------------------------
 DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments` (
-  `acc_id` int NOT NULL,
-  `pmnt_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) NOT NULL,
+  `pmnt_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pmnt_ref_id` varchar(30) DEFAULT NULL,
-  `trx_id` int unsigned NOT NULL,
+  `trx_id` int(10) unsigned NOT NULL,
   `pmnt_amount` double(30,0) NOT NULL,
   `pmnt_attachment` varchar(70) DEFAULT NULL,
-  `usr_id` int NOT NULL,
+  `usr_id` int(11) NOT NULL,
   `pmnt_date` varchar(20) DEFAULT NULL,
   `pmnt_time` varchar(20) DEFAULT NULL,
-  `trx_mode_of_payment` int DEFAULT NULL,
+  `trx_mode_of_payment` int(11) DEFAULT NULL,
   PRIMARY KEY (`pmnt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of payments
 -- ----------------------------
 INSERT INTO `payments` VALUES ('1', '1', 'PMT20230319-1', '1', '400', null, '1', '2023-03-19', '04:25:09', '1');
+INSERT INTO `payments` VALUES ('1', '2', 'PMT20230320-2', '2', '0', null, '1', '2023-03-20', '06:00:35', '2');
+INSERT INTO `payments` VALUES ('1', '3', 'PMT20230320-3', '3', '0', null, '1', '2023-03-20', '06:01:42', '2');
 
 -- ----------------------------
 -- Table structure for `payment_types`
 -- ----------------------------
 DROP TABLE IF EXISTS `payment_types`;
 CREATE TABLE `payment_types` (
-  `mode_of_payment` int NOT NULL,
+  `mode_of_payment` int(11) NOT NULL,
   `payment_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`mode_of_payment`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of payment_types
@@ -203,7 +205,7 @@ INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 -- ----------------------------
 DROP TABLE IF EXISTS `production_logs`;
 CREATE TABLE `production_logs` (
-  `pdn_id` int NOT NULL AUTO_INCREMENT,
+  `pdn_id` int(11) NOT NULL AUTO_INCREMENT,
   `pdn_date` date DEFAULT NULL,
   `pdn_start_time` time DEFAULT NULL,
   `pdn_end_time` time DEFAULT NULL,
@@ -220,8 +222,8 @@ INSERT INTO `production_logs` VALUES ('1', '2023-03-19', '15:56:23', null);
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
-  `prd_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
+  `prd_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
   `prd_uuid` varchar(255) DEFAULT NULL,
   `prd_name` varchar(255) DEFAULT NULL,
   `prd_description` varchar(255) DEFAULT NULL,
@@ -236,13 +238,13 @@ CREATE TABLE `products` (
   `prd_scraps` double DEFAULT '0',
   `prd_reorder_point` decimal(10,2) DEFAULT NULL,
   `prd_image` varchar(255) DEFAULT NULL,
-  `sup_id` int DEFAULT NULL,
-  `prd_active` tinyint DEFAULT '1',
-  `prd_is_refillable` tinyint DEFAULT '1',
-  `prd_for_production` tinyint DEFAULT '1',
-  `prd_for_POS` tinyint DEFAULT NULL,
+  `sup_id` int(11) DEFAULT NULL,
+  `prd_active` tinyint(4) DEFAULT '1',
+  `prd_is_refillable` tinyint(4) DEFAULT '1',
+  `prd_for_production` tinyint(4) DEFAULT '1',
+  `prd_for_POS` tinyint(4) DEFAULT NULL,
   `prd_weight` decimal(10,0) DEFAULT NULL,
-  `prd_raw_can_qty` int DEFAULT '0',
+  `prd_raw_can_qty` int(11) DEFAULT '0',
   `prd_components` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
@@ -252,8 +254,8 @@ CREATE TABLE `products` (
 -- ----------------------------
 INSERT INTO `products` VALUES ('1', '1', 'j97mm4ga2qp72gsiyde2hbferueen9zk', 'MR Valve', 'MRV', 'MRV', null, null, '0', '640.00', '0.00', '0.00', '0.00', '0', '100.00', null, '1', '1', '0', '1', '0', null, '0', null);
 INSERT INTO `products` VALUES ('2', '1', 'esvbm0x4ecnhypf26cnsr1is97r189mh', 'MS Valve', 'MSV', 'MSV', null, null, '0', '1000.00', '0.00', '0.00', '0.00', '0', '100.00', null, '1', '1', '0', '1', '0', null, '0', null);
-INSERT INTO `products` VALUES ('3', '1', 'uk6ws9c3rwf2njqjppoqfmhgaa2728ug', 'Madayaw Round', 'MR LPG 170G', 'MR LPG 170G', null, '35.00', '20', '108.00', '0.00', '252.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '170', '640', '1');
-INSERT INTO `products` VALUES ('4', '1', '7z7dsq04gdfiqk08rmidvamfkz6od2vo', 'Madayaw Square', 'MS LPG 170G', 'MS LPG 170G', null, '40.00', '50', '120.00', '0.00', '240.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '170', '1000', '');
+INSERT INTO `products` VALUES ('3', '1', 'uk6ws9c3rwf2njqjppoqfmhgaa2728ug', 'Madayaw Round', 'MR LPG 170G', 'MR LPG 170G', null, '35.00', '20', '60.00', '0.00', '276.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '170', '640', '1');
+INSERT INTO `products` VALUES ('4', '1', '7z7dsq04gdfiqk08rmidvamfkz6od2vo', 'Madayaw Square', 'MS LPG 170G', 'MS LPG 170G', null, '40.00', '50', '84.00', '0.00', '276.00', '0.00', '0', '100.00', null, '2', '1', '1', '1', '1', '170', '1000', '');
 INSERT INTO `products` VALUES ('5', '1', '6fsvzhxa9sr4gv9tnzpaoct1644qmsub', 'Gas Stove 1  Burner', '1 Burner Stove', 'GS1B', null, '700.00', '0', '100.00', '0.00', '0.00', '0.00', '0', '100.00', null, '1', '1', '0', '0', '1', null, '0', null);
 
 -- ----------------------------
@@ -261,40 +263,45 @@ INSERT INTO `products` VALUES ('5', '1', '6fsvzhxa9sr4gv9tnzpaoct1644qmsub', 'Ga
 -- ----------------------------
 DROP TABLE IF EXISTS `purchases`;
 CREATE TABLE `purchases` (
-  `pur_id` int NOT NULL AUTO_INCREMENT,
-  `trx_id` int DEFAULT NULL,
-  `prd_id` int DEFAULT NULL,
-  `pur_crate` int DEFAULT NULL,
-  `pur_loose` int DEFAULT NULL,
+  `pur_id` int(11) NOT NULL AUTO_INCREMENT,
+  `trx_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
+  `pur_crate` int(11) DEFAULT NULL,
+  `pur_loose` int(11) DEFAULT NULL,
   `pur_discount` double(10,2) DEFAULT '0.00',
   `pur_deposit` double(10,2) DEFAULT NULL,
   `pur_total` double(10,2) DEFAULT NULL,
-  `pur_qty` int DEFAULT NULL,
+  `pur_qty` int(11) DEFAULT NULL,
   `prd_price` double(10,2) DEFAULT NULL,
-  `pur_crate_in` int DEFAULT NULL,
-  `pur_loose_in` int DEFAULT NULL,
+  `prd_id_in` int(11) DEFAULT NULL,
+  `pur_crate_in` int(11) DEFAULT NULL,
+  `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
 -- ----------------------------
-INSERT INTO `purchases` VALUES ('1', '1', '3', '1', '0', '20.00', '0.00', '400.00', '12', '35.00', '1', '0');
+INSERT INTO `purchases` VALUES ('1', '1', '3', '1', '0', '20.00', '0.00', '400.00', '12', '35.00', null, '1', '0');
+INSERT INTO `purchases` VALUES ('2', '2', '4', '1', '0', '0.00', '-600.00', '-120.00', '12', '40.00', '4', '2', '0');
+INSERT INTO `purchases` VALUES ('3', '2', '3', '2', '0', '0.00', '240.00', '1080.00', '24', '35.00', '3', '1', '0');
+INSERT INTO `purchases` VALUES ('4', '3', '4', '2', '0', '0.00', '600.00', '1560.00', '24', '40.00', '3', '1', '0');
+INSERT INTO `purchases` VALUES ('5', '3', '3', '2', '0', '0.00', '240.00', '1080.00', '24', '35.00', '4', '1', '0');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
 -- ----------------------------
 DROP TABLE IF EXISTS `quantity_logs`;
 CREATE TABLE `quantity_logs` (
-  `log_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
-  `prd_id` int DEFAULT NULL,
-  `usr_id` int DEFAULT NULL,
-  `log_quantity` int DEFAULT NULL,
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
+  `usr_id` int(11) DEFAULT NULL,
+  `log_quantity` int(11) DEFAULT NULL,
   `log_datetime` datetime DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -321,11 +328,11 @@ INSERT INTO `quantity_logs` VALUES ('16', '1', '5', '1', '100', '2023-03-19 16:0
 -- ----------------------------
 DROP TABLE IF EXISTS `reset_password`;
 CREATE TABLE `reset_password` (
-  `rst_id` int NOT NULL AUTO_INCREMENT,
-  `usr_id` int DEFAULT NULL,
-  `rst_active` tinyint DEFAULT '1',
+  `rst_id` int(11) NOT NULL AUTO_INCREMENT,
+  `usr_id` int(11) DEFAULT NULL,
+  `rst_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`rst_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of reset_password
@@ -336,14 +343,14 @@ CREATE TABLE `reset_password` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sales_reports`;
 CREATE TABLE `sales_reports` (
-  `sls_id` int NOT NULL AUTO_INCREMENT,
-  `cus_id` int DEFAULT NULL,
-  `prd_id` int DEFAULT NULL,
+  `sls_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cus_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
   `sls_quantity` float DEFAULT NULL,
   `sls_discount` float DEFAULT NULL,
   `sls_sub_total` float DEFAULT NULL,
   `sls_time` time DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`sls_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -356,8 +363,8 @@ CREATE TABLE `sales_reports` (
 -- ----------------------------
 DROP TABLE IF EXISTS `stockin_logs`;
 CREATE TABLE `stockin_logs` (
-  `log_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
   `prd_id` varchar(255) DEFAULT NULL,
   `log_quantity` decimal(11,0) DEFAULT '0',
   `log_leakers` decimal(10,0) DEFAULT '0',
@@ -366,7 +373,7 @@ CREATE TABLE `stockin_logs` (
   `log_scraps` decimal(10,0) DEFAULT '0',
   `log_date` date DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stockin_logs
@@ -377,14 +384,14 @@ CREATE TABLE `stockin_logs` (
 -- ----------------------------
 DROP TABLE IF EXISTS `stocks_logs`;
 CREATE TABLE `stocks_logs` (
-  `stk_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
-  `prd_id` int DEFAULT NULL,
-  `opening_stocks` int DEFAULT NULL,
-  `closing_stocks` int DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
+  `opening_stocks` int(11) DEFAULT NULL,
+  `closing_stocks` int(11) DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`stk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stocks_logs
@@ -395,10 +402,10 @@ CREATE TABLE `stocks_logs` (
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_statuses`;
 CREATE TABLE `stock_statuses` (
-  `stk_id` int NOT NULL AUTO_INCREMENT,
+  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
   `stk_opening` double DEFAULT NULL,
   `stk_closing` double DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`stk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -411,15 +418,15 @@ CREATE TABLE `stock_statuses` (
 -- ----------------------------
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers` (
-  `sup_id` int NOT NULL AUTO_INCREMENT,
+  `sup_id` int(11) NOT NULL AUTO_INCREMENT,
   `sup_uuid` varchar(255) DEFAULT NULL,
-  `acc_id` int DEFAULT NULL,
+  `acc_id` int(11) DEFAULT NULL,
   `sup_name` varchar(255) DEFAULT NULL,
   `sup_address` varchar(255) DEFAULT NULL,
   `sup_contact` varchar(255) DEFAULT NULL,
   `sup_notes` varchar(255) DEFAULT NULL,
   `sup_image` varchar(255) DEFAULT NULL,
-  `sup_active` tinyint DEFAULT '1',
+  `sup_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
@@ -434,16 +441,16 @@ INSERT INTO `suppliers` VALUES ('2', 'zjf7xgvva6uq0ylxl118tx8noo8t7oq9', '1', 'M
 -- ----------------------------
 DROP TABLE IF EXISTS `tanks`;
 CREATE TABLE `tanks` (
-  `tnk_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int NOT NULL,
+  `tnk_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) NOT NULL,
   `tnk_name` varchar(255) DEFAULT NULL,
   `tnk_capacity` decimal(11,0) DEFAULT '0',
   `tnk_remaining` decimal(11,0) DEFAULT '0',
   `tnk_notes` varchar(255) DEFAULT NULL,
-  `tnk_uuid` int DEFAULT NULL,
-  `tnk_active` tinyint DEFAULT '1',
+  `tnk_uuid` int(11) DEFAULT NULL,
+  `tnk_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`tnk_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tanks
@@ -456,12 +463,12 @@ INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '4979600', null, null
 -- ----------------------------
 DROP TABLE IF EXISTS `tank_logs`;
 CREATE TABLE `tank_logs` (
-  `log_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
-  `tnk_id` int DEFAULT NULL,
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `tnk_id` int(11) DEFAULT NULL,
   `log_tnk_opening` decimal(10,0) DEFAULT NULL,
   `log_tnk_closing` decimal(10,0) DEFAULT NULL,
-  `pdn_id` int DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
@@ -476,11 +483,11 @@ INSERT INTO `tank_logs` VALUES ('2', '1', '2', '0', null, '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
-  `trx_id` int NOT NULL AUTO_INCREMENT,
+  `trx_id` int(11) NOT NULL AUTO_INCREMENT,
   `trx_ref_id` varchar(30) DEFAULT NULL,
-  `acc_id` tinyint DEFAULT NULL,
-  `usr_id` int DEFAULT NULL,
-  `cus_id` int DEFAULT NULL,
+  `acc_id` tinyint(4) DEFAULT NULL,
+  `usr_id` int(11) DEFAULT NULL,
+  `cus_id` int(11) DEFAULT NULL,
   `trx_datetime` datetime DEFAULT NULL,
   `trx_date` varchar(20) DEFAULT NULL,
   `trx_time` varchar(20) DEFAULT NULL,
@@ -489,28 +496,30 @@ CREATE TABLE `transactions` (
   `trx_gross` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
 INSERT INTO `transactions` VALUES ('1', 'POS-20230319-1', '1', '1', '1', '2023-03-19 04:25:09', '2023-03-19', '04:25:09', '400', '0', '400', '400');
+INSERT INTO `transactions` VALUES ('2', 'POS-20230320-2', '1', '1', '1', '2023-03-20 06:00:35', '2023-03-20', '06:00:35', '0', '960', '1320', '960');
+INSERT INTO `transactions` VALUES ('3', 'POS-20230320-3', '1', '1', '1', '2023-03-20 06:01:42', '2023-03-20', '06:01:42', '0', '2640', '1800', '2640');
 
 -- ----------------------------
 -- Table structure for `users`
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `usr_id` int NOT NULL AUTO_INCREMENT,
-  `acc_id` int DEFAULT NULL,
+  `usr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
   `usr_uuid` varchar(255) DEFAULT NULL,
   `usr_full_name` varchar(255) DEFAULT NULL,
   `usr_name` varchar(255) DEFAULT NULL,
   `usr_password` varchar(255) DEFAULT NULL,
   `usr_address` varchar(255) DEFAULT NULL,
   `usr_image` varchar(255) DEFAULT NULL,
-  `usr_active` tinyint DEFAULT '1',
-  `typ_id` int DEFAULT NULL,
+  `usr_active` tinyint(4) DEFAULT '1',
+  `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
@@ -524,7 +533,7 @@ INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Ce
 -- ----------------------------
 DROP TABLE IF EXISTS `user_types`;
 CREATE TABLE `user_types` (
-  `typ_id` int NOT NULL AUTO_INCREMENT,
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
   `typ_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`typ_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;

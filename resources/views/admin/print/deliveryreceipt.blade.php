@@ -1,93 +1,119 @@
-@extends('layouts.themes.admin.print')
+@extends('layouts.themes.admin.smallreceipt')
 @section('content')
-<div class="row">
-    <div class="col-md-12"> 
-        <h3 style="text-align:center;"></h3>
-        <p style="text-align:center;"></p>
-    </div>
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p>
-                <p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p>
-            </div>
-            <div class="row">
-                <div class="col-md-2 col-12 mb-3">
-                    <h5><strong>DELIVERY RECEIPT </strong></h5>
-                </div>
-                <div class="col-md-8 col-12 mb-6">
-                    <p class="text-danger fa-2x mr-2" style="text-align:right;">NO. {{ $transactions->trx_ref_id }}</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <table class="table table-borderless table-non-stripped">
-                <tr class="bg-light" height="1px">
-                    <td width="200px" style="border: border-collapse:collapse;"><strong>Customer Name:</strong></td>
-                    <td colspan="5" style="border-bottom: 1px solid black; border-collapse:collapse;">{{ $transactions->cus_name }}</td>
+<div style="width:50mm;">
+    <div class="card">
+        <div class="card-header">
+            
+            <table width="100%">
+                <tr>
+                    <td><p><img src="{{ asset('img/accounts/logo-1.jpg' ) }}" style="width:30px;"></p></td>
+                    <td><p style="text-align:center;"><strong> MADAYAW PETROLEUM AND GAS CORPORATION</strong></p></td>
                 </tr>
-                <tr class="bg-light" height="1px">
-                    <td width="200px" style="border: border-collapse:collapse;"><strong>Address:</strong></td>
-                    <td colspan="5" style="border-bottom: 1px solid black; border-collapse:collapse;">{{ $transactions->cus_address }}</td>
-                </tr>
-                <tr class="bg-light" height="1px">
-                    <td width="200px" style="border: border-collapse:collapse;"><strong>Date:</strong></td>
-                    <td colspan="5" style="border-bottom: 1px solid black; border-collapse:collapse;">{{ date("Y-m-d", strtotime($transactions->trx_datetime)) }}</td>
+                <tr>
+                    <td colspan="2"><p style="text-align:center;"> Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City<p></td>
                 </tr>
             </table>
         </div>
+        <h3>DELIVERY RECEIPT</h3>
+        <table width="100%">
+            <tr>
+                <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
+                <td width="50%"><small>{{ $transactions->trx_datetime }}</small></td>
+            </tr>
+        </table>
+    </div>
 
-            <div class="row">
-                <table class="table table-borderless table-non-stripped text-center" style="border: 1px solid black;">
-                    <thead>
-                        <tr>
-                            <th width="70px" style="border: 1px solid black; border-collapse:collapse;">Unit</th>
-                            <th width="70px" style="border: 1px solid black; border-collapse:collapse;">Crates</th>
-                            <th width="70px" style="border: 1px solid black; border-collapse:collapse;">Loose</th>
-                            <th width="100px" style="border: 1px solid black; border-collapse:collapse;">Total Qty</th>
-                            <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Description</th>
-                            <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Unit Price</th>
-                            <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Deposit</th>
-                            <th width="500px" style="border: 1px solid black; border-collapse:collapse;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($purchases as $purchase)
-                        
-                        @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
+    <div class="row">
+        <table>
+            <tr>
+                <td width="50%">Customer Name:</td>
+                <td width="50%">{{ $transactions->cus_name }}</td>
+            </tr>
+            <tr>
+                <td width="50%">Address:</td>
+                <td width="50%">{{ $transactions->cus_address }}</td>
+            </tr>
+            <tr>
+                <td width="50%">Contact:</td>
+                <td width="50%">{{ $transactions->cus_contact }}</td>
+            </tr>
+        </table>
+        <hr>
 
-                        <tr>
-                            <td style="border: 1px solid black; border-collapse:collapse;">OUT</td>
-                            <td colspan="2" style="border: 1px solid black; border-collapse:collapse;">(<strong>{{ $purchase->pur_crate }}</strong> x 12) + <strong>{{ $purchase->pur_loose }}</strong></td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->pur_qty }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_name }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">{{ $purchase->prd_price }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;"><span class="text-secondary mr-2">({{ $purchase->prd_deposit }} x  <?php echo $new_can_qty; ?> )</span>= {{ $purchase->pur_deposit }}</td>
-                            <td style="border: 1px solid black; border-collapse:collapse;">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
-                        </tr>
-                        @endforeach
-                        <tr class="text-success bg-white">
-                            <td colspan="6"></td>
-                            <td class="text-success"><strong>Total</strong></td>
-                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">₱ {{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <div class="col-md-2 col-12 mb-3">
-                    <p>Issued By: </p>
-                </div>
-                <div class="col-md-8 col-12 mb-6" style="text-align:right;">
-                    <p>Receive By: </p>
-                </div>
-            </div>
-        </div>
+        <table>
+            <tr>
+                <td width="20%"><strong>Unit</strong></td>
+                <td width="20%"><strong>Item</strong></td>
+                <td width="20%"><strong>Crate</strong></td>
+                <td width="20%"><strong>Loose</strong></td>
+                <td width="20%"><strong>Qty</strong></td>
+            </tr>
+            @foreach($purchases as $purchase)
+            <tr>
+                <td width="20%">IN</td>
+                <td width="20%">{{ $purchase->prd_name }}</td>
+                <td width="20%">{{ $purchase->pur_crate_in }}</td>
+                <td width="20%">{{ $purchase->pur_loose_in }}</td>
+                <td width="20%">{{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}</td>
+            </tr>
+            @endforeach
+            <tr>
+                <td colspan="5"><hr></td>
+            </tr>
+            @foreach($purchases as $purchase)
+            <tr>
+                <td width="20%">OUT</td>
+                <td width="20%">{{ $purchase->prd_name }}</td>
+                <td width="20%">{{ $purchase->pur_crate }}</td>
+                <td width="20%">{{ $purchase->pur_loose }}</td>
+                <td width="20%">{{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}</td>
+            </tr>
+            @endforeach
+            
+            <tr>
+                <td colspan="5"><hr></td>
+            </tr>
+            <tr>
+                <td colspan="2">Issued by:</td>
+                <td colspan="3">{{session('usr_full_name')}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">Received by:</td>
+                <td colspan="3 ">{{ $transactions->cus_name }}</td>
+            </tr>
+        </table>
     </div>
 </div>
-<script type="text/javascript"> 
-    window.addEventListener("load", window.print());
-    // window.location.href = "{{-- action('SalesController@main') --}}";
-</script>
+
+<!-- <script type="text/javascript">
+    // Define a function to handle the beforeprint event
+    function handleBeforePrint() {
+        // Remove the event listener to prevent an infinite loop
+        window.removeEventListener("beforeprint", handleBeforePrint);
+
+        // Display a confirmation dialog to allow the user to select print settings
+        if (confirm("Do you want a receipt?")) {
+            // Open the print dialog
+            setTimeout(function() {
+                window.print();
+            }, 500);
+        }
+        else{
+            window.location.href = "{{ action('SalesController@main') }}";
+        }
+    }
+
+    // Add an event listener for the beforeprint event
+    window.addEventListener("beforeprint", handleBeforePrint);
+
+    // Call the print method when the page finishes loading
+    window.addEventListener("load", function() {
+        setTimeout(function() {
+            window.print();
+            window.location.href = "{{ action('SalesController@main') }}";
+        }, 500);
+    });
+</script> -->
+
 @endsection

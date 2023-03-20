@@ -275,8 +275,8 @@ class SalesController extends Controller
                 $pur_total = $purchase_data[7];
                 $pur_crate_in = $purchase_data[8];
                 $pur_loose_in = $purchase_data[9];
-                $cus_id = $purchase_data[10];
-            
+                $prd_id_in = $purchase_data[10];
+                $cus_id = $purchase_data[11];
             }
             
             DB::table('purchases')
@@ -289,6 +289,7 @@ class SalesController extends Controller
                 'pur_qty' => $pur_qty,
                 'pur_discount' => $pur_discount,
                 'pur_deposit' => $pur_deposit,
+                'prd_id_in' => $prd_id_in,
                 'pur_crate_in' => $pur_crate_in,
                 'pur_loose_in' => $pur_loose_in,
                 'pur_total' => $pur_total
