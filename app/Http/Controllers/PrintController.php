@@ -293,7 +293,7 @@ class PrintController extends Controller
     {
         $latest_bo_id = session('bo_trx_id');
 
-        $bad_order = DB::table('bad_orders')
+        $bad_orders = DB::table('bad_orders')
         ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -303,7 +303,7 @@ class PrintController extends Controller
         // dd($bad_order);
       
         session()->flash('successMessage','Transaction complete!');
-        return view('admin.print.badorderreceipt', compact('bad_order'));
+        return view('admin.print.badorderreceipt', compact('bad_orders'));
     }
 
 }
