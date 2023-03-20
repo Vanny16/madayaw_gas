@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-17 18:25:15
+Date: 2023-03-20 12:14:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -287,7 +287,7 @@ CREATE TABLE `reset_password` (
   `usr_id` int(11) DEFAULT NULL,
   `rst_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`rst_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of reset_password
@@ -442,6 +442,7 @@ CREATE TABLE `transactions` (
   `trx_time` varchar(20) DEFAULT NULL,
   `trx_amount_paid` decimal(11,0) DEFAULT NULL,
   `trx_balance` decimal(11,0) DEFAULT NULL,
+  `trx_gross` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -463,7 +464,7 @@ CREATE TABLE `users` (
   `usr_password` varchar(255) DEFAULT NULL,
   `usr_address` varchar(255) DEFAULT NULL,
   `usr_image` varchar(255) DEFAULT NULL,
-  `usr_active` tinyint(255) DEFAULT '1',
+  `usr_active` tinyint(4) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;

@@ -64,14 +64,19 @@
                 <td colspan="5"><hr></td>
             </tr>
             <tr>
-                <td colspan="1">Total</td>
+                <td colspan="1">Gross</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1"><strong>{{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
+                <td colspan="1"><strong>{{ number_format($transactions->trx_gross, 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
                 <td colspan="1">Discount</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1"><strong>{{ number_format($total_discount, 2, '.', ',') }}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="1">Net Total</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1"><strong>{{ number_format($transactions->trx_total, 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
                 <td colspan="1">M.O.P.</td>

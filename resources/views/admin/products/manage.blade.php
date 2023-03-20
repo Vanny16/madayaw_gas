@@ -208,7 +208,7 @@
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-product-modal-{{$product->prd_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product price won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-product-modal-{{$product->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                             @endif
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
                                                         </ul>
@@ -267,10 +267,10 @@
                                                                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div> -->
-                                                                            <div class="form-group">
+                                                                            <!-- <div class="form-group">
                                                                                 <label for="prd_price">Quantity <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />

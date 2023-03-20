@@ -33,18 +33,18 @@
                     </thead>
                     <tbody>
                         @foreach($all_sale_details as $all_sale_detail)
-                        <tr>
-                            <td>{{$all_sale_detail->sup_name}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{$all_sale_detail->sup_contact}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{$all_sale_detail->sup_address}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{$all_sale_detail->sup_notes}}</td>
-                        </tr> 
+                            <tr>
+                                <td>{{$all_sale_detail->sup_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{$all_sale_detail->sup_contact}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{$all_sale_detail->sup_address}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{$all_sale_detail->sup_notes}}</td>
+                            </tr> 
                         @endforeach
                     </tbody>
                 </table>
