@@ -557,7 +557,7 @@ class ProductionController extends Controller
                                 $new_bo_id = $max_bo_id + 1;
                                 $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
             
-                                DB::table('bad_orders')
+                                $bo_trx_id = DB::table('bad_orders')
                                 ->insert([
                                     'acc_id' => session('acc_id'),
                                     'bo_ref_id' => $bo_ref_id,
@@ -568,7 +568,8 @@ class ProductionController extends Controller
                                     'bo_time' => date('H:i:s'),
                                     'bo_datetime' => date('Y-m-d H:i:s')
                                 ]);
-                
+                                
+                                session(['latest_bo_id' => $bo_trx_id]); 
                                 //LOG ACTION IN PRODUCTION
                                 record_movement($prd_id, $prd_quantity, $flag);
                                 
@@ -584,13 +585,13 @@ class ProductionController extends Controller
                     }
                 }
             }
-            
+        
             session()->flash('getProdValues', array( $prodValues));
             if($request->return_page == "pos"){
                 return redirect()->action('SalesController@main');
             }
-            else{
-                return redirect()->action('ProductionController@manage');
+            else{              
+                return redirect()->action('PrintController@badorderReceipt');
             }
         }
 
@@ -745,20 +746,6 @@ class ProductionController extends Controller
             $request->prd_type
         );
 
-        // $check_uuid = DB::table('products')
-        // ->where('prd_id', '=', $prd_id)
-        // ->where('prd_uuid', '=', null)
-        // ->get();
-
-        // if($check_uuid != null)
-        // {
-        //     DB::table('products')
-        //     ->where('prd_id', '=', $prd_id)
-        //     ->update([
-        //         'prd_uuid' => generateuuid()
-        //     ]);
-        // }
-
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_uuid', '<>', $prd_uuid)
@@ -792,7 +779,7 @@ class ProductionController extends Controller
         
         if($prd_type == 0)
         {
-            dd("asd");
+            // dd("asd");
             DB::table('products')
             ->where('prd_id', '=', $prd_id)
             ->update([

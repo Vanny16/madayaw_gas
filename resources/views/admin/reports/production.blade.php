@@ -40,7 +40,7 @@
                                                     </div>
                                                     <div class="col-md-3"> 
                                                         @if(count($production_id) > 1)
-                                                            <label for="selectedDate">Production IDs</label>
+                                                            <label for="selectedDate">Production Shifts</label>
                                                             <div class="dropdown">
                                                                 <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMonthButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     @if($selectedID <> '')

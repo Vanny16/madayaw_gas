@@ -293,7 +293,7 @@ class PrintController extends Controller
 
     public function badorderReceipt()
     {
-        $latest_bo_id = session('bo_trx_id');
+        $latest_bo_id = session('latest_bo_id');
 
         $bad_order = DB::table('bad_orders')
         ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
