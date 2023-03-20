@@ -557,7 +557,7 @@ class ProductionController extends Controller
                                 $new_bo_id = $max_bo_id + 1;
                                 $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
             
-                                $bo_trx_id = DB::table('bad_orders')
+                                DB::table('bad_orders')
                                 ->insert([
                                     'acc_id' => session('acc_id'),
                                     'bo_ref_id' => $bo_ref_id,
@@ -569,7 +569,8 @@ class ProductionController extends Controller
                                     'bo_datetime' => date('Y-m-d H:i:s')
                                 ]);
                                 
-                                session(['latest_bo_id' => $bo_trx_id]); 
+                                session(['latest_bo_id' => $new_bo_id ]); 
+                                // dd( session('latest_bo_id'));
                                 //LOG ACTION IN PRODUCTION
                                 record_movement($prd_id, $prd_quantity, $flag);
                                 
