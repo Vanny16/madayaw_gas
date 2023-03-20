@@ -306,12 +306,14 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 
 function get_total_stock_report($prd_id, $pdn_id)
 {
-    $production_logs = DB::table('movement_logs')
+    $total_stock = DB::table('movement_logs')
     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
     ->where('movement_logs.acc_id', '=', session('acc_id'))
     ->where('movement_logs.prd_id', '=', $prd_id)
     ->where('movement_logs.pdn_id', '=', $pdn_id)
     ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    
+    return $total_stock;
 }
 
 function check_materials($flag, $qty, $prd_id)

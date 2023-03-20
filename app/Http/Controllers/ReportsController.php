@@ -10,46 +10,6 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
-    // public function sales()
-    // {
-    //     $sales_date_from = "";
-    //     $sales_date_to = "";
-
-    //     $sales = DB::table('products')
-    //             ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
-    //             ->where('products.acc_id', '=', session('acc_id'))
-    //             ->where('products.prd_for_POS', '=', '1')
-    //             ->selectRaw('products.prd_id, products.prd_name, products.prd_price, products.prd_description, sum(purchases.pur_qty) as total_sold, sum(purchases.pur_total) as total_sales')
-    //             ->groupBy('products.prd_id', 'products.prd_name', 'products.prd_description', 'products.prd_price')
-    //             ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
-    //             ->orderBy('products.prd_name')
-    //             ->get();   
-
-    //     return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to'));
-    // }
-
-    // public function salesFilter(Request $request)
-    // {
-    //     $sales_date_from = $request->sales_date_from;
-    //     $sales_date_to = $request->sales_date_to;
-
-    //     $sales = DB::table('products')
-    //             ->leftJoin('purchases', 'purchases.prd_id', '=', 'products.prd_id')
-    //             ->leftJoin('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
-    //             ->where('products.acc_id', '=', session('acc_id'))
-    //             ->where('products.prd_for_POS', '=', '1')
-    //             ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-    //             ->selectRaw('products.prd_id, products.prd_name, products.prd_price, products.prd_description, sum(purchases.pur_qty) as total_sold, sum(purchases.pur_total) as total_sales')
-    //             ->groupBy('products.prd_id', 'products.prd_name', 'products.prd_description', 'products.prd_price')
-    //             ->havingRaw('sum(purchases.pur_qty) IS NULL OR sum(purchases.pur_qty) > 0')
-    //             ->orderBy('products.prd_name')
-    //             ->get();
-
-    //     // dd($sales);        
-
-    //     return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to'));
-    // }
-
     public function sales()
     {
         $sales_date_from = "";
@@ -152,28 +112,43 @@ class ReportsController extends Controller
         if($selectedID <> '')
         {
             $production_datetime = $production_datetime ->where('pdn_id', '=', $selectedID);
+            // dd('if');
         }
         elseif(!empty($production_id[0]))
         {
             $production_datetime = $production_datetime ->where('pdn_id', '=', $production_id[0]->pdn_id);
+            // dd('elseif');
         }
         
         $production_datetime = $production_datetime ->first();
         
-        if(!empty($production_datetime))
-        {
-            $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
-            $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
-            $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
-            $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
-        }
-        else
-        {
-            $pdn_date = Carbon::now()->format('F j, Y');
-            $pdn_start_time = "--:--  --";
-            $pdn_end_time = "--:--  --";
-            $scrapped_month = Carbon::now()->format('F Y');
-        }
+        
+            if(!empty($production_datetime))
+            {
+                $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
+                $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
+                
+                $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
+
+                if(!empty($production_datetime->pdn_end_time))
+                {
+                    $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
+                }
+                else
+                {
+                    $pdn_end_time = "--:--  --";
+                }
+            }
+            else
+            {
+                $pdn_date = Carbon::now()->format('F j, Y');
+                $pdn_start_time = "--:--  --";
+                $pdn_end_time = "--:--  --";
+                $scrapped_month = Carbon::now()->format('F Y');
+            }
+        
+        // dd($production_datetime);
+        
         
         $production_list = DB::table('production_logs')
                             ->select('pdn_id', 'pdn_date')
