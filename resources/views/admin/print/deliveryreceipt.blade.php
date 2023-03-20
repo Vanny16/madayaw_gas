@@ -49,14 +49,16 @@
                 <td width="20%"><strong>Loose</strong></td>
                 <td width="20%"><strong>Qty</strong></td>
             </tr>
-            @foreach($purchases as $purchase)
-            <tr>
-                <td width="20%">IN</td>
-                <td width="20%">{{ $purchase->prd_name }}</td>
-                <td width="20%">{{ $purchase->pur_crate_in }}</td>
-                <td width="20%">{{ $purchase->pur_loose_in }}</td>
-                <td width="20%">{{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}</td>
-            </tr>
+            @foreach($pur_ins as $pur_in)
+                @if($pur_in->prd_id_in <> '0')
+                    <tr>
+                        <td width="20%">IN</td>
+                        <td width="20%">{{ $pur_in->prd_name }}</td>
+                        <td width="20%">{{ $pur_in->pur_crate_in }}</td>
+                        <td width="20%">{{ $pur_in->pur_loose_in }}</td>
+                        <td width="20%">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</td>
+                    </tr>
+                @endif
             @endforeach
             <tr>
                 <td colspan="5"><hr></td>
@@ -86,14 +88,14 @@
     </div>
 </div>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     // Define a function to handle the beforeprint event
     function handleBeforePrint() {
         // Remove the event listener to prevent an infinite loop
         window.removeEventListener("beforeprint", handleBeforePrint);
 
         // Display a confirmation dialog to allow the user to select print settings
-        if (confirm("Do you want a receipt?")) {
+        if (confirm("Print delivery receipt?")) {
             // Open the print dialog
             setTimeout(function() {
                 window.print();
@@ -114,6 +116,6 @@
             window.location.href = "{{ action('SalesController@main') }}";
         }, 500);
     });
-</script> -->
+</script>
 
 @endsection
