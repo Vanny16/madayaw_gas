@@ -91,8 +91,10 @@ class PrintController extends Controller
         $latest_trx_id = session('latest_trx_id');
 
         $transactions = DB::table('transactions')
+        ->join('payments', 'payments.trx_id', '=', 'transactions.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('trx_id', '=' ,$latest_trx_id)
+        ->where('transactions.trx_id', '=' ,$latest_trx_id)
         ->first();
 
         $purchases = DB::table('purchases')

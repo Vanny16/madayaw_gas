@@ -229,11 +229,13 @@
                                                     <div class="col-5">
                                                         @if($product->prd_is_refillable == '0')
                                                             @php($addCanistersIn = "")
+                                                            @php($select_in = "0")
                                                             @php($in_crate_value = "0")
                                                             @php($in_loose_value = "0")
                                                             <h5 class="text-center mt-5">{{$product->prd_name}} is a non-refillable item.</h5>
                                                         @else
                                                             @php($addCanistersIn = "addCanistersIn(in_crates$product->prd_id.id,in_loose$product->prd_id.id,canister_in$product->prd_id.id); ")
+                                                            @php($select_in = "canister_in$product->prd_id.value")
                                                             @php($in_crate_value = "in_crates$product->prd_id.value")
                                                             @php($in_loose_value = "in_loose$product->prd_id.value")
                                                             <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
@@ -242,15 +244,17 @@
                                                                 <div class="form-inline">
                                                                     <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
                                                                         @foreach($products as $in_product)
-                                                                            @if($in_product->prd_id == $product->prd_id)
-                                                                                @php($select_prd_in = "selected")
-                                                                            @else
-                                                                                @php($select_prd_in = "")
+                                                                            @if($in_product->prd_is_refillable == '1')
+                                                                                @if($in_product->prd_id == $product->prd_id)
+                                                                                    @php($select_prd_in = "selected")
+                                                                                @else
+                                                                                    @php($select_prd_in = "")
+                                                                                @endif
+                                                                                <option value="1#{{ $in_product->prd_id }}#{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
                                                                             @endif
-                                                                            <option value="1,{{ $in_product->prd_id }},{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
                                                                         @endforeach 
                                                                         @foreach($oppositions as $opposition)
-                                                                            <option value="2,{{ $opposition->ops_id }},{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
+                                                                            <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
                                                                         @endforeach 
                                                                     </select>
                                                                     <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
@@ -319,7 +323,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}">Cancel</button>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="{{$addCanistersIn}} addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, {{$product->prd_deposit}}, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, {{$in_crate_value}}, {{$in_loose_value}}, order_details_modal{{$product->prd_id}}.id);"><i class="fa fa-plus-circle"></i> Add</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="{{$addCanistersIn}} addToCart({{$product->prd_id}},prd_name{{$product->prd_id}}.value, prd_price{{$product->prd_id}}.value, {{$product->prd_deposit}}, crates_amount{{$product->prd_id}}.value, loose_amount{{$product->prd_id}}.value, temp_discount{{$product->prd_id}}.value, {{$select_in}}, {{$in_crate_value}}, {{$in_loose_value}}, order_details_modal{{$product->prd_id}}.id);"><i class="fa fa-plus-circle"></i> Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -703,7 +707,7 @@
 
                 //Setter For Canister in Name
             
-                var holder = canister_id.split(",");
+                var holder = canister_id.split("#");
                 var item_name = "";
                 var flag = 1;
                 if(holder[0] == "1")
@@ -752,13 +756,22 @@
     var total_discount = 0;
     var details = new Array();
 
-    function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, in_crate_val, in_loose_val, modal) {
+    function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, select_in, in_crate_val, in_loose_val, modal) {
 
         var crates_amount = parseInt(crates_amount);
         var loose_amount = parseInt(loose_amount);
         var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
         var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
+        var prd_id_in ="";
+
+        if(select_in != "0"){
+            var select_data = select_in.split("#");
+            prd_id_in = select_data[1];
+        }
+        else{
+            prd_id_in = "0";
+        }
 
         if(prd_quantity != "" || prd_quantity > 0){
             // if(prd_in_quantity > prd_quantity){
@@ -812,7 +825,8 @@
             row.insertCell(7).innerHTML = sub_total.toFixed(2);
             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(10).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
+            row.insertCell(11).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             var received = document.getElementById("received_amount").value;
 
@@ -955,7 +969,6 @@
                 item_des = row_item[1];
                 item_price = row_item[2];
                 item_tot = row_item[7];
-        
             }
 
             try{

@@ -747,20 +747,6 @@ class ProductionController extends Controller
             $request->prd_type
         );
 
-        // $check_uuid = DB::table('products')
-        // ->where('prd_id', '=', $prd_id)
-        // ->where('prd_uuid', '=', null)
-        // ->get();
-
-        // if($check_uuid != null)
-        // {
-        //     DB::table('products')
-        //     ->where('prd_id', '=', $prd_id)
-        //     ->update([
-        //         'prd_uuid' => generateuuid()
-        //     ]);
-        // }
-
         $sku_checker = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_uuid', '<>', $prd_uuid)
@@ -794,7 +780,7 @@ class ProductionController extends Controller
         
         if($prd_type == 0)
         {
-            dd("asd");
+            // dd("asd");
             DB::table('products')
             ->where('prd_id', '=', $prd_id)
             ->update([

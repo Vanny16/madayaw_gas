@@ -933,9 +933,9 @@
                                             </div>
                                             <div class="col-7">
                                                 @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_stock($canister->prd_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_stock($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
                                                 @else
-                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_stock($canister->prd_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
                                                 @endif
                                                 <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                             </div>
@@ -966,9 +966,9 @@
                                             </div>
                                             <div class="col-7">
                                                 @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
                                                 @else
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
                                                 @endif
                                                 <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                             </div>

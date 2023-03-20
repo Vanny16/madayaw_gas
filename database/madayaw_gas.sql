@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-20 12:14:12
+Date: 2023-03-20 18:24:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -250,6 +250,7 @@ CREATE TABLE `purchases` (
   `pur_total` double(10,2) DEFAULT NULL,
   `pur_qty` int(11) DEFAULT NULL,
   `prd_price` double(10,2) DEFAULT NULL,
+  `prd_id_in` int(11) DEFAULT NULL,
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
