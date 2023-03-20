@@ -16,8 +16,8 @@
         <table width="100%">
             
                 <tr>   
-                    <td width="50%"><p><strong><i>{{ $bad_orders->bo_ref_id }}</i></strong></p></td>
-                    <td width="50%"><small>{{ $bad_orders->bo_datetime }}</small></td>
+                    <td width="50%"><p><strong><i>{{ $bad_order->bo_ref_id }}</i></strong></p></td>
+                    <td width="50%"><small>{{ $bad_order->bo_datetime }}</small></td>
                 </tr>
         
     
@@ -27,19 +27,19 @@
         <table>
             <tr>
                 <td width="50%">Transaction ID:</td>
-                <td width="50%">{{ $bad_orders->trx_ref_id }}</td>
+                <td width="50%">{{ $bad_order->trx_ref_id }}</td>
             </tr>
             <tr>
                 <td width="50%">Customer Name:</td>
-                <td width="50%">{{ $bad_orders->cus_name }}</td>
+                <td width="50%">{{ $bad_order->cus_name }}</td>
             </tr>
             <tr>
                 <td width="50%">Address:</td>
-                <td width="50%">{{ $bad_orders->cus_address }}</td>
+                <td width="50%">{{ $bad_order->cus_address }}</td>
             </tr>
             <tr>
                 <td width="50%">Contact:</td>
-                <td width="50%">{{ $bad_orders->cus_contact }}</td>
+                <td width="50%">{{ $bad_order->cus_contact }}</td>
             </tr>
         </table>
         <hr>
@@ -50,11 +50,11 @@
                 <td width="20%"><strong>Qty</strong></td>
             </tr>
             
-            @php($bo_qty = (($bad_orders->bo_crates *  12) + $bad_orders->bo_loose))
+            @php($bo_qty = (($bad_order->bo_crates *  12) + $bad_order->bo_loose))
             <tr>
-                <td width="20%">{{ $bad_orders->prd_name }}</td>
+                <td width="20%">{{ $bad_order->prd_name }}</td>
                 <td colspan="6"></td>
-                <td width="20%">{{ ($bo_qty) }}</td>
+                <td width="20%">{{ ($bad_order->bo_loose) }}</td>
             </tr>
             
      
@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <td colspan="2">Received by:</td>
-                <td colspan="3 ">{{ $bad_orders->cus_name }}</td>
+                <td colspan="3 ">{{ $bad_order->cus_name }}</td>
             </tr>
         </table>
     </div>
