@@ -15,6 +15,7 @@
                 </tr>
             </table>
         </div>
+        <h3>SALES RECEIPT</h3>
         <table width="100%">
             <tr>
                 <td width="50%"><p><strong><i>{{ $transactions->trx_ref_id }}</i></strong></p></td>
@@ -47,8 +48,10 @@
                 <td width="20%"><strong>Deposit</strong></td>
                 <td width="20%"><strong>Sub</strong></td>
             </tr>
+            @php($total_deposit=0)
             @php($total_discount=0)
             @foreach($purchases as $purchase)
+                @php($total_deposit += $purchase->pur_deposit)
                 @php($total_discount += $purchase->pur_discount)
                     @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
                     <tr>
@@ -67,6 +70,11 @@
                 <td colspan="1">Gross</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1"><strong>{{ number_format($transactions->trx_gross, 2, '.', ',') }}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="1">Deposit</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1"><strong>{{ number_format($total_deposit, 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
                 <td colspan="1">Discount</td>
@@ -122,7 +130,7 @@
             }, 500);
         }
         else{
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }
     }
 
@@ -133,7 +141,7 @@
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
-            window.location.href = "{{ action('SalesController@main') }}";
+            window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }, 500);
     });
 </script>

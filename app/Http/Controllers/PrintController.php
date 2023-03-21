@@ -91,8 +91,10 @@ class PrintController extends Controller
         $latest_trx_id = session('latest_trx_id');
 
         $transactions = DB::table('transactions')
+        ->join('payments', 'payments.trx_id', '=', 'transactions.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('trx_id', '=' ,$latest_trx_id)
+        ->where('transactions.trx_id', '=' ,$latest_trx_id)
         ->first();
 
         $purchases = DB::table('purchases')
@@ -100,8 +102,13 @@ class PrintController extends Controller
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
 
+        $pur_ins = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->get();
+
         session()->flash('successMessage','Transaction complete!');
-        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases'));
+        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins'));
     }
 
     public function salesReceipt()
@@ -193,10 +200,6 @@ class PrintController extends Controller
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
-
-        // $transaction_Reports = DB::table('transactions')
-        // ->where('trx_id', '=', $trx_id)
-        // ->get();
 
         return view('admin.print.transactionreport', compact('transaction_reports', 'purchases', 'transactions_date_from', 'transactions_date_to'));
     }
