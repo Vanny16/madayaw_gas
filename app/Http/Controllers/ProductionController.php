@@ -586,14 +586,10 @@ class ProductionController extends Controller
                     }
                 }
             }
-        
-            session()->flash('getProdValues', array( $prodValues));
-            if($request->return_page == "pos"){
-                return redirect()->action('SalesController@main');
-            }
-            else{              
-                return redirect()->action('PrintController@badorderReceipt');
-            }
+            // dd($request->return_page);
+            session()->flash('getProdValues', array( $prodValues));     
+            
+            return redirect()->action('PrintController@badorderReceipt');
         }
 
         elseif($flag == 4)

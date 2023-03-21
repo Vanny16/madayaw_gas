@@ -13,6 +13,7 @@
                 </tr>
             </table>
         </div>
+        <h3>BAD ORDER RECEIPT</h3>
         <table width="100%">
             
                 <tr>   
@@ -88,6 +89,13 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
-    window.location.href = "{{ action('ProductionController@manage') }}";
+
+    if("pos")
+    {
+        window.location.href = "{{ action('SalesController@main') }}"; 
+    }
+    else{
+        window.location.href = "{{ action('ProductionController@manage') }}";
+}
 </script>
 @endsection
