@@ -92,7 +92,8 @@
 
     if("pos")
     {
-        window.location.href = "{{ action('SalesController@main') }}"; 
+        window.location.href = "{{ action('SalesController@main') }}";
+         
     }
     else{
         window.location.href = "{{ action('ProductionController@manage') }}";

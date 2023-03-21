@@ -215,9 +215,9 @@ class PrintController extends Controller
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
         ->get();
 
-        $all_purchase_reports = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->get();
+        // $all_purchase_reports = DB::table('purchases')
+        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        // ->get();
 
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
