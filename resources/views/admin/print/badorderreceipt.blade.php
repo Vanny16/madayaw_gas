@@ -21,7 +21,7 @@
                 </tr>
         
     
-    </table>  
+        </table>  
     </div>
     <div class="row">
         <table>
@@ -46,6 +46,7 @@
         <table>
             <tr>
                 <td width="20%"><strong>Item</strong></td>
+                <td colspan="1"></td>
                 <td width="20%"><strong>Crates</strong></td>
                 <td width="20%"><strong>Loose</strong></td>
                 <td colspan="6"></td>
@@ -55,21 +56,20 @@
             @php($bo_qty = (($bad_order->bo_crates *  12) + $bad_order->bo_loose))
             <tr>
                 <td width="20%">{{ $bad_order->prd_name }}</td>
+                <td colspan="1"></td>
                 <td width="20%">{{ $bad_order->bo_crates }}</td>
                 <td width="20%">{{ $bad_order->bo_loose }}</td>
                 <td colspan="6"></td>
-                <td width="20%">{{ ($bo_qty) }}</td>
+                <td width="20%">{{ $bo_qty }}</td>
             </tr>
-            
-     
-            
+               
             <tr>
-                <td colspan="10"><hr></td>
+                <td colspan="12"><hr></td>
             </tr>
             <tr>
                 <td colspan="1">Total</td>
-                <td colspan="8"></td>
-                <td colspan="1"><strong>{{ number_format($bo_qty, 2, '.', ',') }}</strong></td>
+                <td colspan="9"></td>
+                <td colspan="1"><strong>{{ $bo_qty }}</strong></td>
             </tr>
             <tr>
                 <td colspan="5"><br></td>
@@ -88,6 +88,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
-    // window.location.href = "{{ action('ProductionController@manage') }}";
+    window.location.href = "{{ action('ProductionController@manage') }}";
 </script>
 @endsection
