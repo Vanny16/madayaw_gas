@@ -84,6 +84,6 @@
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
-    window.location.href = "{{ action('ReportsController@sales') }}";
+    // window.location.href = "{{ action('ReportsController@sales') }}";
 </script>
 @endsection

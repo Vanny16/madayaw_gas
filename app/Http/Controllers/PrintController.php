@@ -201,10 +201,6 @@ class PrintController extends Controller
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
 
-        // $transaction_Reports = DB::table('transactions')
-        // ->where('trx_id', '=', $trx_id)
-        // ->get();
-
         return view('admin.print.transactionreport', compact('transaction_reports', 'purchases', 'transactions_date_from', 'transactions_date_to'));
     }
 
