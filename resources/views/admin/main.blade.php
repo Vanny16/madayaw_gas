@@ -312,7 +312,7 @@
                             @endif
                         </div>
                         <div class="col-6">
-                            @if(isset($tanks))
+                            @if(isset($tanks[0]))
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-5">

@@ -144,7 +144,7 @@
                                             <th>Crates</th>
                                             <th>Loose</th>
                                             <th>Discount</th>
-                                            <th>Deposit</th>
+                                            <th width="1"></th>
                                             <th>Subtotal</th>
                                             <th></th>
                                         </tr>
@@ -153,11 +153,16 @@
                                     </tbody>
                                     <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="10"></td>
+                                            <td colspan="12"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="6"></td>
-                                            <td class="text-success"><strong>Total</strong></td>
+                                            <td colspan="5"></td>
+                                            <td colspan="2" class="text-secondary">Deposit</td>
+                                            <td class="text-secondary"><span id="lbl_total_deposit" class="fa fa-2x">0.00</span></td>
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="5"></td>
+                                            <td colspan="2" class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                         </tr>
                                     </tbody>
@@ -779,11 +784,14 @@
             // }
             // else{
                 //Calculations
+                var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+                var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
+                var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
+
                 var total = document.getElementById("lbl_total").innerHTML;
                 var gross_total = (prd_price * prd_quantity);
-                var total_deposit = prd_deposit * brd_new_prd_quantity;
-                var sub_total = gross_total - temp_discount + total_deposit;
-                total = parseFloat(total) + sub_total;
+                var sub_total = gross_total - temp_discount;
+                total = parseFloat(total) + sub_total + sub_total_deposit;
             // }
 
             
@@ -821,12 +829,12 @@
             row.insertCell(3).innerHTML = parseFloat(crates_amount);
             row.insertCell(4).innerHTML = parseFloat(loose_amount);
             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = total_deposit.toFixed(2);
+            row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
             row.insertCell(7).innerHTML = sub_total.toFixed(2);
             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
             row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-            row.insertCell(11).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(11).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             var received = document.getElementById("received_amount").value;
 
@@ -834,12 +842,11 @@
             document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
             document.getElementById("rct_amount_paid").innerHTML = received;
+            document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // session()->flash('successMessage','Transaction complete!');
-            
             checkCart();
         }
         else{
@@ -847,7 +854,7 @@
         }
     }
 
-    function removeFromCart(row, sub_total, crate, loose) {
+    function removeFromCart(row, sub_total_deposit, sub_total, crate, loose) {
 
         var deleteRowIn = document.getElementById("row_in" + row);
         var deleteRow = document.getElementById("row" + row);
@@ -867,9 +874,13 @@
             parentElement1.removeChild(deleteRowIn);
             
             //CART
+            var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+            var total_deposit = parseFloat(get_total_deposit) - sub_total_deposit;
+
             var total = document.getElementById("lbl_total").innerHTML;
             total = parseFloat(total) - sub_total;
 
+            document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             document.getElementById("amount_payable").value = total.toFixed(2);
 
@@ -952,7 +963,6 @@
         var item_des = "";
         var item_price = "";
         var item_tot = "";
-        var item_deposit = 0;
         var gross_total = 0;
 
         for(let i=0; i <= (cart_item.length)-1; i++){
@@ -977,12 +987,11 @@
                 rct_row.insertCell(2).innerHTML = item_price;
                 rct_row.insertCell(3).innerHTML = item_tot;
                 
-                item_deposit += parseFloat(row_item[6]);
                 gross_total = gross_total + (parseFloat(row_item[2]) * prd_quantity);
 
                 document.getElementById("trx_gross").value = gross_total;
                 document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-                document.getElementById("rct_deposit").innerHTML = item_deposit.toFixed(2);
+                document.getElementById("rct_deposit").innerHTML = document.getElementById("lbl_total_deposit").innerHTML;
             }
             catch(e){
                 alert("Please select products first");
