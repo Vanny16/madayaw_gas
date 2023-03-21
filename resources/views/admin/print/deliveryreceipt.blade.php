@@ -69,7 +69,13 @@
                 <td width="20%">{{ $purchase->prd_name }}</td>
                 <td width="20%">{{ $purchase->pur_crate }}</td>
                 <td width="20%">{{ $purchase->pur_loose }}</td>
-                <td width="20%">{{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}</td>
+                <td width="20%">
+                    @if($purchase->prd_is_refillable == 1)
+                        {{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}
+                    @else
+                        {{ $purchase->pur_loose }}
+                    @endif
+                </td>
             </tr>
             @endforeach
             
