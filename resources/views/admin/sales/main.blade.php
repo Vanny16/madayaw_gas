@@ -537,7 +537,7 @@
     </div>
 </div>
 
-<!-- Bad Order Modal -->
+<!-- Add Quantity Modal -->
 <div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
