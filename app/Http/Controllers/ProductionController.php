@@ -586,7 +586,8 @@ class ProductionController extends Controller
                     }
                 }
             }
-            // dd($request->return_page);
+            
+            session(['return_page' =>$request->return_page]);
             session()->flash('getProdValues', array( $prodValues));      
             return redirect()->action('PrintController@badorderReceipt');
         }
