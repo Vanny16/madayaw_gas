@@ -318,32 +318,27 @@ function get_total_stock_report($prd_id, $pdn_id)
 
 function check_materials($flag, $qty, $prd_id)
 {
+    // dd($flag, $qty, $prd_id);
    //FOR EMPTYGOODS
-   //dd($flag, $qty, $prd_id);
     if($flag == 1)
     {
         $raw_materials = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=', $prd_id)
         ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
         ->where('prd_active','<>','0')    
-        ->get();
-    
+        ->first();
+        // dd($raw_materials);
         if(isset($raw_materials))
         {
-            foreach ($raw_materials as $raw_material)
+            if((float)$raw_materials->prd_raw_can_qty >= (float)$qty)
             {
-                if((float)$raw_material->prd_quantity >= $qty)
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-        return true;
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -354,27 +349,21 @@ function check_materials($flag, $qty, $prd_id)
     elseif($flag == 2)
     {
         $empty_goods = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_id','=',$prd_id)
         ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+        ->first();
 
         if(isset($empty_goods))
         {
-            foreach ($empty_goods as $empty_good)
+            if((float)$empty_goods->prd_empty_goods >= $qty)
             {
-                if((float)$empty_good->prd_empty_goods >= $qty)
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
-            }    
-        return true;
+                return true;
+            }
+            else
+            {
+                return false;
+            } 
         }
         else
         {
@@ -388,23 +377,18 @@ function check_materials($flag, $qty, $prd_id)
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id','=',$prd_id)
         ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+        ->first();
 
         if(isset($canisters))
         {
-            foreach ($canisters as $canister)
+            if((float)$canisters->prd_leakers >= $qty)
             {
-                if((float)$canister->prd_leakers >= $qty)
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -418,23 +402,18 @@ function check_materials($flag, $qty, $prd_id)
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_id','=',$prd_id)
         ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+        ->first();
 
         if(isset($canisters))
         {
-            foreach ($canisters as $canister)
+            if((float)$canisters->prd_quantity >= $qty)
             {
-                if((float)$canister->prd_quantity >= $qty)
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
         else
         {

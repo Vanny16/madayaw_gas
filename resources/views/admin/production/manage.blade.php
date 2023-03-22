@@ -353,6 +353,7 @@
                                                 <tbody id="tbl-empty-canisters">
                                                     @if(isset($canisters))
                                                         @foreach($canisters as $canister)
+                                                            @if($canister->prd_active == 1)
                                                             <tr>
                                                                 <td>
                                                                     @if($canister->prd_image <> '')
@@ -378,6 +379,7 @@
                                                                     @endif
                                                                 </td> -->
                                                             </tr>
+                                                            @endif
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -398,6 +400,7 @@
                                                 <tbody id="tbl-filled-canisters">
                                                     @if(isset($canisters))
                                                         @foreach($canisters as $canister)
+                                                            @if($canister->prd_active == 1)
                                                             <tr>
                                                                 <td>
                                                                     @if($canister->prd_image <> '')
@@ -420,6 +423,7 @@
                                                                     </div>
                                                                 </td>--}}
                                                             </tr>
+                                                            @endif
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -465,6 +469,7 @@
                                                 <tbody id="tbl-products">
                                                     @if(isset($canisters))
                                                         @foreach($canisters as $canister)
+                                                            @if($canister->prd_active == 1)
                                                             <tr>
                                                                 <td>
                                                                     @if($canister->prd_image <> '')
@@ -480,6 +485,7 @@
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Revalved</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
                                                             </tr>
+                                                            @endif
                                                         @endforeach
                                                     @endif
                                                 </tbody>

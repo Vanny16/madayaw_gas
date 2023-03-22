@@ -112,7 +112,6 @@ class PrintController extends Controller
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
 
-        // dd($ops_ins);
         session()->flash('successMessage','Transaction complete!');
         return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins', 'ops_ins'));
     }
@@ -302,8 +301,7 @@ class PrintController extends Controller
 
         $bad_order = DB::table('bad_orders')
         ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
-        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')        
         ->where('bo_id', '=' ,$latest_bo_id)
         ->first();
