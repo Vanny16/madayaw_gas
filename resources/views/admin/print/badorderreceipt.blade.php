@@ -90,13 +90,11 @@
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
 
-    if("pos")
-    {
-        window.location.href = "{{ action('SalesController@main') }}";
-         
+    if(return_page === "pos"){
+    window.location.href = "{{ action('SalesController@main') }}";
     }
     else{
-        window.location.href = "{{ action('ProductionController@manage') }}";
+    window.location.href = "{{ action('ProductionController@manage') }}";
 }
 </script>
 @endsection
