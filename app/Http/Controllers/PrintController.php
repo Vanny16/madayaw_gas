@@ -107,8 +107,14 @@ class PrintController extends Controller
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
 
+        $ops_ins = DB::table('purchases')
+        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->get();
+
+        // dd($ops_ins);
         session()->flash('successMessage','Transaction complete!');
-        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins'));
+        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins', 'ops_ins'));
     }
 
     public function salesReceipt()

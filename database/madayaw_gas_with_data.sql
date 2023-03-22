@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-21 12:14:35
+Date: 2023-03-22 15:19:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -276,6 +276,7 @@ CREATE TABLE `purchases` (
   `prd_id_in` int(11) DEFAULT NULL,
   `pur_crate_in` int(11) DEFAULT NULL,
   `pur_loose_in` int(11) DEFAULT NULL,
+  `can_type_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
