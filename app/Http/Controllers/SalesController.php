@@ -296,13 +296,17 @@ class SalesController extends Controller
             ]);
 
 
+            $remaining_crimped = DB::table('products')
+            ->where('prd_id', '=', $prd_id_in)
+            ->first();
+
             $products = DB::table('products')
             ->where('prd_id', '=', $prd_id)
             ->first();
 
             if($products->prd_is_refillable == 1){
                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
-                $add_empty_good_qty = (int)$products->prd_empty_goods + ((int)($pur_crate_in * 12) + $pur_loose_in);
+                $add_empty_good_qty = (int)$remaining_crimped->prd_empty_goods + ((int)($pur_crate_in * 12) + $pur_loose_in);
             }
             else{
                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
@@ -310,10 +314,17 @@ class SalesController extends Controller
 
             // dd($add_empty_good_qty);  
 
+            //For Backflushed
             DB::table('products')
             ->where('prd_id', '=', $prd_id)
             ->update([
-                'prd_quantity' => $deduct_qty,
+                'prd_quantity' => $deduct_qty
+            ]);
+
+            //For Crimped
+            DB::table('products')
+            ->where('prd_id', '=', $prd_id_in)
+            ->update([
                 'prd_empty_goods' => $add_empty_good_qty
             ]);
         }
