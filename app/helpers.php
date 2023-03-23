@@ -144,7 +144,7 @@ function record_movement($prd_id, $quantity, $flag)
             ->insert([ 
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
-                'log_for_revalving' => $quantity,
+                'log_empty_goods' => $quantity,
                 'log_date' => DB::raw('CURRENT_TIMESTAMP'),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
@@ -157,6 +157,30 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_scraps' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
+        elseif($flag == 6)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_leakers' => $quantity,
+                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'usr_id' => session('usr_id'),
+                'pdn_id' => $get_pdn_id->pdn_id
+            ]); 
+        }
+        elseif($flag == 7)
+        {
+            DB::table('movement_logs')  
+            ->insert([ 
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'log_for_revalving' => $quantity,
                 'log_date' => DB::raw('CURRENT_TIMESTAMP'),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
@@ -441,6 +465,32 @@ function check_materials($flag, $qty, $prd_id)
             return false;
         }
     }
+    //FOR_REVALVING FROM PRODUCTION
+    elseif($flag == 7)
+    {
+        $canisters = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        if(isset($canisters))
+        {
+            if((float)$canister->prd_for_revalving >= $qty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 function subtract_qty($flag, $qty, $prd_id)
@@ -523,7 +573,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_empty_goods' => $new_quantity
         ]);
     }
-    //SUBTRACT LEAKERS FOR REVALVING
+    //SUBTRACT FOR_REVALVING FOR FILLED 
     elseif($flag == 4)
     {
         $revalves = DB::table('products')
@@ -535,7 +585,7 @@ function subtract_qty($flag, $qty, $prd_id)
 
         if(isset($revalves))
         {
-            $new_quantity= $revalves->prd_leakers - $qty;
+            $new_quantity= $revalves->prd_for_revalving - $qty;
         }
         else
         {
@@ -548,7 +598,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_leakers' => $new_quantity
+            'prd_for_revalving' => $new_quantity
         ]);
     }
     //SUBTRACT LEAKERS FOR SCRAP
@@ -592,6 +642,33 @@ function subtract_qty($flag, $qty, $prd_id)
         if(isset($leakers))
         {
             $new_quantity= $leakers->prd_quantity - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
+
+        DB::table('products')        
+        ->where('prd_id', '=', $leakers->prd_id)
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->update([
+            'prd_quantity' => $new_quantity
+        ]);
+    }   
+    elseif($flag == 7)
+    {
+        $for_revalving = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+        // dd($qty);
+        if(isset($for_revalving))
+        {
+            $new_quantity= $for_revalving->prd_quantity - $qty;
         }
         else
         {
