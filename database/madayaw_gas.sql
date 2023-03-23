@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-22 15:17:42
+Date: 2023-03-23 11:42:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,6 +43,7 @@ CREATE TABLE `bad_orders` (
   `bo_ref_id` varchar(30) DEFAULT NULL,
   `acc_id` int(11) DEFAULT NULL,
   `trx_id` int(11) NOT NULL,
+  `prd_id` int(11) NOT NULL,
   `bo_crates` int(11) DEFAULT '0',
   `bo_loose` int(11) DEFAULT '0',
   `bo_date` varchar(20) DEFAULT NULL,
