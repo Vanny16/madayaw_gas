@@ -144,8 +144,12 @@
                                             <th>Crates</th>
                                             <th>Loose</th>
                                             <th>Discount</th>
-                                            <th>Deposit</th>
+                                            <th width="1"></th>
                                             <th>Subtotal</th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -153,11 +157,16 @@
                                     </tbody>
                                     <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="10"></td>
+                                            <td colspan="13"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="6"></td>
-                                            <td class="text-success"><strong>Total</strong></td>
+                                            <td colspan="5"></td>
+                                            <td colspan="2" class="text-secondary">Deposit</td>
+                                            <td class="text-secondary"><span id="lbl_total_deposit" class="fa fa-2x">0.00</span></td>
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="5"></td>
+                                            <td colspan="2" class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                         </tr>
                                     </tbody>
@@ -528,7 +537,7 @@
     </div>
 </div>
 
-<!-- Bad Order Modal -->
+<!-- Add Quantity Modal -->
 <div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -764,12 +773,15 @@
         var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
         var prd_id_in ="";
+        var can_type_in ="";
 
         if(select_in != "0"){
             var select_data = select_in.split("#");
+            can_type_in = select_data[0];
             prd_id_in = select_data[1];
         }
         else{
+            can_type_in = "0";
             prd_id_in = "0";
         }
 
@@ -779,11 +791,14 @@
             // }
             // else{
                 //Calculations
+                var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+                var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
+                var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
+
                 var total = document.getElementById("lbl_total").innerHTML;
                 var gross_total = (prd_price * prd_quantity);
-                var total_deposit = prd_deposit * brd_new_prd_quantity;
-                var sub_total = gross_total - temp_discount + total_deposit;
-                total = parseFloat(total) + sub_total;
+                var sub_total = gross_total - temp_discount;
+                total = parseFloat(total) + sub_total + sub_total_deposit;
             // }
 
             
@@ -821,12 +836,13 @@
             row.insertCell(3).innerHTML = parseFloat(crates_amount);
             row.insertCell(4).innerHTML = parseFloat(loose_amount);
             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = total_deposit.toFixed(2);
+            row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
             row.insertCell(7).innerHTML = sub_total.toFixed(2);
             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
             row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-            row.insertCell(11).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+            row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             var received = document.getElementById("received_amount").value;
 
@@ -834,12 +850,11 @@
             document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
             document.getElementById("rct_amount_paid").innerHTML = received;
+            document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // session()->flash('successMessage','Transaction complete!');
-            
             checkCart();
         }
         else{
@@ -847,7 +862,7 @@
         }
     }
 
-    function removeFromCart(row, sub_total, crate, loose) {
+    function removeFromCart(row, sub_total_deposit, sub_total, crate, loose) {
 
         var deleteRowIn = document.getElementById("row_in" + row);
         var deleteRow = document.getElementById("row" + row);
@@ -867,9 +882,13 @@
             parentElement1.removeChild(deleteRowIn);
             
             //CART
+            var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+            var total_deposit = parseFloat(get_total_deposit) - sub_total_deposit;
+
             var total = document.getElementById("lbl_total").innerHTML;
             total = parseFloat(total) - sub_total;
 
+            document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             document.getElementById("amount_payable").value = total.toFixed(2);
 
@@ -890,38 +909,6 @@
             
         }
     }
-
-    function enterPayable(){
-        // alert("test");
-        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
-        var amount = document.getElementById("amount_payable").value;
-        var received = parseFloat(document.getElementById("received_amount").value);
-        var change = document.getElementById("rct_change").value;
-        var balance = document.getElementById("rct_balance").value;
-        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
-
-
-        if(amount = ""){
-            amount = 0;
-        }
-        else{
-            amount = parseFloat(document.getElementById("amount_payable").value);
-        }
-
-        var final_change = received - amount;
-        var final_balance = amount - received;
-
-        if(final_balance < 0){
-            final_balance = 0;
-        }
-
-        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
-        document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
-    }
-
-    $(document).ready(function(){
-        $("#receipt-modal").modal('hide');
-    });
 
    function receivePayment(){
 
@@ -952,7 +939,6 @@
         var item_des = "";
         var item_price = "";
         var item_tot = "";
-        var item_deposit = 0;
         var gross_total = 0;
 
         for(let i=0; i <= (cart_item.length)-1; i++){
@@ -977,12 +963,11 @@
                 rct_row.insertCell(2).innerHTML = item_price;
                 rct_row.insertCell(3).innerHTML = item_tot;
                 
-                item_deposit += parseFloat(row_item[6]);
                 gross_total = gross_total + (parseFloat(row_item[2]) * prd_quantity);
 
                 document.getElementById("trx_gross").value = gross_total;
                 document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-                document.getElementById("rct_deposit").innerHTML = item_deposit.toFixed(2);
+                document.getElementById("rct_deposit").innerHTML = document.getElementById("lbl_total_deposit").innerHTML;
             }
             catch(e){
                 alert("Please select products first");
@@ -990,6 +975,34 @@
         }
 
    }
+
+   function enterPayable(){
+        // alert("test");
+        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
+        var amount = document.getElementById("amount_payable").value;
+        var received = parseFloat(document.getElementById("received_amount").value);
+        var change = document.getElementById("rct_change").value;
+        var balance = document.getElementById("rct_balance").value;
+        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
+
+
+        if(amount = ""){
+            amount = 0;
+        }
+        else{
+            amount = parseFloat(document.getElementById("amount_payable").value);
+        }
+
+        var final_change = received - amount;
+        var final_balance = amount - received;
+
+        if(final_balance < 0){
+            final_balance = 0;
+        }
+
+        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
+    }
 
    function noNegativeValue(id){
 

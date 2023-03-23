@@ -8,16 +8,14 @@
     <div class="col-md-12"> 
         <div class="card">
             <div class="card-header">
-            @if(isset($all_sales_reports))    
+            
             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Sales  Reports</h3>
-            @else
-            <h3 class="card-title"><i  class="fa fa-bar-chart"></i> Sale Report</h3>
-            @endif
+           
         </div>
             <div class="card-body">
                 <table class="table table-hover table-condensed">
 
-                @if(isset($all_sales_reports))
+               
                     <thead>
                         <tr>
                             <th>Reference ID</th>
@@ -47,36 +45,6 @@
                         @endforeach
                     </tbody>
 
-                @elseif(isset($sales_reports))
-                    <thead>
-                        <tr>
-                            <th>Reference ID</th>
-                            <th>User</th>
-                            <th>Customer</th>
-                            <th>Date & Time</th>
-                            <th>Total Sale</th>
-                            <th>Amount Received</th>
-                            <th>Change</th>
-                            <th width="20px"></th>
-                        </tr>
-                        <tr>
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($sales_reports as $sales_report)
-                        <tr>
-                            <td>{{$sales_report->trx_ref_id}}</td>
-                            <td>{{$sales_report->usr_name}}</td>
-                            <td>{{$sales_report->cus_name}}</td>
-                            <td>{{$sales_report->trx_datetime}}</td>
-                            <td>₱ {{ number_format($salesreport->trx_total, 2, '.', ',')}}</td>
-                            <td>₱ {{ number_format($sales_report->trx_amount_paid, 2, '.', ',')}}</td>
-                            <td>₱ {{ number_format($sales_report->trx_balance, 2, '.', ',')}}</td>
-                        </tr> 
-                        @endforeach
-                    </tbody>
-                @endif
                 </table>
             </div>
         </div>

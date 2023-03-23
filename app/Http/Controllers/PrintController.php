@@ -107,8 +107,13 @@ class PrintController extends Controller
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
 
+        $ops_ins = DB::table('purchases')
+        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+        ->where('trx_id', '=' ,$latest_trx_id)
+        ->get();
+
         session()->flash('successMessage','Transaction complete!');
-        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins'));
+        return view('admin.print.deliveryreceipt', compact('transactions', 'purchases', 'pur_ins', 'ops_ins'));
     }
 
     public function salesReceipt()
@@ -173,8 +178,8 @@ class PrintController extends Controller
         $sales_date_to = $request->sales_date_to;
 
         $all_sales_reports = DB::table('transactions')
-        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->join('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
         ->get();
 
@@ -215,16 +220,14 @@ class PrintController extends Controller
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
         ->get();
 
-        $all_purchase_reports = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->get();
+        // $all_purchase_reports = DB::table('purchases')
+        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        // ->get();
 
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
 
-        // $all_transaction_reports = DB::table('transactions')
-        // ->get();
 
         return view('admin.print.transactionreport', compact('all_transaction_reports', 'purchases', 'transactions_date_from', 'transactions_date_to'));
     }
@@ -298,8 +301,7 @@ class PrintController extends Controller
 
         $bad_order = DB::table('bad_orders')
         ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
-        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')        
         ->where('bo_id', '=' ,$latest_bo_id)
         ->first();

@@ -353,6 +353,11 @@ class ProductionController extends Controller
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
 
+        if($prd_quantity <= 0){
+            session()->flash('errorMessage','Invalid input!');
+            return redirect()->action('ProductionController@manage');
+        }
+
         record_stockin($prd_id, $prd_quantity);
         
         $quantity = DB::table('products')
@@ -439,6 +444,7 @@ class ProductionController extends Controller
 
         if($flag == 1)
         {
+            // dd(check_materials($flag, $prd_quantity, $prd_id));
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY TO EMPTY GOODS
@@ -564,7 +570,13 @@ class ProductionController extends Controller
 
             if(empty($bo_transaction[0])) {
                 session()->flash('warningMessage','Please check your inputs');
-                return redirect()->action('ProductionController@manage');
+                
+                if($request->return_page == "pos"){
+                    return redirect()->action('SalesController@main');
+                }
+                else{
+                    return redirect()->action('ProductionController@manage');
+                }
             }
             else{
                 $has_this_prd = DB::table('transactions')
@@ -576,6 +588,13 @@ class ProductionController extends Controller
 
                 if(empty($has_this_prd[0])) {
                     session()->flash('errorMessage','No purchases with this product');
+
+                    if($request->return_page == "pos"){
+                        return redirect()->action('SalesController@main');
+                    }
+                    else{
+                        return redirect()->action('ProductionController@manage');
+                    }
                 }
                 else{
                     if($prd_quantity > 0){
@@ -606,6 +625,7 @@ class ProductionController extends Controller
                                     'bo_ref_id' => $bo_ref_id,
                                     'trx_id' => $bo_transaction[0]->trx_id,
                                     'bo_crates' => $request->crate_quantity,
+                                    'prd_id' => $prd_id,
                                     'bo_loose' => $request->quantity,
                                     'bo_date' => date('Y-m-d'),
                                     'bo_time' => date('H:i:s'),
@@ -613,7 +633,7 @@ class ProductionController extends Controller
                                 ]);
                                 
                                 session(['latest_bo_id' => $new_bo_id ]); 
-                                // dd( session('latest_bo_id'));
+                                
                                 //LOG ACTION IN PRODUCTION
                                 record_movement($prd_id, $prd_quantity, $flag);
 
@@ -627,25 +647,36 @@ class ProductionController extends Controller
                                 ]);  
 
                                 session()->flash('successMessage','Leakers added');
+                                session(['return_page' =>$request->return_page]);
+                                return redirect()->action('PrintController@badorderReceipt');
                             }
                         }
                         else{
                             session()->flash('errorMessage','Number of leakers must not exceed to the purchased quantity');
+                            
+                            if($request->return_page == "pos"){
+                                return redirect()->action('SalesController@main');
+                            }
+                            else{
+                                return redirect()->action('ProductionController@manage');
+                            }
                         }
                     }
                     else{
                         session()->flash('errorMessage','Invalid input');
+
+                        if($request->return_page == "pos"){
+                            return redirect()->action('SalesController@main');
+                        }
+                        else{
+                            return redirect()->action('ProductionController@manage');
+                        }
                     }
                 }
             }
-        
-            session()->flash('getProdValues', array( $prodValues));
-            if($request->return_page == "pos"){
-                return redirect()->action('SalesController@main');
-            }
-            else{              
-                return redirect()->action('PrintController@badorderReceipt');
-            }
+            
+            session()->flash('getProdValues', array( $prodValues));      
+
         }
 
         elseif($flag == 4)
