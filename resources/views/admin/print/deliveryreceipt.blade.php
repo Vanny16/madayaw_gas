@@ -51,9 +51,18 @@
             </tr>
             @foreach($pur_ins as $pur_in)
                 @if($pur_in->prd_id_in <> '0')
+                    @if($pur_in->can_type_in == 1)
+                        @php($prd_name = $pur_in->prd_name)
+                    @else
+                        @foreach($ops_ins as $ops_in)
+                            @if($ops_in->ops_id == $pur_in->prd_id)
+                                @php($prd_name = $ops_in->ops_name)
+                            @endif
+                        @endforeach
+                    @endif
                     <tr>
                         <td width="20%">IN</td>
-                        <td width="20%">{{ $pur_in->prd_name }}</td>
+                        <td width="20%">{{ $prd_name }}</td>
                         <td width="20%">{{ $pur_in->pur_crate_in }}</td>
                         <td width="20%">{{ $pur_in->pur_loose_in }}</td>
                         <td width="20%">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</td>

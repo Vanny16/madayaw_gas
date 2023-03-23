@@ -170,19 +170,14 @@
                                                 @else
                                                     <td>-</td>
                                                 @endif
-                                                @if($product->prd_active == 0)
-                                                    <td>
-                                                        <a class="btn btn-default btn-sm text-primary" disabled><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        @if($product->prd_is_refillable == 0)
-                                                            <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
-                                                        @else
-                                                            <badge class="badge bg-info">Refillable</badge>
-                                                        @endif
-                                                    </td>
-                                                @endif
+                                                
+                                                <td>
+                                                    @if($product->prd_is_refillable == 0)
+                                                        <a class="btn btn-default btn-sm text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-stockin-modal-{{$product->prd_id}}"><i class="fa fa-plus mr-1" aria-hidden="true"></i> Stock-in</a>
+                                                    @else
+                                                        <badge class="badge bg-info">Refillable</badge>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if($product->prd_active == 1) 
                                                     <span class="badge badge-success">Active</span>

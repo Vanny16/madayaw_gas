@@ -146,6 +146,10 @@
                                             <th>Discount</th>
                                             <th width="1"></th>
                                             <th>Subtotal</th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
+                                            <th width="1"></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -153,7 +157,7 @@
                                     </tbody>
                                     <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="12"></td>
+                                            <td colspan="13"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="5"></td>
@@ -769,12 +773,15 @@
         var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
         var prd_id_in ="";
+        var can_type_in ="";
 
         if(select_in != "0"){
             var select_data = select_in.split("#");
+            can_type_in = select_data[0];
             prd_id_in = select_data[1];
         }
         else{
+            can_type_in = "0";
             prd_id_in = "0";
         }
 
@@ -834,7 +841,8 @@
             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
             row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-            row.insertCell(11).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+            row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
 
             var received = document.getElementById("received_amount").value;
 
@@ -902,38 +910,6 @@
         }
     }
 
-    function enterPayable(){
-        // alert("test");
-        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
-        var amount = document.getElementById("amount_payable").value;
-        var received = parseFloat(document.getElementById("received_amount").value);
-        var change = document.getElementById("rct_change").value;
-        var balance = document.getElementById("rct_balance").value;
-        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
-
-
-        if(amount = ""){
-            amount = 0;
-        }
-        else{
-            amount = parseFloat(document.getElementById("amount_payable").value);
-        }
-
-        var final_change = received - amount;
-        var final_balance = amount - received;
-
-        if(final_balance < 0){
-            final_balance = 0;
-        }
-
-        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
-        document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
-    }
-
-    $(document).ready(function(){
-        $("#receipt-modal").modal('hide');
-    });
-
    function receivePayment(){
 
         var client_id = document.getElementById("client_id").value;
@@ -999,6 +975,34 @@
         }
 
    }
+
+   function enterPayable(){
+        // alert("test");
+        //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
+        var amount = document.getElementById("amount_payable").value;
+        var received = parseFloat(document.getElementById("received_amount").value);
+        var change = document.getElementById("rct_change").value;
+        var balance = document.getElementById("rct_balance").value;
+        document.getElementById("rct_amount_paid").innerHTML = received.toFixed(2);
+
+
+        if(amount = ""){
+            amount = 0;
+        }
+        else{
+            amount = parseFloat(document.getElementById("amount_payable").value);
+        }
+
+        var final_change = received - amount;
+        var final_balance = amount - received;
+
+        if(final_balance < 0){
+            final_balance = 0;
+        }
+
+        document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
+        document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
+    }
 
    function noNegativeValue(id){
 

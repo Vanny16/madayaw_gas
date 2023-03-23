@@ -87,15 +87,6 @@
     </div>
     
 </div>
-<!-- <script type="text/javascript"> 
-    window.addEventListener("load", window.print());
-
-    @if(session('return_page')=="pos")
-        window.location.href = "{{ action('SalesController@main') }}";
-    @else
-        window.location.href = "{{ action('ProductionController@manage') }}";
-    @endif
-</script> -->
 
 <script type="text/javascript">
     // Define a function to handle the beforeprint event
