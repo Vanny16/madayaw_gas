@@ -57,8 +57,15 @@ class ReportsController extends Controller
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
                         ->get();
+        
+                        
+        $bad_orders = DB::table('bad_orders')
+                        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->get();
 
-        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
+        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'bad_orders'));
     }
 
     public function transactionsFilter(Request $request)
@@ -76,7 +83,13 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->get();
 
-        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
+        $bad_orders = DB::table('bad_orders')
+                        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->get();
+        // dd($bad_orders);
+        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'bad_orders'));
     }
 
     public function production(Request $request)

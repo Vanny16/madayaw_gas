@@ -109,69 +109,130 @@
                                             <th>User</th>
                                             <th>Customer</th>
                                             <th>Date & Time</th>
-                                            <th>Product Name</th>
-                                            <th>Crate</th>
-                                            <th>Loose</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($transactions as $transaction)
-                                            @foreach($purchases as $purchase)
-                                                @if($purchase->trx_id == $transaction->trx_id)
-                                                    <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
-                                                        <td>{{ $transaction->trx_ref_id }}</td>
-                                                        <td>{{ $transaction->usr_full_name }}</td>
-                                                        <td>{{ $transaction->cus_name }}</td>
-                                                        <td>{{ $transaction->trx_datetime }}</td>
-                                                        <td>{{ $purchase->prd_name }}</td>
-                                                        <td>{{ number_format($purchase->pur_crate, 0, '', ',') }}</td>
-                                                        <td>{{ number_format($purchase->pur_loose, 0, '', ',') }}</td>
-                                                
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                                    {{--<tr class="text-success bg-white">
-                                                            <td colspan="5"></td>
-                                                            <td class="text-success"><strong>Total</strong></td>
-                                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                                        </tr>--}}
-                                           
+                                            <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
+                                                <td>{{ $transaction->trx_ref_id }}</td>
+                                                <td>{{ $transaction->usr_full_name }}</td>
+                                                <td>{{ $transaction->cus_name }}</td>
+                                                <td>{{ $transaction->trx_datetime }}</td>
+                                            </tr>
+                                            {{--<tr class="text-success bg-white">
+                                                    <td colspan="5"></td>
+                                                    <td class="text-success"><strong>Total</strong></td>
+                                                    <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
+                                                </tr>--}}
+                                    
 
                                             <!-- Purchases Modal -->
-                                            {{-- <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
-                                                        <div class="modal-header text-info">
-                                                            <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Purchases</h5>
-                                                            <p class="text-danger mr-2">{{ $transaction->trx_ref_id }}</p>
-                                                        </div> 
                                                         <div class="modal-body">
-                                                            <div class="col-12">
-                                                                <div class="row">
-                                                                    <div class="container">
-                                                                        <div class="row header">
-                                                                            <div class="col"><strong>Product</strong></div>
-                                                                            <div class="col"><strong>Price</strong></div>
-                                                                            <div class="col"><strong>Crates</strong></div>
-                                                                            <div class="col"><strong>Loose</strong></div>
-                                                                            <div class="col"><strong>Deposit</strong></div>
-                                                                            <div class="col"><strong>Subtotal</strong></div>
-                                                                        </div>
-                                                                        @foreach($purchases as $purchase)
-                                                                            @if($purchase->trx_id == $transaction->trx_id)
-                                                                                <hr>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="modal-header text-info">
+                                                                        <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Transactions</h5>
+                                                                        <p class="text-info mr-2">{{ $transaction->trx_ref_id }}</p>
+                                                                    </div>
+                                                                    <div class="row"> 
+                                                                        <div class="modal-body">
+                                                                            <div class="col-12">
                                                                                 <div class="row">
-                                                                                    <div class="col">{{ $purchase->prd_name }}</div>
-                                                                                    <div class="col">₱ {{ number_format($purchase->prd_price, 2, '.', ',') }}</div>
-                                                                                    <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
-                                                                                    <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
-                                                                                    <div class="col">₱ {{ number_format($purchase->pur_deposit, 2, '.', ',') }}</div>
-                                                                                    <div class="col">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</div>
+                                                                                    <div class="container">
+                                                                                        <div class="row header">
+                                                                                            <div class="col"><strong>Unit</strong></div>
+                                                                                            <div class="col"><strong>Item</strong></div>
+                                                                                            <div class="col"><strong>Crates</strong></div>
+                                                                                            <div class="col"><strong>Loose</strong></div>
+                                                                                            <div class="col"><strong>QTY</strong></div>
+                                                                                        </div>
+                                                                                        @foreach($purchases as $purchase)
+                                                                                            @if($purchase->trx_id == $transaction->trx_id)
+                                                                                                <hr>
+                                                                                                <div class="row">
+                                                                                                    <div class="col">IN</div>
+                                                                                                    <div class="col">{{ $purchase->prd_name }}</div>
+                                                                                                    <div class="col">{{ number_format($purchase->pur_crate_in, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ number_format($purchase->pur_loose_in, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}</div>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    </div>
                                                                                 </div>
-                                                                            @endif
-                                                                        @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                        <div><hr></div>
+                                                                        <div class="modal-body">
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+                                                                                    <div class="container">
+                                                                                        <div class="row header">
+                                                                                            <div class="col"><strong>Unit</strong></div>
+                                                                                            <div class="col"><strong>Item</strong></div>
+                                                                                            <div class="col"><strong>Crates</strong></div>
+                                                                                            <div class="col"><strong>Loose</strong></div>
+                                                                                            <div class="col"><strong>QTY</strong></div>
+                                                                                        </div>
+                                                                                        @foreach($purchases as $purchase)
+                                                                                            @if($purchase->trx_id == $transaction->trx_id)
+                                                                                                <hr>
+                                                                                                <div class="row">
+                                                                                                    <div class="col">OUT</div>
+                                                                                                    <div class="col">{{ $purchase->prd_name }}</div>
+                                                                                                    <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ ($purchase->pur_crate * 12) + $purchase->pur_loose }}</div>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                                                               
+                                                                <div class="col-md-6">
+                                                                    @foreach($bad_orders as $bad_order)
+                                                                    <div class="modal-header text-danger">
+                                                                        <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Bad Orders</h5>
+                                                                        <p class="text-danger mr-2">{{ $bad_order->bo_ref_id  }}</p>
+                                                                    </div>
+                                                                    @endforeach
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+                                                                                    <div class="container">
+                                                                                        <div class="row header">
+                                                                                            <div class="col"><strong>Unit</strong></div>
+                                                                                            <div class="col"><strong>Item</strong></div>
+                                                                                            <div class="col"><strong>Crates</strong></div>
+                                                                                            <div class="col"><strong>Loose</strong></div>
+                                                                                            <div class="col"><strong>QTY</strong></div>
+                                                                                        </div>
+                                                                                        @foreach($bad_orders as $bad_order)
+                                                                                            @if($bad_order->trx_id == $transaction->trx_id)
+                                                                                                <hr>
+                                                                                                <div class="row">
+                                                                                                    <div class="col">IN</div>
+                                                                                                    <div class="col">{{ $bad_order->prd_name }}</div>
+                                                                                                    <div class="col">{{ number_format($bad_order->bo_crates, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ number_format($bad_order->bo_loose, 0, '', ',') }}</div>
+                                                                                                    <div class="col">{{ ($bad_order->bo_crates * 12) + $bad_order->bo_loose }}</div>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    </div>        
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>     
+                                                                    </div>   
+                                                                </div>                        
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -185,7 +246,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                         @endforeach
                                         <tr class="bg-light" height="1px">
                                             <td colspan="7"></td>
