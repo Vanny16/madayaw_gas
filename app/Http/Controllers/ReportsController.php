@@ -76,7 +76,21 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->get();
 
-        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases'));
+        $pur_ins = DB::table('purchases')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                        ->get();
+                        
+        $ops_ins = DB::table('purchases')
+                        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+                        ->get();
+
+        $bad_orders = DB::table('bad_orders')
+                        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
+                        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->get();
+
+        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
     }
 
     public function production(Request $request)

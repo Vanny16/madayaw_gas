@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-23 13:32:34
+Date: 2023-03-23 14:05:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -382,6 +382,12 @@ CREATE TABLE `stocks_logs` (
   `opening_stocks` int(11) DEFAULT NULL,
   `closing_stocks` int(11) DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
+  `stk_raw_materials` int(11) DEFAULT '0',
+  `stk_empty_goods` int(11) DEFAULT '0',
+  `stk_filled` int(11) DEFAULT '0',
+  `stk_leakers` int(11) DEFAULT '0',
+  `stk_for_revalving` int(11) DEFAULT '0',
+  `stk_scraps` int(11) DEFAULT '0',
   PRIMARY KEY (`stk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

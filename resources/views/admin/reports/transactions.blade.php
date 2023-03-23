@@ -136,59 +136,96 @@
                                                         </div> 
                                                         <div class="modal-body">
                                                             <div class="row">
-                                                                <div class="col-6">
-                                                                    <h5><i class="fa fa-exchange"> </i> Canister Movement</h5><hr>
+                                                                <div class="col-md-6 col-12">
+                                                                    <h5><i class="fa fa-exchange"> </i> Declarations</h5><hr>
                                                                     <div class="row">
                                                                         <div class="container">
                                                                             <div class="row header">
-                                                                                <div class="col"><strong>Product</strong></div>
-                                                                                <div class="col"><strong>Price</strong></div>
-                                                                                <div class="col"><strong>Crates</strong></div>
+                                                                                <div class="col"><strong>Unit</strong></div>
+                                                                                <div class="col"><strong>Item</strong></div>
+                                                                                <div class="col"><strong>Crate</strong></div>
                                                                                 <div class="col"><strong>Loose</strong></div>
-                                                                                <div class="col"><strong>Deposit</strong></div>
-                                                                                <div class="col"><strong>Subtotal</strong></div>
+                                                                                <div class="col"><strong>Quantity</strong></div>
                                                                             </div>
+                                                                            @foreach($pur_ins as $pur_in)
+                                                                                @if($pur_in->trx_id == $transaction->trx_id)
+                                                                                    @if($pur_in->prd_id_in <> '0')
+                                                                                        @if($pur_in->can_type_in == 1)
+                                                                                            @php($prd_name = $pur_in->prd_name)
+                                                                                        @else
+                                                                                            @foreach($ops_ins as $ops_in)
+                                                                                                @if($ops_in->ops_id == $pur_in->prd_id)
+                                                                                                    @php($prd_name = $ops_in->ops_name)
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        @endif
+                                                                                        <hr>
+                                                                                        <div class="row">
+                                                                                            <div class="col text-info">IN</div>
+                                                                                            <div class="col">{{ $prd_name }}</div>
+                                                                                            <div class="col">{{ $pur_in->pur_crate_in }}</div>
+                                                                                            <div class="col">{{ $pur_in->pur_loose_in }}</div>
+                                                                                            <div class="col">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</div>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                            <hr>
                                                                             @foreach($purchases as $purchase)
                                                                                 @if($purchase->trx_id == $transaction->trx_id)
                                                                                     <hr>
                                                                                     <div class="row">
+                                                                                        <div class="col text-success">OUT</div>
                                                                                         <div class="col">{{ $purchase->prd_name }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->prd_price, 2, '.', ',') }}</div>
-                                                                                        <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
-                                                                                        <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->pur_deposit, 2, '.', ',') }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</div>
+                                                                                        <div class="col">{{ $purchase->pur_crate }}</div>
+                                                                                        <div class="col">{{ $purchase->pur_loose }}</div>
+                                                                                        <div class="col">
+                                                                                            @if($purchase->prd_is_refillable == 1)
+                                                                                                {{ ($purchase->pur_crate * 12) + $purchase->pur_loose }}
+                                                                                            @else
+                                                                                                {{ $purchase->pur_loose }}
+                                                                                            @endif
+                                                                                        </div>
                                                                                     </div>
                                                                                 @endif
                                                                             @endforeach
+                                                                            <hr><hr>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-6 border-left pl-2">
-                                                                    <h5><i class="fa-light fa-wine-glass-crack"></i> Bad Orders</h5><hr>
+                                                                <div class="col-md-6 col-12 border-left pl-2">
+                                                                    <h5><i class="fa fa-undo"></i> Bad Orders</h5><hr>
                                                                     <div class="row">
                                                                         <div class="container">
                                                                             <div class="row header">
-                                                                                <div class="col"><strong>Product</strong></div>
-                                                                                <div class="col"><strong>Price</strong></div>
-                                                                                <div class="col"><strong>Crates</strong></div>
-                                                                                <div class="col"><strong>Loose</strong></div>
-                                                                                <div class="col"><strong>Deposit</strong></div>
-                                                                                <div class="col"><strong>Subtotal</strong></div>
+                                                                                <div class="col"><strong>Reference ID</strong></div>
+                                                                                <div class="col"><strong>Item</strong></div>
+                                                                                <div class="col"><strong>Quantity</strong></div>
+                                                                                <div class="col"><strong>Date & Time</strong></div>
                                                                             </div>
-                                                                            @foreach($purchases as $purchase)
-                                                                                @if($purchase->trx_id == $transaction->trx_id)
-                                                                                    <hr>
-                                                                                    <div class="row">
-                                                                                        <div class="col">{{ $purchase->prd_name }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->prd_price, 2, '.', ',') }}</div>
-                                                                                        <div class="col">{{ number_format($purchase->pur_crate, 0, '', ',') }}</div>
-                                                                                        <div class="col">{{ number_format($purchase->pur_loose, 0, '', ',') }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->pur_deposit, 2, '.', ',') }}</div>
-                                                                                        <div class="col">₱ {{ number_format($purchase->pur_total, 2, '.', ',') }}</div>
-                                                                                    </div>
+                                                                            @php($bo_count = 0)
+                                                                            @foreach($bad_orders as $bad_order)
+                                                                                @if($bad_order->trx_id == $transaction->trx_id)
+                                                                                    @php($bo_count++)
                                                                                 @endif
                                                                             @endforeach
+
+                                                                            @if($bo_count > 0)
+                                                                                @foreach($bad_orders as $bad_order)
+                                                                                    @if($bad_order->trx_id == $transaction->trx_id)
+                                                                                        <hr>
+                                                                                        <div class="row">
+                                                                                            <div class="col text-warning">{{ $bad_order->bo_ref_id }}</div>
+                                                                                            <div class="col">{{ $bad_order->prd_name }}</div>
+                                                                                            <div class="col">{{ ($bad_order->bo_crates * 12) + $bad_order->bo_loose }}</div>
+                                                                                            <div class="col">{{ $bad_order->bo_datetime }}</div>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @else
+                                                                                <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transactions</p>
+                                                                            @endif
+                                                                            <hr><hr>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -197,7 +234,7 @@
                                                         <div class="modal-footer">
                                                             <form method="POST" action="{{ action('PrintController@allpurchasesReports')}}">
                                                             {{ csrf_field() }}
-                                                                <button type="submit" class="btn btn-info float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
+                                                                <!-- <button type="submit" class="btn btn-info float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button> -->
                                                                 <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
                                                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                                                             </form>
