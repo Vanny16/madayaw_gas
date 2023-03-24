@@ -70,7 +70,7 @@
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
                         <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
-                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><a class="fa fa-exchange"></a> Trade Canisters</button>
+                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button>
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@alloppositeDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
 

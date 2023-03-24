@@ -17,7 +17,6 @@ Route::get('/', 'LoginController@login');
 Route::post('/validate', 'LoginController@validateUser');
 Route::get('/logout', 'LoginController@logout');
 
-
 Route::group(['prefix' => 'home'], function()
 {
     Route::get('main', 'MainController@home');

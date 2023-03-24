@@ -80,7 +80,7 @@
                 <td width="20%">{{ $purchase->pur_loose }}</td>
                 <td width="20%">
                     @if($purchase->prd_is_refillable == 1)
-                        {{ ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in }}
+                        {{ ($purchase->pur_crate * 12) + $purchase->pur_loose }}
                     @else
                         {{ $purchase->pur_loose }}
                     @endif
