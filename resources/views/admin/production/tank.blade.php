@@ -68,7 +68,7 @@
                             </table>
                         </div>      
                     </div>
-                </div>
+                </div> 
 
                 <div class="col-md-12 mb-3">
                     <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
