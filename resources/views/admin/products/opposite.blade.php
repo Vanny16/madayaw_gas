@@ -91,7 +91,7 @@
                                             <th>SKU</th>
                                             <th>Description</th>
                                             <th>Quantity</th>
-                                            <th width="200px"></th>
+                                            <th width="100px"></th>
                                             <th>Notes</th>
                                             <th>Active</th>
                                             <th width="100px"></th>
