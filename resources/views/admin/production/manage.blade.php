@@ -932,21 +932,23 @@
                                     </div>
                                 </div>
                                 @foreach($canisters as $canister)
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <em>{{$canister->prd_name}}</em>
-                                            </div>
-                                            <div class="col-7">
-                                                @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_stock($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
-                                                @else
-                                                    <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
-                                                @endif
-                                                <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                    @if($canister->prd_active == 1)
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <em>{{$canister->prd_name}}</em>
+                                                </div>
+                                                <div class="col-7">
+                                                    @if($pdn_flag)
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_stock($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                    @else
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                    @endif
+                                                    <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             @endif
                         </div>
@@ -965,21 +967,23 @@
                                     </div>
                                 </div>
                                 @foreach($tanks as $tank)
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <em>{{$tank->tnk_name}}</em>
-                                            </div>
-                                            <div class="col-7">
-                                                @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
-                                                @else
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
-                                                @endif
-                                                <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                    @if($tank->tnk_active == 1)
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <em>{{$tank->tnk_name}}</em>
+                                                </div>
+                                                <div class="col-7">
+                                                    @if($pdn_flag)
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                    @else
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
+                                                    @endif
+                                                    <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             @endif
                         </div>

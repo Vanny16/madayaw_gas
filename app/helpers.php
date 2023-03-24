@@ -273,11 +273,11 @@ function get_closing_tank($tnk_id, $pdn_id)
     ->where('pdn_id', '=', $pdn_id)
     ->first();
 
+    // dd($closing_tank, $pdn_id);
     if($closing_tank == null || $closing_tank->log_tnk_closing == null)
     { 
         return 0;
     }
-
     return $closing_tank->log_tnk_closing;
 }
 
