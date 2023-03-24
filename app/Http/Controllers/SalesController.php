@@ -507,7 +507,7 @@ class SalesController extends Controller
             'pmnt_date' => date('Y-m-d'),
             'pmnt_time' => date('h:i:s')
         ]);
-
+        
         
         $updated_payment = $transaction->trx_amount_paid + $pmnt_amount;
 
