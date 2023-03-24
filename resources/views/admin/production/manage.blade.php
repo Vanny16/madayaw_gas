@@ -975,7 +975,7 @@
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
                                                     @else
                                                         <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
                                                     @endif
