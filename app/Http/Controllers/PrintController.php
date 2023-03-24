@@ -141,16 +141,27 @@ class PrintController extends Controller
         $latest_pmnt_id = session('latest_pmnt_id');
 
         $payments = DB::table('payments')
-        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('pmnt_id', '=' ,$latest_pmnt_id)
-        ->first();
-
-        // dd(array($payments));
+            ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+            ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            ->where('pmnt_id', '=', strval($latest_pmnt_id))
+            ->first();
 
         session()->flash('successMessage','Payment updated!');
         return view('admin.print.paymentreceipt', compact('payments'));
+
+        // BACKUP
+        // $latest_pmnt_id = session('latest_pmnt_id')->pmnt_id;
+
+        // $payments = DB::table('payments')
+        //     ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+        //     ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+        //     ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        //     ->where('pmnt_id', '=', strval($latest_pmnt_id))
+        //     ->first();
+
+        // session()->flash('successMessage','Payment updated!');
+        // return view('admin.print.paymentreceipt', compact('payments'));
     }
 
     public function salesReports(Request $request)
@@ -187,7 +198,6 @@ class PrintController extends Controller
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
 
-       
         return view('admin.print.salesreports', compact('all_sales_reports', 'purchases', 'sales_date_from', 'sales_date_to'));
     }
 

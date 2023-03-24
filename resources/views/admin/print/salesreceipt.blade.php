@@ -92,9 +92,14 @@
                 <td colspan="1">{{ $transactions->payment_name }}</td>
             </tr>
             <tr>
-                <td colspan="1">Paid</td>
+                <td colspan="1">Received</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ number_format($transactions->pmnt_amount, 2, '.', ',') }}</td>
+                <td colspan="1">{{ number_format($transactions->pmnt_received, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Change</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($transactions->pmnt_change, 2, '.', ',') }}</td>
             </tr>
             <tr>
                 <td colspan="1">Balance</td>
