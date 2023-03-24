@@ -21,7 +21,6 @@
                     <td width="50%"><small>{{ $bad_order->bo_datetime }}</small></td>
                 </tr>
         
-    
         </table>  
     </div>
     <div class="row">
