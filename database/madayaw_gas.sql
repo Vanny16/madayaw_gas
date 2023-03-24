@@ -10,10 +10,29 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-23 14:06:07
+Date: 2023-03-24 15:41:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `accounts`
+-- ----------------------------
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `acc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_uuid` varchar(255) DEFAULT NULL,
+  `acc_name` varchar(255) DEFAULT NULL,
+  `acc_image` varchar(255) DEFAULT NULL,
+  `acc_website` varchar(255) DEFAULT NULL,
+  `acc_active` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`acc_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of accounts
+-- ----------------------------
+INSERT INTO `accounts` VALUES ('1', null, 'Madayaw Gas', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `bad_orders`
@@ -156,12 +175,31 @@ CREATE TABLE `payments` (
   `pmnt_date` varchar(20) DEFAULT NULL,
   `pmnt_time` varchar(20) DEFAULT NULL,
   `trx_mode_of_payment` int(11) DEFAULT NULL,
+  `pmnt_received` double(30,0) NOT NULL,
+  `pmnt_change` double(30,0) NOT NULL,
   PRIMARY KEY (`pmnt_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of payments
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `payment_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_types`;
+CREATE TABLE `payment_types` (
+  `mode_of_payment` int(11) NOT NULL,
+  `payment_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`mode_of_payment`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_types
+-- ----------------------------
+INSERT INTO `payment_types` VALUES ('1', 'Cash');
+INSERT INTO `payment_types` VALUES ('2', 'Credit');
+INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -315,22 +353,6 @@ CREATE TABLE `sales_reports` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `stock_statuses`
--- ----------------------------
-DROP TABLE IF EXISTS `stock_statuses`;
-CREATE TABLE `stock_statuses` (
-  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stk_opening` double DEFAULT NULL,
-  `stk_closing` double DEFAULT NULL,
-  `pdn_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`stk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of stock_statuses
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `stockin_logs`
 -- ----------------------------
 DROP TABLE IF EXISTS `stockin_logs`;
@@ -376,6 +398,22 @@ CREATE TABLE `stocks_logs` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `stock_statuses`
+-- ----------------------------
+DROP TABLE IF EXISTS `stock_statuses`;
+CREATE TABLE `stock_statuses` (
+  `stk_id` int(11) NOT NULL AUTO_INCREMENT,
+  `stk_opening` double DEFAULT NULL,
+  `stk_closing` double DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`stk_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of stock_statuses
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `suppliers`
 -- ----------------------------
 DROP TABLE IF EXISTS `suppliers`;
@@ -396,24 +434,6 @@ CREATE TABLE `suppliers` (
 -- Records of suppliers
 -- ----------------------------
 INSERT INTO `suppliers` VALUES ('1', '7bcs8lptw8tffns0mds26ywrd9tbbu6k', '1', 'Madayaw Gas', 'Bunawan', '09234232322', null, null, '1');
-
--- ----------------------------
--- Table structure for `tank_logs`
--- ----------------------------
-DROP TABLE IF EXISTS `tank_logs`;
-CREATE TABLE `tank_logs` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT,
-  `acc_id` int(11) DEFAULT NULL,
-  `tnk_id` int(11) DEFAULT NULL,
-  `log_tnk_opening` decimal(10,0) DEFAULT NULL,
-  `log_tnk_closing` decimal(10,0) DEFAULT NULL,
-  `pdn_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of tank_logs
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `tanks`
@@ -438,6 +458,24 @@ INSERT INTO `tanks` VALUES ('1', '1', 'Tank 1', '5000000', '4938800', null, null
 INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '2500000', null, null, '1');
 
 -- ----------------------------
+-- Table structure for `tank_logs`
+-- ----------------------------
+DROP TABLE IF EXISTS `tank_logs`;
+CREATE TABLE `tank_logs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `tnk_id` int(11) DEFAULT NULL,
+  `log_tnk_opening` decimal(10,0) DEFAULT NULL,
+  `log_tnk_closing` decimal(10,0) DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tank_logs
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `transactions`
 -- ----------------------------
 DROP TABLE IF EXISTS `transactions`;
@@ -460,3 +498,43 @@ CREATE TABLE `transactions` (
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `users`
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `usr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `acc_id` int(11) DEFAULT NULL,
+  `usr_uuid` varchar(255) DEFAULT NULL,
+  `usr_full_name` varchar(255) DEFAULT NULL,
+  `usr_name` varchar(255) DEFAULT NULL,
+  `usr_password` varchar(255) DEFAULT NULL,
+  `usr_address` varchar(255) DEFAULT NULL,
+  `usr_image` varchar(255) DEFAULT NULL,
+  `usr_active` tinyint(4) DEFAULT '1',
+  `typ_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`usr_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
+
+-- ----------------------------
+-- Table structure for `user_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_types`;
+CREATE TABLE `user_types` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of user_types
+-- ----------------------------
+INSERT INTO `user_types` VALUES ('1', 'Administrator');
+INSERT INTO `user_types` VALUES ('2', 'Employee');
+INSERT INTO `user_types` VALUES ('3', 'Observer');

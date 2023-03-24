@@ -76,6 +76,16 @@
                 <td colspan="1">{{ number_format($payments->pmnt_amount, 2, '.', ',') }}</td>
             </tr>
             <tr>
+                <td colspan="1">Received</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($payments->pmnt_received, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Change</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ number_format($payments->pmnt_change, 2, '.', ',') }}</td>
+            </tr>
+            <tr>
                 <td colspan="1">Balance</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1">{{ number_format($payments->trx_balance, 2, '.', ',') }}</td>
