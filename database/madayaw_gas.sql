@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-23 11:42:51
+Date: 2023-03-24 16:51:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -160,6 +160,8 @@ CREATE TABLE `payments` (
   `pmnt_date` varchar(20) DEFAULT NULL,
   `pmnt_time` varchar(20) DEFAULT NULL,
   `trx_mode_of_payment` int(11) DEFAULT NULL,
+  `pmnt_received` double(30,0) NOT NULL,
+  `pmnt_change` double(30,0) NOT NULL,
   PRIMARY KEY (`pmnt_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -348,6 +350,12 @@ CREATE TABLE `stocks_logs` (
   `opening_stocks` int(11) DEFAULT NULL,
   `closing_stocks` int(11) DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
+  `stk_raw_materials` int(11) DEFAULT '0',
+  `stk_empty_goods` int(11) DEFAULT '0',
+  `stk_filled` int(11) DEFAULT '0',
+  `stk_leakers` int(11) DEFAULT '0',
+  `stk_for_revalving` int(11) DEFAULT '0',
+  `stk_scraps` int(11) DEFAULT '0',
   PRIMARY KEY (`stk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

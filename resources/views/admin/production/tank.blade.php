@@ -68,7 +68,7 @@
                             </table>
                         </div>      
                     </div>
-                </div>
+                </div> 
 
                 <div class="col-md-12 mb-3">
                     <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
@@ -156,6 +156,9 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                @if($tank->tnk_active == 0)
+                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                @else    
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
@@ -163,6 +166,7 @@
                                                             <!-- <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li> -->
                                                         </ul>
                                                     </div>
+                                                @endif
                                                 </td>
                                             </tr>
                                             <!-- Refill Tank Modal -->

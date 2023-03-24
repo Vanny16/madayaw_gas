@@ -246,10 +246,38 @@ class SalesController extends Controller
         $cus_id = "";
         
         $mode_of_payment = $request->mode_of_payment;
-        $trx_gross = $request->trx_gross;
-        $trx_total = $request->trx_total;
-        $trx_amount_paid = $request->trx_amount_paid;
+        $trx_gross = (float)$request->trx_gross;
+        $trx_total = (float)$request->trx_total;
+        $trx_amount_paid = (float)$request->trx_amount_paid;
         $trx_balance =  (double)$trx_total - (double)$trx_amount_paid;
+
+        
+        if($mode_of_payment == 1 || $mode_of_payment == 3){
+            if($trx_amount_paid <= 0){
+                session()->flash('errorMessage','Invalid input');
+                return redirect()->action('SalesController@main');
+            }
+        }
+
+        if($trx_amount_paid > $trx_total){
+            $trx_amount_paid = $trx_total;
+            $trx_balance  = 0;
+        }
+
+        $pmnt_received = (float)$request->trx_amount_paid;
+        $pmnt_change =  (double)$trx_total - (double)$pmnt_received;
+
+        if($pmnt_received > 0){
+            if($pmnt_change <= 0){
+                $pmnt_change = $pmnt_change * -1;
+            }
+            else{
+                $pmnt_change = 0;
+            }
+        }
+        else{
+            $pmnt_change = 0;
+        }
 
         $list = $request->purchases;
         $selected_item_list  = $list;
@@ -297,7 +325,6 @@ class SalesController extends Controller
                 'pur_total' => $pur_total
             ]);
 
-
             $remaining_opposite = DB::table('oppositions')
             ->where('ops_id', '=', $prd_id_in)
             ->first();
@@ -344,7 +371,6 @@ class SalesController extends Controller
             ->update([
                 'prd_quantity' => $deduct_qty
             ]);
-
         }
 
         DB::table('transactions')
@@ -370,6 +396,8 @@ class SalesController extends Controller
             'pmnt_ref_id' => $pmt_ref_id,
             'trx_mode_of_payment' => $mode_of_payment,
             'pmnt_amount' => $trx_amount_paid,
+            'pmnt_received' => $pmnt_received,
+            'pmnt_change' => $pmnt_change,
             'pmnt_date' => date('Y-m-d'),
             'pmnt_time' => date('h:i:s')
         ]);
@@ -420,6 +448,8 @@ class SalesController extends Controller
         return redirect()->action('PrintController@salesReceipt');
     }
 
+
+
     public function payPending(Request $request){
 
         $pmnt_id = DB::table('payments')
@@ -431,6 +461,8 @@ class SalesController extends Controller
         else{
             $pmnt_id += 1;
         }
+        
+        session(['latest_pmnt_id' => $pmnt_id]);
 
         $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
 
@@ -439,8 +471,28 @@ class SalesController extends Controller
         ->first();
 
         $trx_balance = $transaction->trx_balance;
-        $pmnt_amount = $request->pmnt_amount;
+        $pmnt_amount = (float)$request->pmnt_amount;
         $new_trx_balance = $trx_balance - $pmnt_amount;
+
+        if($pmnt_amount <= 0){
+            session()->flash('errorMessage','Invalid input');
+            return redirect()->action('SalesController@payments');
+        }
+
+        if($pmnt_amount > $new_trx_balance){
+            $pmnt_amount = $trx_balance;
+            $new_trx_balance  = 0;
+        }
+        
+        $pmnt_received = (float)$request->pmnt_amount;
+        $pmnt_change =  (double)$trx_balance - (double)$pmnt_received;
+        
+        if($pmnt_change <= 0){
+            $pmnt_change = $pmnt_change * -1;
+        }
+        else if($pmnt_change > 0){
+            $pmnt_change = 0;
+        }
     
         DB::table('payments')
         ->insert([
@@ -450,9 +502,22 @@ class SalesController extends Controller
             'pmnt_ref_id' => $pmt_ref_id,
             'trx_mode_of_payment' => $request->mode_of_payment,
             'pmnt_amount' => $pmnt_amount,
+            'pmnt_received' => $pmnt_received,
+            'pmnt_change' => $pmnt_change,
             'pmnt_date' => date('Y-m-d'),
             'pmnt_time' => date('h:i:s')
         ]);
+        
+        
+        $updated_payment = $transaction->trx_amount_paid + $pmnt_amount;
+
+        DB::table('transactions')
+        ->where('trx_id','=',$request->trx_id)
+            ->update([
+                'trx_balance' => $new_trx_balance,
+                'trx_amount_paid' => $updated_payment,
+        ]);  
+
 
         //IMAGE UPLOAD 
         if($request->file('pmnt_attachment'))
@@ -492,16 +557,7 @@ class SalesController extends Controller
                 'pmnt_attachment' => $fileName,
             ]);  
     
-        }   
-
-        DB::table('transactions')
-        ->where('trx_id','=',$request->trx_id)
-            ->update([
-                'trx_balance' => $new_trx_balance,
-        ]);  
-
-        
-        session(['latest_pmnt_id' => $pmnt_id]);
+        } 
 
         session()->flash('successMessage','Payment saved');
         return redirect()->action('PrintController@paymentReceipt');
