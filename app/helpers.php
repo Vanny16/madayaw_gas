@@ -456,7 +456,7 @@ function check_materials($flag, $qty, $prd_id)
 
         if(isset($canisters))
         {
-            if((float)$canister->prd_for_revalving >= $qty)
+            if((float)$canisters->prd_for_revalving >= $qty)
             {
                 return true;
             }
