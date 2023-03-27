@@ -586,6 +586,13 @@ class ProductController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->where('ops_id', '=', $opposition_canister_id)
         ->first();
+
+        if($oppositions == null)
+        {
+            session()->flash('warningMessage','Opposition Canister empty!');
+            return redirect()->action('ProductController@opposite');
+        }
+
         $opposition_qty = ($oppositions->ops_quantity);
 
         $products = DB::table('products')

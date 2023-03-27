@@ -94,7 +94,7 @@ class ProductionController extends Controller
         $temp_tank_details = explode(",", $request->tank_details);
         array_pop($temp_details);
         array_pop($temp_tank_details);
-
+        
         $canister_details = [];
         $tank_details = [];
         
@@ -109,6 +109,14 @@ class ProductionController extends Controller
             $detail = explode("|", $details);
             array_push($tank_details, $detail[0]);
         }
+
+        if(empty($temp_tank_details))
+        {
+            session()->flash('errorMessage','Must add tanks before starting production!');
+            return redirect()->action('ProductionController@manage');
+        }
+
+        // dd($temp_details <> "" && $temp_tank_details <> "");
 
         if($pdn_flag)
         {
@@ -141,7 +149,7 @@ class ProductionController extends Controller
                     ->insert([
                         'acc_id' => session('acc_id'),
                         'tnk_id' => $tnk_id,
-                        'log_tnk_opening' => $request->$input_field,
+                        'log_tnk_opening' => ($request->$input_field) * 1000,
                         'pdn_id' => get_last_production_id()
                     ]);
                 }
@@ -177,7 +185,7 @@ class ProductionController extends Controller
                     DB::table('tank_logs')
                     ->where('pdn_id', '=', get_last_production_id())
                     ->update([
-                        'log_tnk_closing' => $request->$input_field,
+                        'log_tnk_closing' => ($request->$input_field) * 1000,
                     ]);
                 }
             }
@@ -377,6 +385,16 @@ class ProductionController extends Controller
         ->where('prd_id','=', $prd_id)
         ->where('pdn_id', '=', get_last_production_id())
         ->first();
+        
+        if($stocks_logs == null)
+        {
+            DB::table('stocks_logs')
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'pdn_id' => get_last_production_id()
+            ]);
+        }
         
         //FLAGS
         // 0 = quantity raw materials

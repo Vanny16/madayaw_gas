@@ -968,16 +968,17 @@
                                 </div>
                                 @foreach($tanks as $tank)
                                     @if($tank->tnk_active == 1)
+                                        @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-5">
-                                                    <em>{{$tank->tnk_name}}</em>
+                                                    <em>{{$tank->tnk_name}} <strong>(in kg)</strong></em>
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" required>
                                                     @else
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" required>
                                                     @endif
                                                     <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                                 </div>

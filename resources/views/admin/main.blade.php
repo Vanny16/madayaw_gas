@@ -326,16 +326,17 @@
                                     </div>
                                 </div>
                                 @foreach($tanks as $tank)
+                                    @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-5">
-                                                <em>{{$tank->tnk_name}}</em>
+                                                <em>{{$tank->tnk_name}} <strong>(in kg)</strong></em>
                                             </div>
                                             <div class="col-7">
                                                 @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" required>
                                                 @else
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" required>
                                                 @endif
                                                 <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                             </div>
