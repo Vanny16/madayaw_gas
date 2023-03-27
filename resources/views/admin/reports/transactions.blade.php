@@ -27,14 +27,25 @@
             </div>
 
             @if($transactions_date_from != "" && $transactions_date_to != "")
-                @php
-                    $date_from = $transactions_date_from;
-                    $date_to = $transactions_date_to;
-                @endphp
+
+                @if($transactions_date_from == date('Y-m-d') && $transactions_date_to == date('Y-m-d'))
+                    @php
+                        $date_from = Carbon\Carbon::parse()->format('Y-m-d');
+                        $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                        $date_label = "Today's Transactions";
+                    @endphp
+                @else
+                    @php
+                        $date_from = $transactions_date_from;
+                        $date_to = $sales_date_to;
+                        $date_label = "Transactions from ". $date_from ." to ". $date_to;
+                    @endphp
+                @endif
             @else
                 @php
                     $date_from = Carbon\Carbon::parse()->format('Y-m-d');
                     $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                    $date_label = "All Transactions";
                 @endphp
             @endif
             
@@ -68,28 +79,22 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
 
-                                @if($transactions_date_from != "" && $transactions_date_to != "")
-                                    @if($transactions_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
-                                        <h4>Today's transactions</h4>
-                                    @else
-                                        <h4>Transactions from <span class="text-info">{{ \Carbon\Carbon::parse($transactions_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($transactions_date_to)->format('F d, Y') }}</span></h4>
-                                    @endif
-                                @else
-                                    <h4>All time transactions</h4>
-                                @endif
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>{{ $date_label }}</span>
                                 </div>
-                                <div class="col-6">
-                                    <a href="{{ action('ReportsController@transactions') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
+
+                                <div class="col-md-8">
+                                    <a href="{{ action('ReportsController@transactions') }}" class="float-right text-danger ml-2 mr-2"> All Transactions</a>
+                                    <span class="float-right">|</span>
+                                    <a href="{{ action('ReportsController@transactionsToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Transactions</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12 mb-3"> 
                             <form method="POST" action="{{ action('PrintController@alltransactionReports')}}">

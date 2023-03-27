@@ -112,29 +112,25 @@
                 <li class="nav-header">REPORTS</li>
 
                 <li class="nav-item">
-                    <form id="go_sales" method="POST" action="{{ action('ReportsController@salesFilter')}}">
+                    <form id="go_sales" method="GET" action="{{ action('ReportsController@salesToday')}}">
                     {{ csrf_field() }} 
                         <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_sales.submit()">
                             <i class="nav-icon fa fa-bar-chart"></i>
                             <p>
                                 Sales Reports
                             </p>
-                            <input type="date" class="form-control" name="sales_date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
-                            <input type="date" class="form-control" name="sales_date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
                         </button>
                     </form>
                 </li>
 
                 <li class="nav-item">
-                    <form id="go_transactions" method="POST" action="{{ action('ReportsController@transactionsFilter')}}">
+                    <form id="go_transactions" method="GET" action="{{ action('ReportsController@transactionsToday')}}">
                     {{ csrf_field() }} 
                         <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_transactions.submit()">
                             <i class="nav-icon fa fa-bar-chart"></i>
                             <p>
                                 Transaction Reports
                             </p>
-                            <input type="date" class="form-control" name="transactions_date_from" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
-                            <input type="date" class="form-control" name="transactions_date_to" value="{{ Carbon\Carbon::parse()->format('Y-m-d') }}" hidden/>
                         </button>
                     </form>
                 </li>

@@ -26,6 +26,24 @@ class ReportsController extends Controller
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases'));
     }
 
+    public function salesToday()
+    {
+        $sales_date_from = date("Y-m-d");
+        $sales_date_to = date("Y-m-d");
+
+        $sales = DB::table('transactions')
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                    ->get();
+
+        $purchases = DB::table('purchases')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->get();
+
+        return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases'));
+    }
+
     public function salesFilter(Request $request)
     {
         $sales_date_from = $request->sales_date_from;
@@ -60,8 +78,40 @@ class ReportsController extends Controller
         
 
         $pur_ins = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
-        ->get();
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                        ->get();
+                        
+        $ops_ins = DB::table('purchases')
+                        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+                        ->get();
+
+        $bad_orders = DB::table('bad_orders')
+                        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
+                        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->get();
+
+        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+    }
+
+    public function transactionsToday()
+    {
+        $transactions_date_from = date("Y-m-d");
+        $transactions_date_to = date("Y-m-d");
+
+         $transactions = DB::table('transactions')
+                        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                        ->get();
+
+        $purchases = DB::table('purchases')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->get();
+
+        $pur_ins = DB::table('purchases')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                        ->get();
                         
         $ops_ins = DB::table('purchases')
                         ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
