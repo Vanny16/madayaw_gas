@@ -135,6 +135,8 @@ Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
     Route::get('payments', 'SalesController@payments');
+    Route::get('payments/today', 'SalesController@paymentsToday');
+    Route::post('payments/date-filter', 'SalesController@paymentsFilter');
 
     Route::post('select-customer', 'SalesController@selectCustomer');
     Route::post('create-customer', 'SalesController@createCustomer');
