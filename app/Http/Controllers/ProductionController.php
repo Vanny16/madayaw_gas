@@ -95,8 +95,6 @@ class ProductionController extends Controller
         array_pop($temp_details);
         array_pop($temp_tank_details);
 
-        dd($temp_details, $temp_tank_details);
-
         $canister_details = [];
         $tank_details = [];
         
