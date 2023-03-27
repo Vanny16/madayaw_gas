@@ -112,27 +112,21 @@
                 <li class="nav-header">REPORTS</li>
 
                 <li class="nav-item">
-                    <form id="go_sales" method="GET" action="{{ action('ReportsController@salesToday')}}">
-                    {{ csrf_field() }} 
-                        <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_sales.submit()">
-                            <i class="nav-icon fa fa-bar-chart"></i>
-                            <p>
-                                Sales Reports
-                            </p>
-                        </button>
-                    </form>
+                    <a href="{{ action('ReportsController@salesToday') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bar-chart"></i>
+                        <p>
+                            Sales Reports
+                        </p>
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <form id="go_transactions" method="GET" action="{{ action('ReportsController@transactionsToday')}}">
-                    {{ csrf_field() }} 
-                        <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_transactions.submit()">
-                            <i class="nav-icon fa fa-bar-chart"></i>
-                            <p>
-                                Transaction Reports
-                            </p>
-                        </button>
-                    </form>
+                    <a href="{{ action('ReportsController@transactionsToday') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bar-chart"></i>
+                        <p>
+                            Transactions Reports
+                        </p>
+                    </a>
                 </li>
 
                 <li class="nav-item">
