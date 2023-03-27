@@ -94,7 +94,7 @@ class ProductionController extends Controller
         $temp_tank_details = explode(",", $request->tank_details);
         array_pop($temp_details);
         array_pop($temp_tank_details);
-
+        
         $canister_details = [];
         $tank_details = [];
         
@@ -110,7 +110,7 @@ class ProductionController extends Controller
             array_push($tank_details, $detail[0]);
         }
 
-        if($temp_tank_details == "")
+        if(empty($temp_tank_details))
         {
             session()->flash('errorMessage','Must add tanks before starting production!');
             return redirect()->action('ProductionController@manage');
