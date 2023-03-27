@@ -40,7 +40,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> 
 </div>
 <script type="text/javascript"> 
     window.addEventListener("load", window.print());
