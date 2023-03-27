@@ -110,6 +110,12 @@ class ProductionController extends Controller
             array_push($tank_details, $detail[0]);
         }
 
+        if($temp_tank_details == "")
+        {
+            session()->flash('errorMessage','Must add tanks before starting production!');
+            return redirect()->action('ProductionController@manage');
+        }
+
         if($pdn_flag)
         {
             DB::table('production_logs')
