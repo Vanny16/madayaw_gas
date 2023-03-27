@@ -684,7 +684,7 @@ class ProductionController extends Controller
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY FROM LEAKERS TO REVALVING 
-                (float)$new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                (float)$new_quantity = (float)$quantity->prd_for_revalving+ $prd_quantity;
                 
                 DB::table('products')
                 ->where('prd_id','=',$prd_id)
@@ -727,12 +727,12 @@ class ProductionController extends Controller
                 ]);  
 
                 //ADD QUANTITY TO EMPTY GOODS
-                DB::table('stocks_logs')
+                DB::table('products')
                 ->where('prd_id','=',$prd_id)
                 ->where('acc_id','=', session('acc_id'))
                 ->where('pdn_id', '=', get_last_production_id())
                 ->update([
-                'stk_filled' => (float)$stocks_logs->stk_filled - (float)$prd_quantity
+                'prd_empty_goods' => (float)$stocks_logs->stk_filled - (float)$prd_quantity
                 ]);  
 
                 session()->flash('getProdValues', array( $prodValues));
