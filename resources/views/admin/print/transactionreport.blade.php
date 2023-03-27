@@ -8,13 +8,10 @@
     <div class="col-md-12"> 
         <div class="card">
             <div class="card-header">
-  
             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction  Reports</h3>
-         
         </div>
             <div class="card-body">
                 <table class="table table-hover table-condensed">
-
                     <thead>
                         <tr>
                             <th>Reference ID</th>
