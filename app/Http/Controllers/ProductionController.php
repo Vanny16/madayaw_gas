@@ -147,7 +147,7 @@ class ProductionController extends Controller
                     ->insert([
                         'acc_id' => session('acc_id'),
                         'tnk_id' => $tnk_id,
-                        'log_tnk_opening' => $request->$input_field,
+                        'log_tnk_opening' => ($request->$input_field) * 1000,
                         'pdn_id' => get_last_production_id()
                     ]);
                 }
@@ -183,7 +183,7 @@ class ProductionController extends Controller
                     DB::table('tank_logs')
                     ->where('pdn_id', '=', get_last_production_id())
                     ->update([
-                        'log_tnk_closing' => $request->$input_field,
+                        'log_tnk_closing' => ($request->$input_field) * 1000,
                     ]);
                 }
             }
