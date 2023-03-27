@@ -56,6 +56,10 @@
                                         <label for="date_to">To</label>
                                         <input type="date" class="form-control" name="sales_date_to" value="{{ $date_to }}" required/>
                                     </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="search_string">Find</label>
+                                        <input type="text" class="form-control" id="search_sales" name="search_sales" placeholder="Search">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
@@ -116,7 +120,7 @@
                                             <th>Change</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tbl-sales">
                                         @foreach($sales as $sale)
                                             @php($total_discount = 0)
 
@@ -202,4 +206,15 @@
         </div>
     </section>
 </div>
+<script>
+$("#search_sales").on("change keyup", function() {
+    var searchValue = $("#search_sales").val().toLowerCase();
+    
+    $("#tbl-sales tr").filter(function() {
+        var rowText = $(this).text().toLowerCase();
+        var searchMatch = rowText.indexOf(searchValue) > -1;
+        $(this).toggle(searchMatch);
+    });
+});
+</script>
 @endsection 

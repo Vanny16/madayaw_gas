@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-md-3 mb-3">
                                     <label for="search_string">Find</label>
-                                        <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
+                                    <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label>Status</label>
