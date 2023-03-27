@@ -223,7 +223,7 @@
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transactions</p>
+                                                                                <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transaction</p>
                                                                             @endif
                                                                             <hr><hr>
                                                                         </div>
