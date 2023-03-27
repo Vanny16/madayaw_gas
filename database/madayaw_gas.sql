@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-24 16:51:18
+Date: 2023-03-27 17:20:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -182,9 +182,6 @@ CREATE TABLE `payment_types` (
 -- ----------------------------
 -- Records of payment_types
 -- ----------------------------
-INSERT INTO `payment_types` VALUES ('1', 'Cash');
-INSERT INTO `payment_types` VALUES ('2', 'Credit');
-INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -216,12 +213,12 @@ CREATE TABLE `products` (
   `prd_barcode` varchar(255) DEFAULT NULL,
   `prd_price` decimal(10,2) DEFAULT NULL,
   `prd_deposit` decimal(10,0) DEFAULT '0',
-  `prd_quantity` decimal(10,2) DEFAULT '0.00',
-  `prd_leakers` decimal(10,2) DEFAULT '0.00',
-  `prd_empty_goods` decimal(10,2) DEFAULT '0.00',
-  `prd_for_revalving` decimal(10,2) DEFAULT '0.00',
-  `prd_scraps` double DEFAULT '0',
-  `prd_reorder_point` decimal(10,2) DEFAULT NULL,
+  `prd_quantity` int(10) DEFAULT '0',
+  `prd_leakers` int(10) DEFAULT '0',
+  `prd_empty_goods` int(10) DEFAULT '0',
+  `prd_for_revalving` int(10) DEFAULT '0',
+  `prd_scraps` int(11) DEFAULT '0',
+  `prd_reorder_point` int(10) DEFAULT NULL,
   `prd_image` varchar(255) DEFAULT NULL,
   `sup_id` int(11) DEFAULT NULL,
   `prd_active` tinyint(4) DEFAULT '1',
@@ -236,6 +233,20 @@ CREATE TABLE `products` (
 
 -- ----------------------------
 -- Records of products
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `product_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_types`;
+CREATE TABLE `product_types` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of product_types
 -- ----------------------------
 
 -- ----------------------------
@@ -326,11 +337,11 @@ CREATE TABLE `stockin_logs` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `acc_id` int(11) DEFAULT NULL,
   `prd_id` varchar(255) DEFAULT NULL,
-  `log_quantity` decimal(11,0) DEFAULT '0',
-  `log_leakers` decimal(10,0) DEFAULT '0',
-  `log_empty_goods` decimal(10,0) DEFAULT '0',
-  `log_for_revalving` decimal(10,0) DEFAULT '0',
-  `log_scraps` decimal(10,0) DEFAULT '0',
+  `log_quantity` int(11) DEFAULT '0',
+  `log_leakers` int(10) DEFAULT '0',
+  `log_empty_goods` int(10) DEFAULT '0',
+  `log_for_revalving` int(10) DEFAULT '0',
+  `log_scraps` int(10) DEFAULT '0',
   `log_date` date DEFAULT NULL,
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
