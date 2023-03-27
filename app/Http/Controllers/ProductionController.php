@@ -384,6 +384,16 @@ class ProductionController extends Controller
         ->where('pdn_id', '=', get_last_production_id())
         ->first();
         
+        if($stocks_logs == null)
+        {
+            DB::table('stocks_logs')
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id,
+                'pdn_id' => get_last_production_id()
+            ]);
+        }
+        
         //FLAGS
         // 0 = quantity raw materials
         // 1 = empty goods
