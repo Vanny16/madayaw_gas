@@ -453,10 +453,10 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->first();
-
+// dd($canisters, $qty);
         if(isset($canisters))
         {
-            if((float)$canisters->prd_for_revalving >= $qty)
+            if((float)$canisters->prd_leakers >= $qty)
             {
                 return true;
             }
@@ -647,7 +647,7 @@ function subtract_qty($flag, $qty, $prd_id)
         // dd($qty);
         if(isset($for_revalving))
         {
-            $new_quantity= $for_revalving->prd_quantity - $qty;
+            $new_quantity= $for_revalving->prd_leakers - $qty;
         }
         else
         {
@@ -655,12 +655,12 @@ function subtract_qty($flag, $qty, $prd_id)
         }
 
         DB::table('products')        
-        ->where('prd_id', '=', $leakers->prd_id)
+        ->where('prd_id', '=', $for_revalving->prd_id)
         ->where('acc_id', '=', session('acc_id'))
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_quantity' => $new_quantity
+            'prd_for_revalving' => $new_quantity
         ]);
     }   
 }

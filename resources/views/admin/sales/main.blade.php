@@ -357,7 +357,7 @@
     <div class="modal-dialog modal-md show" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Product Form</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Opposition Canister Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -379,7 +379,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="prd_name">Product Name <span style="color:red">*</span></label>
+                                <label for="prd_name">Opposition Canister Name <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="ops_name" placeholder="Enter Product Name" value="" required/>
                             </div>
                             <div class="form-group">
