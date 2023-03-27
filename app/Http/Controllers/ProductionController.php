@@ -116,6 +116,8 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
 
+        // dd($temp_details <> "" && $temp_tank_details <> "");
+
         if($pdn_flag)
         {
             DB::table('production_logs')
