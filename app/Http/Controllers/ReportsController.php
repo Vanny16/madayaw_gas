@@ -38,7 +38,7 @@ class ReportsController extends Controller
                         ->get();
         
         $purchases = DB::table('purchases')
-                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->get();
 
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases'));

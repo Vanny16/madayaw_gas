@@ -28,31 +28,77 @@
             
             <div class="row">
                 <div class="col-md-12"> 
+
+                    @if($payments_date_from != "" && $payments_date_to != "")
+                    
+                        @if($payments_date_from == date('Y-m-d') && $payments_date_to == date('Y-m-d'))
+                            @php
+                                $date_from = Carbon\Carbon::parse()->format('Y-m-d');
+                                $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                                $date_label = "Today's Transactions";
+                            @endphp
+                         @else
+                            @php
+                                $date_from = $payments_date_from;
+                                $date_to = $payments_date_to;
+                                $date_label = "Payments from ". $date_from ." to ". $date_to;
+                            @endphp
+                        @endif
+                    @else
+                        @php
+                            $date_from = Carbon\Carbon::parse()->format('Y-m-d');
+                            $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                            $date_label = "All Transactions";
+                        @endphp
+                    @endif
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
+                            <form method="POST" action="{{ action('SalesController@paymentsFilter') }}">
+                                {{ csrf_field() }} 
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="date_from">From</label>
+                                        <input type="date" class="form-control" id="payments_date_from" name="payments_date_from" value="{{ $date_from }}" required/>     
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="date_to">To</label>
+                                        <input type="date" class="form-control" id="payments_date_to" name="payments_date_to" value="{{ $date_to }}" required/>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label>Status</label>
+                                        <select id="status_filter" class="form-control">
+                                            <option value="POS">All</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Paid">Paid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="search_string">Find</label>
+                                            <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Search Date</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="card-footer">
                             <div class="row">
-                                <div class="col-md-3 mb-3">
-                                    <label for="search_string">Find</label>
-                                        <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
+                                <div class="col-md-4">
+                                    <span>{{ $date_label }}</span>
                                 </div>
-                                <div class="col-md-3 mb-3">
-                                    <label>Status</label>
-                                    <select id="status_filter" class="form-control">
-                                        <option value="POS">All</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Paid">Paid</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="date_from">From</label>
-                                    <input type="date" class="form-control" name="payments_date_from" value="{{ date('Y-m-d') }}" required/>     
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="date_to">To</label>
-                                    <input type="date" class="form-control" name="payments_date_to" value="{{ date('Y-m-d') }}" required/>
+
+                                <div class="col-md-8">
+                                    <a href="{{ action('SalesController@payments') }}" class="float-right text-danger ml-2 mr-2"> All Transactions</a>
+                                    <span class="float-right">|</span>
+                                    <a href="{{ action('SalesController@paymentsToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Transactions</a>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +106,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments</h3>
+                            <h3 class="card-title"><i class="fa fa-coins"></i> Payment Transactions</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -284,5 +330,19 @@ $("#status_filter, #search_payments").on("change keyup", function() {
         $(this).toggle(statusMatch && searchMatch);
     });
 });
+
+
+// $("#payments_date_from, #payments_date_to").on("change keyup", function() {
+//     var payments_date_from = $("#payments_date_from").val().toLowerCase();
+//     var payments_date_to = $("#payments_date_to").val().toLowerCase();
+    
+//     $("#tbl-payments tr").filter(function() {
+//         var rowText = $(this).text().toLowerCase();
+//         var dateFromMatch = rowText.indexOf(payments_date_from) > -1;
+//         var dateToMatch = rowText.indexOf(payments_date_to) > -1;
+//         $(this).toggle(dateFromMatch || dateToMatch);
+//     });
+    
+// });
 </script>
 @endsection 
