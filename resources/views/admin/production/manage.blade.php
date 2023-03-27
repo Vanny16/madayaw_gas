@@ -619,7 +619,7 @@
                                     <tbody id="tbl-products">
                                         @php($production_id = get_last_production_id())
                                         @php($stocks_flag = 1)
-                                        <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                        <tr {{-- class='clickable-row' data-toggle="modal" data-target="#stocks-modal" --}}>
                                             <td><i>Opening Stocks</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
@@ -628,7 +628,7 @@
                                             @endif
                                         </tr>
                                         @php($stocks_flag = 2)
-                                        <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
+                                        <tr {{-- class='clickable-row' data-toggle="modal" data-target="#stocks-modal" --}}>
                                             <td><i>Closing Stocks</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
@@ -662,7 +662,7 @@
                                             <td><i>Empty</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(),  1) !!}</th>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(),  1) !!}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -670,7 +670,7 @@
                                             <td><i>Filled</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 2) !!}</th>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 2) !!}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -678,7 +678,7 @@
                                             <td><i>Leakers</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 3) !!}</th>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 3) !!}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -686,7 +686,7 @@
                                             <td><i>For Revalving</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 4) !!}</th>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 4) !!}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -694,7 +694,7 @@
                                             <td><i>Scrap</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <th>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 5) !!}</th>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 5) !!}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -703,7 +703,7 @@
                                             <td><b>Total Stocks</b></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <strong><td>{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}</td></strong>
+                                                    <strong><th>{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}</th></strong>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -940,9 +940,9 @@
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_opening_stock($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
                                                     @else
-                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
                                                     @endif
                                                     <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                 </div>
@@ -975,7 +975,7 @@
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}" onclick="this.select();" required>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
                                                     @else
                                                         <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank->tnk_remaining }}" onclick="this.select();" required>
                                                     @endif
