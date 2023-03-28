@@ -525,6 +525,7 @@
                                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01" required>
                                 </div>
                             </div>
+                            <p class="mt-4 text-danger">NOTE: <i>Please check the values properly, transaction cannot be void after POST.</i></p>
                         </div>
                     </div>
                 </div>  
