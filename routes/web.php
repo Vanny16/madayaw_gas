@@ -124,9 +124,13 @@ Route::group(['prefix' => 'product'], function()
 Route::group(['prefix' => 'reports'], function()
 {
     Route::get('sales', 'ReportsController@sales');
+    Route::get('sales/today', 'ReportsController@salesToday');
     Route::post('sales-filter', 'ReportsController@salesFilter');
+
     Route::get('transactions', 'ReportsController@transactions');
+    Route::get('transactions/today', 'ReportsController@transactionsToday');
     Route::post('transactions-filter', 'ReportsController@transactionsFilter');
+
     Route::post('production', 'ReportsController@production');
     Route::post('production-filter', 'ReportsController@productionFilter');
 });

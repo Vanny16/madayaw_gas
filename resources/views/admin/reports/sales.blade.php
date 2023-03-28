@@ -27,14 +27,25 @@
             </div>
 
             @if($sales_date_from != "" && $sales_date_to != "")
-                @php
-                    $date_from = $sales_date_from;
-                    $date_to = $sales_date_to;
-                @endphp
+
+                @if($sales_date_from == date('Y-m-d') && $sales_date_to == date('Y-m-d'))
+                    @php
+                        $date_from = Carbon\Carbon::parse()->format('Y-m-d');
+                        $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                        $date_label = "Today's Sales";
+                    @endphp
+                @else
+                    @php
+                        $date_from = $sales_date_from;
+                        $date_to = $sales_date_to;
+                        $date_label = "Sales from ". $date_from ." to ". $date_to;
+                    @endphp
+                @endif
             @else
                 @php
                     $date_from = Carbon\Carbon::parse()->format('Y-m-d');
                     $date_to = Carbon\Carbon::parse()->format('Y-m-d');
+                    $date_label = "All Sales";
                 @endphp
             @endif
             
@@ -68,29 +79,22 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
 
-                                @if($sales_date_from != "" && $sales_date_to != "")
-                                    @if($sales_date_from == Carbon\Carbon::parse()->format('Y-m-d'))
-                                        <h4>Today's sales</h4>
-                                    @else
-                                        <h4>Sales from <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_from)->format('F d, Y') }}</span> to <span class="text-info">{{ \Carbon\Carbon::parse($sales_date_to)->format('F d, Y') }}</span></h4>
-                                    @endif
-                                @else
-                                    <h4>All time sales</h4>
-                                @endif
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>{{ $date_label }}</span>
                                 </div>
-                                <div class="col-6">
-                                    <a href="{{ action('ReportsController@sales') }}"><button type="submit" class="btn btn-danger float-right"><span class="fa fa-table"></span> Show all time sales</button></a>
+
+                                <div class="col-md-8">
+                                    <a href="{{ action('ReportsController@sales') }}" class="float-right text-danger ml-2 mr-2"> All Sales</a>
+                                    <span class="float-right">|</span>
+                                    <a href="{{ action('ReportsController@salesToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Sales</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-12 mb-3"> 
                             <form method="POST" action="{{ action('PrintController@allsalesReports')}}">
