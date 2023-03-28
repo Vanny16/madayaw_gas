@@ -404,7 +404,7 @@ class ProductionController extends Controller
         ->where('prd_id','=', $prd_id)
         ->where('pdn_id', '=', get_last_production_id())
         ->first();
-        // dd($stocks_logs);
+        dd($stocks_logs);
         if($stocks_logs == null)
         {
             DB::table('stocks_logs')
@@ -446,13 +446,6 @@ class ProductionController extends Controller
         {
             //ADD QUANTITY TO RAW MATERIALS
             if($quantity->prd_is_refillable == 1){
-                if(!check_materials($flag, $prd_quantity, $prd_id))
-                {
-                    session()->flash('getProdValues', array( $prodValues));
-                    session()->flash('errorMessage','Valve insufficient!');
-                    return redirect()->action('ProductionController@manage');
-                }
-
                 $new_quantity = (float)$quantity->prd_raw_can_qty + $prd_quantity;
                 
                 DB::table('products')
