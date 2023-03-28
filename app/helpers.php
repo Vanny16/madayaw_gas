@@ -342,32 +342,24 @@ function get_total_stock_report($prd_id, $pdn_id)
 
 function check_materials($flag, $qty, $prd_id)
 {
-    // dd($flag, $qty, $prd_id);
    //FOR EMPTYGOODS
-    if($flag == 1)
+    if($flag == 0)
     {
-        $raw_materials = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=', $prd_id)
-        ->where('prd_for_production','=','1')
-        ->where('prd_active','<>','0')    
+        $product = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $prd_id)
         ->first();
-        // dd($raw_materials);
-        if(isset($raw_materials))
-        {
-            if((float)$raw_materials->prd_raw_can_qty >= (float)$qty)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+
+        $component = DB::table('products')
+        ->where('prd_id', '=', $product->prd_components)
+        ->first();
+        
+        if($component->prd_quantity < $qty)
         {
             return false;
         }
+
+        return true;
     }
     //FOR FILLING CANISTERS
     elseif($flag == 2)
@@ -474,54 +466,49 @@ function check_materials($flag, $qty, $prd_id)
 
 function subtract_qty($flag, $qty, $prd_id)
 {
-    // dd($qty);
+
     //SUBTRACT RAW MATERIALS FOR EMPTY GOODS
-    if($flag == 1)
+    if($flag == 0)
     {
+        $product = DB::table('products')
+        ->where('prd_id','=', $prd_id)
+        ->first();
 
-         
-         $product = DB::table('products')
-         ->where('prd_id','=', $prd_id)
-         ->first();
- 
-         $components_list = $product->prd_components;
-         $component = explode(",", $components_list);
- 
-
-         for($i = 0 ; $i < count($component) ; $i++)
-         {
-            
-            $item = DB::table('products')      
-            ->where('prd_id','=', $component[$i])
-            ->where('acc_id', '=', session('acc_id'))
-            ->where('prd_for_production','=','1')
-            ->first();
-
-            $new_quantity = $item->prd_quantity - $qty ;
-
-            DB::table('products')        
-            ->where('prd_id', '=', $component[$i])
-            ->update([
-                'prd_quantity' => $new_quantity
-            ]);
-         }
-
-         $can = DB::table('products')      
-            ->where('prd_id','=', $prd_id)
-            ->where('acc_id', '=', session('acc_id'))
-            ->where('prd_for_production','=','1')
-            ->first();
-
-         $new_quantity = $can->prd_raw_can_qty - $qty ;
-
-         DB::table('products')        
-         ->where('prd_id', '=', $prd_id)
-         ->update([
-             'prd_raw_can_qty' => $new_quantity
-         ]);
+        $components_list = $product->prd_components;
+        $component = explode(",", $components_list);
 
 
+        for($i = 0 ; $i < count($component) ; $i++)
+        {
+        
+        $item = DB::table('products')      
+        ->where('prd_id','=', $component[$i])
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->first();
 
+        $new_quantity = $item->prd_quantity - $qty ;
+
+        DB::table('products')        
+        ->where('prd_id', '=', $component[$i])
+        ->update([
+            'prd_quantity' => $new_quantity
+        ]);
+        }
+
+        $can = DB::table('products')      
+        ->where('prd_id','=', $prd_id)
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->first();
+
+        $new_quantity = $can->prd_raw_can_qty - $qty ;
+
+        DB::table('products')        
+        ->where('prd_id', '=', $prd_id)
+        ->update([
+            'prd_raw_can_qty' => $new_quantity
+        ]);
     }
 
     //SUBTRACT EMPTY GOODS FOR FILLED CANISTERS
