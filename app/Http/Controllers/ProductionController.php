@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -240,7 +241,6 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
 
-
         //FLAGS
         // 0 = quantity raw materials
         // 1 = empty goods
@@ -397,20 +397,22 @@ class ProductionController extends Controller
         ->where('prd_is_refillable','=','0')
         ->get();
 
-        $stocks_logs = DB::table('stocks_logs')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_id','=', $prd_id)
-        ->where('pdn_id', '=', get_last_production_id())
-        ->first();
-        // dd($stocks_logs);
-        if($stocks_logs == null)
-        {
-            DB::table('stocks_logs')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'prd_id' => $prd_id,
-                'pdn_id' => get_last_production_id()
-            ]);
+        if($quantity->prd_is_refillable == 1){
+            $stocks_logs = DB::table('stocks_logs')
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_id','=', $prd_id)
+            ->where('pdn_id', '=', get_last_production_id())
+            ->first();
+            // dd($stocks_logs);
+            if($stocks_logs == null)
+            {
+                DB::table('stocks_logs')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'prd_id' => $prd_id,
+                    'pdn_id' => get_last_production_id()
+                ]);
+            }
         }
 
         //FLAGS
