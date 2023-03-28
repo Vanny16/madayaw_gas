@@ -377,7 +377,7 @@ class ProductionController extends Controller
         $prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
-
+// dd($flag);
         if($prd_quantity <= 0){
             session()->flash('errorMessage','Invalid input!');
             return redirect()->action('ProductionController@manage');
@@ -396,6 +396,12 @@ class ProductionController extends Controller
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','0')
         ->get();
+
+        $stocks_logs = DB::table('stocks_logs')
+        ->where('prd_id','=',$prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->where('pdn_id', '=', get_last_production_id())
+        ->first();
 
         if($quantity->prd_is_refillable == 1){
             $stocks_logs = DB::table('stocks_logs')
@@ -439,9 +445,6 @@ class ProductionController extends Controller
             $request->tab_1,
             $request->tab_2
         );
-
-        // dd($flag);
-
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS
@@ -469,7 +472,8 @@ class ProductionController extends Controller
                     'stk_raw_materials' => (float)$stocks_logs->stk_raw_materials + (float)$prd_quantity
                 ]);  
             }
-            else{
+            else
+            {
                 $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
                 
                 DB::table('products')
@@ -479,13 +483,12 @@ class ProductionController extends Controller
                 ]);  
             }
 
-
             session()->flash('getProdValues', array( $prodValues));
             session()->flash('successMessage','Raw materials added');
             return redirect()->action('ProductionController@manage');
         }
 
-        if($flag == 1)
+        elseif($flag == 1)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
@@ -511,7 +514,24 @@ class ProductionController extends Controller
                 ->where('pdn_id', '=', get_last_production_id())
                 ->update([
                     'stk_empty_goods' => (float)$stocks_logs->stk_empty_goods + (float)$prd_quantity
+                ]); 
+                
+                //SUBTRACT LOGS FROM RAW MATERIALS IN STOCKS_LOGS FOR EMPTY GOODS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                    'stk_raw_materials' => $stock_in_quantity
                 ]);  
+
 
                 session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Empty goods added');
@@ -559,22 +579,29 @@ class ProductionController extends Controller
                     record_movement($prd_id, $prd_quantity, $flag);
 
                     //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
-                    //SUBTRACT QUANTITY FROM EMPTY
-                    DB::table('stocks_logs')
-                    ->where('prd_id','=',$prd_id)
-                    ->where('acc_id','=', session('acc_id'))
-                    ->where('pdn_id', '=', get_last_production_id())
-                    ->update([
-                    'stk_empty_goods' => (float)$stocks_logs->stk_empty_goods - (float)$prd_quantity
-                    ]);  
-
                     //ADD QUANTITY TO FILLED
                     DB::table('stocks_logs')
                     ->where('prd_id','=',$prd_id)
                     ->where('acc_id','=', session('acc_id'))
                     ->where('pdn_id', '=', get_last_production_id())
                     ->update([
-                    'stk_filled' => (float)$stocks_logs->stk_filled - (float)$prd_quantity
+                    'stk_filled' => (float)$stocks_logs->stk_filled + (float)$prd_quantity
+                    ]);  
+
+                    //SUBTRACT QUANTITY FROM EMPTY
+                    $stock_in_quantity = 0;
+
+                    if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                    {
+                        $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                    }
+
+                    DB::table('stocks_logs')
+                    ->where('prd_id','=',$prd_id)
+                    ->where('acc_id','=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                    'stk_empty_goods' => $stock_in_quantity
                     ]);  
 
                     session()->flash('getProdValues', array( $prodValues));
@@ -726,12 +753,12 @@ class ProductionController extends Controller
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY FROM LEAKERS TO REVALVING 
-                (float)$new_quantity = (float)$quantity->prd_for_revalving+ $prd_quantity;
+                (float)$new_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
                 
                 DB::table('products')
                 ->where('prd_id','=',$prd_id)
                 ->update([
-                    'prd_quantity' => $new_quantity
+                    'prd_empty_goods' => $new_quantity
                 ]);
 
                 $canister_details = DB::table('products')
@@ -759,32 +786,39 @@ class ProductionController extends Controller
                 record_movement($prd_id, $prd_quantity, $flag);
 
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
-                //SUBTRACT QUANTITY FROM LEAKERS
+                //ADD QUANTITY TO EMPTY GOODS
                 DB::table('stocks_logs')
                 ->where('prd_id','=',$prd_id)
                 ->where('acc_id','=', session('acc_id'))
                 ->where('pdn_id', '=', get_last_production_id())
                 ->update([
-                'stk_empty_goods' => (float)$stocks_logs->stk_empty_goods - (float)$prd_quantity
+                'stk_empty_goods' => (float)$stocks_logs->stk_filled + (float)$prd_quantity
                 ]);  
 
-                //ADD QUANTITY TO EMPTY GOODS
-                DB::table('products')
+                //SUBTRACT QUANTITY FROM LEAKERS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+                
+                DB::table('stocks_logs')
                 ->where('prd_id','=',$prd_id)
                 ->where('acc_id','=', session('acc_id'))
                 ->where('pdn_id', '=', get_last_production_id())
                 ->update([
-                'prd_empty_goods' => (float)$stocks_logs->stk_filled - (float)$prd_quantity
+                'stk_empty_goods' => $stock_in_quantity
                 ]);  
 
                 session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Leakers sent to Revalves');
+                session()->flash('successMessage','Canisters decanted and revalved');
                 return redirect()->action('ProductionController@manage');
             }
             else
             {
                 session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Leakers insufficient!');
+                session()->flash('errorMessage','Canisters for revalving insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
         }
@@ -808,6 +842,32 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
 
+                //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
+                //ADD QUANTITY FROM LEAKERS
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_scraps' => (float)$stocks_logs->stk_scraps + (float)$prd_quantity
+                ]);  
+
+                //SUBTRACT QUANTITY TO EMPTY GOODS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+                
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_leakers' => $stock_in_quantity
+                ]);  
+
                 session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Leakers sent as Scraps');
                 return redirect()->action('ProductionController@manage');
@@ -820,6 +880,7 @@ class ProductionController extends Controller
             }
             
         }
+
         elseif($flag == 6)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))
@@ -839,6 +900,32 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
                 
+                //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
+                //ADD QUANTITY FROM LEAKERS
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_leakers' => (float)$stocks_logs->stk_leakers + (float)$prd_quantity
+                ]);  
+
+                //SUBTRACT QUANTITY TO EMPTY GOODS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+                
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_filled' => $stock_in_quantity
+                ]);  
+                
                 session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Leakers added');
                 return redirect()->action('ProductionController@manage');
@@ -850,13 +937,14 @@ class ProductionController extends Controller
                 return redirect()->action('ProductionController@manage');
             }
         }
+
         elseif($flag == 7)
         {
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY TO FOR_REVALVING FROM LEAKERS
                 (float)$new_quantity = (float)$quantity->prd_for_revalving + $prd_quantity;
-                            
+                            // dd($new_quantity, $quantity->prd_for_revalving, $prd_quantity);
                 DB::table('products')
                 ->where('prd_id','=',$prd_id)
                 ->update([
@@ -869,6 +957,32 @@ class ProductionController extends Controller
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
                 
+                //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
+                //ADD QUANTITY FROM LEAKERS
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_for_revalving' => (float)$stocks_logs->stk_for_revalving + (float)$prd_quantity
+                ]);  
+
+                //SUBTRACT QUANTITY TO EMPTY GOODS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+                
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_leakers' => $stock_in_quantity
+                ]);  
+
                 session()->flash('getProdValues', array( $prodValues));
                 session()->flash('successMessage','Canisters added for revalving');
                 return redirect()->action('ProductionController@manage');

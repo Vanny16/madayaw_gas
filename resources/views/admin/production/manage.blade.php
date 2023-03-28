@@ -731,8 +731,8 @@
                                             @foreach($tanks as $tank)
                                                 <tr>
                                                     <td><i>{{$tank->tnk_name}}</i></td>
-                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
-                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
+                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
                                                 </tr>
                                             @endforeach
                                         @endif

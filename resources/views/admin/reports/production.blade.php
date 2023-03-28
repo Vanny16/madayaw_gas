@@ -171,13 +171,13 @@
                                             <tr>
                                                 <td><i>Opening Tank</i></td>
                                                 @foreach($tanks as $tank)
-                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                    <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
                                                 @endforeach
                                             </tr>
                                             <tr>
                                                 <td><i>Closing Tank</i></td>
                                                 @foreach($tanks as $tank)
-                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                                    <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
                                                 @endforeach
                                             </tr>
                                         </tbody>
