@@ -37,7 +37,7 @@
                 @else
                     @php
                         $date_from = $transactions_date_from;
-                        $date_to = $sales_date_to;
+                        $date_to = $transactions_date_to;
                         $date_label = "Transactions from ". $date_from ." to ". $date_to;
                     @endphp
                 @endif
