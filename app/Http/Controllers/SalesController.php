@@ -488,8 +488,6 @@ class SalesController extends Controller
         return redirect()->action('PrintController@salesReceipt');
     }
 
-
-
     public function payPending(Request $request){
 
         $pmnt_id = DB::table('payments')

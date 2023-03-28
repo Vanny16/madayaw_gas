@@ -121,7 +121,7 @@
                                             <th>Total Sale</th>
                                             <th>Total Discount</th>
                                             <th>Amount Received</th>
-                                            <th>Change</th>
+                                            <th>Balance</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-sales">
