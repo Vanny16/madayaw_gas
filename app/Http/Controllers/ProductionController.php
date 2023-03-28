@@ -302,14 +302,13 @@ class ProductionController extends Controller
             ->orderBy('prd_id', 'asc')
             ->select('prd_id')
             ->first();
-        
 
-            // DB::table('stocks_logs')
-            // ->insert([
-            //     'acc_id' => session('acc_id'),
-            //     'prd_id' => $prd_id,
-            //     'pdn_id' => $pdn_id
-            // ]);
+            DB::table('stocks_logs')
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'prd_id' => $prd_id->prd_id,
+                'pdn_id' => get_last_production_id()
+            ]);
         }
 
         if($request->file('prd_image'))
@@ -404,7 +403,7 @@ class ProductionController extends Controller
         ->where('prd_id','=', $prd_id)
         ->where('pdn_id', '=', get_last_production_id())
         ->first();
-        dd($stocks_logs);
+        // dd($stocks_logs);
         if($stocks_logs == null)
         {
             DB::table('stocks_logs')
