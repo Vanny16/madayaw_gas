@@ -263,7 +263,7 @@ function get_opening_tank($tnk_id, $pdn_id)
         return 0;
     }
 
-    return $opening_tank->log_tnk_opening;
+    return ($opening_tank->log_tnk_opening) / 1000;
 }
 
 function get_closing_tank($tnk_id, $pdn_id)
@@ -278,7 +278,7 @@ function get_closing_tank($tnk_id, $pdn_id)
     { 
         return 0;
     }
-    return $closing_tank->log_tnk_closing;
+    return ($closing_tank->log_tnk_closing) / 1000;
 }
 
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
@@ -393,8 +393,33 @@ function check_materials($flag, $qty, $prd_id)
             return false;
         }
     }
-    //FOR REVALVING OR SCRAPPING LEAKERS 
-    elseif($flag == 4 || $flag == 5)
+    //FOR REVALVING 
+    elseif($flag == 4)
+    {
+        $canisters = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->first();
+
+        if(isset($canisters))
+        {
+            if((float)$canisters->prd_for_revalving >= $qty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    //SCRAPPING LEAKERS 
+    elseif($flag == 5)
     {
         $canisters = DB::table('products')
         ->where('acc_id', '=', session('acc_id'))
@@ -546,7 +571,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_empty_goods' => $new_quantity
         ]);
     }
-    //SUBTRACT FOR_REVALVING FOR FILLED 
+    //SUBTRACT FOR_REVALVING FOR DECANTING 
     elseif($flag == 4)
     {
         $revalves = DB::table('products')
@@ -555,7 +580,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->first();
-
+        
         if(isset($revalves))
         {
             $new_quantity= $revalves->prd_for_revalving - $qty;
@@ -630,6 +655,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_quantity' => $new_quantity
         ]);
     }   
+    //SUBTRACT LEAKERS FOR "FOR_REVALVING"
     elseif($flag == 7)
     {
         $for_revalving = DB::table('products')
@@ -638,7 +664,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->first();
-        // dd($qty);
+        // dd($for_revalving);
         if(isset($for_revalving))
         {
             $new_quantity= $for_revalving->prd_leakers - $qty;
@@ -654,7 +680,7 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->update([
-            'prd_for_revalving' => $new_quantity
+            'prd_leakers' => $new_quantity
         ]);
     }   
 }
