@@ -237,17 +237,33 @@
                                                                             <hr><hr>
                                                                         </div>
                                                                     </div>
+                                                                    
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <form method="POST" action="{{ action('PrintController@allpurchasesReports')}}">
+                                                                            {{ csrf_field() }}
+                                                                                <div class="col-md-12 col-12 mb-3">
+                                                                                    <div class="dropdown float-right">
+                                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown">
+                                                                                            <i class="fa fa-ellipsis-vertical"></i>
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu float-left dropdown-menu-right" style="left: auto; right: 0;">
+                                                                                            <li><a id="btn_bad_order" href="javascript:void(0)" data-toggle="modal" data-target="#bad-order-modal"><i class="fa fa-eraser ml-2 mr-2"></i> Void Transaction</a></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
+                                                                                <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
+                                                                            </form>
+                                                                        </div>
+                                                                        
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <form method="POST" action="{{ action('PrintController@allpurchasesReports')}}">
-                                                            {{ csrf_field() }}
-                                                                <!-- <button type="submit" class="btn btn-info float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button> -->
-                                                                <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
-                                                                <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
-                                                            </form>
-                                                            <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
