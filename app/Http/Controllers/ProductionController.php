@@ -660,7 +660,7 @@ class ProductionController extends Controller
             
                                 $new_bo_id = $max_bo_id + 1;
                                 $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
-            
+                                
                                 DB::table('bad_orders')
                                 ->insert([
                                     'acc_id' => session('acc_id'),
@@ -676,17 +676,19 @@ class ProductionController extends Controller
                                 
                                 session(['latest_bo_id' => $new_bo_id ]); 
                                 
-                                //LOG ACTION IN PRODUCTION
-                                record_movement($prd_id, $prd_quantity, $flag);
-
-                                //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
-                                DB::table('stocks_logs')
-                                ->where('prd_id','=',$prd_id)
-                                ->where('acc_id','=', session('acc_id'))
-                                ->where('pdn_id', '=', get_last_production_id())
-                                ->update([
-                                    'stk_leakers' => (float)$stocks_logs->stk_leakers + (float)$prd_quantity
-                                ]);  
+                                if($has_this_prd[0]->prd_is_refillable == 1){
+                                    //LOG ACTION IN PRODUCTION
+                                    record_movement($prd_id, $prd_quantity, $flag);
+    
+                                    //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
+                                    DB::table('stocks_logs')
+                                    ->where('prd_id','=',$prd_id)
+                                    ->where('acc_id','=', session('acc_id'))
+                                    ->where('pdn_id', '=', get_last_production_id())
+                                    ->update([
+                                        'stk_leakers' => (float)$stocks_logs->stk_leakers + (float)$prd_quantity
+                                    ]);  
+                                }
 
                                 session()->flash('successMessage','Leakers added');
                                 session(['return_page' =>$request->return_page]);
