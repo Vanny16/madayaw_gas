@@ -94,31 +94,17 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="row">
-                        <div class="col-md-2 col-12 mb-3">
+                        <div class="col-md-12 mb-3"> 
                             <form method="POST" action="{{ action('PrintController@alltransactionReports')}}">
                             {{ csrf_field() }}
-                                <button type="submit" class="btn btn-info col-md-7 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
+                                <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
                                 <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                             </form>
                         </div>
-
-                        <div class="col-md-8 col-0"></div>
-
-                        <div class="col-md-2 col-12 mb-3">
-                            <div class="dropdown float-right">
-                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown">
-                                    <i class="fa fa-ellipsis-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu float-left dropdown-menu-right" style="left: auto; right: 0;">
-                                    <li><a id="btn_bad_order" href="javascript:void(0)" data-toggle="modal" data-target="#bad-order-modal"><i class="fa fa-exchange ml-2"></i> Return Bad Order</a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
-
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>
@@ -261,10 +247,7 @@
                                                                 <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
                                                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                                                             </form>
-                                                            <div class="col-md-12">
-                                                                <button type="submit" class="btn btn-transparent float-left text-danger" data-dismiss="modal">Void Transaction</button>
-                                                            </div>
-                                                            <button type="submit" class="btn btn-default float-right" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
+                                                            <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
