@@ -298,15 +298,14 @@ class ProductionController extends Controller
             'sup_id' => $sup_id
             ]);
 
-            $prd_id = DB::table('products')
-            ->orderBy('prd_id', 'asc')
-            ->select('prd_id')
+            $products = DB::table('products')
+            ->orderBy('prd_id', 'desc')
             ->first();
-
+            
             DB::table('stocks_logs')
             ->insert([
                 'acc_id' => session('acc_id'),
-                'prd_id' => $prd_id->prd_id,
+                'prd_id' => $products->prd_id,
                 'pdn_id' => get_last_production_id()
             ]);
         }
