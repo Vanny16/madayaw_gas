@@ -24,7 +24,7 @@
                             <th>Date & Time</th>
                             <th>Total Sale</th>
                             <th>Amount Received</th>
-                            <th>Change</th>
+                            <th>Balance</th>
                             <th width="20px"></th>
                         </tr>
                         <tr>
