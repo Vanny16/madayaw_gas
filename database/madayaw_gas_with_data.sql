@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-27 17:57:04
+Date: 2023-03-28 16:06:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,11 +74,20 @@ CREATE TABLE `customers` (
   `cus_image` varchar(255) DEFAULT NULL,
   `cus_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`cus_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
+INSERT INTO `customers` VALUES ('1', '1', 'lp9908qz4nbhd67tu69bo4axdfcjzqm7', 'Im Nayeon', 'Seoul Tan Kudarat', '09324234234', '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '1.jpg', '1');
+INSERT INTO `customers` VALUES ('2', '1', 'fw04igzm3c0kau4c2ryq2qqfprvzkmpi', 'Yoo Jeongyeon', 'Seoul Tan Kudarat', '08235434534', '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '2.jpg', '1');
+INSERT INTO `customers` VALUES ('3', '1', 'l9ctr0g90z1gxx3ii4c2o4z9wt259mpc', 'Hirai Momo', 'Shibuyas Bombei, Japen', '06787578232', '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '3.jpg', '1');
+INSERT INTO `customers` VALUES ('4', '1', 'vdvl03yj395h3av0fetyzt2cunw5epir', 'Minatozaki Sana', 'Shibu Shiti', null, '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '4.jpg', '1');
+INSERT INTO `customers` VALUES ('5', '1', '2w44i28onaqn4evui2svgbqv6d481o03', 'Park Jihyo', 'Seoul Tan Kudarat, South Kortabato', '09567568687', '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '5.jpg', '1');
+INSERT INTO `customers` VALUES ('6', '1', 't7gou40ztu0uctuzo6d28o1chxlv97vc', 'Myoui Mina', 'Nagoya Shardines, Japanacan', null, '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '6.jpg', '1');
+INSERT INTO `customers` VALUES ('7', '1', '9cww8cd4sluz6j95rch7d8o0fo7flv5x', 'Kim Dahyun', 'Seoulup', '08656523223', '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '7.jpg', '1');
+INSERT INTO `customers` VALUES ('8', '1', '947zwcnsfnl6pos6cjyerek0cc53sg5o', 'Son Chaeyoung', 'Gonjiam City', null, '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '8.jpg', '1');
+INSERT INTO `customers` VALUES ('9', '1', 'gul4ltv29a4xr77q4s482vpcezgprr37', 'Chou Tzuyu', 'Ajinomoto, Taiwan', null, '0', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, '9.jpg', '1');
 
 -- ----------------------------
 -- Table structure for `movement_logs`
@@ -97,11 +106,17 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
 -- ----------------------------
+INSERT INTO `movement_logs` VALUES ('1', '1', '3', '0', '0', '3000', '0', '0', '1', '2023-03-28', '1');
+INSERT INTO `movement_logs` VALUES ('2', '1', '4', '0', '0', '3000', '0', '0', '1', '2023-03-28', '1');
+INSERT INTO `movement_logs` VALUES ('3', '1', '5', '0', '0', '3000', '0', '0', '1', '2023-03-28', '1');
+INSERT INTO `movement_logs` VALUES ('4', '1', '3', '1000', '0', '0', '0', '0', '1', '2023-03-28', '1');
+INSERT INTO `movement_logs` VALUES ('5', '1', '4', '1000', '0', '0', '0', '0', '1', '2023-03-28', '1');
+INSERT INTO `movement_logs` VALUES ('6', '1', '5', '1000', '0', '0', '0', '0', '1', '2023-03-28', '1');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -182,6 +197,9 @@ CREATE TABLE `payment_types` (
 -- ----------------------------
 -- Records of payment_types
 -- ----------------------------
+INSERT INTO `payment_types` VALUES ('1', 'Cash');
+INSERT INTO `payment_types` VALUES ('2', 'Credit');
+INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -198,7 +216,7 @@ CREATE TABLE `production_logs` (
 -- ----------------------------
 -- Records of production_logs
 -- ----------------------------
-INSERT INTO `production_logs` VALUES ('1', '2023-03-27', '17:53:26', null);
+INSERT INTO `production_logs` VALUES ('1', '2023-03-28', '15:46:36', null);
 
 -- ----------------------------
 -- Table structure for `products`
@@ -230,30 +248,17 @@ CREATE TABLE `products` (
   `prd_raw_can_qty` int(11) DEFAULT '0',
   `prd_components` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`prd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES ('1', '1', '99wyavv45he91vaft4pq68jde2ao7qf3', 'MS Valve', 'MS Valve', 'MSV', null, null, '0', '0', '0', '0', '0', '0', '100', null, '1', '1', '0', '1', '0', null, '0', null);
-INSERT INTO `products` VALUES ('2', '1', 'kujgpgwwqq2td8vaawumfbn1vsk44o0l', 'MR Valve', 'MR Valve', 'MRV', null, null, '0', '0', '0', '0', '0', '0', '100', null, '1', '1', '0', '1', '0', null, '0', null);
-INSERT INTO `products` VALUES ('3', '1', 'c58t3p3pklnr9m22egc5wi96giud1jv3', 'Madayaw Square', 'MS LPG', 'MS170', null, '20.00', '35', '0', '0', '0', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '0', '1');
-INSERT INTO `products` VALUES ('4', '1', 'g4uoiu0wqcstvxqtf7nghd830htg1ke6', 'Madayaw Round', 'MR LPG', 'MR170', null, '20.00', '35', '0', '0', '0', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '0', '2');
-INSERT INTO `products` VALUES ('5', '1', 'c28x6ru3gze88xfq2qyk8s88olthykj3', 'Botin', 'BOTIN 170', 'B170', null, '20.00', '35', '0', '0', '0', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '0', '2');
-
--- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
--- ----------------------------
+INSERT INTO `products` VALUES ('1', '1', 'lx8vl6nbbllmz0a3atmxbb26a52vtwfb', 'MS Valve', 'MS Valve', 'MSV', null, null, '0', '7000', '0', '0', '0', '0', '1000', null, '1', '1', '0', '1', '0', null, '0', null);
+INSERT INTO `products` VALUES ('2', '1', '77ltp1p4a2ig1bcf1zwuoq3d5a6p2hx2', 'MR Valve', 'MR Valve', 'MRV', null, null, '0', '4000', '0', '0', '0', '0', '1000', null, '1', '1', '0', '1', '0', null, '0', null);
+INSERT INTO `products` VALUES ('3', '1', 'emcn4vx7wunsbnuy56lh4m37fehc46om', 'Madayaw Square', 'MS LPG', 'MS170', null, '20.00', '35', '1000', '0', '2000', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '7000', '1');
+INSERT INTO `products` VALUES ('4', '1', 'p1e03x2xbxzpysfsmcqonuccquwlwcsb', 'Madayaw Round', 'MR LPG', 'MR170', null, '20.00', '35', '1000', '0', '2000', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '7000', '2');
+INSERT INTO `products` VALUES ('5', '1', 'oukkj0svy7fin84m8v30fim92y9gcpsb', 'Botin', 'BOTIN170', 'BOTIN170', null, '20.00', '35', '1000', '0', '2000', '0', '0', '1000', null, '1', '1', '1', '1', '1', '170', '7000', '2');
+INSERT INTO `products` VALUES ('6', '1', 'jkv15stqbh9hcwk2ouh19abek9o2m35d', 'Gas Stove', 'GS1B', 'GS1B', null, '700.00', '0', '1500', '0', '0', '0', '0', '100', null, '2', '1', '0', '0', '1', null, '0', null);
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -294,13 +299,25 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
 -- ----------------------------
-INSERT INTO `quantity_logs` VALUES ('1', '1', '1', '1', '5000000', '2023-03-27 17:42:40', '0');
-INSERT INTO `quantity_logs` VALUES ('2', '1', '2', '1', '5000000', '2023-03-27 17:42:44', '0');
+INSERT INTO `quantity_logs` VALUES ('1', '1', '1', '1', '5000000', '2023-03-28 15:45:31', '0');
+INSERT INTO `quantity_logs` VALUES ('2', '1', '2', '1', '5000000', '2023-03-28 15:45:34', '0');
+INSERT INTO `quantity_logs` VALUES ('3', '1', '1', '1', '10000', '2023-03-28 15:54:15', '1');
+INSERT INTO `quantity_logs` VALUES ('4', '1', '2', '1', '10000', '2023-03-28 15:54:19', '1');
+INSERT INTO `quantity_logs` VALUES ('5', '1', '3', '1', '10000', '2023-03-28 15:54:23', '1');
+INSERT INTO `quantity_logs` VALUES ('6', '1', '4', '1', '10000', '2023-03-28 15:54:33', '1');
+INSERT INTO `quantity_logs` VALUES ('7', '1', '5', '1', '10000', '2023-03-28 15:55:26', '1');
+INSERT INTO `quantity_logs` VALUES ('8', '1', '6', '1', '1500', '2023-03-28 15:57:37', '1');
+INSERT INTO `quantity_logs` VALUES ('9', '1', '3', '1', '3000', '2023-03-28 16:03:56', '1');
+INSERT INTO `quantity_logs` VALUES ('10', '1', '4', '1', '3000', '2023-03-28 16:04:06', '1');
+INSERT INTO `quantity_logs` VALUES ('11', '1', '5', '1', '3000', '2023-03-28 16:04:16', '1');
+INSERT INTO `quantity_logs` VALUES ('12', '1', '3', '1', '1000', '2023-03-28 16:04:33', '1');
+INSERT INTO `quantity_logs` VALUES ('13', '1', '4', '1', '1000', '2023-03-28 16:04:37', '1');
+INSERT INTO `quantity_logs` VALUES ('14', '1', '5', '1', '1000', '2023-03-28 16:04:43', '1');
 
 -- ----------------------------
 -- Table structure for `reset_password`
@@ -376,11 +393,16 @@ CREATE TABLE `stocks_logs` (
   `stk_for_revalving` int(11) DEFAULT '0',
   `stk_scraps` int(11) DEFAULT '0',
   PRIMARY KEY (`stk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stocks_logs
 -- ----------------------------
+INSERT INTO `stocks_logs` VALUES ('1', '1', '3', null, null, '1', '10000', '2000', '-1000', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('2', '1', '4', null, null, '1', '10000', '2000', '-1000', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('3', '1', '1', null, null, '1', '0', '0', '0', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('4', '1', '2', null, null, '1', '0', '0', '0', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('5', '1', '5', null, null, '1', '10000', '2000', '-1000', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `stock_statuses`
@@ -413,12 +435,13 @@ CREATE TABLE `suppliers` (
   `sup_image` varchar(255) DEFAULT NULL,
   `sup_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`sup_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
-INSERT INTO `suppliers` VALUES ('1', 'pzeyf8vy9xhfc5ftkend8oxqawnan2pe', '1', 'Madayaw Gas', 'Bunawan', '09234234234', null, null, '1');
+INSERT INTO `suppliers` VALUES ('1', 'akyvxovzdi5erp6qkv19uvy16p6iivob', '1', 'Madayaw Gas', 'Bunawan', '09121212121', null, null, '1');
+INSERT INTO `suppliers` VALUES ('2', 'k9tp3c125znwsuoaszpgeo70ycflebeq', '1', 'Davao Supplier', 'Davao City', '09121233321', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tanks`
@@ -439,8 +462,8 @@ CREATE TABLE `tanks` (
 -- ----------------------------
 -- Records of tanks
 -- ----------------------------
-INSERT INTO `tanks` VALUES ('1', '1', 'Tank 1', '5000000', '5000000', null, null, '1');
-INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '5000000', null, null, '1');
+INSERT INTO `tanks` VALUES ('1', '1', 'Tank 1', '5000000', '4660000', null, null, '1');
+INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '4830000', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`

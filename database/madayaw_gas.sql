@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-27 17:20:45
+Date: 2023-03-28 15:42:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -182,6 +182,9 @@ CREATE TABLE `payment_types` (
 -- ----------------------------
 -- Records of payment_types
 -- ----------------------------
+INSERT INTO `payment_types` VALUES ('1', 'Cash');
+INSERT INTO `payment_types` VALUES ('2', 'Credit');
+INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -233,20 +236,6 @@ CREATE TABLE `products` (
 
 -- ----------------------------
 -- Records of products
--- ----------------------------
-
--- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
 -- ----------------------------
 
 -- ----------------------------

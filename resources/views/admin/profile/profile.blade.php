@@ -27,8 +27,8 @@
 				</div>
 
 				<div class="row">
+
 					<div class="col-md-3">
-						
 						<div class="card card-primary card-outline">
 							<div class="card-body box-profile">
 								<div class="row mt-3">
@@ -59,6 +59,47 @@
 						</div>
 					</div>
 
+					<div class="col-md-9">
+						<div class="card">
+							<div class="card-body">
+								<div class="tab-content">
+									<div class="active tab-pane" id="personal">
+										<form method="POST" action="{{ action('UserController@saveProfile', [$user_details->usr_id]) }}">
+										{{ csrf_field() }} 
+											<div class="form-group row">
+												<label for="emp_last_name" class="col-sm-2 col-form-label">Full Name</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{$user_details->usr_full_name }}" placeholder="Full Name" readonly/>
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" readonly/>
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
+												</div>
+											</div>
+											<div class="form-group row">
+												<div class="offset-lg-2 col-12">
+													<button type="submit" class="btn btn-info col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
+													<a class="btn btn-default text-info col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
+													<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<!--User-saveProfile Modal -->
 					<div id="changePasswordModal" class="modal fade" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -102,46 +143,7 @@
 							</div>
 						</div>
 					</div>
-
-					<!--User-saveProfile Modal -->
-					<div class="col-md-9">
-						<div class="card">
-							<div class="card-body">
-								<div class="tab-content">
-									<div class="active tab-pane" id="personal">
-										<form class="form-horizontal" method="POST" action="{{ action('UserController@saveProfile', [$user_details->usr_id]) }}">
-										{{ csrf_field() }} 
-											<div class="form-group row">
-												<label for="emp_last_name" class="col-sm-2 col-form-label">Full Name</label>
-												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_full_name" name="usr_full_name" value="{{$user_details->usr_full_name }}" placeholder="Full Name" readonly/>
-												</div>
-											</div>
-											<div class="form-group row">
-												<label for="emp_middle_name" class="col-sm-2 col-form-label">Username</label>
-												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_name" name="usr_name" value="{{$user_details->usr_name }}" placeholder="Address" readonly/>
-												</div>
-											</div>
-											<div class="form-group row">
-												<label for="emp_middle_name" class="col-sm-2 col-form-label">Address</label>
-												<div class="col-sm-10">
-													<input type="text" class="form-control" id="usr_address" name="usr_address" value="{{$user_details->usr_address }}" placeholder="Address" />
-												</div>
-											</div>
-											<div class="form-group row">
-												<div class="offset-lg-2 col-12">
-													<button type="submit" class="btn btn-info col-md-2 col-12 mb-2"><span class="fa fa-save"></span> Save Changes</button>
-													<a class="btn btn-default text-info col-md-2 col-12 mb-2" href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><span class="fa fa-key"></span> Change Password</a>
-													<input type="hidden" name="usr_uuid" value="$user_details->usr_uuid">
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 		</section>

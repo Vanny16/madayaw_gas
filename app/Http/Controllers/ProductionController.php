@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -240,7 +241,6 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
 
-
         //FLAGS
         // 0 = quantity raw materials
         // 1 = empty goods
@@ -271,6 +271,12 @@ class ProductionController extends Controller
                 }
                 $prd_components = substr($get_components, 0, strlen($get_components) - 1);
             }
+            else
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Canister products must contain a component!');
+                return redirect()->action('ProductionController@manage');
+            }
 
             // dd($prd_components);
 
@@ -290,6 +296,17 @@ class ProductionController extends Controller
             'prd_is_refillable' => 1,
             'prd_components' => $prd_components,
             'sup_id' => $sup_id
+            ]);
+
+            $products = DB::table('products')
+            ->orderBy('prd_id', 'desc')
+            ->first();
+            
+            DB::table('stocks_logs')
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'prd_id' => $products->prd_id,
+                'pdn_id' => get_last_production_id()
             ]);
         }
 
@@ -357,7 +374,7 @@ class ProductionController extends Controller
         }
 
         $prd_id = $request->stockin_prd_id;
-        (float)$prd_quantity = (float)$request->quantity + ((float)$request->crate_quantity * 12);
+        $prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
 
@@ -380,22 +397,24 @@ class ProductionController extends Controller
         ->where('prd_is_refillable','=','0')
         ->get();
 
-        $stocks_logs = DB::table('stocks_logs')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_id','=', $prd_id)
-        ->where('pdn_id', '=', get_last_production_id())
-        ->first();
-        
-        if($stocks_logs == null)
-        {
-            DB::table('stocks_logs')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'prd_id' => $prd_id,
-                'pdn_id' => get_last_production_id()
-            ]);
+        if($quantity->prd_is_refillable == 1){
+            $stocks_logs = DB::table('stocks_logs')
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_id','=', $prd_id)
+            ->where('pdn_id', '=', get_last_production_id())
+            ->first();
+            // dd($stocks_logs);
+            if($stocks_logs == null)
+            {
+                DB::table('stocks_logs')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'prd_id' => $prd_id,
+                    'pdn_id' => get_last_production_id()
+                ]);
+            }
         }
-        
+
         //FLAGS
         // 0 = quantity raw materials
         // 1 = empty goods
@@ -421,7 +440,7 @@ class ProductionController extends Controller
             $request->tab_2
         );
 
-        // dd($prodValues);
+        // dd($flag);
 
         if($flag == 0)
         {
@@ -434,6 +453,12 @@ class ProductionController extends Controller
                 ->update([
                     'prd_raw_can_qty' => (float)$new_quantity
                 ]);  
+
+                // SUBTRACT FROM RAW MATERIALS
+                subtract_qty($flag, $prd_quantity, $prd_id);
+
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
 
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 DB::table('stocks_logs')
@@ -462,7 +487,6 @@ class ProductionController extends Controller
 
         if($flag == 1)
         {
-            // dd(check_materials($flag, $prd_quantity, $prd_id));
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY TO EMPTY GOODS
