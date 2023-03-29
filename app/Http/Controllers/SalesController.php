@@ -399,6 +399,20 @@ class SalesController extends Controller
                 ->update([
                     'prd_empty_goods' => $add_empty_good_qty
                 ]);
+
+                //ADD QUANTITY TO STOCKS LOGS FOR CANISTER MOVEMENT TRACKING
+                //get quantity of the product in the stocks_logs table
+                $stocks_logs = DB::table('stocks_logs')
+                ->where('prd_id', '=', $prd_id_in)
+                ->first();
+                $stocks_logs_quantity = $stocks_logs->stk_empty_goods;
+
+                //add stocks_logs quantity to add_empty_good_qty
+                DB::table('stocks_logs')
+                ->where('prd_id', '=', $prd_id_in)
+                ->update([
+                    'stk_empty_goods' => $stocks_logs_quantity + $add_empty_good_qty
+                ]);
             }
             else{
                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
@@ -675,7 +689,7 @@ class SalesController extends Controller
     
         }   
 
-        session()->flash('successMessage','test');
+        session()->flash('successMessage','Opposition Canister added');
         return redirect()->action('SalesController@main');
     }
 }
