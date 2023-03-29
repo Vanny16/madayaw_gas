@@ -235,7 +235,7 @@
                                             <div class="modal-body">
                                                 <div class="row">
 
-                                                    <div class="col-5">
+                                                    <div class="col-md-5 col-12">
                                                         @if($product->prd_is_refillable == '0')
                                                             @php($addCanistersIn = "")
                                                             @php($select_in = "0")
@@ -280,11 +280,11 @@
                                                         @endif
                                                     </div>
 
-                                                    <div class="col-1 bg-light text-center align-items-center">
-                                                        <i class="fa fa-arrow-right text-danger mt-5" height="100%"></i>
+                                                    <div class="col-md-1 col-12 bg-light text-center align-items-center">
+                                                        &nbsp;
                                                     </div>
 
-                                                    <div class="col-6">
+                                                    <div class="col-md-6 col-12">
                                                         <h3 class="text-success mb-5"><i class="fa fa-arrow-up"></i> OUT</h3>
                                                         <div class="form-group">
                                                             <label for="cus_name">Product Name <span style="color:red">*</span></label>
