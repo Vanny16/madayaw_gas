@@ -334,9 +334,9 @@
                                             </div>
                                             <div class="col-7">
                                                 @if($pdn_flag)
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
                                                 @else
-                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" required>
+                                                    <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
                                                 @endif
                                                 <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                             </div>
