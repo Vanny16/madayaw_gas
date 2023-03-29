@@ -25,10 +25,12 @@
             </div>
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    @if($pdn_flag)
-                        <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
-                    @else
-                        <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
+                    @if(session('typ_id') == 1)
+                        @if($pdn_flag)
+                            <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
+                        @else
+                            <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
+                        @endif
                     @endif
                     @if(session('typ_id') == 3)
                         <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Verify Production</a>
