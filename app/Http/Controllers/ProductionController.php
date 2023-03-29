@@ -157,7 +157,7 @@ class ProductionController extends Controller
 
                     DB::table('tanks')
                     ->update([
-                        'tnk_remaining' => $request->$input_field,
+                        'tnk_remaining' => $request->$input_field * 1000,
                     ]);
 
                     DB::table('tank_logs')
