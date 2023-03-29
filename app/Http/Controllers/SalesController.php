@@ -668,7 +668,7 @@ class SalesController extends Controller
     
         }   
 
-        session()->flash('successMessage','test');
+        session()->flash('successMessage','Opposition Canister added');
         return redirect()->action('SalesController@main');
     }
 }

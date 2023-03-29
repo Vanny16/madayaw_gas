@@ -600,8 +600,8 @@ class ProductController extends Controller
         ->where('products.acc_id', '=', session('acc_id'))
         ->where('prd_id', '=', $madayaw_canister_id)
         ->first();
-        $product_qty = $products->prd_quantity;
-
+        $product_qty = $products->prd_empty_goods;
+        
         //CALCULATION
         $new_opposition_qty = $opposition_qty - $trade_in_opposition_amount;
 
@@ -621,7 +621,7 @@ class ProductController extends Controller
         DB::table('products')
         ->where('prd_id', '=', $madayaw_canister_id)
         ->update([
-            'prd_quantity' => $new_products_qty
+            'prd_empty_goods' => $new_products_qty
         ]);
 
         session()->flash('successMessage','Canister exchange saved!');
