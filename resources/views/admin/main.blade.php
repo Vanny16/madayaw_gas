@@ -28,12 +28,11 @@
 			<div class="row">
 				<div class="col-md-8">
 					<div class="col-md-12"> 
-						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title"><i class="fa fa-bolt"></i> Quick Buttons</h3>
-							</div>
-
-							@if(session('typ_id') == 1)
+                        @if(session('typ_id') == 1)
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fa fa-bolt"></i> Quick Buttons</h3>
+                                </div>
                                 <div class="card-body bg-light">
                                     <div class="row">
                                         @if($pdn_flag)
@@ -47,8 +46,8 @@
                                         @endif
                                     </div>
                                 </div>
-                            @endif
-						</div>
+                            </div>
+                        @endif
 					</div>
 
 					<div class="col-md-12"> 
