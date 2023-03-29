@@ -32,13 +32,17 @@ class MainController extends Controller
         $reset_passwords_count = DB::table('reset_password')
         ->where('rst_active', '=', 1)
         ->count();
+        
+        $verifications = DB::table('stock_verifications')
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->get(); 
 
         if(session('typ_id') == null){
             return redirect()->action('LoginController@login');
         }
         else{
             session(['reset_passwords_count' => $reset_passwords_count]);
-            return view('admin.main', compact('pdn_flag', 'news', 'canisters', 'tanks')); 
+            return view('admin.main', compact('pdn_flag', 'news', 'canisters', 'tanks', 'verifications')); 
         }
     }
     

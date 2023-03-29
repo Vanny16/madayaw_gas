@@ -348,16 +348,37 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <?php
+                        $opening_visibility = "disabled";
+                        $closing_visibility = "";
+                        $verify_production_id = get_last_production_id();
+                        if($pdn_flag)
+                        {
+                            $verify_production_id = $verify_production_id + 1;
+                        }
+                        foreach($verifications as $verification)
+                        {
+                            if($verification->verify_pdn_id == $verify_production_id)
+                            {
+                                if(is_null($verification->verify_closing))
+                                {
+                                    $opening_visibility = "";
+                                    $closing_visibility = "disabled";
+                                    break;
+                                }
+                            }
+                        }
+                    ?>
                     @if($pdn_flag)
                         <strong>Are you sure you want to start the production?</strong>
                         <div>
-                            <button type="submit" class="btn btn-success" ><i class="fa fa-check mr-1"> </i>Start Production</button>
+                            <button type="submit" class="btn btn-success" {{ $opening_visibility }}><i class="fa fa-check mr-1"> </i>Start Production</button>
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success">Cancel</a>
                         </div>
                     @else
                         <strong>Are you sure you want to end the production?</strong>
                         <div>
-                            <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>End Production</button>
+                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }}><i class="fa fa-ban mr-1"> </i>End Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
                         </div>
                     @endif
