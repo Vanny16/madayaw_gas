@@ -99,7 +99,7 @@
                         <div class="col-md-12 mb-3"> 
                             <form method="POST" action="{{ action('PrintController@alltransactionReports')}}">
                             {{ csrf_field() }}
-                                {{-- <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button> --}}
+                                <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
                                 <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                             </form>
