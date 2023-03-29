@@ -33,19 +33,21 @@
 								<h3 class="card-title"><i class="fa fa-bolt"></i> Quick Buttons</h3>
 							</div>
 
-							<div class="card-body bg-light">
-								<div class="row">
-									@if($pdn_flag)
-										<div class="col-12 text-white mb-3">
-											<a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
-										</div>
-									@else
-										<div class="col-12 text-white mb-3">
-											<a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
-										</div>
-									@endif
-								</div>
-							</div>
+							@if(session('typ_id') == 1)
+                                <div class="card-body bg-light">
+                                    <div class="row">
+                                        @if($pdn_flag)
+                                            <div class="col-12 text-white mb-3">
+                                                <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
+                                            </div>
+                                        @else
+                                            <div class="col-12 text-white mb-3">
+                                                <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
 						</div>
 					</div>
 
