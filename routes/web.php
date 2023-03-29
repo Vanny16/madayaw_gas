@@ -86,7 +86,9 @@ Route::group(['prefix' => 'production'], function()
     Route::get('tank', 'ProductionController@tank');
     Route::get('manage', 'ProductionController@manage');
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
+    Route::get('tank-activation/{tnk_id}/{tnk_active}', 'ProductionController@tankActivation');
     
+    Route::post('verify', 'ProductionController@verifyProduction');
     Route::post('toggle', 'ProductionController@toggleProduction');///{pdn_flag}
     Route::post('add-empty-goods', 'ProductionController@createProduct');
     Route::post('add-supplier', 'ProductionController@createSupplier');
@@ -94,7 +96,6 @@ Route::group(['prefix' => 'production'], function()
     Route::post('edit-product', 'ProductionController@editItem');
     Route::post('add-tank', 'ProductionController@createTank');
     Route::post('edit-tank/{tnk_id}', 'ProductionController@editTank');
-    Route::get('tank-activation/{tnk_id}/{tnk_active}', 'ProductionController@tankActivation');
     Route::post('refill-tank/{tnk_id}', 'ProductionController@refillTank');
 
 });

@@ -24,15 +24,23 @@
                 </div>
             </div>
             <div class="row">
-                @if($pdn_flag)
-                    <div class="col-12 text-white mb-3">
+                <div class="col-12 text-white mb-3">
+                    @if($pdn_flag)
                         <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
-                    </div>
-                @else
-                    <div class="col-12 text-white mb-3">
+                    @else
                         <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
-                    </div>
-                @endif
+                    @endif
+                    @if(session('typ_id') == 3)
+                        <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Update Production</a>
+                    @elseif(session('typ_id') == 1)
+                        <div class="dropdown dropleft" style="float:right;">
+                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal">Verify Production</a></li>
+                            </ul>
+                        </div>
+                    @endif
+                </div>
             </div>
             <div class="row">
                 @if($pdn_flag == 0)
@@ -57,11 +65,10 @@
                                 </div>
                                 <div class="tab-content card-body">
                                     <div id="raw-materials" class="tab-pane">
-                                        
                                         @if(session('typ_id') == '1')
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New SKU</button>
-                                        </div>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New SKU</button>
+                                            </div>
                                         @endif
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
@@ -974,9 +981,49 @@
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                        <?php
+                                                            $verify_quantity = 0;
+                                                            foreach($verifications as $verification)
+                                                            {
+                                                                if($verification->verify_is_product == 0)
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_pdn_id <> get_last_production_id() + 1)
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                {
+                                                                    $verify_quantity = $verification->verify_opening;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $verify_quantity }}" onclick="this.select();" required>
                                                     @else
-                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                        <?php
+                                                            $verify_quantity = 0;
+                                                            foreach($verifications as $verification)
+                                                            {
+                                                                if($verification->verify_is_product == 0)
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_pdn_id <> get_last_production_id())
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                {
+                                                                    $verify_quantity = $verification->verify_closing;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $verify_quantity }}" onclick="this.select();" required>
                                                     @endif
                                                     <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                 </div>
@@ -1006,13 +1053,181 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-5">
-                                                    <em>{{$tank->tnk_name}} <strong>(in kg)</strong></em>
+                                                    <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
                                                 </div>
                                                 <div class="col-7">
                                                     @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                        <?php
+                                                            $verify_quantity = 0;
+                                                            foreach($verifications as $verification)
+                                                            {
+                                                                if($verification->verify_is_product == 1)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                
+                                                                if($verification->verify_pdn_id <> get_last_production_id() + 1)
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                {
+                                                                    $verify_quantity = ($verification->verify_opening) / 1000;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $verify_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
                                                     @else
-                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                        <?php
+                                                            $verify_quantity = 0;
+                                                            foreach($verifications as $verification)
+                                                            {
+                                                                if($verification->verify_is_product == 1)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                
+                                                                if($verification->verify_pdn_id <> get_last_production_id())
+                                                                {
+                                                                    continue;
+                                                                }
+
+                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                {
+                                                                    $verify_quantity = ($verification->verify_closing) / 1000;
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $verify_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                    @endif
+                                                    <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <?php
+                        $opening_visibility = "disabled";
+                        $closing_visibility = "";
+                        $verify_production_id = get_last_production_id();
+                        if($pdn_flag)
+                        {
+                            $verify_production_id = $verify_production_id + 1;
+                        }
+                        foreach($verifications as $verification)
+                        {
+                            if($verification->verify_pdn_id == $verify_production_id)
+                            {
+                                if(is_null($verification->verify_closing))
+                                {
+                                    $opening_visibility = "";
+                                    $closing_visibility = "disabled";
+                                    break;
+                                }
+                            }
+                        }
+                    ?>
+                    @if($pdn_flag)
+                        <strong>Are you sure you want to start the production?</strong>
+                        <div>
+                            <button type="submit" class="btn btn-success" {{ $opening_visibility }}><i class="fa fa-check mr-1"> </i>Start Production</button>
+                            <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
+                        </div>
+                    @else
+                        <strong>Are you sure you want to end the production?</strong>
+                        <div>
+                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }}><i class="fa fa-ban mr-1"> </i>End Production</button>
+                            <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
+                        </div>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Verify Production Modal -->
+<div class="modal fade" id="production-verify-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Verify Production Stocks & Tanks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductionController@verifyProduction') }}" enctype="multipart/form-data">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            @if(isset($canisters[0]))
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            @if($pdn_flag)
+                                                <label for="stocks_quantity">Verify Opening Stocks</label>
+                                            @else
+                                                <label for="stocks_quantity">Verify Closing Stocks</label>
+                                            @endif
+                                        </div>
+                                        <div class="col-7"></div>
+                                    </div>
+                                </div>
+                                @foreach($canisters as $canister)
+                                    @if($canister->prd_active == 1)
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <em>{{$canister->prd_name}}</em>
+                                                </div>
+                                                <div class="col-7">
+                                                    @if($pdn_flag)
+                                                        <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                    @else
+                                                        <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                    @endif
+                                                    <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="col-6">
+                            @if(isset($tanks[0]))
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            @if($pdn_flag)
+                                                <label for="stocks_quantity">Confirm Opening Tank</label>
+                                            @else
+                                                <label for="stocks_quantity">Confirm Closing Tank</label>
+                                            @endif
+                                        </div>
+                                        <div class="col-7"></div>
+                                    </div>
+                                </div>
+                                @foreach($tanks as $tank)
+                                    @if($tank->tnk_active == 1)
+                                        @php($tank_remaining = ($tank->tnk_remaining) / 1000)
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
+                                                </div>
+                                                <div class="col-7">
+                                                    @if($pdn_flag)
+                                                        <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                    @else
+                                                        <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
                                                     @endif
                                                     <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                                 </div>
@@ -1026,13 +1241,13 @@
                 </div>
                 <div class="modal-footer">
                     @if($pdn_flag)
-                        <strong>Are you sure you want to start the production?</strong>
+                        <strong>Are you sure you want to verify the opening stocks?</strong>
                         <div>
                             <button type="submit" class="btn btn-success" ><i class="fa fa-check mr-1"> </i>Start Production</button>
-                            <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success">Cancel</a>
+                            <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
-                        <strong>Are you sure you want to end the production?</strong>
+                        <strong>Are you sure you want to verify the closing stocks?</strong>
                         <div>
                             <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>End Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
