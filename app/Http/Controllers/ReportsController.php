@@ -107,7 +107,7 @@ class ReportsController extends Controller
         $transactions_date_from = date("Y-m-d");
         $transactions_date_to = date("Y-m-d");
 
-         $transactions = DB::table('transactions')
+        $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->where('trx_active','=','1')
