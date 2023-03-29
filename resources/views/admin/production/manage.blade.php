@@ -1245,13 +1245,13 @@
                     @if($pdn_flag)
                         <strong>Are you sure you want to verify the opening stocks?</strong>
                         <div>
-                            <button type="submit" class="btn btn-success" ><i class="fa fa-check mr-1"> </i>Start Production</button>
+                            <button type="submit" class="btn btn-success" ><i class="fa fa-check mr-1"> </i>Verify Production</button>
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
                         <strong>Are you sure you want to verify the closing stocks?</strong>
                         <div>
-                            <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>End Production</button>
+                            <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>Verify Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
                         </div>
                     @endif
