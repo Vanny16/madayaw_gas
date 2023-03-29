@@ -258,6 +258,17 @@ class ProductionController extends Controller
                 {
                     $input_field = "verify_stock_quantity" . $prd_id;
                     
+                    $verify_checker = DB::table('stock_verifications')
+                    ->where('verify_stock_id', '=', $prd_id)
+                    ->where('verify_is_product', '=', 1)
+                    ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                    ->first();
+
+                    if($verify_checker <> '' || $verify_checker <> null)
+                    {
+                        break;
+                    }
+
                     DB::table('stock_verifications')
                     ->insert([
                         'verify_stock_id' => $prd_id,
@@ -271,6 +282,17 @@ class ProductionController extends Controller
                 foreach($tank_details as $tnk_id)
                 {
                     $input_field = "verify_tank_remaining" . $tnk_id;
+
+                    $verify_checker = DB::table('stock_verifications')
+                    ->where('verify_stock_id', '=', $tnk_id)
+                    ->where('verify_is_product', '=', 0)
+                    ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                    ->first();
+                    
+                    if($verify_checker <> '' || $verify_checker <> null)
+                    {
+                        break;
+                    }
 
                     DB::table('stock_verifications')
                     ->insert([
@@ -298,7 +320,18 @@ class ProductionController extends Controller
                     ->where('verify_acc_id', '=', session('acc_id'))
                     ->where('verify_stock_id', '=', $prd_id)
                     ->first();
+
+                    $verify_checker = DB::table('stock_verifications')
+                    ->where('verify_stock_id', '=', $prd_id)
+                    ->where('verify_is_product', '=', 1)
+                    ->where('verify_pdn_id', '=', get_last_production_id())
+                    ->first();
                     
+                    if($verify_checker <> '' || $verify_checker <> null)
+                    {
+                        break;
+                    }
+
                     if($verification_check == '' || $verification_check == null)
                     {
                         DB::table('stock_verifications')
@@ -328,6 +361,17 @@ class ProductionController extends Controller
                     ->where('verify_acc_id', '=', session('acc_id'))
                     ->where('verify_stock_id', '=', $tnk_id)
                     ->first();
+
+                    $verify_checker = DB::table('stock_verifications')
+                    ->where('verify_stock_id', '=', $tnk_id)
+                    ->where('verify_is_product', '=', 0)
+                    ->where('verify_pdn_id', '=', get_last_production_id())
+                    ->first();
+                    
+                    if($verify_checker <> '' || $verify_checker <> null)
+                    {
+                        break;
+                    }
 
                     if($verification_check == '' || $verification_check == null)
                     {
