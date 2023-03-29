@@ -279,7 +279,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-wallet"></i> Pay</button>
+                                                                <button type="submit" class="btn btn-success" onclick="this.disabled=true; this.innerHTML='Saving...'; this.form.submit();"><i class="fa fa-wallet"></i> Pay</button>
                                                             </div>
                                                         </form>
                                                     </div>
