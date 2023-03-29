@@ -15,6 +15,7 @@
                 </tr>
             </table>
         </div>
+        <h3>PAYMENT RECEIPT</h3>
         <table width="100%">
             <tr>
                 <td width="50%"><p><strong><i>{{ $payments->pmnt_ref_id }}</i></strong></p></td>
