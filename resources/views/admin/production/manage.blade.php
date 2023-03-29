@@ -57,9 +57,12 @@
                                 </div>
                                 <div class="tab-content card-body">
                                     <div id="raw-materials" class="tab-pane">
+                                        
+                                        @if(session('typ_id') == '1')
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fas fa-plus"></i> Add New SKU</button>
                                         </div>
+                                        @endif
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
                                                 <thead>
@@ -120,23 +123,33 @@
                                                                         @endif
                                                                     @endif
                                                                 </td>
-                                                                <td><button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button></td>
                                                                 <td>
-                                                                    @if($raw_material->prd_active == 0)
-                                                                        <span class="badge badge-danger">Inactive</span>
-                                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
-                                                                    @else
-                                                                        <span class="badge badge-success">Active</span>
-                                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                                    @if(session('typ_id') == '1')
+                                                                    <button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button>
                                                                     @endif
                                                                 </td>
                                                                 <td>
+                                                                    @if($raw_material->prd_active == 0)
+                                                                        <span class="badge badge-danger">Inactive</span>
+                                                                        @if(session('typ_id') == '1')
+                                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                                        @endif
+                                                                    @else
+                                                                        <span class="badge badge-success">Active</span>
+                                                                        @if(session('typ_id') == '1')
+                                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                                        @endif
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(session('typ_id') == '1')
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                                         <ul class="dropdown-menu">
                                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product price won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-raw-modal-{{$raw_material->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                         </ul>
                                                                     </div>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
 
@@ -336,6 +349,8 @@
                                             </table>
                                         </div>     
                                     </div>
+
+
                                     <div id="empty-canisters" class="tab-pane">
                                         <div class="card-tools">
                                             <!-- <button type="button" class="btn btn-tool text-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal" onclick="addItem(1)"><i class="fas fa-plus"></i> Add New Canister</button> -->
@@ -365,9 +380,11 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_empty_goods}}</td>
                                                                 <td>
+                                                                    @if(session('typ_id') == '1')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                                         <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Crimp New Cans
                                                                     </a>
+                                                                    @endif
                                                                 </td>
                                                                 <!-- <td>
                                                                     @if($canister->prd_active == 0)
@@ -386,6 +403,8 @@
                                             </table>
                                         </div>
                                     </div>
+
+
                                     <div id="filled-canisters" class="tab-pane">
                                         <div class="card-body" style="overflow-x:auto;">
                                             <table class="table table-hover table-condensed">
@@ -411,7 +430,11 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_quantity}}</td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a></td>
+                                                                <td>
+                                                                    @if(session('typ_id') == '1')
+                                                                    <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
+                                                                    @endif
+                                                                </td>
                                                                 {{--<td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>--}}
                                                                 {{--<td>
                                                                     <div class="dropdown">
@@ -433,6 +456,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
@@ -462,8 +487,10 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
+                                                        @if(session('typ_id') == '1')
                                                         <th></th>
                                                         <th></th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-products">
@@ -480,10 +507,13 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_leakers}}</td>
+
+                                                                @if(session('typ_id') == '1')
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
+                                                                @endif
                                                             </tr>
                                                             @endif
                                                         @endforeach
@@ -500,7 +530,9 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <th>Quantity</th>
+                                                        @if(session('typ_id') == '1')
                                                         <th></th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbl-products">
@@ -516,7 +548,9 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <td>{{$canister->prd_for_revalving}}</td>
+                                                                @if(session('typ_id') == '1')
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Decant and Revalve</a></td>
+                                                                @endif
                                                             </tr>
                                                         @endforeach
                                                     @endif

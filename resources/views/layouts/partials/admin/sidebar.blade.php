@@ -29,7 +29,6 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 
-            
                 <li class="nav-item">
                     <a href="{{ action('MainController@home') }}" class="nav-link">
                         <i class="nav-icon fa fa-home"></i>
@@ -39,9 +38,8 @@
                     </a>
                 </li>
                 
-                <li class="nav-header">SALES</li>
-                
                 @if(session('typ_id') != '3')
+                <li class="nav-header">SALES</li>
                 <li class="nav-item">
                     <a href="{{ action('SalesController@main') }}" class="nav-link">
                         <i class="nav-icon fas fa-cash-register"></i>
@@ -61,9 +59,11 @@
                 </li>
                 @endif
 
-                @if(session('typ_id') == '1')
+                @if(session('typ_id') == '1' || session('typ_id') == '3')
                 <li class="nav-header">INVENTORY</li>
+                @endif
 
+                @if(session('typ_id') == '1')
                 <li class="nav-item">
                     <a href="{{ action('ProductController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-box-open"></i>
@@ -99,7 +99,9 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
+                @if(session('typ_id') == '1' || session('typ_id') == '3')
                 <li class="nav-item">
                     <a href="{{ action('ProductionController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-pallet"></i>
@@ -108,9 +110,13 @@
                         </p>
                     </a>
                 </li>
+                @endif
                  
+                @if(session('typ_id') == '1' || session('typ_id') == '3')
                 <li class="nav-header">REPORTS</li>
+                @endif
 
+                @if(session('typ_id') == '1')
                 <li class="nav-item">
                     <a href="{{ action('ReportsController@salesToday') }}" class="nav-link">
                         <i class="nav-icon fa fa-bar-chart"></i>
@@ -128,7 +134,9 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
+                @if(session('typ_id') == '1' || session('typ_id') == '3')
                 <li class="nav-item">
                     <form id="go_productions" method="POST" action="{{ action('ReportsController@production') }}">
                     {{ csrf_field() }}
@@ -140,7 +148,9 @@
                         </button>
                     </form>
                 </li>
+                @endif
                 
+                @if(session('typ_id') == '1')
                 <li class="nav-header">ACCOUNTS</li>
 
                 <li class="nav-item">
@@ -162,7 +172,6 @@
                 </li>
 
                 @endif
-
             </ul>
         </nav>
     </div>
