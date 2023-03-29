@@ -283,11 +283,57 @@ function get_closing_tank($tnk_id, $pdn_id)
 
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 { 
-    $query = DB::table('movement_logs')
-    ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    ->where('movement_logs.acc_id', '=', session('acc_id'))
+    //COMMENTED INCASE OF REVERTING
+    // $query = DB::table('movement_logs')
+    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    // ->where('movement_logs.acc_id', '=', session('acc_id'))
+    // ->where('prd_id','=', $prd_id)
+    // ->where('movement_logs.pdn_id','=', $pdn_id);
+
+    // //FLAGS
+    // // 1 = emptygoods
+    // // 2 = filled
+    // // 3 = leakers
+    // // 4 = for revalving
+    // // 5 = scrap
+
+    // if($flag == 1)
+    // {
+    //     $query = $query->sum('log_empty_goods');
+        
+    //     return $query;
+    // }
+    // elseif($flag == 2)
+    // {
+    //     $query = $query->sum('log_filled');
+
+    //     return $query;
+    // }
+    // elseif($flag == 3)
+    // {
+    //     $query = $query->sum('log_leakers');
+
+    //     return $query;
+    // }
+    // elseif($flag == 4)
+    // {
+    //     $query = $query->sum('log_for_revalving');
+
+    //     return $query;
+    // }
+    // elseif($flag == 5)
+    // {
+    //     $query = $query->sum('log_scraps');
+         
+    //     return $query;
+    // }
+
+    $query = DB::table('stocks_logs')
+    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    ->where('acc_id', '=', session('acc_id'))
     ->where('prd_id','=', $prd_id)
-    ->where('movement_logs.pdn_id','=', $pdn_id);
+    ->where('pdn_id','=', $pdn_id)
+    ->first();
 
     //FLAGS
     // 1 = emptygoods
@@ -297,45 +343,46 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
     // 5 = scrap
 
     if($flag == 1)
-    {
-        $query = $query->sum('log_empty_goods');
-        
-        return $query;
+    {   
+        return $query->stk_empty_goods;
     }
     elseif($flag == 2)
     {
-        $query = $query->sum('log_filled');
-
-        return $query;
+        return $query->stk_filled;
     }
     elseif($flag == 3)
     {
-        $query = $query->sum('log_leakers');
-
-        return $query;
+        return $query->stk_leakers;
     }
     elseif($flag == 4)
     {
-        $query = $query->sum('log_for_revalving');
-
-        return $query;
+        return $query->stk_for_revalving;
     }
     elseif($flag == 5)
     {
-        $query = $query->sum('log_scraps');
+        // $query = 
          
-        return $query;
+        return $query->stk_scraps;
     }
 }
 
 function get_total_stock_report($prd_id, $pdn_id)
 {
-    $total_stock = DB::table('movement_logs')
-    ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    ->where('movement_logs.acc_id', '=', session('acc_id'))
-    ->where('movement_logs.prd_id', '=', $prd_id)
-    ->where('movement_logs.pdn_id', '=', $pdn_id)
-    ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    //COMMENTED INCASE OF REVERTING
+    // $total_stock = DB::table('movement_logs')
+    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    // ->where('movement_logs.acc_id', '=', session('acc_id'))
+    // ->where('movement_logs.prd_id', '=', $prd_id)
+    // ->where('movement_logs.pdn_id', '=', $pdn_id)
+    // ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    
+    // return $total_stock;
+
+    $total_stock = DB::table('stocks_logs')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_id', '=', $prd_id)
+    ->where('pdn_id', '=', $pdn_id)
+    ->sum(DB::raw('stk_empty_goods + stk_filled + stk_leakers + stk_for_revalving + stk_scraps'));
     
     return $total_stock;
 }
