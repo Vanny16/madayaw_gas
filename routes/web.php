@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'LoginController@login');
 Route::post('/validate', 'LoginController@validateUser');
 Route::get('/logout', 'LoginController@logout');
+Route::post('/confirm-void', 'LoginController@confirmVoid');
 
 Route::group(['prefix' => 'home'], function()
 {

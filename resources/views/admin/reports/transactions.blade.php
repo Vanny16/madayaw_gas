@@ -248,7 +248,7 @@
                                                                                             <i class="fa fa-ellipsis-vertical"></i>
                                                                                         </button>
                                                                                         <ul class="dropdown-menu float-left dropdown-menu-right" style="left: auto; right: 0;">
-                                                                                            <li><a id="btn_bad_order" href="javascript:void(0)" data-toggle="modal" data-target="#bad-order-modal"><i class="fa fa-eraser ml-2 mr-2"></i> Void Transaction</a></li>
+                                                                                            <li><a id="btn_bad_order" href="javascript:void(0)" data-toggle="modal" data-target="#confirm-void-modal{{$transaction->trx_ref_id}}"><i class="fa fa-eraser ml-2 mr-2"></i> Void Transaction</a></li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
@@ -256,8 +256,8 @@
                                                                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                                                                             </form>
                                                                         </div>
-                                                                        
                                                                     </div>
+                                                                    
                                                                 </div>
                                                             </div>
                                                             
@@ -265,6 +265,38 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <!-- Void Transaction -->
+                                            <div class="modal fade show" id="confirm-void-modal{{$transaction->trx_ref_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-md show" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-danger" id="exampleModalLabel"><i class="fa fa-exclamation"></i> Confirmation</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="{{ action('LoginController@confirmVoid') }}" enctype="multipart/form-data">
+                                                        {{ csrf_field() }} 
+                                                            <div class="modal-body">
+                                                                <p class="mb-4">Are you sure you want to void this transaction? All items from this transaction will return in the inventory. <br><br>Please enter your password for confirmation.</p>
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="">Enter Password <span style="color:red">*</span></label>
+                                                                        <input type="password" class="form-control" name="usr_password" placeholder="Enter Password" required/>
+                                                                        <input type="hidden" class="form-control" name="trx_id" value="{{$transaction->trx_id}}" required/>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-default"><i class="fa fa-key"></i> Confirm Password</button>
+                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

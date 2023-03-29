@@ -29,6 +29,7 @@ class SalesController extends Controller
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->where('transactions.acc_id', '=', session('acc_id'))
+        ->where('trx_active','=','1')
         ->get();
 
         $purchased_products = DB::table('products')
@@ -53,6 +54,8 @@ class SalesController extends Controller
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
+        ->orderBy('transactions.trx_ref_id', 'DESC')
         ->get();
 
         $payments = DB::table('payments')
@@ -71,7 +74,9 @@ class SalesController extends Controller
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
         ->get();
 
         $payments = DB::table('payments')
@@ -90,7 +95,9 @@ class SalesController extends Controller
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
         ->get();
 
         $payments = DB::table('payments')
