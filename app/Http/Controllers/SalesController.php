@@ -410,7 +410,7 @@ class SalesController extends Controller
             else{
                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
                 $add_ops_qty = (int)$remaining_opposite->ops_quantity + ((int)($pur_crate_in * 12) + $pur_loose_in);
-    
+                
                 //For Opposite
                 DB::table('oppositions')
                 ->where('ops_id', '=', $prd_id_in)
