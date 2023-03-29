@@ -284,12 +284,13 @@ function get_closing_tank($tnk_id, $pdn_id)
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 { 
     //COMMENTED INCASE OF REVERTING
-    // $query = DB::table('movement_logs')
-    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-    // ->where('movement_logs.acc_id', '=', session('acc_id'))
-    // ->where('prd_id','=', $prd_id)
-    // ->where('movement_logs.pdn_id','=', $pdn_id);
-
+//     $query = DB::table('movement_logs')
+//     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+//     ->where('movement_logs.acc_id', '=', session('acc_id'))
+//     ->where('prd_id','=', $prd_id)
+//     ->where('movement_logs.pdn_id','=', $pdn_id);
+//     //->get();
+// dd($query);
     // //FLAGS
     // // 1 = emptygoods
     // // 2 = filled
@@ -300,7 +301,7 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
     // if($flag == 1)
     // {
     //     $query = $query->sum('log_empty_goods');
-        
+
     //     return $query;
     // }
     // elseif($flag == 2)
@@ -334,7 +335,7 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
     ->where('prd_id','=', $prd_id)
     ->where('pdn_id','=', $pdn_id)
     ->first();
-
+    // dd($query->stk_empty_goods);
     //FLAGS
     // 1 = emptygoods
     // 2 = filled
@@ -360,8 +361,6 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
     }
     elseif($flag == 5)
     {
-        // $query = 
-         
         return $query->stk_scraps;
     }
 }

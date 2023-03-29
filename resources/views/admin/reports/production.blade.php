@@ -135,7 +135,11 @@
                                             </tr>
                                         </thead>
                                         <tbody id="tbl-products">
-                                            @php($production_id = get_last_production_id())
+                                            @if($selectedID == '')
+                                                @php($production_id = get_last_production_id())
+                                            @else
+                                                @php($production_id = $selectedID)
+                                            @endif
                                             <tr class='clickable-row' data-toggle="modal" data-target="#stocks-modal">
                                                 <td><i>Opening Stocks</i></td>
                                                 @if(isset($canisters))
@@ -201,12 +205,18 @@
                                                 @endif
                                             </tr>
                                         </thead>
+                                        
+                                        @if($selectedID == '')
+                                            @php($pdn_id = get_last_production_id())
+                                        @else
+                                            @php($pdn_id = $selectedID)
+                                        @endif
                                         <tbody>
                                             <tr>
                                                 <td><i>Empty</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 1) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 1) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -214,7 +224,7 @@
                                                 <td><i>Filled</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 2) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 2) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -222,7 +232,7 @@
                                                 <td><i>Leakers</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 3) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 3) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -230,7 +240,7 @@
                                                 <td><i>For Revalving</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 4) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 4) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -238,7 +248,7 @@
                                                 <td><i>Scrap</i></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 5) !!}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 5) !!}</td>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -247,7 +257,7 @@
                                                 <td><b>Total Stocks</b></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <strong><th>{!! get_total_stock_report($canister->prd_id, $selectedID) !!}</th></strong>
+                                                        <strong><th>{!! get_total_stock_report($canister->prd_id, $pdn_id) !!}</th></strong>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -275,7 +285,7 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td>{{ $canister->prd_name}}</td>
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, $selectedID, 5) !!}</td>
+                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 5) !!}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
