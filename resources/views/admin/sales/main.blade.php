@@ -697,9 +697,17 @@
             var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
             var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
             var sub_total = 0;
-            
+            var product_id = select_id.replace(/\D+/g, '');
+            var out_crate = parseInt(document.getElementById("crates_amount"+product_id).value);
+            var out_loose = parseInt(document.getElementById("loose_amount"+product_id).value);
+
             var canister_id = document.getElementById(select_id).value;
             
+            if(in_crate + in_loose > 0 && out_crate + out_loose == 0)
+            {
+               return;
+            }            
+
             if((in_crate + in_loose) != "" || (in_crate + in_loose) > 0){
                 //Set Empty Values to 0 for Displaying in Table
                 
