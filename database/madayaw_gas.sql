@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-03-29 16:26:23
+Date: 2023-03-30 00:16:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -380,6 +380,25 @@ CREATE TABLE `stock_statuses` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `stock_verifications`
+-- ----------------------------
+DROP TABLE IF EXISTS `stock_verifications`;
+CREATE TABLE `stock_verifications` (
+  `verify_id` int(11) NOT NULL AUTO_INCREMENT,
+  `verify_stock_id` int(11) DEFAULT NULL,
+  `verify_opening` int(11) DEFAULT NULL,
+  `verify_closing` int(11) DEFAULT NULL,
+  `verify_is_product` int(11) DEFAULT NULL,
+  `verify_pdn_id` int(11) DEFAULT NULL,
+  `verify_acc_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`verify_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of stock_verifications
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `suppliers`
 -- ----------------------------
 DROP TABLE IF EXISTS `suppliers`;
@@ -479,12 +498,14 @@ CREATE TABLE `users` (
   `usr_active` tinyint(4) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
+INSERT INTO `users` VALUES ('2', '1', 'smd2fxqsidkfov8tnw6y45g9jqryc0gy', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tan Kudarat', null, '1', '3');
+INSERT INTO `users` VALUES ('3', '1', '632uwv97etvmckms0k1sos0sz901ndhi', 'Mark', 'mark', 'ea82410c7a9991816b5eeeebe195e20a', 'Seoul Tan Kudarat', null, '1', '2');
 
 -- ----------------------------
 -- Table structure for `user_types`
