@@ -183,6 +183,7 @@ class ReportsController extends Controller
             $production_id = $production_id->where('pdn_id', '=', $selectedID);
         }
         $production_id = $production_id->get();
+        // dd($production_id);
 
         // dd(empty($production_id));
 
