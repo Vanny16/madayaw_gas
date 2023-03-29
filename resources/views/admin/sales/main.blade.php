@@ -1052,10 +1052,14 @@
             alert("Insufficient Payment");
             }
             else{
+                document.getElementById("btn_pay").disabled = true; 
+                document.getElementById("btn_pay").innerHTML = 'Saving...'; 
                 document.getElementById("form_payment").submit(); 
             }
         }
         else{
+            document.getElementById("btn_pay").disabled = true; 
+            document.getElementById("btn_pay").innerHTML = 'Saving...'; 
             document.getElementById("form_payment").submit(); 
         }
         

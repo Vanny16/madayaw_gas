@@ -377,10 +377,16 @@ class ProductionController extends Controller
         $prd_quantity = $request->quantity + ($request->crate_quantity * 12);
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
-// dd($flag);
+        
         if($prd_quantity <= 0){
             session()->flash('errorMessage','Invalid input!');
-            return redirect()->action('ProductionController@manage');
+
+            if($request->return_page == "pos"){
+                return redirect()->action('SalesController@main');
+            }
+            else{
+                return redirect()->action('ProductionController@manage');
+            }
         }
 
         record_stockin($prd_id, $prd_quantity);
@@ -633,9 +639,8 @@ class ProductionController extends Controller
             ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
             ->where('acc_id', '=', session('acc_id'))
             ->where('trx_ref_id', '=', $trx_ref_id)
+            ->where('trx_active','=','1')
             ->get();
-
-            // dd($bo_transaction[0]->trx_id);
 
             if(empty($bo_transaction[0])) {
                 session()->flash('warningMessage','Please check your inputs');

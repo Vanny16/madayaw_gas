@@ -1165,7 +1165,7 @@
                     <input type="text" class="form-control" id="return_page" name="return_page" value="production" hidden/>
                     <input type="text" id="si_tab_1" name="tab_1"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...'; this.form.submit();"><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
         </div>
