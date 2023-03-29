@@ -12,6 +12,7 @@
         </div>
             <div class="card-body">
                 <table class="table table-hover table-condensed">
+                @if(isset($all_transaction_reports))
                     <thead>
                         <tr>
                             <th>Reference ID</th>
@@ -33,7 +34,31 @@
                                 <td>{{ $all_transaction_report->trx_datetime }}</td>
                             </tr>
                         @endforeach 
-                    </tbody>  
+                    </tbody>
+                @elseif(isset($transactions))  
+                    <thead>
+                        <tr>
+                            <th>Reference ID</th>
+                            <th>User</th>
+                            <th>Customer</th>
+                            <th>Date & Time</th>
+                            <th width="20px"></th>
+                        </tr>
+                        <tr>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transactions as $transaction)
+                            <tr>
+                                <td>{{ $transaction->trx_ref_id }}</td>
+                                <td>{{ $transaction->usr_full_name }}</td>
+                                <td>{{ $transaction->cus_name }}</td>
+                                <td>{{ $transaction->trx_datetime }}</td>
+                            </tr>
+                        @endforeach 
+                    </tbody>
+                @endif
                 </table>
             </div>
         </div>

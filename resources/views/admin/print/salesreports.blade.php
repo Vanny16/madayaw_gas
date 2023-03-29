@@ -15,7 +15,7 @@
             <div class="card-body">
                 <table class="table table-hover table-condensed">
 
-               
+                @if(isset($all_sales_reports))
                     <thead>
                         <tr>
                             <th>Reference ID</th>
@@ -44,7 +44,36 @@
                         </tr> 
                         @endforeach
                     </tbody>
-
+                @elseif(isset($sales))
+                    <thead>
+                        <tr>
+                            <th>Reference ID</th>
+                            <th>User</th>
+                            <th>Customer</th>
+                            <th>Date & Time</th>
+                            <th>Total Sale</th>
+                            <th>Amount Received</th>
+                            <th>Balance</th>
+                            <th width="20px"></th>
+                        </tr>
+                        <tr>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sales as $sale)
+                        <tr>
+                            <td>{{$sale->trx_ref_id}}</td>
+                            <td>{{$sale->usr_name}}</td>
+                            <td>{{$sale->cus_name}}</td>
+                            <td>{{$sale->trx_datetime}}</td>
+                            <td>₱ {{ number_format($sale->trx_total, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sale->trx_amount_paid, 2, '.', ',')}}</td>
+                            <td>₱ {{ number_format($sale->trx_balance, 2, '.', ',')}}</td>
+                        </tr> 
+                        @endforeach
+                    </tbody>
+                @endif
                 </table>
             </div>
         </div>

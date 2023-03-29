@@ -175,6 +175,14 @@ class PrintController extends Controller
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
         ->get();
 
+        $sales = DB::table('transactions')
+        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
+        ->get();
+
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->get();
@@ -200,6 +208,7 @@ class PrintController extends Controller
 
         return view('admin.print.salesreports', compact('all_sales_reports', 'purchases', 'sales_date_from', 'sales_date_to'));
     }
+
 
     public function transactionReports(Request $request)
     {   
@@ -229,6 +238,15 @@ class PrintController extends Controller
         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
         ->get();
+
+        $transactions = DB::table('transactions')
+        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
+        ->get();
+
 
         // $all_purchase_reports = DB::table('purchases')
         // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
