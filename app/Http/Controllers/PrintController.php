@@ -164,6 +164,26 @@ class PrintController extends Controller
         // return view('admin.print.paymentreceipt', compact('payments'));
     }
 
+    public function salesToday()
+    {
+        $sales_date_from = date("Y-m-d");
+        $sales_date_to = date("Y-m-d");
+
+        $sales = DB::table('transactions')
+        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
+        ->get();
+
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->get();
+
+        return view('admin.reports.salesreports', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases'));
+    }
+
     public function salesReports(Request $request)
     {   
         $sales_date_from = $request->sales_date_from;
@@ -199,6 +219,40 @@ class PrintController extends Controller
         ->get();
 
         return view('admin.print.salesreports', compact('all_sales_reports', 'purchases', 'sales_date_from', 'sales_date_to'));
+    }
+
+    public function transactionsToday()
+    {
+        $transactions_date_from = date("Y-m-d");
+        $transactions_date_to = date("Y-m-d");
+
+         $transactions = DB::table('transactions')
+                        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->where('trx_active','=','1')
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                        ->orderBy('transactions.trx_ref_id', 'DESC')
+                        ->get();
+
+        $purchases = DB::table('purchases')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->get();
+
+        $pur_ins = DB::table('purchases')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                        ->get();
+                        
+        $ops_ins = DB::table('purchases')
+                        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+                        ->get();
+
+        $bad_orders = DB::table('bad_orders')
+                        ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
+                        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->get();
+
+        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
     }
 
     public function transactionReports(Request $request)

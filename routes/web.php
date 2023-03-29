@@ -71,6 +71,7 @@ Route::group(['prefix' => 'print'], function()
     Route::get('salesdetails', 'PrintController@allsaleDetails');
     Route::get('oppositedetails', 'PrintController@alloppositeDetails');
 
+    Route::post('sales', 'PrintController@sales');
     Route::post('sales-reports', 'PrintController@allsalesReports');
     Route::post('transaction-reports', 'PrintController@alltransactionReports');
     Route::post('production-reports', 'PrintController@allproductionReports');
