@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 @if($pdn_flag == 0)
-                    <div class="col-md-7 order-lg-1 order-md-1 order-sm-2 order-xs-2"> 
+                    <div class="col-md-4 order-lg-1 order-md-1 order-sm-2 order-xs-2"> 
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
@@ -55,7 +55,7 @@
                                             <a id="raw_tab" class="nav-link" data-toggle="tab" href="#raw-materials" onclick="showInTabOne(0)">Raw Materials</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a id="crimped_tab" class="nav-link" data-toggle="tab" href="#empty-canisters" onclick="showInTabOne(1)">Crimped</a>
+                                            <a id="crimped_tab" class="nav-link" data-toggle="tab" href="#empty-canisters" onclick="showInTabOne(1)">Empty Good</a>
                                         </li>
                                         <li class="nav-item">
                                             <a id="backflushed_tab" class="nav-link" data-toggle="tab" href="#filled-canisters" onclick="showInTabOne(2)">Backflushed</a>
@@ -465,12 +465,10 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Leakers</h5>
+                                    <h5>Product Movement</h5>
                                     <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#leakers">Leakers</a>
@@ -607,7 +605,7 @@
                 @if($pdn_flag == 1)
                     <div class="col-md-12 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
                 @else
-                    <div class="col-md-5 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
+                    <div class="col-md-8 order-lg-2 order-md-2 order-sm-1 order-xs-1"> 
                 @endif
                         <div class="card">
                             <div class="card-header">
@@ -639,6 +637,91 @@
                                 {{--<div class="text-white">
                                     <a class="btn btn-primary" href=""> Edit Stocks</a>
                                 </div>--}}
+                            </div>
+
+                            <!-- Canisters -->
+                            <div class="row mb-3">
+                                <div class="col-12 text-center bg-info">
+                                    <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
+                                </div>
+                            </div>
+                            <div class="card-body" style="overflow-x:auto;">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Canister</th>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <th>{{$canister->prd_name}}</th>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i>Filled</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{{ number_format($canister->prd_quantity, 2, '.', ',') }}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Leakers</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{{ number_format($canister->prd_leakers, 2, '.', ',') }}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Empty</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{{ number_format($canister->prd_empty_goods, 2, '.', ',') }}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>For Revalving</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{{ number_format($canister->prd_for_revalving, 2, '.', ',') }}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><i>Scrap</i></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <td>{{ number_format($canister->prd_scraps, 2, '.', ',') }}</td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total Stocks</b></td>
+                                            @if(isset($canisters))
+                                                @foreach($canisters as $canister)
+                                                    <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td colspan=<?php echo count($canisters) + 1 ?>><b>Opposition Canisters</b></td>
+                                        </tr>
+                                        @if(isset($oppositions))
+                                            @foreach($oppositions as $opposition)
+                                                <tr>
+                                                    <td><i>{{ $opposition->ops_name }}</i></td>
+                                                    <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 2, '.', ',') }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <br>
+                                <div class="text-center"><h5>Total Canister Population: <h2>{!! get_total_stock_report() !!}</h2></h5></div>
                             </div>
 
                             <!-- Canisters -->
@@ -676,77 +759,6 @@
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
                                                     <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- Canisters -->
-                            <div class="row mb-3">
-                                <div class="col-12 text-center bg-info">
-                                    <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
-                                </div>
-                            </div>
-                            <div class="card-body" style="overflow-x:auto;">
-                                <table class="table table-hover table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>Canister</th>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <th>{{$canister->prd_name}}</th>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><i>Empty</i></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(),  1) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        <tr>
-                                            <td><i>Filled</i></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 2) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        <tr>
-                                            <td><i>Leakers</i></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 3) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        <tr>
-                                            <td><i>For Revalving</i></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 4) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        <tr>
-                                            <td><i>Scrap</i></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, get_last_production_id(), 5) !!}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        <hr>
-                                        <tr>
-                                            <td><b>Total Stocks</b></td>
-                                            @if(isset($canisters))
-                                                @foreach($canisters as $canister)
-                                                    <strong><th>{!! get_total_stock_report($canister->prd_id, get_last_production_id()) !!}</th></strong>
                                                 @endforeach
                                             @endif
                                         </tr>

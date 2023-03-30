@@ -41,6 +41,10 @@ class ProductionController extends Controller
         ->where('transactions.acc_id', '=', session('acc_id'))
         ->get();
 
+        $oppositions = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->get();
+
         $pdn_flag = check_production_log();
 
         $production_times = DB::table('production_logs')
@@ -88,7 +92,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications'));
     }
 
     //PRODUCTION
@@ -480,12 +484,12 @@ class ProductionController extends Controller
                 }
                 $prd_components = substr($get_components, 0, strlen($get_components) - 1);
             }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Canister products must contain a component!');
-                return redirect()->action('ProductionController@manage');
-            }
+            // else
+            // {
+            //     session()->flash('getProdValues', array( $prodValues));
+            //     session()->flash('errorMessage','Canister products must contain a component!');
+            //     return redirect()->action('ProductionController@manage');
+            // }
 
             // dd($prd_components);
 
