@@ -292,6 +292,9 @@ class SalesController extends Controller
         $pur_loose_in = "";
         $cus_id = "";
         
+        $trx_can_dec = $request->trx_can_dec;
+        $trx_del_rec = $request->trx_del_rec;
+        
         $mode_of_payment = $request->mode_of_payment;
         $trx_gross = (float)$request->trx_gross;
         $trx_total = (float)$request->trx_total;
@@ -449,7 +452,9 @@ class SalesController extends Controller
             'trx_gross' => $trx_gross,
             'trx_total' => $trx_total,
             'trx_amount_paid' => $trx_amount_paid,
-            'trx_balance' => $trx_balance 
+            'trx_balance' => $trx_balance,
+            'trx_can_dec' => $trx_can_dec,
+            'trx_del_rec' => $trx_del_rec
         ]);
 
         DB::table('payments')
