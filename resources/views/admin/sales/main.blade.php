@@ -293,7 +293,8 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', '') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" readonly></input>
+                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', '') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" readonly hidden></input>
+                                                            <input type="number" class="form-control" value="{{ number_format($prd_price, 2, '.', '') }}" readonly></input>
                                                         </div>
                                                        
                                                         <div class="row">
@@ -504,11 +505,11 @@
                             <br>
                             <div class="form-group">
                                 <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>
-                                <input type="text" id="trx_can_dec" name="trx_can_dec" class="form-control" required></input>
+                                <input type="text" id="trx_can_dec" name="trx_can_dec" class="form-control" required/>
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Delivery Receipt # <span style="color:red">*</span></label>
-                                <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required></input>
+                                <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
                             </div><hr>
                             <div class="form-group">
                                 <label for="cus_address">Mode of Payment</label><br>
@@ -1071,21 +1072,33 @@
         var total = parseFloat(document.getElementById("amount_payable").value);
         var payment = parseFloat(document.getElementById("received_amount").value);
         var mode_of_payment = document.getElementById("mode_of_payment").value;
+        var trx_can_dec = document.getElementById("trx_can_dec").value;
+        var trx_del_rec = document.getElementById("trx_del_rec").value;
 
         if(mode_of_payment == 1){
-            if(payment = "" || total > payment){
+            if(payment == "" || total > payment){
             alert("Insufficient Payment");
+            }
+            else{
+                if(trx_can_dec == "" || trx_del_rec == ""){
+                alert("Canister Declaration and Delivery Receipt is required");
+                }
+                else{
+                    document.getElementById("btn_pay").disabled = true; 
+                    document.getElementById("btn_pay").innerHTML = 'Saving...'; 
+                    document.getElementById("form_payment").submit(); 
+                }
+            }
+        }
+        else{
+            if(trx_can_dec == "" || trx_del_rec == ""){
+            alert("Canister Declaration and Delivery Receipt is required");
             }
             else{
                 document.getElementById("btn_pay").disabled = true; 
                 document.getElementById("btn_pay").innerHTML = 'Saving...'; 
                 document.getElementById("form_payment").submit(); 
             }
-        }
-        else{
-            document.getElementById("btn_pay").disabled = true; 
-            document.getElementById("btn_pay").innerHTML = 'Saving...'; 
-            document.getElementById("form_payment").submit(); 
         }
         
     }
