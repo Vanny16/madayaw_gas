@@ -220,7 +220,7 @@ function get_opening_stock($prd_id, $pdn_id)
         return 0;
     }
 
-    return $opening_stocks->opening_stocks;
+    return number_format($opening_stocks->opening_stocks, 0, '.', ',');
 }
 
 function get_closing_stock($prd_id, $pdn_id)
@@ -235,7 +235,7 @@ function get_closing_stock($prd_id, $pdn_id)
         return 0;
     }
 
-    return $closing_stocks->closing_stocks;
+    return number_format($closing_stocks->closing_stocks, 0, '.', ',');
 }
 
 function get_tank_quantity($tnk_id, $prd_id)
@@ -248,7 +248,7 @@ function get_tank_quantity($tnk_id, $prd_id)
         return 'N/A';
     }
 
-    return $tanks->tnk_remaining;
+    return number_format($tanks->tnk_remaining, 0, '.', ',');
 }
 
 function get_opening_tank($tnk_id, $pdn_id)
@@ -263,7 +263,7 @@ function get_opening_tank($tnk_id, $pdn_id)
         return 0;
     }
 
-    return ($opening_tank->log_tnk_opening) / 1000;
+    return number_format((($opening_tank->log_tnk_opening) / 1000), 0, '.', ',');
 }
 
 function get_closing_tank($tnk_id, $pdn_id)
@@ -278,7 +278,7 @@ function get_closing_tank($tnk_id, $pdn_id)
     { 
         return 0;
     }
-    return ($closing_tank->log_tnk_closing) / 1000;
+    return number_format((($closing_tank->log_tnk_closing) / 1000), 0, '.', ',');
 }
 
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
@@ -345,23 +345,23 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 
     if($flag == 1)
     {   
-        return $query->stk_empty_goods;
+        return number_format($query->stk_empty_goods, 0, '.', ',');
     }
     elseif($flag == 2)
     {
-        return $query->stk_filled;
+        return number_format($query->stk_filled, 0, '.', ',');
     }
     elseif($flag == 3)
     {
-        return $query->stk_leakers;
+        return number_format($query->stk_leakers, 0, '.', ',');
     }
     elseif($flag == 4)
     {
-        return $query->stk_for_revalving;
+        return number_format($query->stk_for_revalving, 0, '.', ',');
     }
     elseif($flag == 5)
     {
-        return $query->stk_scraps;
+        return number_format($query->stk_scraps, 0, '.', ',');
     }
 }
 
@@ -405,7 +405,7 @@ function get_total_stock_report()
         $total_stock = $total_stock + $product->prd_for_revalving;
         $total_stock = $total_stock + $product->prd_scraps;
     }
-    return number_format($total_stock, 2, '.', ',');
+    return number_format($total_stock, 0, '.', ',');
 }
 
 function get_product_total_stock($prd_id)
@@ -434,36 +434,61 @@ function get_product_total_stock($prd_id)
 
     $total_stock = $total_stock + $product->prd_quantity + $product->prd_leakers + $product->prd_empty_goods + $product->prd_for_revalving + $product->prd_scraps;
 
-    return number_format($total_stock, 2, '.', ',');
+    return number_format($total_stock, 0, '.', ',');
 }
 
 function check_materials($flag, $qty, $prd_id)
 {
    //FOR EMPTYGOODS
-   if($flag == 1)
-   {
+    if($flag == 1)
+    {
        $raw_materials = DB::table('products')
        ->where('products.acc_id', '=', session('acc_id'))
        ->where('prd_id','=', $prd_id)
        ->where('prd_for_production','=','1')
        ->where('prd_active','<>','0')    
        ->first();
-       // dd($raw_materials);
-       if(isset($raw_materials))
-       {
-           if((float)$raw_materials->prd_raw_can_qty >= (float)$qty)
-           {
-               return true;
-           }
-           else
-           {
-               return false;
-           }
-       }
-       else
-       {
-           return false;
-       }
+
+       $valve = DB::table('products')
+       ->where('products.acc_id', '=', session('acc_id'))
+       ->where('prd_id','=', $raw_materials->prd_components)
+       ->where('prd_for_production','=','1')
+       ->where('prd_active','<>','0')    
+       ->first();
+
+    //    dd($);
+    //    if(isset($raw_materials))
+    //    {
+    //        if($raw_materials->prd_raw_can_qty >= $qty)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+
+       if(!isset($raw_materials) || !isset($valve))
+        {
+            return false;
+        }
+
+        if($raw_materials->prd_raw_can_qty < $qty)
+        {
+            return false;
+        }
+        
+        if($valve->prd_quantity < $qty)
+        {
+            return false;
+        }
+
+        return true;
     }
     //FOR FILLING CANISTERS
     elseif($flag == 2)
@@ -474,21 +499,24 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->first();
 
-        if(isset($empty_goods))
-        {
-            if((float)$empty_goods->prd_empty_goods >= $qty)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            } 
-        }
-        else
+        $product = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+        
+        if(!isset($empty_goods))
         {
             return false;
         }
+        
+        if($empty_goods->prd_empty_goods < $qty)
+        {
+            return false;
+        }
+
+        return true;
     }
     //FOR REVALVING 
     elseif($flag == 4)
@@ -574,7 +602,7 @@ function check_materials($flag, $qty, $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
         ->first();
-// dd($canisters, $qty);
+        
         if(isset($canisters))
         {
             if((float)$canisters->prd_leakers >= $qty)
@@ -603,16 +631,36 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_id','=', $prd_id)
         ->first();
 
-        $components_list = $product->prd_components;
-        $component = explode(",", $components_list);
+        // $components_list = $product->prd_components;
+        // $component = explode(",", $components_list);
 
-        if($component[0] <> "")
-        {
-            for($i = 0 ; $i < count($component) ; $i++)
-            {
+        // if($component[0] <> "")
+        // {
+        //     for($i = 0 ; $i < count($component) ; $i++)
+        //     {
             
+        //     $item = DB::table('products')      
+        //     ->where('prd_id','=', $component[$i])
+        //     ->where('acc_id', '=', session('acc_id'))
+        //     ->where('prd_for_production','=','1')
+        //     ->first();
+    
+        //     $new_quantity = $item->prd_quantity - $qty ;
+    
+        //     DB::table('products')        
+        //     ->where('prd_id', '=', $component[$i])
+        //     ->update([
+        //         'prd_quantity' => $new_quantity
+        //     ]);
+        //     }
+        // }
+
+        $component = $product->prd_components;
+
+        if($component <> "" || $component <> null)
+        {
             $item = DB::table('products')      
-            ->where('prd_id','=', $component[$i])
+            ->where('prd_id','=', $component)
             ->where('acc_id', '=', session('acc_id'))
             ->where('prd_for_production','=','1')
             ->first();
@@ -620,13 +668,12 @@ function subtract_qty($flag, $qty, $prd_id)
             $new_quantity = $item->prd_quantity - $qty ;
     
             DB::table('products')        
-            ->where('prd_id', '=', $component[$i])
+            ->where('prd_id', '=', $component)
             ->update([
                 'prd_quantity' => $new_quantity
             ]);
-            }
+            
         }
-       
 
         $can = DB::table('products')      
         ->where('prd_id','=', $prd_id)
@@ -644,7 +691,6 @@ function subtract_qty($flag, $qty, $prd_id)
     }
 
     //SUBTRACT EMPTY GOODS FOR FILLED CANISTERS
-    //SUBTRACT SEAL 
     elseif($flag == 2)
     {
         $canister = DB::table('products')
@@ -652,6 +698,13 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_id', '=', $prd_id)
         ->where('prd_for_production','=','1')
         ->where('prd_is_refillable','=','1')
+        ->first();
+
+        $seal = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $canister->prd_seals)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
         ->first();
 
         if(isset($canister))
@@ -663,6 +716,15 @@ function subtract_qty($flag, $qty, $prd_id)
             $new_quantity = 0;
         }
 
+        if(isset($seal))
+        {
+            $seal_quantity= $seal->prd_quantity - $qty;
+        }
+        else
+        {
+            $seal_quantity = 0;
+        }
+
         DB::table('products')        
         ->where('prd_id', '=', $canister->prd_id)
         ->where('acc_id', '=', session('acc_id'))
@@ -670,6 +732,15 @@ function subtract_qty($flag, $qty, $prd_id)
         ->where('prd_is_refillable','=','1')
         ->update([
             'prd_empty_goods' => $new_quantity
+        ]);
+
+        DB::table('products')        
+        ->where('prd_id', '=', $seal->prd_id)
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->update([
+            'prd_quantity' => $seal_quantity
         ]);
     }
     //SUBTRACT FOR_REVALVING FOR DECANTING 

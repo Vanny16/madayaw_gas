@@ -50,6 +50,192 @@
                         <div class="col-md-12"> 
                             <div class="card">
                                 <div class="card-header">
+                                    <h5>Product Movement</h5>
+                                    <ul class="nav nav-pills card-header-pills">
+                                        <li class="nav-item">
+                                            <a id="backflushed_tab" class="nav-link" data-toggle="tab" href="#filled-canisters" onclick="showInTabTwo(2)">Backflushed</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="leakers_tab" class="nav-link" data-toggle="tab" href="#leakers" onclick="showInTabTwo(6)">Leakers</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="for_revalving_tab" class="nav-link" data-toggle="tab" href="#for-revalving" onclick="showInTabTwo(4)">For Revalving</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="scraps_tab" class="nav-link" data-toggle="tab" href="#scrap" onclick="showInTabTwo(5)">Scrap</a>
+                                        </li>
+                                    </ul>
+                                    <div class="card-tools">
+                                        {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
+                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
+                                    </div>
+                                </div>
+                                <div class="tab-content card-body">
+                                    <div id="filled-canisters" class="tab-pane">
+                                        <div class="card-body" style="overflow-x:auto;">
+                                            <table class="table table-hover table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50px"></th>
+                                                        <!-- <th>Canister</th> -->
+                                                        <th>Quantity</th>
+                                                        <th width="240px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbl-filled-canisters">
+                                                    @if(isset($canisters))
+                                                        @foreach($canisters as $canister)
+                                                            @if($canister->prd_active == 1)
+                                                            <tr>
+                                                                <td>
+                                                                    @if($canister->prd_image <> '')
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @else
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @endif
+                                                                </td>   
+                                                                <td>{{$canister->prd_name}}</td>
+                                                                <!-- <td>{{$canister->prd_quantity}}</td> -->
+                                                                <td>
+                                                                    @if(session('typ_id') == '1')
+                                                                    <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
+                                                                    @endif
+                                                                </td>
+                                                                {{--<td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>--}}
+                                                                {{--<td>
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>--}}
+                                                            </tr>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="leakers" class="tab-pane">
+                                        <div class="card-body" style="overflow-x:auto;">
+                                            <table class="table table-hover table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50px"></th>
+                                                        <th>Canister</th>
+                                                        <th>Quantity</th>
+                                                        @if(session('typ_id') == '1')
+                                                        <th></th>
+                                                        <th></th>
+                                                        @endif
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbl-products">
+                                                    @if(isset($canisters))
+                                                        @foreach($canisters as $canister)
+                                                            @if($canister->prd_active == 1)
+                                                            <tr>
+                                                                <td>
+                                                                    @if($canister->prd_image <> '')
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @else
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @endif
+                                                                </td>   
+                                                                <td>{{$canister->prd_name}}</td>
+                                                                <!-- <td>{{$canister->prd_leakers}}</td> -->
+
+                                                                @if(session('typ_id') == '1')
+                                                                <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
+                                                                @endif
+                                                            </tr>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                    </div>
+                                    <div id="for-revalving" class="tab-pane">
+                                        <div class="card-body" style="overflow-x:auto;">
+                                            <table class="table table-hover table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50px"></th>
+                                                        <th>Canister</th>
+                                                        <th>Quantity</th>
+                                                        @if(session('typ_id') == '1')
+                                                        <th></th>
+                                                        @endif
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbl-products">
+                                                    @if(isset($canisters))
+                                                        @foreach($canisters as $canister)
+                                                            <tr>
+                                                                <td>
+                                                                    @if($canister->prd_image <> '')
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @else
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @endif
+                                                                </td>   
+                                                                <td>{{$canister->prd_name}}</td>
+                                                                <!-- <td>{{$canister->prd_for_revalving}}</td> -->
+                                                                @if(session('typ_id') == '1')
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Decant and Revalve</a></td>
+                                                                @endif
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="scrap" class="tab-pane">
+                                        <div class="card-body" style="overflow-x:auto;">
+                                            <table class="table table-hover table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50px"></th>
+                                                        <th>Canister</th>
+                                                        <th>Quantity</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbl-products">
+                                                    @if(isset($canisters))
+                                                        @foreach($canisters as $canister)
+                                                            <tr>
+                                                                <td>
+                                                                    @if($canister->prd_image <> '')
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @else
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                    @endif
+                                                                </td>   
+                                                                <td>{{$canister->prd_name}}</td>
+                                                                <!-- <td>{{$canister->prd_scraps}}</td> -->
+                                                                <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>                                                    
+                            </div>
+                        </div>
+                        <div class="col-md-12"> 
+                            <div class="card">
+                                <div class="card-header">
                                     <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
                                             <a id="raw_tab" class="nav-link" data-toggle="tab" href="#raw-materials" onclick="showInTabOne(0)">Raw Materials</a>
@@ -57,9 +243,9 @@
                                         <li class="nav-item">
                                             <a id="crimped_tab" class="nav-link" data-toggle="tab" href="#empty-canisters" onclick="showInTabOne(1)">Empty Good</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a id="backflushed_tab" class="nav-link" data-toggle="tab" href="#filled-canisters" onclick="showInTabOne(2)">Backflushed</a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                     <div class="card-tools">
                                         <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
@@ -395,7 +581,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="50px"></th>
-                                                        <th>Canister</th>
+                                                        <!-- <th>Canister</th> -->
                                                         <th>Quantity</th>
                                                         <th></th>
                                                     </tr>
@@ -413,7 +599,7 @@
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
-                                                                <td>{{$canister->prd_empty_goods}}</td>
+                                                                <!-- <td>{{$canister->prd_empty_goods}}</td> -->
                                                                 <td>
                                                                     @if(session('typ_id') == '1')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
@@ -446,7 +632,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="50px"></th>
-                                                        <th>Canister</th>
+                                                        <!-- <th>Canister</th> -->
                                                         <th>Quantity</th>
                                                         <th width="240px"></th>
                                                     </tr>
@@ -464,7 +650,7 @@
                                                                     @endif
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
-                                                                <td>{{$canister->prd_quantity}}</td>
+                                                                <!-- <td>{{$canister->prd_quantity}}</td> -->
                                                                 <td>
                                                                     @if(session('typ_id') == '1')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
@@ -489,141 +675,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12"> 
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Product Movement</h5>
-                                    <ul class="nav nav-pills card-header-pills">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#leakers">Leakers</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#for-revalving">For Revalving</a>
-                                        </li>
-                                        <!-- <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#scrap">Scrap</a>
-                                        </li> -->
-                                    </ul>
-                                    <div class="card-tools">
-                                        {{--<button type="button" class="btn btn-tool text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#leakers-modal"><i class="fas fa-plus"></i> Add Leakers</button>--}}
-                                        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> -->
-                                    </div>
-                                </div>
-                                <div class="tab-content card-body">
-                                    <div id="leakers" class="tab-pane active">
-                                        <div class="card-body" style="overflow-x:auto;">
-                                            <table class="table table-hover table-condensed">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="50px"></th>
-                                                        <th>Canister</th>
-                                                        <th>Quantity</th>
-                                                        @if(session('typ_id') == '1')
-                                                        <th></th>
-                                                        <th></th>
-                                                        @endif
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbl-products">
-                                                    @if(isset($canisters))
-                                                        @foreach($canisters as $canister)
-                                                            @if($canister->prd_active == 1)
-                                                            <tr>
-                                                                <td>
-                                                                    @if($canister->prd_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @endif
-                                                                </td>   
-                                                                <td>{{$canister->prd_name}}</td>
-                                                                <td>{{$canister->prd_leakers}}</td>
-
-                                                                @if(session('typ_id') == '1')
-                                                                <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
-                                                                @endif
-                                                            </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
-                                        </div> 
-                                    </div>
-                                    <div id="for-revalving" class="tab-pane">
-                                        <div class="card-body" style="overflow-x:auto;">
-                                            <table class="table table-hover table-condensed">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="50px"></th>
-                                                        <th>Canister</th>
-                                                        <th>Quantity</th>
-                                                        @if(session('typ_id') == '1')
-                                                        <th></th>
-                                                        @endif
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbl-products">
-                                                    @if(isset($canisters))
-                                                        @foreach($canisters as $canister)
-                                                            <tr>
-                                                                <td>
-                                                                    @if($canister->prd_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @endif
-                                                                </td>   
-                                                                <td>{{$canister->prd_name}}</td>
-                                                                <td>{{$canister->prd_for_revalving}}</td>
-                                                                @if(session('typ_id') == '1')
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Decant and Revalve</a></td>
-                                                                @endif
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div id="scrap" class="tab-pane">
-                                        <div class="card-body" style="overflow-x:auto;">
-                                            <table class="table table-hover table-condensed">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="50px"></th>
-                                                        <th>Canister</th>
-                                                        <th>Quantity</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbl-products">
-                                                    @if(isset($canisters))
-                                                        @foreach($canisters as $canister)
-                                                            <tr>
-                                                                <td>
-                                                                    @if($canister->prd_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @endif
-                                                                </td>   
-                                                                <td>{{$canister->prd_name}}</td>
-                                                                <td>{{$canister->prd_scraps}}</td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Send somewhere</a></td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>                                                    
                             </div>
                         </div>
                     </div>
@@ -673,6 +724,7 @@
                             </div>
                             <div class="card-body" style="overflow-x:auto;">
                                 <table class="table table-hover table-condensed">
+                                    <hr>
                                     <thead>
                                         <tr>
                                             <th>Canister</th>
@@ -688,7 +740,7 @@
                                             <td><i>Filled</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <td>{{ number_format($canister->prd_quantity, 2, '.', ',') }}</td>
+                                                    <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -696,7 +748,7 @@
                                             <td><i>Leakers</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <td>{{ number_format($canister->prd_leakers, 2, '.', ',') }}</td>
+                                                    <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -704,7 +756,7 @@
                                             <td><i>Empty</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <td>{{ number_format($canister->prd_empty_goods, 2, '.', ',') }}</td>
+                                                    <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -712,7 +764,7 @@
                                             <td><i>For Revalving</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <td>{{ number_format($canister->prd_for_revalving, 2, '.', ',') }}</td>
+                                                    <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -720,7 +772,7 @@
                                             <td><i>Scrap</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
-                                                    <td>{{ number_format($canister->prd_scraps, 2, '.', ',') }}</td>
+                                                    <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -739,7 +791,7 @@
                                             @foreach($oppositions as $opposition)
                                                 <tr>
                                                     <td><i>{{ $opposition->ops_name }}</i></td>
-                                                    <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 2, '.', ',') }}</td>
+                                                    <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
                                                 </tr>
                                             @endforeach
                                         @endif
@@ -928,7 +980,7 @@
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
                                                     <label>
-                                                        <input type="radio" name="seals" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
+                                                        <input type="radio" name="seal" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
                                                     </label>
                                                 </div>
                                             @endif
@@ -1471,6 +1523,7 @@
                     <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
                     <input type="text" class="form-control" id="return_page" name="return_page" value="production" hidden/>
                     <input type="text" id="si_tab_1" name="tab_1"  hidden/>
+                    <input type="text" id="si_tab_2" name="tab_2"  hidden/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...'; this.form.submit();"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -1590,7 +1643,7 @@
     }
 
     $(document).ready(function(){
-
+        //FIRST TAB
         @if($tab_1 == 0)
             $("#raw_tab").addClass("active");
             $("#raw-materials").addClass("active");
@@ -1601,10 +1654,10 @@
             $("#empty-canisters").addClass("active");
             document.getElementById('np_tab_1').value = 1;
             document.getElementById('si_tab_1').value = 1;
-        @elseif($tab_1 == 2)
-            $("#backflushed_tab").addClass("active");
-            $("#filled-canisters").addClass("active");
-            document.getElementById('si_tab_1').value = 2;
+        // @elseif($tab_1 == 2)
+        //     $("#backflushed_tab").addClass("active");
+        //     $("#filled-canisters").addClass("active");
+        //     document.getElementById('si_tab_1').value = 2;
         @else
             $("#raw_tab").addClass("active");
             $("#raw-materials").addClass("active");
@@ -1612,6 +1665,33 @@
             document.getElementById('si_tab_1').value = 0;
         @endif
         
+        //SECOND TAB
+        @if($tab_2 == 2)
+            $("#backflushed_tab").addClass("active");
+            $("#filled-canisters").addClass("active");
+            document.getElementById('np_tab_2').value = 2;
+            document.getElementById('si_tab_2').value = 2;
+        @elseif($tab_2 == 6)
+            $("#leakers_tab").addClass("active");
+            $("#leakers").addClass("active");
+            document.getElementById('np_tab_2').value = 6;
+            document.getElementById('si_tab_2').value = 6;
+        @elseif($tab_2 == 4)
+            $("#for_revalving_tab").addClass("active");
+            $("#for_revalving").addClass("active");
+            document.getElementById('si_tab_2').value = 4;
+        @elseif($tab_2 == 5)
+            $("#scraps_tab").addClass("active");
+            $("#scrap").addClass("active");
+            // $("#filled-canisters").addClass("active");
+            document.getElementById('si_tab_2').value = 5;
+        @else
+            $("#backflushed_tab").addClass("active");
+            $("#filled-canisters").addClass("active");
+            document.getElementById('np_tab_2').value = 2;
+            document.getElementById('si_tab_2').value = 2;
+        @endif
+
         @if($show_modal == 0)
             hideRefillable()
         @elseif($show_modal == 1)
@@ -1691,6 +1771,29 @@
         document.getElementById('tab_1').value = page;
         document.getElementById('np_tab_1').value = page;
         document.getElementById('si_tab_1').value = page;
+        document.getElementById('set_stockin_page').value = page;
+
+        // if(page === 2){
+        //     $("#add-quantity-modal").find("#lbl-tank").show();
+        //     $("#add-quantity-modal").find("#tnk-name").hide();
+        //     $("#add-quantity-modal").find("#lbl-crate").show();
+        //     $("#add-quantity-modal").find("#lbl-loose").show();
+        //     $("#add-quantity-modal").find("#crate-quantity").hide();
+
+        // }else{
+        //     $("#add-quantity-modal").find("#lbl-tank").show();
+        //     $("#add-quantity-modal").find("#tnk-name").show();
+        //     $("#add-quantity-modal").find("#lbl-crate").hide();
+        //     $("#add-quantity-modal").find("#lbl-loose").hide();
+        //     $("#add-quantity-modal").find("#crate-quantity").hide();
+        // }
+    }
+
+    function showInTabTwo(page){
+        document.getElementById('set_add_flag').value = page;
+        document.getElementById('tab_2').value = page;
+        document.getElementById('np_tab_2').value = page;
+        document.getElementById('si_tab_2').value = page;
         document.getElementById('set_stockin_page').value = page;
 
         // if(page === 2){
