@@ -421,10 +421,10 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $selected_valve = $request->valve;
-        $selected_seal = $request->seal;
+        $selected_seal = $request->seals;
         $prd_components = "";
         $prd_seals = "";
-
+        
         $prodValues = array(
             '',
             '',
@@ -674,6 +674,8 @@ class ProductionController extends Controller
             $request->tab_1,
             $request->tab_2
         );
+
+        // dd($prodValues);
         if($flag == 0)
         {
             //ADD QUANTITY TO RAW MATERIALS
@@ -776,6 +778,14 @@ class ProductionController extends Controller
         
         elseif($flag == 2)
         {
+            // dd($this->check_has_seal($prd_id));
+            if(!($this->check_has_seal($prd_id, $prd_quantity)))
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Seal insufficient!');
+                return redirect()->action('ProductionController@manage');
+            }
+
             if($this->check_gas_quantity($tnk_id, $prd_id, $prd_quantity))
             {
                 if(check_materials($flag, $prd_quantity, $prd_id))
@@ -1621,5 +1631,29 @@ class ProductionController extends Controller
         {
             return true;
         }
+    }
+
+    private function check_has_seal($prd_id, $qty)
+    {
+        $product = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        $seals = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$product->prd_seals)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->first();
+
+        if($seals->prd_quantity < $qty)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
