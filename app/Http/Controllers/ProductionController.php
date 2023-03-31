@@ -421,7 +421,9 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $components = $request->input('components');
+        $seals = $request->input('seals');
         $prd_components = "";
+        $prd_seals = "";
 
         $prodValues = array(
             '',
@@ -491,7 +493,14 @@ class ProductionController extends Controller
             //     return redirect()->action('ProductionController@manage');
             // }
 
-            // dd($prd_components);
+            $get_seals = "";
+
+            if(!is_null($seals)){
+                foreach ($seals as $seal) {
+                    $get_seals =  $seal .",". $get_seals;
+                }
+                $prd_seals = substr($prd_seals, 0, strlen($prd_seals) - 1);
+            }
 
             DB::table('products')
             ->insert([
@@ -508,6 +517,7 @@ class ProductionController extends Controller
             'prd_for_POS' => 1,
             'prd_is_refillable' => 1,
             'prd_components' => $prd_components,
+            'prd_seals' => $prd_seals,
             'sup_id' => $sup_id
             ]);
 

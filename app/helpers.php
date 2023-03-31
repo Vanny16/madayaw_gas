@@ -644,6 +644,7 @@ function subtract_qty($flag, $qty, $prd_id)
     }
 
     //SUBTRACT EMPTY GOODS FOR FILLED CANISTERS
+    //SUBTRACT SEAL 
     elseif($flag == 2)
     {
         $canister = DB::table('products')

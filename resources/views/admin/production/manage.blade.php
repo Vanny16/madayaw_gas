@@ -221,7 +221,7 @@
 
                                                                                         <div id="edit_refillables{{$raw_material->prd_id}}">
                                                                                             <div class="form-group">
-                                                                                                <label for="">Components <span style="color:red">*</span></label>
+                                                                                                <label for="">Select Valve <span style="color:red">*</span></label>
                                                                                                 <div class="form-check">
                                                                                                     <div class="row">
                                                                                                         @php($item_components = explode(',', $raw_material->prd_components))
@@ -236,6 +236,28 @@
                                                                                                                 @endforeach
                                                                                                                 <div class="col-4">
                                                                                                                     <input type="checkbox" name="components[]" value="{{$component->prd_id}}" {{ $checked }}/> {{$component->prd_name}}
+                                                                                                                </div>
+                                                                                                            @endif
+                                                                                                        @endforeach
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="">Select Seal <span style="color:red">*</span></label>
+                                                                                                <div class="form-check">
+                                                                                                    <div class="row">
+                                                                                                        @php($item_seals = explode(',', $raw_material->prd_seals))
+                                                                                                        
+                                                                                                        @foreach($raw_materials as $component)
+                                                                                                            @if($component->prd_is_refillable == 0)
+                                                                                                                @php($checked = '')
+                                                                                                                @foreach($item_seals as $item_seal)
+                                                                                                                    @if($item_seal == $component->prd_id)
+                                                                                                                        @php($checked = 'checked')
+                                                                                                                    @endif
+                                                                                                                @endforeach
+                                                                                                                <div class="col-4">
+                                                                                                                    <input type="checkbox" name="seals[]" value="{{$component->prd_id}}" {{ $checked }}/> {{$component->prd_name}}
                                                                                                                 </div>
                                                                                                             @endif
                                                                                                         @endforeach
@@ -879,13 +901,27 @@
                                 </select>
                             </div>
                             <div class="form-group" id="prd_components">
-                                <label for="prd_type">Components <span style="color:red">*</span></label>
+                                <label for="prd_type">Select Valve <span style="color:red">*</span></label>
                                 <div class="form-check">
                                     <div class="row">
                                         @foreach($raw_materials as $raw_material)
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
                                                     <input type="checkbox" name="components[]" value="{{$raw_material->prd_id}}"/> {{$raw_material->prd_name}}
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="prd_seals">
+                                <label for="prd_type">Select Seal <span style="color:red">*</span></label>
+                                <div class="form-check">
+                                    <div class="row">
+                                        @foreach($raw_materials as $raw_material)
+                                            @if($raw_material->prd_is_refillable == 0)
+                                                <div class="col-4">
+                                                    <input type="checkbox" name="seals[]" value="{{$raw_material->prd_id}}"/> {{$raw_material->prd_name}}
                                                 </div>
                                             @endif
                                         @endforeach
@@ -1511,6 +1547,7 @@
         $("#prd_weight").show();
         $("#prd_price").show();
         $("#prd_components").show();
+        $("#prd_seals").show();
     }
 
     function hideRefillable(){
@@ -1518,6 +1555,7 @@
         $("#prd_weight").hide();
         $("#prd_price").hide();
         $("#prd_components").hide();
+        $("#prd_seals").hide();
     }
 
     $("#prd_type").on("change", function() {
