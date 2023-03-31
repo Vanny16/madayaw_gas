@@ -420,8 +420,8 @@ class ProductionController extends Controller
         $prd_weight = $request->prd_weight;
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
-        $components = $request->input('components');
-        $seals = $request->input('seals');
+        $selected_valve = $request->valve;
+        $selected_seal = $request->seal;
         $prd_components = "";
         $prd_seals = "";
 
@@ -478,14 +478,14 @@ class ProductionController extends Controller
         }
         elseif($prd_type == 1)
         {
-            $get_components = "";
+            // $get_components = "";
 
-            if(!is_null($components)){
-                foreach ($components as $component) {
-                    $get_components =  $component .",". $get_components;
-                }
-                $prd_components = substr($get_components, 0, strlen($get_components) - 1);
-            }
+            // if(!is_null($components)){
+            //     foreach ($components as $component) {
+            //         $get_components =  $component .",". $get_components;
+            //     }
+            //     $prd_components = substr($get_components, 0, strlen($get_components) - 1);
+            // }
             // else
             // {
             //     session()->flash('getProdValues', array( $prodValues));
@@ -493,14 +493,14 @@ class ProductionController extends Controller
             //     return redirect()->action('ProductionController@manage');
             // }
 
-            $get_seals = "";
+            // $get_seals = "";
 
-            if(!is_null($seals)){
-                foreach ($seals as $seal) {
-                    $get_seals =  $seal .",". $get_seals;
-                }
-                $prd_seals = substr($prd_seals, 0, strlen($prd_seals) - 1);
-            }
+            // if(!is_null($seals)){
+            //     foreach ($seals as $seal) {
+            //         $get_seals =  $seal .",". $get_seals;
+            //     }
+            //     $prd_seals = substr($prd_seals, 0, strlen($prd_seals) - 1);
+            // }
 
             DB::table('products')
             ->insert([
@@ -516,8 +516,8 @@ class ProductionController extends Controller
             'prd_for_production' => 1,
             'prd_for_POS' => 1,
             'prd_is_refillable' => 1,
-            'prd_components' => $prd_components,
-            'prd_seals' => $prd_seals,
+            'prd_components' => $selected_valve,
+            'prd_seals' => $selected_seal,
             'sup_id' => $sup_id
             ]);
 
@@ -1243,9 +1243,10 @@ class ProductionController extends Controller
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
         $prd_quantity = (float)$request->prd_quantity;
-        $components = $request->input('components');
+        $selected_valve = $request->valve;
+        $selected_seal = $request->seal;
         $prd_components = "";
-
+// dd($components, $seals);
         $prodValues = array(
             '',
             '',
@@ -1308,19 +1309,20 @@ class ProductionController extends Controller
                 'prd_for_POS' => 0,
                 'prd_is_refillable' => 0, 
                 'prd_components' => null, 
+                'prd_seals' => null, 
                 'sup_id' => $sup_id
             ]);
         }
         elseif($prd_type == 1)
         {
-            $get_components = "";
+            // $get_components = "";
 
-            if(!is_null($components)){
-                foreach ($components as $component) {
-                    $get_components =  $component .",". $get_components;
-                }
-                $prd_components = substr($get_components, 0, strlen($get_components) - 1);
-            }
+            // if(!is_null($components)){
+            //     foreach ($components as $component) {
+            //         $get_components =  $component .",". $get_components;
+            //     }
+            //     $prd_components = substr($get_components, 0, strlen($get_components) - 1);
+            // }
 
             DB::table('products')
             ->where('prd_id', '=', $prd_id)
@@ -1335,7 +1337,8 @@ class ProductionController extends Controller
                 'prd_for_production' => 1,
                 'prd_for_POS' => 1,
                 'prd_is_refillable' => 1,
-                'prd_components' => $prd_components,
+                'prd_components' => $selected_valve,
+                'prd_seals' => $selected_seal,
                 'sup_id' => $sup_id
             ]);
         }
