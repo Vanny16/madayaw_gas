@@ -235,9 +235,9 @@
                                                                                                                     @endif
                                                                                                                 @endforeach
                                                                                                                 <div class="col-4">
-                                                                                                                    
-                                                                                                                        <input type="radio" name="valve" value="{{$component->prd_id}}" {{ $checked }}/> {{$component->prd_name}}
-                                                                                                                    
+                                                                                                                    <label>
+                                                                                                                        <input type="radio" name="valve" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) required @endif/> {{$component->prd_name}}
+                                                                                                                    </label>
                                                                                                                 </div>
                                                                                                             @endif
                                                                                                         @endforeach
@@ -258,9 +258,9 @@
                                                                                                                         @php($checked = 'checked')
                                                                                                                     @endif
                                                                                                                 @endforeach
-                                                                                                                <div class="col-4 form-check">
-                                                                                                                    <label class="form-check">
-                                                                                                                        <input type="radio" class="" name="seal" value="{{$component->prd_id}}" {{ $checked }}/> {{$component->prd_name}}
+                                                                                                                <div class="col-4">
+                                                                                                                    <label>
+                                                                                                                        <input type="radio" name="seal" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) required @endif/> {{$component->prd_name}}
                                                                                                                     </label>
                                                                                                                 </div>
                                                                                                             @endif
@@ -911,7 +911,9 @@
                                         @foreach($raw_materials as $raw_material)
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
-                                                    <input type="radio" name="valve" value="{{$raw_material->prd_id}}"/> {{$raw_material->prd_name}}
+                                                    <label>
+                                                        <input type="radio" name="valve" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
+                                                    </label>
                                                 </div>
                                             @endif
                                         @endforeach
@@ -925,7 +927,9 @@
                                         @foreach($raw_materials as $raw_material)
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
-                                                    <input type="radio" name="seals" value="{{$raw_material->prd_id}}"/> {{$raw_material->prd_name}}
+                                                    <label>
+                                                        <input type="radio" name="seals" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
+                                                    </label>
                                                 </div>
                                             @endif
                                         @endforeach

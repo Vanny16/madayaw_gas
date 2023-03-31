@@ -478,14 +478,14 @@ class ProductionController extends Controller
         }
         elseif($prd_type == 1)
         {
-            $get_components = "";
+            // $get_components = "";
 
-            if(!is_null($components)){
-                foreach ($components as $component) {
-                    $get_components =  $component .",". $get_components;
-                }
-                $prd_components = substr($get_components, 0, strlen($get_components) - 1);
-            }
+            // if(!is_null($components)){
+            //     foreach ($components as $component) {
+            //         $get_components =  $component .",". $get_components;
+            //     }
+            //     $prd_components = substr($get_components, 0, strlen($get_components) - 1);
+            // }
             // else
             // {
             //     session()->flash('getProdValues', array( $prodValues));
