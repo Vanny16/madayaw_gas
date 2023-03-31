@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : server
-Source Server Version : 50610
+Source Server         : localhost
+Source Server Version : 50741
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50610
+Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-03-30 01:15:55
+Date: 2023-03-31 00:00:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,6 +78,36 @@ CREATE TABLE `customers` (
 
 -- ----------------------------
 -- Records of customers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `fuel_prices`
+-- ----------------------------
+DROP TABLE IF EXISTS `fuel_prices`;
+CREATE TABLE `fuel_prices` (
+  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prc_date` date DEFAULT NULL,
+  `prc_price` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`prc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of fuel_prices
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `migrations`
+-- ----------------------------
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of migrations
 -- ----------------------------
 
 -- ----------------------------
@@ -236,6 +266,20 @@ CREATE TABLE `products` (
 
 -- ----------------------------
 -- Records of products
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `product_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_types`;
+CREATE TABLE `product_types` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of product_types
 -- ----------------------------
 
 -- ----------------------------
@@ -474,6 +518,8 @@ CREATE TABLE `transactions` (
   `trx_balance` decimal(11,0) DEFAULT NULL,
   `trx_gross` decimal(11,0) DEFAULT NULL,
   `trx_total` decimal(11,0) DEFAULT NULL,
+  `trx_can_dec` varchar(30) DEFAULT NULL,
+  `trx_del_rec` varchar(30) DEFAULT NULL,
   `trx_active` tinyint(2) DEFAULT '1',
   PRIMARY KEY (`trx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

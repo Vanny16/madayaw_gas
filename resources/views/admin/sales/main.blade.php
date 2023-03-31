@@ -177,7 +177,7 @@
 
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button id="btn_rcv_pay" type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()" disabled><i class="fa fa-wallet"></i> Receive Payment</button>
+                            <button id="btn_rcv_pay" type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()" ><i class="fa fa-wallet"></i> Receive Payment</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
@@ -293,7 +293,7 @@
                                                         
                                                         <div class="form-group">
                                                             <label for="cus_address">Price <span style="color:red">*</span></label>
-                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', '') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
+                                                            <input type="number" class="form-control" id="prd_price{{$product->prd_id}}" value="{{ number_format($prd_price, 2, '.', '') }}" onkeyup="getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id);" onkeypress="return isNumberKey(this, event);" onclick="this.select()" readonly></input>
                                                         </div>
                                                        
                                                         <div class="row">
@@ -318,7 +318,7 @@
                                                             @endif
                                                         </div>
 
-                                                        <div class="form-group">
+                                                        <div class="form-group" hidden>
                                                             <label for="cus_address">Discount (Amount in Peso) <span style="color:red">*</span></label>
                                                             <input type="number" class="form-control" id="temp_discount{{$product->prd_id}}" value="0.00" onchange="noNegativeValue('temp_discount{{$product->prd_id}}')" onkeyup="noNegativeValue('temp_discount{{$product->prd_id}}'); getTotal(prd_price{{$product->prd_id}}.id, crates_amount{{$product->prd_id}}.id, loose_amount{{$product->prd_id}}.id, temp_discount{{$product->prd_id}}.id, sub_total{{$product->prd_id}}.id, {{$product->prd_quantity}});" onkeypress="return isNumberKey(this, event);" onclick="this.select()" required></input>
                                                         </div>
@@ -503,14 +503,23 @@
                             </div>
                             <br>
                             <div class="form-group">
+                                <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>
+                                <input type="text" id="trx_can_dec" name="trx_can_dec" class="form-control" required></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="cus_address">Delivery Receipt # <span style="color:red">*</span></label>
+                                <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required></input>
+                            </div><hr>
+                            <div class="form-group">
                                 <label for="cus_address">Mode of Payment</label><br>
                                 <button id="btn_cash" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
                                 <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-credit-card"></i></button>
-                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="28rem"/></button>
+                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="24rem"/></button>
+                                <!-- <button id="btn_split" type="button" value="4" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-link"></i></button> -->
                                 <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
                             </div>
                             <div class="form-group">
-                                <label for="cus_address">Amount Payable <span style="color:red">*</span></label>
+                                <label for="cus_address">Amount Payable</label>
                                 <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
                             </div>
                             <div class="form-group" id="payment_input">
@@ -525,7 +534,7 @@
                                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01" required>
                                 </div>
                             </div>
-                            <p class="mt-4 text-danger">NOTE: <i>Please check the values properly, transaction cannot be void after POST.</i></p>
+                            <p class="mt-4 text-danger">NOTE: <i>Please check the values properly, transaction is unchangeable after POST.</i></p>
                         </div>
                     </div>
                 </div>  
@@ -620,6 +629,13 @@
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
         });
+        $("#btn_split").on("click", function() {
+            $("#payment_label").text("Received Payment");
+            $("#mode_of_payment").val("3");
+            $("#payment_attachment").show();
+            $(".btn-payment").css("border-bottom", "none");
+            $(this).css("border-bottom", "4px solid green");
+        });
     });
 
 
@@ -673,6 +689,7 @@
             alert("Order quantity must not exceed to the remaining stocks, " + remaining_stocks + " left.");
         }
         
+        var temp_discount = document.getElementById(temp_discount_id).value;
         var temp_discount = document.getElementById(temp_discount_id).value;
         var sub_total = (prd_price * total_quantity) - temp_discount;
 
