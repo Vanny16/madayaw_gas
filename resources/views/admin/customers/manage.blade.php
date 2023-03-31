@@ -108,8 +108,8 @@
                                         <th>Contact #</th>
                                         <th>Address</th>
                                         <th>Accessible Products</th>
-                                        <th>Notes</th>
-                                        <th width="100px">Status</th>
+                                        <th>Status</th>
+                                        <th width="100px"></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
                                         <th width="100px"></th>
                                         @endif

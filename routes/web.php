@@ -58,7 +58,9 @@ Route::group(['prefix' => 'customer'], function()
 });
 
 Route::group(['prefix' => 'print'], function()
-{
+{   
+    Route::get('user', 'PrintController@alluserDetails');
+
     Route::get('customer/{pay_uuid}', 'PrintController@customerDetails');
     Route::get('customer', 'PrintController@allcustomerDetails');
 
