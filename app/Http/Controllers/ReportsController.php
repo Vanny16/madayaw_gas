@@ -92,6 +92,17 @@ class ReportsController extends Controller
                 if($select_grp == 0){
                     $col_name = "trx_ref_id";
                     $col_val = $select_set[$select_grp];
+
+                    $sales = DB::table('transactions')
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->where($col_name,'=', $col_val)
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                    ->orderBy('transactions.trx_ref_id', 'DESC')
+                    ->get();
+
                 }
                 else if($select_grp == 1){
                     $col_name = "cus_name";
@@ -111,23 +122,10 @@ class ReportsController extends Controller
                 // ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 // ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                 // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                // ->join('products as prd_in', 'prd_in.prd_id', '=', 'purchases.prd_id_in')
-                // ->select('transactions.*', 'users.usr_name','users.usr_full_name', 'customers.cus_name', 'products.prd_name', 'prd_in.prd_name as prd_in_name')
                 // ->where($col_name,'=', $col_val)
                 // ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                 // ->orderBy('transactions.trx_ref_id', 'DESC')
                 // ->get();
-
-                
-                $sales = DB::table('transactions')
-                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                ->where($col_name,'=', $col_val)
-                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                ->orderBy('transactions.trx_ref_id', 'DESC')
-                ->get();
 
                 // dd($sales);
             }
