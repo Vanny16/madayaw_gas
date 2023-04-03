@@ -82,9 +82,10 @@
                 @if(session('typ_id') == '1')
                 <div class="col-md-12 mb-3"> 
                     <a class="btn btn-primary col-md-2 col-12" href="javascript:void(0)" data-toggle="modal" data-target="#user-modal"><d class="fa fa-user-plus"></d> New User</a>
-                </div>
                 @endif
-
+                    <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@alluserDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
+                </div>
+               
                 <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">

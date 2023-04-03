@@ -8,12 +8,23 @@ use DB;
 
 class PrintController extends Controller
 {
+    public function alluserDetails()
+    {
+        $all_user_details = DB::table('users')
+        ->join('user_types', 'user_types.typ_id', 'users.typ_id')
+        ->get();
+
+        return view('admin.print.user', compact('all_user_details'));
+    }
     public function allcustomerDetails()
     {
         $all_customer_details = DB::table('customers')
         ->get();
 
-        return view('admin.print.customer', compact('all_customer_details'));
+        $products = DB::table('products')
+        ->get();
+
+        return view('admin.print.customer', compact('all_customer_details', 'products'));
     }
 
     public function customerDetails($cus_uuid)
@@ -22,7 +33,10 @@ class PrintController extends Controller
         ->where('cus_uuid', '=', $cus_uuid)
         ->get();
 
-        return view('admin.print.customer', compact('customer_details'));
+        $products = DB::table('products')
+        ->get();
+
+        return view('admin.print.customer', compact('customer_details', 'products'));
     }
 
     public function allsupplierDetails()

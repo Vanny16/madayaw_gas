@@ -27,7 +27,7 @@
             </div>
             
             <div class="row">
-                <div class="col-md-12"> 
+                <div class="col-md-6"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-info-circle"></i> Tank Status</h3>
@@ -56,8 +56,10 @@
                                         <tr>
                                             <td>{{$tank->tnk_name}}</td>
                                             <td>
-                                                <div class="progress">
-                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{number_format($tank_percentage, 2)}}%</div>
+                                                <div class="progress" style="height: 300px; width:30%; transform: rotate(-90deg); border-radius: 30px;">
+                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
+                                                    </div>
                                                 </div>
                                                 <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
                                                 <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
@@ -68,13 +70,85 @@
                             </table>
                         </div>      
                     </div>
-                </div> 
+                </div>
+                
+                <div class="col-md-6"> 
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-clock"></i> Tank Operation</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <!-- Opening -->
+                        <div class="card-body" style="overflow-x:auto;">
+                            <div class="row mb-3">
+                                <div class="col-7">
+                                    <small class="text-success">Opening Operations</small>
+                                </div>
+                                <!-- <div class="col-5 text-right text-white">
+                                    <a class="btn btn-success btn-sm"><i class="fa fa-play mr-1"></i> Start</a>
+                                </div> -->
+                            </div>
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width="50px">#</th>
+                                        <th>Tank Name</th>
+                                        <th>Tank Opening</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            <tr>
+                                                <td><i>{{$tank->tnk_id}}</i></td>
+                                                <td><i>{{$tank->tnk_name}}</i></td>
+                                                <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr>
+                        <!-- Closing -->
+                        <div class="card-body" style="overflow-x:auto;">
+                            <div class="row mb-3">
+                                <div class="col-8">
+                                    <small class="text-danger">Closing Operations</small>
+                                </div>
+                            </div>
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width="50px">#</th>
+                                        <th>Tank Name</th>
+                                        <th>Tank Closing</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            <tr>
+                                                <td><i>{{$tank->tnk_id}}</i></td>
+                                                <td><i>{{$tank->tnk_name}}</i></td>
+                                                <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="col-md-12 mb-3">
                     <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
                 </div>
 
-                <div class="col-md-8"> 
+                <div class="col-md-12"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-gas-pump"></i> Tanks</h3>
@@ -238,7 +312,7 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_remaining">Remaining <span style="color:red">*</span></label>
-                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining/1000}} " onkeypress="return isNumberKey(this, event);" readonly required/>
+                                                                            <input type="text" name="tnk_remaining" class="form-control" value="{{$tank->tnk_remaining/1000}} " onkeypress="return isNumberKey(this, event);" required/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="tnk_notes">Notes</label>
@@ -286,7 +360,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4"> 
+                {{-- <div class="col-md-4"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-clock"></i> Tank Operation</h3>
@@ -356,7 +430,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 
             </div>
         </div>
