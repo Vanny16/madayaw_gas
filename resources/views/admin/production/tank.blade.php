@@ -56,8 +56,10 @@
                                         <tr>
                                             <td>{{$tank->tnk_name}}</td>
                                             <td>
-                                                <div class="progress" style="height: 150px; width:40%;  transform: rotate(-90deg);">
-                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{number_format($tank_percentage, 2)}}%</div>
+                                                <div class="progress" style="height: 300px; width:30%; transform: rotate(-90deg); border-radius: 30px;">
+                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
+                                                    </div>
                                                 </div>
                                                 <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
                                                 <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
