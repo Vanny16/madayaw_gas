@@ -58,7 +58,7 @@
                                             </td>
                                          
                                             <td>
-                                                <div class="progress" style="height: 400px; width:50%; transform: rotate(-90deg); border-radius: 90px;">
+                                                <div class="progress" style="height: 370px; width:50%; transform: rotate(-90deg); border-radius: 90px;">
                                                     <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                                         <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
                                                     </div>
