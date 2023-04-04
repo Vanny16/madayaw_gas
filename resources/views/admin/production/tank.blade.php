@@ -34,9 +34,9 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
-                    
+                           
                                 <tbody>
-                                    
+                                  
                                     @foreach($tanks as $tank)
                                         @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
                                         @php($tank_bg = "bg-success")
