@@ -317,6 +317,9 @@ class SalesController extends Controller
         $pmnt_received = (float)$request->trx_amount_paid;
         $pmnt_change =  (double)$trx_total - (double)$pmnt_received;
 
+        $pmnt_check_no = (float)$request->pmnt_check_no;
+        $pmnt_check_date = $request->pmnt_check_date;
+
         if($pmnt_received > 0){
             if($pmnt_change <= 0){
                 $pmnt_change = $pmnt_change * -1;
@@ -468,7 +471,9 @@ class SalesController extends Controller
             'pmnt_received' => $pmnt_received,
             'pmnt_change' => $pmnt_change,
             'pmnt_date' => date('Y-m-d'),
-            'pmnt_time' => date('h:i:s')
+            'pmnt_time' => date('h:i:s'),
+            'pmnt_check_no' => $pmnt_check_no,
+            'pmnt_check_date' => $pmnt_check_date
         ]);
 
         //IMAGE UPLOAD 
