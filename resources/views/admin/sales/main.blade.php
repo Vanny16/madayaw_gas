@@ -512,7 +512,7 @@
                                 <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
                             </div><hr>
                             <div class="form-group">
-                                <label for="cus_address">Mode of Payment</label><br>
+                                <label for="cus_address">Mode of Payment:</label><br>
                                 <button id="btn_cash" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
                                 <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-light btn-payment"><i class="fa fa-credit-card"></i></button>
                                 <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-google"></i></button>
@@ -534,7 +534,7 @@
                             </div>
                             <div class="form-group" id="payment_input">
                                 <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                             <div class="form-group" id="payment_attachment">
@@ -1102,6 +1102,7 @@
         var mode_of_payment = document.getElementById("mode_of_payment").value;
         var trx_can_dec = document.getElementById("trx_can_dec").value;
         var trx_del_rec = document.getElementById("trx_del_rec").value;
+        var pmnt_check_no = document.getElementById("pmnt_check_no").value;
 
         if(mode_of_payment == 1){
             if(payment == "" || total > payment){
@@ -1119,13 +1120,23 @@
             }
         }
         else{
-            if(trx_can_dec == "" || trx_del_rec == ""){
-            alert("Canister Declaration and Delivery Receipt is required");
+            if(mode_of_payment != 2 && payment <= 0){
+                alert("Invalid Payment");
             }
             else{
-                document.getElementById("btn_pay").disabled = true; 
-                document.getElementById("btn_pay").innerHTML = 'Saving...'; 
-                document.getElementById("form_payment").submit(); 
+                if(mode_of_payment == 4 && pmnt_check_no == ""){
+                    alert("Input Check Number");
+                }
+                else{
+                    if(trx_can_dec == "" || trx_del_rec == ""){
+                        alert("Canister Declaration and Delivery Receipt is required");
+                    }
+                    else{
+                        document.getElementById("btn_pay").disabled = true; 
+                        document.getElementById("btn_pay").innerHTML = 'Saving...'; 
+                        document.getElementById("form_payment").submit(); 
+                    }
+                }
             }
         }
         
