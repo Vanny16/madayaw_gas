@@ -27,6 +27,14 @@
     <div class="row">
         <table>
             <tr>
+                <td width="50%">CD #:</td>
+                <td width="50%">{{ $transactions->trx_can_dec }}</td>
+            </tr>
+            <tr>
+                <td width="50%">DR #:</td>
+                <td width="50%">{{ $transactions->trx_del_rec }}</td>
+            </tr>
+            <tr>
                 <td width="50%">Customer Name:</td>
                 <td width="50%">{{ $transactions->cus_name }}</td>
             </tr>
@@ -90,6 +98,11 @@
                 <td colspan="1">M.O.P.</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1">{{ $transactions->payment_name }}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Check #</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ $transactions->pmnt_check_no }}</td>
             </tr>
             <tr>
                 <td colspan="1">Received</td>

@@ -34,14 +34,9 @@
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th width="200px">Tank Name</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
+                           
                                 <tbody>
-                                    
+                                  
                                     @foreach($tanks as $tank)
                                         @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
                                         @php($tank_bg = "bg-success")
@@ -54,15 +49,29 @@
                                             @php($tank_bg = "bg-danger")
                                         @endif
                                         <tr>
-                                            <td>{{$tank->tnk_name}}</td>
                                             <td>
-                                                <div class="progress" style="height: 300px; width:30%; transform: rotate(-90deg); border-radius: 30px;">
+                                                {{$tank->tnk_name}}
+
+                                                <div class="row">
+                                                    <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
+                                                </div>
+                                            </td>
+                                         
+                                            <td>
+                                                <div class="progress" style="height: 370px; width:50%; transform: rotate(-90deg); border-radius: 90px;">
                                                     <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                                         <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
                                                     </div>
                                                 </div>
-                                                <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
-                                                <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
+
+                                                <div class="card-footer">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
+                                                            <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -163,7 +172,7 @@
                                         <th width="50px">#</th>
                                         <th>Tank Name</th>
                                         <th>Capacity</th>
-                                        <th>Remaining</th>
+                                        <th>Volume</th>
                                         <th>Notes</th>
                                         <th></th>
                                         <th width="50px"></th>

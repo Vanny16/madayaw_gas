@@ -512,24 +512,33 @@
                                 <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
                             </div><hr>
                             <div class="form-group">
-                                <label for="cus_address">Mode of Payment</label><br>
+                                <label for="cus_address">Mode of Payment:</label><br>
                                 <button id="btn_cash" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
-                                <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-credit-card"></i></button>
-                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="24rem"/></button>
-                                <!-- <button id="btn_split" type="button" value="4" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-link"></i></button> -->
+                                <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-light btn-payment"><i class="fa fa-credit-card"></i></button>
+                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-google"></i></button>
+                                <button id="btn_check" type="button" value="4" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-money-check-alt"></i></button>
+                                {{-- <button id="btn_split" type="button" value="5" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-link"></i></button> --}}
                                 <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Amount Payable</label>
                                 <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
                             </div>
+                            <div class="form-group" id="payment_check">
+                                <label for="cus_address">Check No. <span style="color:red">*</span></label>
+                                <input type="text" id="pmnt_check_no" name="pmnt_check_no" class="form-control" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
+                            </div>
+                            <div class="form-group" id="payment_check_date">
+                                <label for="cus_address">Check Date <span style="color:red">*</span></label>
+                                <input type="date" id="pmnt_check_date" name="pmnt_check_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            </div>
                             <div class="form-group" id="payment_input">
                                 <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0.0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
                             <div class="form-group" id="payment_attachment">
-                                <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
+                                <label for="cus_address">Attachment <span style="color:red">*</span></label>
                                 <div class="custom-file">
                                     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01" required>
@@ -606,12 +615,16 @@
 <script>
     $(document).ready(function() {
         $("#btn_cash").css("border-bottom", "4px solid green");
+        $("#payment_check").hide();
+        $("#payment_check_date").hide();
         $("#payment_attachment").hide();
         $("#mode_of_payment").val("1");
 
         $("#btn_cash").on("click", function() {
             $("#payment_label").text("Received Payment");
             $("#mode_of_payment").val("1");
+            $("#payment_check").hide();
+            $("#payment_check_date").hide();
             $("#payment_attachment").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
@@ -619,6 +632,8 @@
         $("#btn_credit").on("click", function() {
             $("#payment_label").text("Downpayment");
             $("#mode_of_payment").val("2");
+            $("#payment_check").hide();
+            $("#payment_check_date").hide();
             $("#payment_attachment").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
@@ -626,13 +641,26 @@
         $("#btn_gcash").on("click", function() {
             $("#payment_label").text("Received Payment");
             $("#mode_of_payment").val("3");
+            $("#payment_check").hide();
+            $("#payment_check_date").hide();
+            $("#payment_attachment").show();
+            $(".btn-payment").css("border-bottom", "none");
+            $(this).css("border-bottom", "4px solid green");
+        });
+        $("#btn_check").on("click", function() {
+            $("#payment_label").text("Received Payment");
+            $("#mode_of_payment").val("4");
+            $("#payment_check").show();
+            $("#payment_check_date").show();
             $("#payment_attachment").show();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
         });
         $("#btn_split").on("click", function() {
             $("#payment_label").text("Received Payment");
-            $("#mode_of_payment").val("3");
+            $("#mode_of_payment").val("5");
+            $("#payment_check").hide();
+            $("#payment_check_date").hide();
             $("#payment_attachment").show();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
@@ -1074,6 +1102,7 @@
         var mode_of_payment = document.getElementById("mode_of_payment").value;
         var trx_can_dec = document.getElementById("trx_can_dec").value;
         var trx_del_rec = document.getElementById("trx_del_rec").value;
+        var pmnt_check_no = document.getElementById("pmnt_check_no").value;
 
         if(mode_of_payment == 1){
             if(payment == "" || total > payment){
@@ -1091,13 +1120,23 @@
             }
         }
         else{
-            if(trx_can_dec == "" || trx_del_rec == ""){
-            alert("Canister Declaration and Delivery Receipt is required");
+            if(mode_of_payment != 2 && payment <= 0){
+                alert("Invalid Payment");
             }
             else{
-                document.getElementById("btn_pay").disabled = true; 
-                document.getElementById("btn_pay").innerHTML = 'Saving...'; 
-                document.getElementById("form_payment").submit(); 
+                if(mode_of_payment == 4 && pmnt_check_no == ""){
+                    alert("Input Check Number");
+                }
+                else{
+                    if(trx_can_dec == "" || trx_del_rec == ""){
+                        alert("Canister Declaration and Delivery Receipt is required");
+                    }
+                    else{
+                        document.getElementById("btn_pay").disabled = true; 
+                        document.getElementById("btn_pay").innerHTML = 'Saving...'; 
+                        document.getElementById("form_payment").submit(); 
+                    }
+                }
             }
         }
         
