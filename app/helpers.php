@@ -456,23 +456,7 @@ function check_materials($flag, $qty, $prd_id)
        ->where('prd_active','<>','0')    
        ->first();
 
-    //    dd($);
-    //    if(isset($raw_materials))
-    //    {
-    //        if($raw_materials->prd_raw_can_qty >= $qty)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-
+    
        if(!isset($raw_materials) || !isset($valve))
         {
             return false;
@@ -490,6 +474,24 @@ function check_materials($flag, $qty, $prd_id)
 
         return true;
     }
+
+    //    dd($);
+    //    if(isset($raw_materials))
+    //    {
+    //        if($raw_materials->prd_raw_can_qty >= $qty)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+
     //FOR FILLING CANISTERS
     elseif($flag == 2)
     {
@@ -518,6 +520,7 @@ function check_materials($flag, $qty, $prd_id)
 
         return true;
     }
+
     //FOR REVALVING 
     elseif($flag == 4)
     {
@@ -543,6 +546,7 @@ function check_materials($flag, $qty, $prd_id)
             return false;
         }
     }
+
     //SCRAPPING LEAKERS 
     elseif($flag == 5)
     {
@@ -568,6 +572,7 @@ function check_materials($flag, $qty, $prd_id)
             return false;
         }
     }
+
     //FOR LEAKERS FROM PRODUCTION
     elseif($flag == 6)
     {
@@ -593,6 +598,7 @@ function check_materials($flag, $qty, $prd_id)
             return false;
         }
     }
+
     //FOR_REVALVING FROM PRODUCTION
     elseif($flag == 7)
     {
@@ -606,6 +612,31 @@ function check_materials($flag, $qty, $prd_id)
         if(isset($canisters))
         {
             if((float)$canisters->prd_leakers >= $qty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    elseif($flag == 8)
+    {
+        $canisters = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->first();
+
+        if(isset($canisters))
+        {
+            if((float)$canisters->prd_scraps >= $qty)
             {
                 return true;
             }
@@ -743,6 +774,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_quantity' => $seal_quantity
         ]);
     }
+
     //SUBTRACT FOR_REVALVING FOR DECANTING 
     elseif($flag == 4)
     {
@@ -771,6 +803,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_for_revalving' => $new_quantity
         ]);
     }
+
     //SUBTRACT LEAKERS FOR SCRAP
     elseif($flag == 5)
     {
@@ -798,7 +831,8 @@ function subtract_qty($flag, $qty, $prd_id)
         ->update([
             'prd_leakers' => $new_quantity
         ]);
-    }   
+    }  
+
     //SUBTRACT BACKFLUSHED FOR LEAKERS
     elseif($flag == 6)
     {
@@ -827,6 +861,7 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_quantity' => $new_quantity
         ]);
     }   
+
     //SUBTRACT LEAKERS FOR "FOR_REVALVING"
     elseif($flag == 7)
     {
@@ -855,5 +890,33 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_leakers' => $new_quantity
         ]);
     }   
+
+    elseif($flag == 5)
+    {
+        $scraps = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_id', '=', $prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        if(isset($scraps))
+        {
+            $new_quantity= $scraps->prd_scraps - $qty;
+        }
+        else
+        {
+            $new_quantity = 0;
+        }
+
+        DB::table('products')        
+        ->where('prd_id', '=', $scraps->prd_id)
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->update([
+            'prd_leakers' => $new_quantity
+        ]);
+    } 
 }
 ?>
