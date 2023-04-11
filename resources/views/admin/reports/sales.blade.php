@@ -120,7 +120,7 @@
                                         <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
-                                <hr>
+                                {{-- <hr>
                                 <div class="row">
                                     <label for="">Choose Columns: </label>
                                     <div class="col-md-4 mb-3">
@@ -145,7 +145,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
 

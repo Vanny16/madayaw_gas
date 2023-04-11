@@ -119,9 +119,8 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->where($col_name,'=', $col_val)
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                    ->orderBy('transactions.trx_ref_id', 'DESC')
+                    ->orderBy('transactions.trx_datetime', 'DESC')
                     ->get();
-
                 }
                 else if($select_grp == 1){
                     $col_name = "cus_name";
@@ -152,22 +151,32 @@ class ReportsController extends Controller
                 session()->flash('errorMessage',  "Invalid search");
                 
                 $sales = DB::table('transactions')
-                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                ->where('trx_active','=','1')
-                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                ->orderBy('transactions.trx_ref_id', 'DESC')
-                ->get();
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                    ->orderBy('transactions.trx_datetime', 'DESC')
+                    ->get();
             }
         }
         else{
+            // $sales = DB::table('transactions')
+            // ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+            // ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            // ->where('trx_active','=','1')
+            // ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+            // ->orderBy('transactions.trx_ref_id', 'DESC')
+            // ->get();
+
             $sales = DB::table('transactions')
-            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-            ->where('trx_active','=','1')
-            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-            ->orderBy('transactions.trx_ref_id', 'DESC')
-            ->get();
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                    ->orderBy('transactions.trx_datetime', 'DESC')
+                    ->get();
         }
 
         
