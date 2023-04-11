@@ -108,10 +108,10 @@
                 @elseif(isset($customer_details))
                     <thead>
                         <tr>
-                            <th width="500px">Customer Name</th>
+                            <th>Customer Name</th>
                             <th>Contact #</th>
-                            <th width="500px">Address</th>
-                            <th width="500px">Accessible Products</th>
+                            <th>Address</th>
+                            <th>Accessible Products</th>
                             <th>Status</th>
                             <th width="20px"></th>
                         </tr>

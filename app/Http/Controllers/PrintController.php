@@ -31,7 +31,7 @@ class PrintController extends Controller
     {
         $customer_details = DB::table('customers')
         ->where('cus_uuid', '=', $cus_uuid)
-        ->get();
+        ->first();
 
         $products = DB::table('products')
         ->get();
