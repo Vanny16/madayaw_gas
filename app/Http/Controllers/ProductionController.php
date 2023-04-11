@@ -659,6 +659,7 @@ class ProductionController extends Controller
         // 5 = scrap
         // 6 = leakers
         // 7 = for revalving
+        // 8 = disposal
 
         $prodValues = array(
             '',
@@ -1235,6 +1236,55 @@ class ProductionController extends Controller
             }
         }
 
+        elseif($flag == 8)
+        {
+            if(check_materials($flag, $prd_quantity, $prd_id))
+            {
+                //SUBTRACT QUANTITY FROM SCRAPS
+                subtract_qty($flag, $prd_quantity, $prd_id);
+                
+                //LOG ACTION IN PRODUCTION
+                record_movement($prd_id, $prd_quantity, $flag);
+
+                //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
+                //ADD QUANTITY FROM LEAKERS
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_scraps' => (float)$stocks_logs->stk_scraps + (float)$prd_quantity
+                ]);  
+
+                //SUBTRACT QUANTITY TO EMPTY GOODS
+                $stock_in_quantity = 0;
+
+                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
+                {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                }
+                
+                DB::table('stocks_logs')
+                ->where('prd_id','=',$prd_id)
+                ->where('acc_id','=', session('acc_id'))
+                ->where('pdn_id', '=', get_last_production_id())
+                ->update([
+                'stk_leakers' => $stock_in_quantity
+                ]);  
+
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('successMessage', $prd_quantity . ' scrap/s disposed');
+                return redirect()->action('ProductionController@manage');
+            }
+            else
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Scraps insufficient!');
+                return redirect()->action('ProductionController@manage');
+            }
+            
+        }
+
         session()->flash('getProdValues', array( $prodValues));
     }  
 
@@ -1256,7 +1306,7 @@ class ProductionController extends Controller
         $selected_valve = $request->valve;
         $selected_seal = $request->seal;
         $prd_components = "";
-// dd($components, $seals);
+
         $prodValues = array(
             '',
             '',
@@ -1656,5 +1706,4 @@ class ProductionController extends Controller
 
         return true;
     }
-    //test
 }

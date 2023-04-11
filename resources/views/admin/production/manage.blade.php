@@ -1532,6 +1532,76 @@
     </div>
 </div>
 
+<!-- Disposal Modal -->
+<div class="modal fade" id="disposal-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Quantity </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ action('ProductionController@addQuantity') }}">
+            {{ csrf_field() }} 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <label for="tanks" id="lbl-tank">Selected Tank <span style="color:red">*</span></label>
+                                    <select class="form-control col-md-12" name="selected_tank" id="selected-tank">
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            @if($tank->tnk_active == 0)
+                                                @continue
+                                            @else
+                                                <option value="{{ $tank->tnk_id }}">{{ $tank->tnk_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">   
+                                <label for="quantity" id="lbl-add">Amount to add <span style="color:red">*</span></label>
+                                <div id="trx_ref_no">
+                                    <label for="quantity" id="lbl-trx_ref_id">Transaction <span style="color:red">*</span></label>
+                                    <table>
+                                        <tr>
+                                            <td width="90%"><input type="text" class="form-control" id="trx_ref_id" name="trx_ref_id" placeholder="ex. POS-00000000-0"/></td>   
+                                            <td width="10%"><button type="button" onclick="verifyTransaction()" class="btn btn-info"><i class="fa fa-search"></i></button></td>    
+                                        <tr>
+                                    </table>
+                                </div>
+                                <div id="customer">
+                                    <label for="cus_name">Customer <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="cus_name" name="cus_name" readonly/>
+                                </div>
+                                <div id="crate">
+                                    <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                                </div>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" id="set_stockin_flag" name="stockin_flag" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_page" name="stockin_page" value="" hidden/>
+                    <input type="text" class="form-control" id="set_stockin_id" name="stockin_prd_id" value="" hidden/>
+                    <input type="text" class="form-control" id="return_page" name="return_page" value="production" hidden/>
+                    <input type="text" id="si_tab_1" name="tab_1"  hidden/>
+                    <input type="text" id="si_tab_2" name="tab_2"  hidden/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...'; this.form.submit();"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Opening / Closing Modal -->
 <div class="modal fade" id="stocks-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1643,7 +1713,7 @@
     }
 
     $(document).ready(function(){
-        //FIRST TAB
+        //RAW MATS, EMPTY GOODS TAB
         @if($tab_1 == 0)
             $("#raw_tab").addClass("active");
             $("#raw-materials").addClass("active");
@@ -1665,7 +1735,7 @@
             document.getElementById('si_tab_1').value = 0;
         @endif
         
-        //SECOND TAB
+        //BACKFLUSH, LEAKERS, REVALVING, SCRAP TAB
         @if($tab_2 == 2)
             $("#backflushed_tab").addClass("active");
             $("#filled-canisters").addClass("active");
