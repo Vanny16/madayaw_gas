@@ -449,9 +449,9 @@ class SalesController extends Controller
             'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
             'cus_id' => $cus_id,
-            'trx_datetime' => date('Y-m-d h:i:s'),
+            'trx_datetime' => date('Y-m-d H:i:s'),
             'trx_date' => date('Y-m-d'),
-            'trx_time' => date('h:i:s'),
+            'trx_time' => date('H:i:s'),
             'trx_gross' => $trx_gross,
             'trx_total' => $trx_total,
             'trx_amount_paid' => $trx_amount_paid,
@@ -471,7 +471,7 @@ class SalesController extends Controller
             'pmnt_received' => $pmnt_received,
             'pmnt_change' => $pmnt_change,
             'pmnt_date' => date('Y-m-d'),
-            'pmnt_time' => date('h:i:s'),
+            'pmnt_time' => date('H:i:s'),
             'pmnt_check_no' => $pmnt_check_no,
             'pmnt_check_date' => $pmnt_check_date
         ]);
@@ -577,7 +577,7 @@ class SalesController extends Controller
             'pmnt_received' => $pmnt_received,
             'pmnt_change' => $pmnt_change,
             'pmnt_date' => date('Y-m-d'),
-            'pmnt_time' => date('h:i:s')
+            'pmnt_time' => date('H:i:s')
         ]);
         
         
