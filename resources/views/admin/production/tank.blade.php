@@ -33,12 +33,14 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-info-circle"></i> Tank Status</h3>
-                        </div>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="arrow down" style="transform: rotate(45deg); border: solid black; border-width: 0 3px 3px 0; display: inline-block; padding: 3px;"></i></button>
+                            </div>
+                        </div>                         
                         <div class="card-body" style="overflow-x:auto;">
                             <table class="table table-hover table-condensed">
                            
                                 <tbody>
-                                  
                                     @foreach($tanks as $tank)
                                         @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
                                         @php($tank_bg = "bg-success")
