@@ -77,8 +77,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="50px"></th>
-                                                        <!-- <th>Canister</th> -->
-                                                        <th>Quantity</th>
+                                                        <th>Canister</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         <th width="240px"></th>
                                                     </tr>
                                                 </thead>
@@ -126,7 +126,7 @@
                                                     <tr>
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
-                                                        <th>Quantity</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         @if(session('typ_id') == '1')
                                                         <th></th>
                                                         <th></th>
@@ -169,7 +169,7 @@
                                                     <tr>
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
-                                                        <th>Quantity</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         @if(session('typ_id') == '1')
                                                         <th></th>
                                                         @endif
@@ -205,7 +205,7 @@
                                                     <tr>
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
-                                                        <th>Quantity</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -581,8 +581,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="50px"></th>
-                                                        <!-- <th>Canister</th> -->
-                                                        <th>Quantity</th>
+                                                        <th>Canister</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -632,8 +632,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="50px"></th>
-                                                        <!-- <th>Canister</th> -->
-                                                        <th>Quantity</th>
+                                                        <th>Canister</th>
+                                                        <!-- <th>Quantity</th> -->
                                                         <th width="240px"></th>
                                                     </tr>
                                                 </thead>
@@ -1276,77 +1276,316 @@
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-6">
-                            @if(isset($canisters[0]))
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-5">
-                                            @if($pdn_flag)
-                                                <label for="stocks_quantity">Verify Opening Stocks</label>
-                                            @else
-                                                <label for="stocks_quantity">Verify Closing Stocks</label>
-                                            @endif
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>Tanks</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($tanks[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Confirm Opening Tank</label>
+                                                @else
+                                                    <label for="stocks_quantity">Confirm Closing Tank</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
                                         </div>
-                                        <div class="col-7"></div>
                                     </div>
-                                </div>
-                                @foreach($canisters as $canister)
-                                    @if($canister->prd_active == 1)
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-5">
-                                                    <em>{{$canister->prd_name}}</em>
-                                                </div>
-                                                <div class="col-7">
-                                                    @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
-                                                    @else
-                                                        <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
-                                                    @endif
-                                                    <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                    @foreach($tanks as $tank)
+                                        @if($tank->tnk_active == 1)
+                                            @php($tank_remaining = ($tank->tnk_remaining) / 1000)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
-                        <div class="col-6">
-                            @if(isset($tanks[0]))
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-5">
-                                            @if($pdn_flag)
-                                                <label for="stocks_quantity">Confirm Opening Tank</label>
-                                            @else
-                                                <label for="stocks_quantity">Confirm Closing Tank</label>
-                                            @endif
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <hr>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>Filled Canisters</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($canisters[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Verify Opening Stocks</label>
+                                                @else
+                                                    <label for="stocks_quantity">Verify Closing Stocks</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
                                         </div>
-                                        <div class="col-7"></div>
                                     </div>
-                                </div>
-                                @foreach($tanks as $tank)
-                                    @if($tank->tnk_active == 1)
-                                        @php($tank_remaining = ($tank->tnk_remaining) / 1000)
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-5">
-                                                    <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
-                                                </div>
-                                                <div class="col-7">
-                                                    @if($pdn_flag)
-                                                        <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
-                                                    @else
-                                                        <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
-                                                    @endif
-                                                    <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                    @foreach($canisters as $canister)
+                                        @if($canister->prd_active == 1)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <em>{{$canister->prd_name}}</em>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <hr>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>Leakers</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($canisters[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Verify Opening Stocks</label>
+                                                @else
+                                                    <label for="stocks_quantity">Verify Closing Stocks</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+                                    </div>
+                                    @foreach($canisters as $canister)
+                                        @if($canister->prd_active == 1)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <em>{{$canister->prd_name}}</em>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <hr>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>Empty Goods</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($canisters[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Verify Opening Stocks</label>
+                                                @else
+                                                    <label for="stocks_quantity">Verify Closing Stocks</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+                                    </div>
+                                    @foreach($canisters as $canister)
+                                        @if($canister->prd_active == 1)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <em>{{$canister->prd_name}}</em>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <hr>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>For Revalving</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($canisters[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Verify Opening Stocks</label>
+                                                @else
+                                                    <label for="stocks_quantity">Verify Closing Stocks</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+                                    </div>
+                                    @foreach($canisters as $canister)
+                                        @if($canister->prd_active == 1)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <em>{{$canister->prd_name}}</em>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <hr>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                            <h3>Scraps</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="col-12">
+                                @if(isset($canisters[0]))
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                @if($pdn_flag)
+                                                    <label for="stocks_quantity">Verify Opening Stocks</label>
+                                                @else
+                                                    <label for="stocks_quantity">Verify Closing Stocks</label>
+                                                @endif
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+                                    </div>
+                                    @foreach($canisters as $canister)
+                                        @if($canister->prd_active == 1)
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <em>{{$canister->prd_name}}</em>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        @if($pdn_flag)
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required>
+                                                        @else
+                                                            <input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required>
+                                                        @endif
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="cl-1"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1357,7 +1596,7 @@
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
-                        <strong>Are you sure you want to verify the closing stocks?</strong>
+                        <strong>Are you sure you want to verify and print the closing stocks?</strong>
                         <div>
                             <button type="submit" class="btn btn-danger" ><i class="fa fa-ban mr-1"> </i>Verify Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
