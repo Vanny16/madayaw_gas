@@ -120,7 +120,7 @@
                                         <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
-                                <hr>
+                                {{-- <hr>
                                 <div class="row">
                                     <label for="">Choose Columns: </label>
                                     <div class="col-md-4 mb-3">
@@ -145,7 +145,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
 
@@ -288,7 +288,36 @@ function hideGroupSelection(){
     $("#select_prd").hide();
 }
 
-$("#select_set").hide();
+@if(session('select_grp') != -1)
+    $("#select_grp").val({{ session('select_grp') }});
+
+    var select_val_onload = {{ session('select_grp') }};
+
+    if(select_val_onload == 0){
+        hideGroupSelection();
+        $("#select_trx").show();
+        $("#select_trx").val('{{ session('select_set') }}');
+    }
+    else if(select_val_onload == 1){
+        hideGroupSelection();
+        $("#select_cus").show();
+        $("#select_cus").val('{{ session('select_set') }}');
+    }
+    else if(select_val_onload == 2){
+        hideGroupSelection();
+        $("#select_usr").show();
+        $("#select_usr").val('{{ session('select_set') }}');
+    }
+    else if(select_val_onload == 3){
+        hideGroupSelection();
+        $("#select_prd").show();
+        $("#select_prd").val('{{ session('select_set') }}');
+    }
+    
+@else
+    $("#select_set").hide();
+@endif
+
 $("#select_grp").on("change keyup", function() {
     hideGroupSelection();
     var select_val = $("#select_grp").val().toLowerCase();
