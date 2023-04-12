@@ -29,7 +29,8 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->where('trx_active','=','1')
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->get();
+                    // ->get();
+                    ->paginate(10);
         
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
@@ -47,6 +48,10 @@ class ReportsController extends Controller
 
         $products = DB::table('products')
         ->get();
+        
+        session(['tbl_sales_form' => 'sales']);
+        session(['select_grp' => -1]);
+        session(['select_set' => '0']);
 
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
     }
@@ -72,7 +77,8 @@ class ReportsController extends Controller
                     ->where('trx_active','=','1')
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->get();
+                    // ->get();
+                    ->paginate(10);
 
         $purchases = DB::table('purchases')
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -92,6 +98,10 @@ class ReportsController extends Controller
         ->where('prd_for_POS','=','1')
         ->get();
 
+        session(['tbl_sales_form' => 'sales']);
+        session(['select_grp' => -1]);
+        session(['select_set' => '0']);
+
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
     }
 
@@ -101,6 +111,7 @@ class ReportsController extends Controller
         $sales_date_to = $request->sales_date_to;
         $select_grp = $request->select_grp;
         $select_set = $request->input('select_set');
+        $tbl_sales_form = "";
 
         if($select_grp != -1){
 
@@ -112,7 +123,17 @@ class ReportsController extends Controller
                     $col_name = "trx_ref_id";
                     $col_val = $select_set[$select_grp];
 
-                    if($col_val != "ALL"){
+                    if($col_val == "SUMMARY"){
+                        $sales = DB::table('transactions')
+                        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->orderBy('transactions.trx_datetime', 'DESC')
+                        ->get();
+
+                        $tbl_sales_form = "sales_summary";
+                    }
+                    else if($col_val != "ALL"){
                         $sales = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -121,6 +142,8 @@ class ReportsController extends Controller
                         ->where($col_name,'=', $col_val)
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->get();
+
+                        $tbl_sales_form = "sales";
                     }
                     else{       
                         $sales = DB::table('transactions')
@@ -131,20 +154,93 @@ class ReportsController extends Controller
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->get();
+
+                        $tbl_sales_form = "sales";
                     }
 
                 }
                 else if($select_grp == 1){
-                    $col_name = "cus_name";
-                    $col_val = $select_set[$select_grp];
-                }
-                else if($select_grp == 2){
-                    $col_name = "usr_full_name";
-                    $col_val = $select_set[$select_grp];
-                }
-                else if($select_grp == 3){
                     $col_name = "prd_name";
                     $col_val = $select_set[$select_grp];
+
+                    if($col_val != "ALL"){      
+                        $sales = DB::table('products')
+                        ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+                        ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+                        ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->where($col_name,'=', $col_val)
+                        ->groupBy('products.prd_name')
+                        ->get();
+
+                        $tbl_sales_form = "products";
+                    }
+                    else{       
+                        $sales = DB::table('products')
+                        ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+                        ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+                        ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->groupBy('products.prd_name')
+                        ->get();
+
+                        $tbl_sales_form = "products";
+                    }
+                }
+
+                else if($select_grp == 2){
+                    $col_name = "cus_name";
+                    $col_val = $select_set[$select_grp];
+                    
+                    if($col_val != "ALL"){      
+                        $sales = DB::table('customers')
+                        ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
+                        ->select('customers.cus_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->where($col_name,'=', $col_val)
+                        ->groupBy('customers.cus_name')
+                        ->get();
+
+                        $tbl_sales_form = "customers";
+                    }
+                    else{       
+                        $sales = DB::table('customers')
+                        ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
+                        ->select('customers.cus_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->groupBy('customers.cus_name')
+                        ->get();
+
+                        $tbl_sales_form = "customers";
+                    }
+
+                }
+
+                else if($select_grp == 3){
+                    $col_name = "usr_full_name";
+                    $col_val = $select_set[$select_grp];
+                    
+                    if($col_val != "ALL"){
+                        $sales = DB::table('users')
+                        ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
+                        ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->where($col_name,'=', $col_val)
+                        ->groupBy('users.usr_full_name')
+                        ->get();
+
+                        $tbl_sales_form = "cashiers";
+                    }
+                    else{
+                        $sales = DB::table('users')
+                        ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
+                        ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->groupBy('users.usr_full_name')
+                        ->get();
+
+                        $tbl_sales_form = "cashiers";
+                    }
                 }
 
                 // $sales = DB::table('transactions')
@@ -170,6 +266,8 @@ class ReportsController extends Controller
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
                     ->get();
+
+                    $tbl_sales_form = "sales";
             }
         }
         else{
@@ -181,6 +279,8 @@ class ReportsController extends Controller
                 ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                 ->orderBy('transactions.trx_datetime', 'DESC')
                 ->get();
+                
+                $tbl_sales_form = "sales";
         }
 
         
@@ -202,6 +302,7 @@ class ReportsController extends Controller
         ->where('prd_for_POS','=','1')
         ->get();
 
+        session(['tbl_sales_form' => $tbl_sales_form]);
         session(['select_grp' => $select_grp]);
 
         if($select_grp != -1){
