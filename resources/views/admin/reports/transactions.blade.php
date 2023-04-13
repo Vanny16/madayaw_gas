@@ -59,22 +59,25 @@
                             <form method="POST" action="{{ action('ReportsController@transactionsFilter')}}">
                             {{ csrf_field() }} 
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_from">From</label>
-                                        <input type="date" class="form-control" name="transactions_date_from" value="{{ $date_from }}" required/>     
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_to">To</label>
-                                        <input type="date" class="form-control" name="transactions_date_to" value="{{ $date_to }}" required/>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
                                         <input type="text" class="form-control" id="search_transactions" name="search_transactions" placeholder="Search">
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_from">From</label>
+                                        <input type="date" class="form-control" name="transactions_date_from" value="{{ $date_from }}" required/>     
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_to">To</label>
+                                        <input type="date" class="form-control" name="transactions_date_to" value="{{ $date_to }}" required/>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <label for="search_string">Rows</label>
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <label for="">&nbsp;</label>
+                                        <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
                             </form>
@@ -324,5 +327,18 @@ $("#search_transactions").on("change keyup", function() {
         $(this).toggle(searchMatch);
     });
 });
+
+function noNegativeValue(id){
+    $("#"+id).on("input", function() {
+        if (/^0/.test(this.value)) {
+            this.value = this.value.replace(/^0/, "")
+        }
+    });
+
+    var value = document.getElementById(id).value;
+    if(value < 0 || value == ""){
+        document.getElementById(id).value ="10";
+    }
+}
 </script>
 @endsection 

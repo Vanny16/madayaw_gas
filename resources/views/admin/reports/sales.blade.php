@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="search_string">Rows</label>
-                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)">
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
@@ -223,6 +223,8 @@
                                         @elseif(session('tbl_sales_form') == "customers")
                                             <tr>
                                                 <th>Customer</th>
+                                                <th>Total Canister (IN)</th>
+                                                <th>Total Canister (OUT)</th>
                                                 <th>Total Sales</th>
                                                 <th>Total Balance</th>
                                                 <th>Total Payment</th>
@@ -283,6 +285,8 @@
                                             @elseif(session('tbl_sales_form') == "customers")
                                                 <tr>
                                                     <td>{{ $sale->cus_name }}</td>
+                                                    <td>{{ $sale->pur_qty_in }}</td>
+                                                    <td>{{ $sale->pur_qty_out }}</td>
                                                     <td>₱ {{ number_format($sale->trx_total, 2, '.', ',') }}</td>
                                                     <td>₱ {{ number_format($sale->trx_balance, 2, '.', ',') }}</td>
                                                     <td>₱ {{ number_format($sale->trx_amount_paid, 2, '.', ',') }}</td>

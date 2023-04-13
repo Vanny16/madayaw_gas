@@ -15,13 +15,6 @@ class ReportsController extends Controller
         $sales_date_from = "";
         $sales_date_to = "";
 
-        // $sales = DB::table('transactions')
-        //                 ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-        //                 ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        //                 ->where('trx_active','=','1')
-        //                 ->orderBy('transactions.trx_datetime', 'DESC')
-        //                 ->get();
-
         $sales = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                     ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -29,7 +22,6 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->where('trx_active','=','1')
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    // ->get();
                     ->paginate(10);
         
         $purchases = DB::table('purchases')
@@ -61,14 +53,6 @@ class ReportsController extends Controller
         $sales_date_from = date("Y-m-d");
         $sales_date_to = date("Y-m-d");
 
-        // $sales = DB::table('transactions')
-        //             ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-        //             ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        //             ->where('trx_active','=','1')
-        //             ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-        //             ->orderBy('transactions.trx_datetime', 'DESC')
-        //             ->get();
-
         $sales = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                     ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -77,7 +61,6 @@ class ReportsController extends Controller
                     ->where('trx_active','=','1')
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    // ->get();
                     ->paginate(10);
 
         $purchases = DB::table('purchases')
@@ -112,6 +95,7 @@ class ReportsController extends Controller
         $select_grp = $request->select_grp;
         $select_set = $request->input('select_set');
         $tbl_sales_form = "";
+        $paginate_row = (int)$request->paginate_row;
 
         if($select_grp != -1){
 
@@ -129,7 +113,7 @@ class ReportsController extends Controller
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "sales_summary";
                     }
@@ -141,7 +125,7 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where($col_name,'=', $col_val)
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "sales";
                     }
@@ -153,7 +137,7 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "sales";
                     }
@@ -171,7 +155,7 @@ class ReportsController extends Controller
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->where($col_name,'=', $col_val)
                         ->groupBy('products.prd_name')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "products";
                     }
@@ -182,7 +166,7 @@ class ReportsController extends Controller
                         ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->groupBy('products.prd_name')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "products";
                     }
@@ -195,21 +179,29 @@ class ReportsController extends Controller
                     if($col_val != "ALL"){      
                         $sales = DB::table('customers')
                         ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
-                        ->select('customers.cus_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
-                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->where('products.prd_is_refillable','=', '1')
                         ->where($col_name,'=', $col_val)
+                        ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->groupBy('customers.cus_name')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "customers";
                     }
                     else{       
                         $sales = DB::table('customers')
                         ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
-                        ->select('customers.cus_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->where('products.prd_is_refillable','=', '1')
+                        ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->groupBy('customers.cus_name')
-                        ->get();
+                        ->paginate($paginate_row);
+                        // ->get();     
+                        // dd($sales);
 
                         $tbl_sales_form = "customers";
                     }
@@ -227,7 +219,7 @@ class ReportsController extends Controller
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->where($col_name,'=', $col_val)
                         ->groupBy('users.usr_full_name')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "cashiers";
                     }
@@ -237,7 +229,7 @@ class ReportsController extends Controller
                         ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->groupBy('users.usr_full_name')
-                        ->get();
+                        ->paginate($paginate_row);
 
                         $tbl_sales_form = "cashiers";
                     }
@@ -265,7 +257,7 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->get();
+                    ->paginate($paginate_row);
 
                     $tbl_sales_form = "sales";
             }
@@ -278,7 +270,7 @@ class ReportsController extends Controller
                 ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                 ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                 ->orderBy('transactions.trx_datetime', 'DESC')
-                ->get();
+                ->paginate($paginate_row);
                 
                 $tbl_sales_form = "sales";
         }
