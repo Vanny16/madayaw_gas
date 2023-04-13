@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="search_string">Rows</label>
-                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)">
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
