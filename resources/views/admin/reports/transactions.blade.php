@@ -118,26 +118,76 @@
                                     <thead>
                                         <tr>
                                             <th>Reference ID</th>
+                                            <th>Date & Time</th>
+                                            <th>Item (IN)</th>
+                                            <th>Qty (IN)</th>
+                                            <th>Item (OUT)</th>
+                                            <th>Qty (OUT)</th>
+                                            <th>Bad Order</th>
                                             <th>User</th>
                                             <th>Customer</th>
-                                            <th>Date & Time</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-transactions">
                                         @foreach($transactions as $transaction)
                                             <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
                                                 <td>{{ $transaction->trx_ref_id }}</td>
+                                                <td>{{ $transaction->trx_datetime }}</td>
+
+                                                @php($prd_name = "")
+                                                @php($pur_qty_in = ($transaction->pur_crate_in * 12) + $transaction->pur_loose_in)
+                                                @if($transaction->can_type_in == 0 || $transaction->can_type_in == 1)
+                                                    @if($pur_qty_in == 0)
+                                                        @php($pur_qty_in = "-")
+                                                        @php($prd_name = "-")
+                                                    @else
+                                                        @php($prd_name = $transaction->prd_name)
+                                                    @endif
+                                                @else
+                                                    @foreach($ops_ins as $ops_in)
+                                                        @if($ops_in->ops_id == $transaction->prd_id_in)
+                                                            @php($prd_name = $ops_in->ops_name)
+                                                        @endif
+                                                    @endforeach
+                                                    @if($pur_qty_in == 0)
+                                                        @php($pur_qty_in = "-")
+                                                    @endif
+                                                @endif
+
+                                                
+                                                @php($bo_count = 0)
+                                                @foreach($bad_orders as $bad_order)
+                                                    @if($bad_order->trx_id == $transaction->trx_id && $bad_order->prd_id == $transaction->prd_id)
+                                                        @php($bo_count += ($bad_order->bo_crates * 12) + $bad_order->bo_loose)
+                                                    @endif
+                                                @endforeach
+
+                                                {{-- @if($bo_count > 0)
+                                                    @foreach($bad_orders as $bad_order)
+                                                        @if($bad_order->trx_id == $transaction->trx_id && $bad_order->prd_id == $transaction->prd_id)
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col text-warning">{{ $bad_order->bo_ref_id }}</div>
+                                                                <div class="col">{{ $bad_order->prd_name }}</div>
+                                                                <div class="col">{{ ($bad_order->bo_crates * 12) + $bad_order->bo_loose }}</div>
+                                                                <div class="col">{{ $bad_order->bo_datetime }}</div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transaction</p>
+                                                @endif --}}
+                                                
+
+                                                <td>{{ $prd_name }}</td>
+                                                <td>{{ $pur_qty_in }}</td>
+                                                <td>{{ $transaction->prd_name }}</td>
+                                                <td>{{ $transaction->pur_qty }}</td>
+                                                <td>{{ $bo_count }}</td>
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
-                                                <td>{{ $transaction->trx_datetime }}</td>
                                             </tr>
-                                                    {{--<tr class="text-success bg-white">
-                                                            <td colspan="5"></td>
-                                                            <td class="text-success"><strong>Total</strong></td>
-                                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                                        </tr>--}}
                                            
-
                                             <!-- Purchases Modal -->
                                             <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl" role="document">

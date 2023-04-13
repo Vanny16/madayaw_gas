@@ -311,10 +311,12 @@ class ReportsController extends Controller
     {
         $transactions_date_from = "";
         $transactions_date_to = "";
-
+                        
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where('trx_active','=','1')
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->get();
@@ -349,6 +351,8 @@ class ReportsController extends Controller
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
@@ -383,10 +387,14 @@ class ReportsController extends Controller
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->get();
+                        
+                        // dd($transactions);
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
