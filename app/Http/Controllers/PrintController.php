@@ -120,6 +120,7 @@ class PrintController extends Controller
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
         ->where('trx_id', '=' ,$latest_trx_id)
         ->get();
+        // dd($pur_ins);
 
         $ops_ins = DB::table('purchases')
         ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
