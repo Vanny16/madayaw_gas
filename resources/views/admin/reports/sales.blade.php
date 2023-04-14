@@ -275,12 +275,12 @@
                                                 </tr>
                                                 
                                             @elseif(session('tbl_sales_form') == "products")
-                                            <tr>
-                                                <td>{{ $sale->prd_name }}</td>
-                                                <td>{{ $sale->pur_qty_in }}</td>
-                                                <td>{{ $sale->pur_qty_out }}</td>
-                                                <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $sale->prd_name }}</td>
+                                                    <td>{{ $sale->pur_qty_in }}</td>
+                                                    <td>{{ $sale->pur_qty_out }}</td>
+                                                    <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
+                                                </tr>
 
                                             @elseif(session('tbl_sales_form') == "customers")
                                                 <tr>
