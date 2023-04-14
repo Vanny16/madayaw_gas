@@ -222,13 +222,16 @@
                                                                                             @endforeach
                                                                                         @endif
                                                                                         <hr>
-                                                                                        <div class="row">
-                                                                                            <div class="col text-info">IN</div>
-                                                                                            <div class="col">{{ $prd_name }}</div>
-                                                                                            <div class="col">{{ $pur_in->pur_crate_in }}</div>
-                                                                                            <div class="col">{{ $pur_in->pur_loose_in }}</div>
-                                                                                            <div class="col">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</div>
-                                                                                        </div>
+                                                                                        
+                                                                                        @if($pur_in->pur_crate_in != 0 || $pur_in->pur_loose_in != 0)
+                                                                                            <div class="row">
+                                                                                                <div class="col text-info">IN</div>
+                                                                                                <div class="col">{{ $prd_name }}</div>
+                                                                                                <div class="col">{{ $pur_in->pur_crate_in }}</div>
+                                                                                                <div class="col">{{ $pur_in->pur_loose_in }}</div>
+                                                                                                <div class="col">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</div>
+                                                                                            </div>
+                                                                                        @endif
                                                                                     @endif
                                                                                 @endif
                                                                             @endforeach

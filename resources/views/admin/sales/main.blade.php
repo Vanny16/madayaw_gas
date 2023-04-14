@@ -767,7 +767,7 @@
                 //Calculations
                 var total = (in_crate * 12) + in_loose;
                 var display_crates = in_crate;
-                var display_loose = in_loose + " pc/s";
+                var display_loose = in_loose;
 
                 //Setter For Canister in Name
             
@@ -787,25 +787,48 @@
                 }
 
                 //For Adding Quantity to Canisters Already in the Table
+                var isExisting = false;
+                var existing_item_row = "";
+                var new_crates_value = 0;
+                var new_loose_value = 0;
+                
+                $("#tbl-prd-in tr").each(function() {
+                    var existing_item_name = $(this).find("td:eq(0)").text();
+                    var getRow = $(this).find("td:eq(1)").text();
+                    var getCrate = $(this).find("td:eq(2)").text();
+                    var getLoose = $(this).find("td:eq(3)").text();
 
+                    if(existing_item_name == " "+item_name){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseInt(in_crate);
+                        new_loose_value = parseInt(getLoose) + parseInt(in_loose);
+                    }
+                });
+                
 
                 //For Populating Selected Products Table 
-                var table = document.getElementById("tbl-prd-in");
-                var row_id = document.getElementById("movement_id").value;
-                var row = table.insertRow(0);
+                if(isExisting){
+                    var existingRow = document.getElementById(existing_item_row);
+                    existingRow.cells[2].innerHTML = new_crates_value;
+                    existingRow.cells[3].innerHTML = new_loose_value;
+                }
+                else{
 
-                row.id = "row_in"+row_id;
-                row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
-                row.insertCell(1).innerHTML = "";
-                row.insertCell(2).innerHTML = display_crates;
-                row.insertCell(3).innerHTML = display_loose;
-                // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
-                
+                    var table = document.getElementById("tbl-prd-in");
+                    var row_id = document.getElementById("movement_id").value;
+                    var row = table.insertRow(0);
+
+                    row.id = "row_in"+row_id;
+                    row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
+                    row.insertCell(1).innerHTML = "<span hidden>"+row.id+"</span";
+                    row.insertCell(2).innerHTML = display_crates;
+                    row.insertCell(3).innerHTML = display_loose;
+                    // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
+                    
+                }
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
-                
-                // alert(display_crates+" Crate/s and "+display_loose+" Loose of "+item_name+ " has been added");
-
             }
             else{
                 alert("No canisters were in for this item");
@@ -878,26 +901,71 @@
             var amount = document.getElementById("amount_payable");
             amount.value = total.toFixed(2);
 
-            //For Populating Selected Products Table 
+            
+            //For Adding Quantity to Canisters Already in the Table
 
-            var row_id = document.getElementById("movement_id").value;
-            var table = document.getElementById("tbl-cart");
-            var row = table.insertRow(0);
+            var isExisting = false;
+            var existing_item_row = "";
+            var new_crates_value = 0;
+            var new_loose_value = 0;
+            var new_in_crates_value = 0;
+            var new__in_loose_value = 0;
+            var new_sub_total = 0;
 
-            row.id = "row"+row_id;
-            row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-            row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
-            row.insertCell(2).innerHTML = prd_price;
-            row.insertCell(3).innerHTML = parseFloat(crates_amount);
-            row.insertCell(4).innerHTML = parseFloat(loose_amount);
-            row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
-            row.insertCell(7).innerHTML = sub_total.toFixed(2);
-            row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-            row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-            row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
-            row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            $("#tbl-cart tr").each(function() {
+                var getRow = $(this).attr('id');
+                var existing_item_name = $(this).find("td:eq(1)").text();
+                var getCrate = $(this).find("td:eq(3)").text();
+                var getLoose = $(this).find("td:eq(4)").text();
+                var getInCrate = $(this).find("td:eq(8)").text();
+                var getInLoose = $(this).find("td:eq(9)").text();
+                var getSubTotal = $(this).find("td:eq(7)").text();
+                var getPrdIdIn = $(this).find("td:eq(10)").text();
+                var getCanTypeIn = $(this).find("td:eq(11)").text();
+
+                if(existing_item_name == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
+                    isExisting = true;
+                    existing_item_row = getRow;
+                    new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
+                    new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
+                    new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                    new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                    new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                }
+            });
+            
+            
+            //For Populating Selected Products Table
+            if(isExisting){
+                var existingRow = document.getElementById(existing_item_row);
+                existingRow.cells[3].innerHTML = new_crates_value;
+                existingRow.cells[4].innerHTML = new_loose_value;
+                existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
+                existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
+                existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
+            }
+            else{
+                
+                var row_id = document.getElementById("movement_id").value;
+                var table = document.getElementById("tbl-cart");
+                var row = table.insertRow(0);
+
+                row.id = "row"+row_id;
+                row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
+                row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
+                row.insertCell(2).innerHTML = prd_price;
+                row.insertCell(3).innerHTML = parseFloat(crates_amount);
+                row.insertCell(4).innerHTML = parseFloat(loose_amount);
+                row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+                row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
+                row.insertCell(7).innerHTML = sub_total.toFixed(2);
+                row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+                row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+                row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
+                row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+                row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+
+            }
 
             var received = document.getElementById("received_amount").value;
 
