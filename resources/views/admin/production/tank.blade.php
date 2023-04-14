@@ -291,9 +291,9 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                            <div class="col-md-12">
-                                                                {{ $tank->tnk_notes }}
-                                                            </div>
+                                                        <div class="col-md-12">
+                                                            {{ $tank->tnk_notes }}
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -318,7 +318,7 @@
                         </div>
                     </div>                         
                     <div class="card-body" style="overflow-x:auto;">
-                        <table class="table table-hover table-condensed">
+                        <table class="table table-condensed">
                         
                             <tbody>
                                 @foreach($tanks as $tank)
@@ -342,20 +342,20 @@
                                         </td>
                                         
                                         <td>
-                                            <div class="progress" style="height: 340px; width:40%; transform: rotate(-90deg); border-radius: 90px; margin: 65px; margin-bottom: 5px; margin-top: 5px;">
+                                            <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 350px; width: 45%; transform: rotate(-90deg); border-radius: 90px; margin: 65px; margin-bottom: 5px; margin-top: 10px; margin-left: 2px;">
                                                 <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                                     <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
                                                 </div>
                                             </div>
 
-                                            <div class="card-footer">
+                                            {{-- <div class="card-footer">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
                                                         <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
                                 @endforeach
