@@ -105,13 +105,13 @@
                                             <input type="checkbox" id="customer-select-all"></th>
                                         <th width="50px"></th>
                                         <th>Name</th>
-                                        <th>Contact #</th>
                                         <th>Address</th>
+                                        <th>Contact #</th>
                                         <th>Accessible Products</th>
-                                        <th>Status</th>
-                                        <th width="100px"></th>
+                                        <th width="100px">Status</th>
+                                        <th></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                                        <th width="100px"></th>
+                                        <th></th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -132,13 +132,6 @@
                                                 <td>   
                                                     {{ $customer->cus_name }}
                                                 </td>
-                                                @if($customer->cus_contact)
-                                                    <td>
-                                                        {{ $customer->cus_contact }}
-                                                    </td>
-                                                @else
-                                                    <td>-</td>
-                                                @endif
                                                 @if($customer->cus_address)
                                                 <td>
                                                     {{ $customer->cus_address }}
@@ -146,7 +139,13 @@
                                                 @else
                                                     <td>-</td>
                                                 @endif
-
+                                                @if($customer->cus_contact)
+                                                    <td>
+                                                        {{ $customer->cus_contact }}
+                                                    </td>
+                                                @else
+                                                    <td>-</td>
+                                                @endif
 
                                                 @if($customer->cus_accessibles)
                                                 <td>
@@ -196,17 +195,12 @@
                                                             @endforeach
                                                         @endif
                                                     </div>
-                                                    
-                                                
                                                 </td>
                                                 @else
                                                     <td>
                                                     -    
                                                     </td>
                                                 @endif
-
-
-
                                                 {{-- 
                                                 @if($customer->cus_notes)
                                                     <td>
@@ -610,11 +604,11 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
+                            
+                            {{--<div class="form-group">
                                 <label for="cus_notes">Notes</label>
                                 <textarea name="cus_notes" placeholder="Additional notes ..." class="form-control"></textarea>
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                 </div>

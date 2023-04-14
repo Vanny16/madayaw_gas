@@ -170,18 +170,18 @@
                                                 </td>
                                             @endif
                                             
-                                            <td>
-                                                @if($tank->tnk_active == 1) 
-                                                <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
-                                                @else
-                                                <span class="badge badge-danger">Inactive</span>
-                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
-                                                @endif
-                                            </td>
+                                                <td>
+                                                    @if($tank->tnk_active == 1) 
+                                                    <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @endif
+                                                </td>
                                             <td>
                                             @if($tank->tnk_active == 0)
-                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                             @else    
                                                 <div class="dropdown">
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
