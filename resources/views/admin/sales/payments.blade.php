@@ -106,7 +106,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-coins"></i> Payment Transactions</h3>
+                            <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -115,7 +115,7 @@
                                         <tr>
                                             <th>Reference #</th>
                                             <th>Customer</th>
-                                            <th>Date & Time</th>
+                                            <th>Transaction Date</th>
                                             <th>Amount Payable</th>
                                             <th>Amount Paid</th>
                                             <th>Balance</th>
@@ -252,26 +252,48 @@
                                                                             <hr>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="cus_address">Mode of Payment</label><br>
-                                                                            <button id="btn_cash{{ $transaction->trx_id }}" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
-                                                                            <button id="btn_gcash{{ $transaction->trx_id }}" type="button" value="3" class="btn btn-lg btn-dark btn-payment"><img src="{{ asset('img/res/gcash.ico') }}" width="28rem"/></button>
-                                                                            <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
+                                                                            <label for="cus_address">Payment Date <span style="color:red">*</span></label>
+                                                                            <input type="date" id="pmnt_date{{ $transaction->trx_id }}" name="pmnt_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="cus_address">Mode of Payment: <i id="mop_lbl{{ $transaction->trx_id }}" class="text-info">Cash</i></label><br>
+                                                                            <button id="btn_cash{{ $transaction->trx_id }}" type="button" value="1" class="btn btn-lg btn-light text-warning btn-payment"><i class="fa fa-coins"></i></button>
+                                                                            <button id="btn_gcash{{ $transaction->trx_id }}" type="button" value="3" class="btn btn-lg btn-light text-dark btn-payment"><img src="{{ asset('img/res/gcash.png') }}" width="22px"/></button>
+                                                                            <button id="btn_check{{ $transaction->trx_id }}" type="button" value="4" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-landmark"></i></button>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="prd_name">Balance <span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" name="trx_balance" value="{{ number_format($transaction->trx_balance, 2, '.', ',') }}" readonly/>
                                                                         </div>
+                                                                        <div class="form-group" id="payment_check{{ $transaction->trx_id }}">
+                                                                            <label for="cus_address">Check No. <span style="color:red">*</span></label>
+                                                                            <input type="text" id="pmnt_check_no{{ $transaction->trx_id }}" name="pmnt_check_no" class="form-control" onclick="select()" required></input>
+                                                                        </div>
+                                                                        <div class="form-group" id="payment_check_date{{ $transaction->trx_id }}">
+                                                                            <label for="cus_address">Check Date <span style="color:red">*</span></label>
+                                                                            <input type="date" id="pmnt_check_date{{ $transaction->trx_id }}" name="pmnt_check_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                                                        </div>
                                                                         <div class="form-group" id="payment_input{{ $transaction->trx_id }}">
                                                                             <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
-                                                                            <input type="text" class="form-control" name="pmnt_amount" placeholder="Enter Amount"  onkeypress="return isNumberKey(this, event);" required/>
+                                                                            <input type="text" class="form-control" id="pmnt_amount_cash{{ $transaction->trx_id }}" name="pmnt_amount_cash" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
+                                                                            <input type="text" class="form-control" id="pmnt_amount_gcash{{ $transaction->trx_id }}" name="pmnt_amount_gcash" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
+                                                                            <input type="text" class="form-control" id="pmnt_amount_check{{ $transaction->trx_id }}" name="pmnt_amount_check" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
+                                                                            <input type="text" class="form-control" id="pmnt_amount{{ $transaction->trx_id }}" name="pmnt_amount" placeholder="Enter Amount"  onkeypress="return isNumberKey(this, event);" value="0" required hidden/>
                                                                             <input type="text" class="form-control" name="trx_id" value="{{ $transaction->trx_id }}" onkeypress="return isNumberKey(this, event);" hidden/>
                                                                             <input type="hidden" id="mode_of_payment{{ $transaction->trx_id }}" name="mode_of_payment" class="form-control"></input>
                                                                         </div>
-                                                                        <div class="form-group" id="pmnt_attachment{{ $transaction->trx_id }}">
+                                                                        <div class="form-group" id="pmnt_attachment_gcash{{ $transaction->trx_id }}">
                                                                             <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
                                                                             <div class="custom-file">
                                                                                 <label class="custom-file-label" for="inputGroupFile01{{ $transaction->trx_id }}">Choose file</label>
-                                                                                <input type="file" class="custom-file-input" id="inputGroupFile01{{ $transaction->trx_id }}" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01{{ $transaction->trx_id }}" >
+                                                                                <input type="file" class="custom-file-input" id="inputGroupFile01{{ $transaction->trx_id }}" id="pmnt_attachment_gcash{{ $transaction->trx_id }}" name="pmnt_attachment_gcash" aria-describedby="inputGroupFileAddon01{{ $transaction->trx_id }}" >
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group" id="pmnt_attachment_check{{ $transaction->trx_id }}">
+                                                                            <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
+                                                                            <div class="custom-file">
+                                                                                <label class="custom-file-label" for="inputGroupFile01{{ $transaction->trx_id }}">Choose file</label>
+                                                                                <input type="file" class="custom-file-input" id="inputGroupFile01{{ $transaction->trx_id }}" id="pmnt_attachment_check{{ $transaction->trx_id }}" name="pmnt_attachment_check" aria-describedby="inputGroupFileAddon01{{ $transaction->trx_id }}" >
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -289,22 +311,114 @@
                                             <script>
                                                 $(document).ready(function() {
                                                     $("#btn_cash{{ $transaction->trx_id }}").css("border-bottom", "4px solid green");
-                                                    $("#pmnt_attachment{{ $transaction->trx_id }}").hide();
+                                                    $("#payment_check{{ $transaction->trx_id }}").hide();
+                                                    $("#payment_check_date{{ $transaction->trx_id }}").hide();
+                                                    $("#pmnt_attachment_gcash{{ $transaction->trx_id }}").hide();
+                                                    $("#pmnt_attachment_check{{ $transaction->trx_id }}").hide();
                                                     $("#mode_of_payment{{ $transaction->trx_id }}").val("1");
+                                                    $("#pmnt_amount_cash{{ $transaction->trx_id }}").show();
+                                                    $("#pmnt_amount_gcash{{ $transaction->trx_id }}").hide();
+                                                    $("#pmnt_amount_check{{ $transaction->trx_id }}").hide();
 
                                                     $("#btn_cash{{ $transaction->trx_id }}").on("click", function() {
-                                                        $("#mode_of_payment{{ $transaction->trx_id }}").val("1");
-                                                        $("#pmnt_attachment{{ $transaction->trx_id }}").hide();
+                                                        setPaymentType(1);
+                                                        $("#payment_check{{ $transaction->trx_id }}").hide();
+                                                        $("#payment_check_date{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_attachment_gcash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_attachment_check{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_cash{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_amount_gcash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_check{{ $transaction->trx_id }}").hide();
                                                         $(".btn-payment").css("border-bottom", "none");
                                                         $(this).css("border-bottom", "4px solid green");
                                                     });
                                                     $("#btn_gcash{{ $transaction->trx_id }}").on("click", function() {
-                                                        $("#mode_of_payment{{ $transaction->trx_id }}").val("3");
-                                                        $("#pmnt_attachment{{ $transaction->trx_id }}").show();
+                                                        setPaymentType(3);
+                                                        $("#payment_check{{ $transaction->trx_id }}").hide();
+                                                        $("#payment_check_date{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_attachment_gcash{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_attachment_check{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_cash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_gcash{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_amount_check{{ $transaction->trx_id }}").hide();
                                                         $(".btn-payment").css("border-bottom", "none");
                                                         $(this).css("border-bottom", "4px solid green");
                                                     });
+                                                    $("#btn_check{{ $transaction->trx_id }}").on("click", function() {
+                                                        setPaymentType(4);
+                                                        $("#payment_check{{ $transaction->trx_id }}").show();
+                                                        $("#payment_check_date{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_attachment_gcash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_attachment_check{{ $transaction->trx_id }}").show();
+                                                        $("#pmnt_amount_cash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_gcash{{ $transaction->trx_id }}").hide();
+                                                        $("#pmnt_amount_check{{ $transaction->trx_id }}").show();
+                                                        $(".btn-payment").css("border-bottom", "none");
+                                                        $(this).css("border-bottom", "4px solid green");
+                                                    });
+
+                                                    function setPaymentType(pmnt_type){
+                                                        var pmnt_amount_cash = parseFloat(document.getElementById("pmnt_amount_cash{{ $transaction->trx_id }}").value);
+                                                        var pmnt_amount_gcash = parseFloat(document.getElementById("pmnt_amount_gcash{{ $transaction->trx_id }}").value);
+                                                        var pmnt_amount_check = parseFloat(document.getElementById("pmnt_amount_check{{ $transaction->trx_id }}").value);
+                                                        
+                                                        if(pmnt_type == 1){
+                                                            if(pmnt_amount_gcash > 0 || pmnt_amount_check > 0){
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Split Payment");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("5");
+                                                            }
+                                                            else{
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Cash");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("1");
+                                                            }
+                                                        }
+                                                        else if(pmnt_type == 3){
+                                                            if(pmnt_amount_cash > 0 || pmnt_amount_check > 0){
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Split Payment");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("5");
+                                                            }
+                                                            else{
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("G-Cash");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("3");
+                                                            }
+                                                        }
+                                                        else if(pmnt_type == 4){
+                                                            if(pmnt_amount_cash > 0 || pmnt_amount_gcash > 0){
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Split Payment");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("5");
+                                                            }
+                                                            else{
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Check");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("4");
+                                                            }
+                                                        }
+                                                        else{
+                                                            if(pmnt_amount_cash > 0 || pmnt_amount_gcash > 0 || pmnt_amount_check > 0){
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Split Payment");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("5");
+                                                            }
+                                                            else{
+                                                                $("#mop_lbl{{ $transaction->trx_id }}").text("Invalid");
+                                                                $("#mode_of_payment{{ $transaction->trx_id }}").val("5");
+                                                            }
+                                                        }
+                                                    }
                                                 });
+
+                                                $(document).ready(function() {
+                                                    function setTransactionAmount() {
+                                                        var pmnt_amount_cash = $("#pmnt_amount_cash{{ $transaction->trx_id }}").val();
+                                                        var pmnt_amount_gcash = $("#pmnt_amount_gcash{{ $transaction->trx_id }}").val();
+                                                        var pmnt_amount_check = $("#pmnt_amount_check{{ $transaction->trx_id }}").val();
+
+                                                        $("#pmnt_amount{{ $transaction->trx_id }}").val(parseFloat(pmnt_amount_cash) + parseFloat(pmnt_amount_gcash) + parseFloat(pmnt_amount_check));
+                                                    }
+
+                                                    $("#pmnt_amount_cash{{ $transaction->trx_id }}, #pmnt_amount_gcash{{ $transaction->trx_id }}, #pmnt_amount_check{{ $transaction->trx_id }}").on("change keyup", function() {
+                                                        setTransactionAmount();
+                                                    });
+                                                });
+
                                             </script>
                                         @endforeach
                                     </tbody>
@@ -329,20 +443,20 @@ $("#status_filter, #search_payments").on("change keyup", function() {
         var searchMatch = rowText.indexOf(searchValue) > -1;
         $(this).toggle(statusMatch && searchMatch);
     });
+    
 });
 
+function noNegativeValue(id){
+    $("#"+id).on("input", function() {
+        if (/^0/.test(this.value)) {
+            this.value = this.value.replace(/^0/, "")
+        }
+    });
 
-// $("#payments_date_from, #payments_date_to").on("change keyup", function() {
-//     var payments_date_from = $("#payments_date_from").val().toLowerCase();
-//     var payments_date_to = $("#payments_date_to").val().toLowerCase();
-    
-//     $("#tbl-payments tr").filter(function() {
-//         var rowText = $(this).text().toLowerCase();
-//         var dateFromMatch = rowText.indexOf(payments_date_from) > -1;
-//         var dateToMatch = rowText.indexOf(payments_date_to) > -1;
-//         $(this).toggle(dateFromMatch || dateToMatch);
-//     });
-    
-// });
+    var value = document.getElementById(id).value;
+    if(value < 0 || value == ""){
+        document.getElementById(id).value ="0";
+    }
+}
 </script>
 @endsection 

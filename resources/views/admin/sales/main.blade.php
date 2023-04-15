@@ -517,48 +517,46 @@
                             </div><hr>
                             <div class="form-group">
                                 <label for="cus_address">Mode of Payment: <i id="mop_lbl" class="text-info">Cash</i></label><br>
-                                <button id="btn_cash" type="radio" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
-                                <button id="btn_gcash" type="radio" value="3" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-google"></i></button>
-                                <button id="btn_check" type="radio" value="4" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-landmark"></i></button>
-                                <button id="btn_credit" type="radio" value="2" class="btn btn-lg btn-dark text-light btn-payment"><i class="fa fa-credit-card"></i></button>
+                                <button id="btn_cash" type="radio" value="1" class="btn btn-lg btn-light text-warning btn-payment"><i class="fa fa-coins"></i></button>
+                                <button id="btn_gcash" type="radio" value="3" class="btn btn-lg btn-light text-dark btn-payment"><img src="{{ asset('img/res/gcash.png') }}" width="22px"/></button>
+                                <button id="btn_check" type="radio" value="4" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-landmark"></i></button>
+                                <button id="btn_credit" type="radio" value="2" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-credit-card"></i></button>
                                 {{-- <button id="btn_split" type="radio" value="5" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-ellipsis"></i></button> --}}
                                 <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
                             </div>
-                            <div id="single_payment">
-                                <div class="form-group">
-                                    <label for="cus_address">Amount Payable</label>
-                                    <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
+                            <div class="form-group">
+                                <label for="cus_address">Amount Payable</label>
+                                <input type="text" id="amount_payable" name="trx_total" class="form-control" readonly></input>
+                            </div>
+                            <div class="form-group" id="payment_check">
+                                <label for="cus_address">Check No. <span style="color:red">*</span></label>
+                                <input type="text" id="pmnt_check_no" name="pmnt_check_no" class="form-control" onclick="select()" required></input>
+                            </div>
+                            <div class="form-group" id="payment_check_date">
+                                <label for="cus_address">Check Date <span style="color:red">*</span></label>
+                                <input type="date" id="pmnt_check_date" name="pmnt_check_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            </div>
+                            <div class="form-group" id="payment_input">
+                                <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
+                                <input type="text" id="received_cash" name="trx_amount_cash" class="form-control" value="0" onchange="noNegativeValue('received_cash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_cash'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_credit" name="trx_amount_credit" class="form-control" value="0" onchange="noNegativeValue('received_credit'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_credit'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_gcash" name="trx_amount_gcash" class="form-control" value="0" onchange="noNegativeValue('received_gcash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_gcash'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_check" name="trx_amount_check" class="form-control" value="0" onchange="noNegativeValue('received_check'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_check'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount');" onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable(); setTransactionAmount();" onclick="select()" hidden required></input>
+                                <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
+                            </div>
+                            <div class="form-group" id="payment_attachment_gcash"> 
+                                <label for="cus_address">Attachment <span style="color:red">*</span></label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_gcash" aria-describedby="inputGroupFileAddon01" required>
                                 </div>
-                                <div class="form-group" id="payment_check">
-                                    <label for="cus_address">Check No. <span style="color:red">*</span></label>
-                                    <input type="text" id="pmnt_check_no" name="pmnt_check_no" class="form-control" onclick="select()" required></input>
-                                </div>
-                                <div class="form-group" id="payment_check_date">
-                                    <label for="cus_address">Check Date <span style="color:red">*</span></label>
-                                    <input type="date" id="pmnt_check_date" name="pmnt_check_date" class="form-control" value="{{ date('Y-m-d') }}" required>
-                                </div>
-                                <div class="form-group" id="payment_input">
-                                    <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
-                                    <input type="text" id="received_cash" name="trx_amount_cash" class="form-control" value="0" onchange="noNegativeValue('received_cash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_cash'); setTransactionAmount();" onclick="select()" required></input>
-                                    <input type="text" id="received_credit" name="trx_amount_credit" class="form-control" value="0" onchange="noNegativeValue('received_credit'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_credit'); setTransactionAmount();" onclick="select()" required></input>
-                                    <input type="text" id="received_gcash" name="trx_amount_gcash" class="form-control" value="0" onchange="noNegativeValue('received_gcash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_gcash'); setTransactionAmount();" onclick="select()" required></input>
-                                    <input type="text" id="received_check" name="trx_amount_check" class="form-control" value="0" onchange="noNegativeValue('received_check'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_check'); setTransactionAmount();" onclick="select()" required></input>
-                                    <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount');" onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable(); setTransactionAmount();" onclick="select()" hidden required></input>
-                                    <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
-                                </div>
-                                <div class="form-group" id="payment_attachment_gcash"> 
-                                    <label for="cus_address">Attachment <span style="color:red">*</span></label>
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                        <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_gcash" aria-describedby="inputGroupFileAddon01" required>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="payment_attachment_check"> 
-                                    <label for="cus_address">Attachment <span style="color:red">*</span></label>
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                        <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_check" aria-describedby="inputGroupFileAddon01" required>
-                                    </div>
+                            </div>
+                            <div class="form-group" id="payment_attachment_check"> 
+                                <label for="cus_address">Attachment <span style="color:red">*</span></label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_check" aria-describedby="inputGroupFileAddon01" required>
                                 </div>
                             </div>
                             <p class="mt-4 text-danger">NOTE: <i>Please check the values properly, transaction is unchangeable after POST.</i></p>
@@ -713,7 +711,7 @@
             setPaymentType(5);
         });
     });
-
+    
     function setPaymentType(pmnt_type){
         var received_cash = parseFloat(document.getElementById("received_cash").value);
         var received_credit = parseFloat(document.getElementById("received_credit").value);
@@ -721,7 +719,7 @@
         var received_check = parseFloat(document.getElementById("received_check").value);
         
         if(pmnt_type == 1){
-            if(received_cash > 0 || received_credit > 0 || received_gcash > 0 || received_check > 0){
+            if(received_credit > 0 || received_gcash > 0 || received_check > 0){
                 $("#mop_lbl").text("Split Payment");
                 $("#mode_of_payment").val("5");
             }
@@ -731,7 +729,7 @@
             }
         }
         else if(pmnt_type == 2){
-            if(received_cash > 0 || received_credit > 0 || received_gcash > 0 || received_check > 0){
+            if(received_cash > 0 || received_gcash > 0 || received_check > 0){
                 $("#mop_lbl").text("Split Payment");
                 $("#mode_of_payment").val("5");
             }
@@ -741,7 +739,7 @@
             }
         }
         else if(pmnt_type == 3){
-            if(received_cash > 0 || received_credit > 0 || received_gcash > 0 || received_check > 0){
+            if(received_cash > 0 || received_credit > 0 || received_check > 0){
                 $("#mop_lbl").text("Split Payment");
                 $("#mode_of_payment").val("5");
             }
@@ -751,7 +749,7 @@
             }
         }
         else if(pmnt_type == 4){
-            if(received_cash > 0 || received_credit > 0 || received_gcash > 0 || received_check > 0){
+            if(received_cash > 0 || received_credit > 0 || received_gcash > 0){
                 $("#mop_lbl").text("Split Payment");
                 $("#mode_of_payment").val("5");
             }
@@ -770,6 +768,19 @@
                 $("#mode_of_payment").val("5");
             }
         }
+    }
+    
+    function setTransactionAmount(){
+        var received_cash = document.getElementById("received_cash").value;
+        var received_credit = document.getElementById("received_credit").value;
+        var received_gcash = document.getElementById("received_gcash").value;
+        var received_check = document.getElementById("received_check").value;
+
+        document.getElementById("received_amount").value = parseFloat(received_cash) + parseFloat(received_credit) + parseFloat(received_gcash) + parseFloat(received_check);
+        
+        var rec_amt = document.getElementById("received_amount");
+        var event = new Event('keyup');
+        rec_amt.dispatchEvent(event);
     }
 
     $(".custom-file-input").on("change", function() {
@@ -1227,6 +1238,10 @@
             final_balance = 0;
         }
 
+        if(final_change <= 0){
+            final_change = 0;
+        }
+
         document.getElementById("rct_change").innerHTML = final_change.toFixed(2);
         document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
     }
@@ -1312,19 +1327,6 @@
             }
         }
         
-    }
-
-    function setTransactionAmount(){
-        var received_cash = document.getElementById("received_cash").value;
-        var received_credit = document.getElementById("received_credit").value;
-        var received_gcash = document.getElementById("received_gcash").value;
-        var received_check = document.getElementById("received_check").value;
-
-        document.getElementById("received_amount").value = parseFloat(received_cash) + parseFloat(received_credit) + parseFloat(received_gcash) + parseFloat(received_check);
-        
-        var rec_amt = document.getElementById("received_amount");
-        var event = new Event('keyup');
-        rec_amt.dispatchEvent(event);
     }
 
     document.getElementById("client_id").addEventListener("change", function() 
