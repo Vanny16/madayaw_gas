@@ -706,6 +706,7 @@ class SalesController extends Controller
             }
         }
 
+        session(['pmnt_check_no' => $pmnt_check_no]);
         session(['latest_trx_id' => $trx_id]);
 
         session()->flash('successMessage','Transaction complete!');

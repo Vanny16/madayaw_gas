@@ -102,7 +102,7 @@
             <tr>
                 <td colspan="1">Check #</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ $transactions->pmnt_check_no }}</td>
+                <td colspan="1">{{ session('pmnt_check_no') }}</td>
             </tr>
             <tr>
                 <td colspan="1">Received</td>
