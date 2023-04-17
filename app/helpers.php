@@ -283,6 +283,7 @@ function get_closing_tank($tnk_id, $pdn_id)
 
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 { 
+    // dd($prd_id, $pdn_id, $flag);
     //COMMENTED INCASE OF REVERTING
 //     $query = DB::table('movement_logs')
 //     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
@@ -335,6 +336,12 @@ function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
     ->where('prd_id','=', $prd_id)
     ->where('pdn_id','=', $pdn_id)
     ->first();
+
+    if($query == null)
+    {
+        return 0;
+    }
+
     // dd($query->stk_empty_goods);
     //FLAGS
     // 1 = emptygoods

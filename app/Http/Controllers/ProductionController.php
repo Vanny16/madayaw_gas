@@ -238,7 +238,7 @@ class ProductionController extends Controller
         
         $canister_details = [];
         $tank_details = [];
-        
+        dd($canister_details);
         foreach($temp_details as $details)
         {   
             $detail = explode("|", $details);
@@ -579,9 +579,6 @@ class ProductionController extends Controller
         session()->flash('successMessage','Raw material has been added');
         return redirect()->action('ProductionController@manage');
     }
-
-
-
 
     //ADD QUANTITY FOR ITEMS
     public function addQuantity(Request $request)
