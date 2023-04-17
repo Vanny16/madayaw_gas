@@ -59,22 +59,25 @@
                             <form method="POST" action="{{ action('ReportsController@transactionsFilter')}}">
                             {{ csrf_field() }} 
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_from">From</label>
-                                        <input type="date" class="form-control" name="transactions_date_from" value="{{ $date_from }}" required/>     
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="date_to">To</label>
-                                        <input type="date" class="form-control" name="transactions_date_to" value="{{ $date_to }}" required/>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
                                         <input type="text" class="form-control" id="search_transactions" name="search_transactions" placeholder="Search">
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_from">From</label>
+                                        <input type="date" class="form-control" name="transactions_date_from" value="{{ $date_from }}" required/>     
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_to">To</label>
+                                        <input type="date" class="form-control" name="transactions_date_to" value="{{ $date_to }}" required/>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <label for="search_string">Rows</label>
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <label for="">&nbsp;</label>
+                                        <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
                             </form>
@@ -115,26 +118,76 @@
                                     <thead>
                                         <tr>
                                             <th>Reference ID</th>
+                                            <th>Date & Time</th>
+                                            <th>Item (IN)</th>
+                                            <th>Qty (IN)</th>
+                                            <th>Item (OUT)</th>
+                                            <th>Qty (OUT)</th>
+                                            <th>Bad Order</th>
                                             <th>User</th>
                                             <th>Customer</th>
-                                            <th>Date & Time</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-transactions">
                                         @foreach($transactions as $transaction)
                                             <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
                                                 <td>{{ $transaction->trx_ref_id }}</td>
+                                                <td>{{ $transaction->trx_datetime }}</td>
+
+                                                @php($prd_name = "")
+                                                @php($pur_qty_in = ($transaction->pur_crate_in * 12) + $transaction->pur_loose_in)
+                                                @if($transaction->can_type_in == 0 || $transaction->can_type_in == 1)
+                                                    @if($pur_qty_in == 0)
+                                                        @php($pur_qty_in = "-")
+                                                        @php($prd_name = "-")
+                                                    @else
+                                                        @php($prd_name = $transaction->prd_name)
+                                                    @endif
+                                                @else
+                                                    @foreach($ops_ins as $ops_in)
+                                                        @if($ops_in->ops_id == $transaction->prd_id_in)
+                                                            @php($prd_name = $ops_in->ops_name)
+                                                        @endif
+                                                    @endforeach
+                                                    @if($pur_qty_in == 0)
+                                                        @php($pur_qty_in = "-")
+                                                    @endif
+                                                @endif
+
+                                                
+                                                @php($bo_count = 0)
+                                                @foreach($bad_orders as $bad_order)
+                                                    @if($bad_order->trx_id == $transaction->trx_id && $bad_order->prd_id == $transaction->prd_id)
+                                                        @php($bo_count += ($bad_order->bo_crates * 12) + $bad_order->bo_loose)
+                                                    @endif
+                                                @endforeach
+
+                                                {{-- @if($bo_count > 0)
+                                                    @foreach($bad_orders as $bad_order)
+                                                        @if($bad_order->trx_id == $transaction->trx_id && $bad_order->prd_id == $transaction->prd_id)
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col text-warning">{{ $bad_order->bo_ref_id }}</div>
+                                                                <div class="col">{{ $bad_order->prd_name }}</div>
+                                                                <div class="col">{{ ($bad_order->bo_crates * 12) + $bad_order->bo_loose }}</div>
+                                                                <div class="col">{{ $bad_order->bo_datetime }}</div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transaction</p>
+                                                @endif --}}
+                                                
+
+                                                <td>{{ $prd_name }}</td>
+                                                <td>{{ $pur_qty_in }}</td>
+                                                <td>{{ $transaction->prd_name }}</td>
+                                                <td>{{ $transaction->pur_qty }}</td>
+                                                <td>{{ $bo_count }}</td>
                                                 <td>{{ $transaction->usr_full_name }}</td>
                                                 <td>{{ $transaction->cus_name }}</td>
-                                                <td>{{ $transaction->trx_datetime }}</td>
                                             </tr>
-                                                    {{--<tr class="text-success bg-white">
-                                                            <td colspan="5"></td>
-                                                            <td class="text-success"><strong>Total</strong></td>
-                                                            <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
-                                                        </tr>--}}
                                            
-
                                             <!-- Purchases Modal -->
                                             <div class="modal fade" id="purchases-modal{{ $transaction->trx_ref_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl" role="document">
@@ -169,13 +222,16 @@
                                                                                             @endforeach
                                                                                         @endif
                                                                                         <hr>
-                                                                                        <div class="row">
-                                                                                            <div class="col text-info">IN</div>
-                                                                                            <div class="col">{{ $prd_name }}</div>
-                                                                                            <div class="col">{{ $pur_in->pur_crate_in }}</div>
-                                                                                            <div class="col">{{ $pur_in->pur_loose_in }}</div>
-                                                                                            <div class="col">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</div>
-                                                                                        </div>
+                                                                                        
+                                                                                        @if($pur_in->pur_crate_in != 0 || $pur_in->pur_loose_in != 0)
+                                                                                            <div class="row">
+                                                                                                <div class="col text-info">IN</div>
+                                                                                                <div class="col">{{ $prd_name }}</div>
+                                                                                                <div class="col">{{ $pur_in->pur_crate_in }}</div>
+                                                                                                <div class="col">{{ $pur_in->pur_loose_in }}</div>
+                                                                                                <div class="col">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</div>
+                                                                                            </div>
+                                                                                        @endif
                                                                                     @endif
                                                                                 @endif
                                                                             @endforeach
@@ -324,5 +380,18 @@ $("#search_transactions").on("change keyup", function() {
         $(this).toggle(searchMatch);
     });
 });
+
+function noNegativeValue(id){
+    $("#"+id).on("input", function() {
+        if (/^0/.test(this.value)) {
+            this.value = this.value.replace(/^0/, "")
+        }
+    });
+
+    var value = document.getElementById(id).value;
+    if(value < 0 || value == ""){
+        document.getElementById(id).value ="10";
+    }
+}
 </script>
 @endsection 

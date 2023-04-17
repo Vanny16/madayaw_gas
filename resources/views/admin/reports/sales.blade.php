@@ -223,6 +223,8 @@
                                         @elseif(session('tbl_sales_form') == "customers")
                                             <tr>
                                                 <th>Customer</th>
+                                                <th>Total Canister (IN)</th>
+                                                <th>Total Canister (OUT)</th>
                                                 <th>Total Sales</th>
                                                 <th>Total Balance</th>
                                                 <th>Total Payment</th>
@@ -273,16 +275,18 @@
                                                 </tr>
                                                 
                                             @elseif(session('tbl_sales_form') == "products")
-                                            <tr>
-                                                <td>{{ $sale->prd_name }}</td>
-                                                <td>{{ $sale->pur_qty_in }}</td>
-                                                <td>{{ $sale->pur_qty_out }}</td>
-                                                <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $sale->prd_name }}</td>
+                                                    <td>{{ $sale->pur_qty_in }}</td>
+                                                    <td>{{ $sale->pur_qty_out }}</td>
+                                                    <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
+                                                </tr>
 
                                             @elseif(session('tbl_sales_form') == "customers")
                                                 <tr>
                                                     <td>{{ $sale->cus_name }}</td>
+                                                    <td>{{ $sale->pur_qty_in }}</td>
+                                                    <td>{{ $sale->pur_qty_out }}</td>
                                                     <td>₱ {{ number_format($sale->trx_total, 2, '.', ',') }}</td>
                                                     <td>₱ {{ number_format($sale->trx_balance, 2, '.', ',') }}</td>
                                                     <td>₱ {{ number_format($sale->trx_amount_paid, 2, '.', ',') }}</td>

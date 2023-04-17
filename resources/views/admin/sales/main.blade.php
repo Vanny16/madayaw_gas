@@ -177,7 +177,7 @@
 
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button id="btn_rcv_pay" type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()" ><i class="fa fa-wallet"></i> Receive Payment</button>
+                            <button id="btn_rcv_pay" type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#payment-modal" onclick="receivePayment()" disabled><i class="fa fa-wallet"></i> Receive Payment</button>
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target="#void-prompt-modal"><i class="fa fa-ban"></i> Void Transaction</button>
@@ -429,13 +429,13 @@
 
 <!-- Payment Modal -->
 <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form id="form_payment" method="POST" action="{{ action('SalesController@paymentSales')}}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <div class="modal-header text-info">
                                 <h5 class="modal-title"><i class="fa fa-receipt mr-2"> </i>Order Summary</h5>
                             </div>  
@@ -498,11 +498,15 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="modal-header text-success">
                                 <h5 class="modal-title"><i class="fa fa-wallet mr-2"> </i>Payment</h5>
                             </div>
                             <br>
+                            <div class="form-group">
+                                <label for="cus_address">Transaction Date <span style="color:red">*</span></label>
+                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            </div>
                             <div class="form-group">
                                 <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>
                                 <input type="text" id="trx_can_dec" name="trx_can_dec" class="form-control" required/>
@@ -512,12 +516,12 @@
                                 <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
                             </div><hr>
                             <div class="form-group">
-                                <label for="cus_address">Mode of Payment:</label><br>
-                                <button id="btn_cash" type="button" value="1" class="btn btn-lg btn-dark text-warning btn-payment"><i class="fa fa-coins"></i></button>
-                                <button id="btn_credit" type="button" value="2" class="btn btn-lg btn-dark text-light btn-payment"><i class="fa fa-credit-card"></i></button>
-                                <button id="btn_gcash" type="button" value="3" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-google"></i></button>
-                                <button id="btn_check" type="button" value="4" class="btn btn-lg btn-dark text-white btn-payment"><i class="fa fa-money-check-alt"></i></button>
-                                {{-- <button id="btn_split" type="button" value="5" class="btn btn-lg btn-dark text-info btn-payment"><i class="fa fa-link"></i></button> --}}
+                                <label for="cus_address">Mode of Payment: <i id="mop_lbl" class="text-info">Cash</i></label><br>
+                                <button id="btn_cash" type="radio" value="1" class="btn btn-lg btn-light text-warning btn-payment"><i class="fa fa-coins"></i></button>
+                                <button id="btn_gcash" type="radio" value="3" class="btn btn-lg btn-light text-dark btn-payment"><img src="{{ asset('img/res/gcash.png') }}" width="22px"/></button>
+                                <button id="btn_check" type="radio" value="4" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-landmark"></i></button>
+                                <button id="btn_credit" type="radio" value="2" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-credit-card"></i></button>
+                                {{-- <button id="btn_split" type="radio" value="5" class="btn btn-lg btn-light text-dark btn-payment"><i class="fa fa-ellipsis"></i></button> --}}
                                 <input type="hidden" id="mode_of_payment" name="mode_of_payment" class="form-control"></input>
                             </div>
                             <div class="form-group">
@@ -526,7 +530,7 @@
                             </div>
                             <div class="form-group" id="payment_check">
                                 <label for="cus_address">Check No. <span style="color:red">*</span></label>
-                                <input type="text" id="pmnt_check_no" name="pmnt_check_no" class="form-control" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
+                                <input type="text" id="pmnt_check_no" name="pmnt_check_no" class="form-control" onclick="select()" required></input>
                             </div>
                             <div class="form-group" id="payment_check_date">
                                 <label for="cus_address">Check Date <span style="color:red">*</span></label>
@@ -534,14 +538,25 @@
                             </div>
                             <div class="form-group" id="payment_input">
                                 <label for="cus_address" id="payment_label">Received Amount <span style="color:red">*</span></label>
-                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount')"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable();" onclick="select()" required></input>
+                                <input type="text" id="received_cash" name="trx_amount_cash" class="form-control" value="0" onchange="noNegativeValue('received_cash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_cash'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_credit" name="trx_amount_credit" class="form-control" value="0" onchange="noNegativeValue('received_credit'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_credit'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_gcash" name="trx_amount_gcash" class="form-control" value="0" onchange="noNegativeValue('received_gcash'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_gcash'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_check" name="trx_amount_check" class="form-control" value="0" onchange="noNegativeValue('received_check'); setTransactionAmount();"  onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_check'); setTransactionAmount();" onclick="select()" required></input>
+                                <input type="text" id="received_amount" name="trx_amount_paid" class="form-control" value="0" onchange="noNegativeValue('received_amount');" onkeypress="return isNumberKey(this, event)" onkeyup="noNegativeValue('received_amount'); enterPayable(); setTransactionAmount();" onclick="select()" hidden required></input>
                                 <input type="hidden" id="purchases" name="purchases" class="form-control" value=""></input>
                             </div>
-                            <div class="form-group" id="payment_attachment">
+                            <div class="form-group" id="payment_attachment_gcash"> 
                                 <label for="cus_address">Attachment <span style="color:red">*</span></label>
                                 <div class="custom-file">
                                     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment" aria-describedby="inputGroupFileAddon01" required>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_gcash" aria-describedby="inputGroupFileAddon01" required>
+                                </div>
+                            </div>
+                            <div class="form-group" id="payment_attachment_check"> 
+                                <label for="cus_address">Attachment <span style="color:red">*</span></label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="pmnt_attachment_check" aria-describedby="inputGroupFileAddon01" required>
                                 </div>
                             </div>
                             <p class="mt-4 text-danger">NOTE: <i>Please check the values properly, transaction is unchangeable after POST.</i></p>
@@ -617,56 +632,156 @@
         $("#btn_cash").css("border-bottom", "4px solid green");
         $("#payment_check").hide();
         $("#payment_check_date").hide();
-        $("#payment_attachment").hide();
+        $("#payment_attachment_gcash").hide();
+        $("#payment_attachment_check").hide();
         $("#mode_of_payment").val("1");
+        $("#received_cash").show();
+        $("#received_credit").hide();
+        $("#received_gcash").hide();
+        $("#received_check").hide();
 
         $("#btn_cash").on("click", function() {
             $("#payment_label").text("Received Payment");
-            $("#mode_of_payment").val("1");
             $("#payment_check").hide();
             $("#payment_check_date").hide();
-            $("#payment_attachment").hide();
+            $("#payment_attachment_gcash").hide();
+            $("#payment_attachment_check").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
+            $("#received_cash").show();
+            $("#received_credit").hide();
+            $("#received_gcash").hide();
+            $("#received_check").hide();
+            setPaymentType(1);
         });
         $("#btn_credit").on("click", function() {
             $("#payment_label").text("Downpayment");
-            $("#mode_of_payment").val("2");
             $("#payment_check").hide();
             $("#payment_check_date").hide();
-            $("#payment_attachment").hide();
+            $("#payment_attachment_gcash").hide();
+            $("#payment_attachment_check").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
+            $("#received_cash").hide();
+            $("#received_credit").show();
+            $("#received_gcash").hide();
+            $("#received_check").hide();
+            setPaymentType(2);
         });
         $("#btn_gcash").on("click", function() {
             $("#payment_label").text("Received Payment");
-            $("#mode_of_payment").val("3");
             $("#payment_check").hide();
             $("#payment_check_date").hide();
-            $("#payment_attachment").show();
+            $("#payment_attachment_gcash").show();
+            $("#payment_attachment_check").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
+            $("#received_cash").hide();
+            $("#received_credit").hide();
+            $("#received_gcash").show();
+            $("#received_check").hide();
+            setPaymentType(3);
         });
         $("#btn_check").on("click", function() {
             $("#payment_label").text("Received Payment");
-            $("#mode_of_payment").val("4");
             $("#payment_check").show();
             $("#payment_check_date").show();
-            $("#payment_attachment").show();
+            $("#payment_attachment_gcash").hide();
+            $("#payment_attachment_check").show();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
+            $("#received_cash").hide();
+            $("#received_credit").hide();
+            $("#received_gcash").hide();
+            $("#received_check").show();
+            setPaymentType(4);
         });
         $("#btn_split").on("click", function() {
             $("#payment_label").text("Received Payment");
-            $("#mode_of_payment").val("5");
             $("#payment_check").hide();
             $("#payment_check_date").hide();
-            $("#payment_attachment").show();
+            $("#payment_attachment_gcash").hide();
+            $("#payment_attachment_check").hide();
             $(".btn-payment").css("border-bottom", "none");
             $(this).css("border-bottom", "4px solid green");
+            $("#received_cash").hide();
+            $("#received_credit").hide();
+            $("#received_gcash").hide();
+            $("#received_check").hide();
+            setPaymentType(5);
         });
     });
+    
+    function setPaymentType(pmnt_type){
+        var received_cash = parseFloat(document.getElementById("received_cash").value);
+        var received_credit = parseFloat(document.getElementById("received_credit").value);
+        var received_gcash = parseFloat(document.getElementById("received_gcash").value);
+        var received_check = parseFloat(document.getElementById("received_check").value);
+        
+        if(pmnt_type == 1){
+            if(received_credit > 0 || received_gcash > 0 || received_check > 0){
+                $("#mop_lbl").text("Split Payment");
+                $("#mode_of_payment").val("5");
+            }
+            else{
+                $("#mop_lbl").text("Cash");
+                $("#mode_of_payment").val("1");
+            }
+        }
+        else if(pmnt_type == 2){
+            if(received_cash > 0 || received_gcash > 0 || received_check > 0){
+                $("#mop_lbl").text("Split Payment");
+                $("#mode_of_payment").val("5");
+            }
+            else{
+                $("#mop_lbl").text("Credit");
+                $("#mode_of_payment").val("2");
+            }
+        }
+        else if(pmnt_type == 3){
+            if(received_cash > 0 || received_credit > 0 || received_check > 0){
+                $("#mop_lbl").text("Split Payment");
+                $("#mode_of_payment").val("5");
+            }
+            else{
+                $("#mop_lbl").text("G-Cash");
+                $("#mode_of_payment").val("3");
+            }
+        }
+        else if(pmnt_type == 4){
+            if(received_cash > 0 || received_credit > 0 || received_gcash > 0){
+                $("#mop_lbl").text("Split Payment");
+                $("#mode_of_payment").val("5");
+            }
+            else{
+                $("#mop_lbl").text("Check");
+                $("#mode_of_payment").val("4");
+            }
+        }
+        else{
+            if(received_cash > 0 || received_credit > 0 || received_gcash > 0 || received_check > 0){
+                $("#mop_lbl").text("Split Payment");
+                $("#mode_of_payment").val("5");
+            }
+            else{
+                $("#mop_lbl").text("Invalid");
+                $("#mode_of_payment").val("5");
+            }
+        }
+    }
+    
+    function setTransactionAmount(){
+        var received_cash = document.getElementById("received_cash").value;
+        var received_credit = document.getElementById("received_credit").value;
+        var received_gcash = document.getElementById("received_gcash").value;
+        var received_check = document.getElementById("received_check").value;
 
+        document.getElementById("received_amount").value = parseFloat(received_cash) + parseFloat(received_credit) + parseFloat(received_gcash) + parseFloat(received_check);
+        
+        var rec_amt = document.getElementById("received_amount");
+        var event = new Event('keyup');
+        rec_amt.dispatchEvent(event);
+    }
 
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
@@ -767,7 +882,7 @@
                 //Calculations
                 var total = (in_crate * 12) + in_loose;
                 var display_crates = in_crate;
-                var display_loose = in_loose + " pc/s";
+                var display_loose = in_loose;
 
                 //Setter For Canister in Name
             
@@ -787,25 +902,48 @@
                 }
 
                 //For Adding Quantity to Canisters Already in the Table
+                var isExisting = false;
+                var existing_item_row = "";
+                var new_crates_value = 0;
+                var new_loose_value = 0;
+                
+                $("#tbl-prd-in tr").each(function() {
+                    var existing_item_name = $(this).find("td:eq(0)").text();
+                    var getRow = $(this).find("td:eq(1)").text();
+                    var getCrate = $(this).find("td:eq(2)").text();
+                    var getLoose = $(this).find("td:eq(3)").text();
 
+                    if(existing_item_name == " "+item_name){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseInt(in_crate);
+                        new_loose_value = parseInt(getLoose) + parseInt(in_loose);
+                    }
+                });
+                
 
                 //For Populating Selected Products Table 
-                var table = document.getElementById("tbl-prd-in");
-                var row_id = document.getElementById("movement_id").value;
-                var row = table.insertRow(0);
+                if(isExisting){
+                    var existingRow = document.getElementById(existing_item_row);
+                    existingRow.cells[2].innerHTML = new_crates_value;
+                    existingRow.cells[3].innerHTML = new_loose_value;
+                }
+                else{
 
-                row.id = "row_in"+row_id;
-                row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
-                row.insertCell(1).innerHTML = "";
-                row.insertCell(2).innerHTML = display_crates;
-                row.insertCell(3).innerHTML = display_loose;
-                // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
-                
+                    var table = document.getElementById("tbl-prd-in");
+                    var row_id = document.getElementById("movement_id").value;
+                    var row = table.insertRow(0);
+
+                    row.id = "row_in"+row_id;
+                    row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
+                    row.insertCell(1).innerHTML = "<span hidden>"+row.id+"</span";
+                    row.insertCell(2).innerHTML = display_crates;
+                    row.insertCell(3).innerHTML = display_loose;
+                    // row.insertCell(4).innerHTML = "<a href='javascript:void()' onclick='removeFromCanisterIn(" +row.id+ "," +total_crates+ ","+total_loose+")'><i class='fa fa-trash text-warning'></i></a>";
+                    
+                }
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
-                
-                // alert(display_crates+" Crate/s and "+display_loose+" Loose of "+item_name+ " has been added");
-
             }
             else{
                 alert("No canisters were in for this item");
@@ -878,26 +1016,71 @@
             var amount = document.getElementById("amount_payable");
             amount.value = total.toFixed(2);
 
-            //For Populating Selected Products Table 
+            
+            //For Adding Quantity to Canisters Already in the Table
 
-            var row_id = document.getElementById("movement_id").value;
-            var table = document.getElementById("tbl-cart");
-            var row = table.insertRow(0);
+            var isExisting = false;
+            var existing_item_row = "";
+            var new_crates_value = 0;
+            var new_loose_value = 0;
+            var new_in_crates_value = 0;
+            var new__in_loose_value = 0;
+            var new_sub_total = 0;
 
-            row.id = "row"+row_id;
-            row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-            row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
-            row.insertCell(2).innerHTML = prd_price;
-            row.insertCell(3).innerHTML = parseFloat(crates_amount);
-            row.insertCell(4).innerHTML = parseFloat(loose_amount);
-            row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-            row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
-            row.insertCell(7).innerHTML = sub_total.toFixed(2);
-            row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-            row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-            row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-            row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
-            row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            $("#tbl-cart tr").each(function() {
+                var getRow = $(this).attr('id');
+                var existing_item_name = $(this).find("td:eq(1)").text();
+                var getCrate = $(this).find("td:eq(3)").text();
+                var getLoose = $(this).find("td:eq(4)").text();
+                var getInCrate = $(this).find("td:eq(8)").text();
+                var getInLoose = $(this).find("td:eq(9)").text();
+                var getSubTotal = $(this).find("td:eq(7)").text();
+                var getPrdIdIn = $(this).find("td:eq(10)").text();
+                var getCanTypeIn = $(this).find("td:eq(11)").text();
+
+                if(existing_item_name == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
+                    isExisting = true;
+                    existing_item_row = getRow;
+                    new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
+                    new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
+                    new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                    new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                    new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                }
+            });
+            
+            
+            //For Populating Selected Products Table
+            if(isExisting){
+                var existingRow = document.getElementById(existing_item_row);
+                existingRow.cells[3].innerHTML = new_crates_value;
+                existingRow.cells[4].innerHTML = new_loose_value;
+                existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
+                existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
+                existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
+            }
+            else{
+                
+                var row_id = document.getElementById("movement_id").value;
+                var table = document.getElementById("tbl-cart");
+                var row = table.insertRow(0);
+
+                row.id = "row"+row_id;
+                row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
+                row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
+                row.insertCell(2).innerHTML = prd_price;
+                row.insertCell(3).innerHTML = parseFloat(crates_amount);
+                row.insertCell(4).innerHTML = parseFloat(loose_amount);
+                row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+                row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
+                row.insertCell(7).innerHTML = sub_total.toFixed(2);
+                row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+                row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+                row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
+                row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+                row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+
+            }
 
             var received = document.getElementById("received_amount").value;
 
@@ -1053,6 +1236,10 @@
 
         if(final_balance < 0){
             final_balance = 0;
+        }
+
+        if(final_change <= 0){
+            final_change = 0;
         }
 
         document.getElementById("rct_change").innerHTML = final_change.toFixed(2);

@@ -68,7 +68,6 @@
                             </tbody>
                         </table>
                     </div>
-
                     <hr>
                     <!-- Closing -->
                     <div class="card-body" style="overflow-x:auto;">
@@ -171,18 +170,18 @@
                                                 </td>
                                             @endif
                                             
-                                            <td>
-                                                @if($tank->tnk_active == 1) 
-                                                <span class="badge badge-success">Active</span>
-                                                    <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
-                                                @else
-                                                <span class="badge badge-danger">Inactive</span>
-                                                    <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
-                                                @endif
-                                            </td>
+                                                <td>
+                                                    @if($tank->tnk_active == 1) 
+                                                    <span class="badge badge-success">Active</span>
+                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                        <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                                    @endif
+                                                </td>
                                             <td>
                                             @if($tank->tnk_active == 0)
-                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                             @else    
                                                 <div class="dropdown">
                                                     <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
@@ -281,7 +280,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <!--Notes Modal -->
+                                        <!--Notes Modal -->
                                         <div class="modal fade" id="tank-notes-modal-{{$tank->tnk_id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -292,9 +291,9 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                            <div class="col-md-12">
-                                                                {{ $tank->tnk_notes }}
-                                                            </div>
+                                                        <div class="col-md-12">
+                                                            {{ $tank->tnk_notes }}
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -309,61 +308,62 @@
                     </div>
                 </div>
             </div>
-                <div class="col-md-6"> 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-info-circle"></i> Tank Status</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="arrow down" style="transform: rotate(45deg); border: solid black; border-width: 0 3px 3px 0; display: inline-block; padding: 3px;"></i></button>
-                            </div>
-                        </div>                         
-                        <div class="card-body" style="overflow-x:auto;">
-                            <table class="table table-hover table-condensed">
-                           
-                                <tbody>
-                                    @foreach($tanks as $tank)
-                                        @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
+
+            <div class="col-md-6"> 
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-info-circle"></i> Tank Status</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="arrow down" style="transform: rotate(45deg); border: solid black; border-width: 0 3px 3px 0; display: inline-block; padding: 3px;"></i></button>
+                        </div>
+                    </div>                         
+                    <div class="card-body" style="overflow-x:auto;">
+                        <table class="table table-condensed">
+                        
+                            <tbody>
+                                @foreach($tanks as $tank)
+                                    @php($tank_percentage = (((float)$tank->tnk_remaining / 1000) / ((float)$tank->tnk_capacity / 1000)) * 100)
+                                    @php($tank_bg = "bg-success")
+
+                                    @if($tank_percentage > 50)
                                         @php($tank_bg = "bg-success")
+                                    @elseif($tank_percentage < 50)
+                                        @php($tank_bg = "bg-warning")
+                                    @elseif($tank_percentage < 25)
+                                        @php($tank_bg = "bg-danger")
+                                    @endif
+                                    <tr>
+                                        <td>
+                                            {{$tank->tnk_name}}
 
-                                        @if($tank_percentage > 50)
-                                            @php($tank_bg = "bg-success")
-                                        @elseif($tank_percentage < 50)
-                                            @php($tank_bg = "bg-warning")
-                                        @elseif($tank_percentage < 25)
-                                            @php($tank_bg = "bg-danger")
-                                        @endif
-                                        <tr>
-                                            <td>
-                                                {{$tank->tnk_name}}
+                                            <div class="row">
+                                                <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
+                                            </div>
+                                        </td>
+                                        
+                                        <td>
+                                            <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 350px; width: 45%; transform: rotate(-90deg); border-radius: 90px; margin: 65px; margin-bottom: 5px; margin-top: 10px; margin-left: 2px;">
+                                                <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                    <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
+                                                </div>
+                                            </div>
 
+                                            {{-- <div class="card-footer">
                                                 <div class="row">
-                                                    <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
-                                                </div>
-                                            </td>
-                                         
-                                            <td>
-                                                <div class="progress" style="height: 340px; width:40%; transform: rotate(-90deg); border-radius: 90px; margin: 65px; margin-bottom: 20px;">
-                                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                        <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
+                                                    <div class="col-md-12">
+                                                        <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
+                                                        <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
                                                     </div>
                                                 </div>
-
-                                                <div class="card-footer">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
-                                                            <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>      
-                    </div>
+                                            </div> --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>      
                 </div>
+            </div>
                 
                 
 

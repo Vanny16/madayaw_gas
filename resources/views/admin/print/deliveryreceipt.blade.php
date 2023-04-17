@@ -68,13 +68,16 @@
                             @endif
                         @endforeach
                     @endif
-                    <tr>
-                        <td width="20%">IN</td>
-                        <td width="20%">{{ $prd_name }}</td>
-                        <td width="20%">{{ $pur_in->pur_crate_in }}</td>
-                        <td width="20%">{{ $pur_in->pur_loose_in }}</td>
-                        <td width="20%">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</td>
-                    </tr>
+
+                    @if($pur_in->pur_crate_in != 0 || $pur_in->pur_loose_in != 0)
+                        <tr>
+                            <td width="20%">IN</td>
+                            <td width="20%">{{ $prd_name }}</td>
+                            <td width="20%">{{ $pur_in->pur_crate_in }}</td>
+                            <td width="20%">{{ $pur_in->pur_loose_in }}</td>
+                            <td width="20%">{{ ($pur_in->pur_crate_in * 12) + $pur_in->pur_loose_in }}</td>
+                        </tr>
+                    @endif
                 @endif
             @endforeach
             <tr>
