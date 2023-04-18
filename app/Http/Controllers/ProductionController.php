@@ -62,7 +62,13 @@ class ProductionController extends Controller
         $verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
         ->get(); 
-        
+
+        $product_verifications = DB::table('stock_verifications')
+        ->where('verify_pdn_id', '=', get_last_production_id())
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->get(); 
+
+        dd($product_verifications);
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 

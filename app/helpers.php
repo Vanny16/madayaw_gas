@@ -444,6 +444,35 @@ function get_product_total_stock($prd_id)
     return number_format($total_stock, 0, '.', ',');
 }
 
+function get_product_total_stock_from_pdn_date($prd_id)
+{
+    //COMMENTED INCASE OF REVERTING
+    // $total_stock = DB::table('movement_logs')
+    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    // ->where('movement_logs.acc_id', '=', session('acc_id'))
+    // ->where('movement_logs.prd_id', '=', $prd_id)
+    // ->where('movement_logs.pdn_id', '=', $pdn_id)
+    // ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    
+    // return $total_stock;
+    // $total_stock = DB::table('stocks_logs')
+    // ->where('acc_id', '=', session('acc_id'))
+    // ->where('prd_id', '=', $prd_id)
+    // ->where('pdn_id', '=', $pdn_id)
+    // ->sum(DB::raw('stk_empty_goods + stk_filled + stk_leakers + stk_for_revalving + stk_scraps'));
+    
+    $product = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_id', '=', $prd_id)
+    ->first();
+
+    $total_stock = 0;
+
+    $total_stock = $total_stock + $product->prd_quantity + $product->prd_leakers + $product->prd_empty_goods + $product->prd_for_revalving + $product->prd_scraps;
+
+    return number_format($total_stock, 0, '.', ',');
+}
+
 function check_materials($flag, $qty, $prd_id)
 {
    //FOR EMPTYGOODS
