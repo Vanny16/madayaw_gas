@@ -51,7 +51,7 @@
             </tr>
             <tr>
                 <td width="60%"><i>Pending Balance</i></td>
-                <td width="40%">{{ number_format($payments->pmnt_amount, 2, '.', ',') }}</td>
+                <td width="40%">{{ number_format(session('pmnt_amount'), 2, '.', ',') }}</td>
             </tr>
         </table>
 
@@ -72,9 +72,14 @@
                 <td colspan="1">{{ $payments->payment_name }}</td>
             </tr>
             <tr>
+                <td colspan="1">Check #</td>
+                <td colspan="3"><hr></td>
+                <td colspan="1">{{ session('pmnt_check_no') }}</td>
+            </tr>
+            <tr>
                 <td colspan="1">Paid</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1">{{ number_format($payments->pmnt_amount, 2, '.', ',') }}</td>
+                <td colspan="1">{{ number_format(session('pmnt_amount'), 2, '.', ',') }}</td>
             </tr>
             <tr>
                 <td colspan="1">Received</td>

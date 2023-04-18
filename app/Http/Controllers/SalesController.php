@@ -279,7 +279,7 @@ class SalesController extends Controller
         }
 
         $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
@@ -292,6 +292,7 @@ class SalesController extends Controller
         $pur_loose_in = "";
         $cus_id = "";
         
+        $trx_date = $request->trx_date;
         $trx_can_dec = $request->trx_can_dec;
         $trx_del_rec = $request->trx_del_rec;
         
@@ -300,7 +301,6 @@ class SalesController extends Controller
         $trx_total = (float)$request->trx_total;
         $trx_amount_paid = (float)$request->trx_amount_paid;
         $trx_balance =  (double)$trx_total - (double)$trx_amount_paid;
-
         
         if($mode_of_payment == 1 || $mode_of_payment == 3){
             if($trx_amount_paid <= 0){
@@ -317,7 +317,7 @@ class SalesController extends Controller
         $pmnt_received = (float)$request->trx_amount_paid;
         $pmnt_change =  (double)$trx_total - (double)$pmnt_received;
 
-        $pmnt_check_no = (float)$request->pmnt_check_no;
+        $pmnt_check_no = $request->pmnt_check_no;
         $pmnt_check_date = $request->pmnt_check_date;
 
         if($pmnt_received > 0){
@@ -449,8 +449,8 @@ class SalesController extends Controller
             'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
             'cus_id' => $cus_id,
-            'trx_datetime' => date('Y-m-d H:i:s'),
-            'trx_date' => date('Y-m-d'),
+            'trx_datetime' => $trx_date . " " . date('H:i:s'),
+            'trx_date' => $trx_date,
             'trx_time' => date('H:i:s'),
             'trx_gross' => $trx_gross,
             'trx_total' => $trx_total,
@@ -460,62 +460,253 @@ class SalesController extends Controller
             'trx_del_rec' => $trx_del_rec
         ]);
 
-        DB::table('payments')
-        ->insert([
-            'acc_id' => session('acc_id'),
-            'usr_id' => session('usr_id'),
-            'trx_id' => $trx_id,
-            'pmnt_ref_id' => $pmt_ref_id,
-            'trx_mode_of_payment' => $mode_of_payment,
-            'pmnt_amount' => $trx_amount_paid,
-            'pmnt_received' => $pmnt_received,
-            'pmnt_change' => $pmnt_change,
-            'pmnt_date' => date('Y-m-d'),
-            'pmnt_time' => date('H:i:s'),
-            'pmnt_check_no' => $pmnt_check_no,
-            'pmnt_check_date' => $pmnt_check_date
-        ]);
-
-        //IMAGE UPLOAD 
-        if($request->file('pmnt_attachment'))
-        {
-            $pmnt_id = DB::table('payments')
-            ->select('pmnt_id')
-            ->orderBy('pmnt_id', 'desc')
-            ->first();
-    
-            $file = $request->file('pmnt_attachment');
-
-            $validator = Validator::make( 
-                [
-                    'file' => $file,
-                    'extension' => strtolower($file->getClientOriginalExtension()),
-                ],
-                [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
-                    'extension' => 'required|in:jpg,png,gif',
-                ]
-            );
-    
-            if ($validator->fails()) 
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-    
-            $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-    
-            Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+        //FOR PAYMENTS
+        if($mode_of_payment != 5){
 
             DB::table('payments')
-            ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-            ->update([
-                'pmnt_attachment' => $fileName,
-            ]);  
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'usr_id' => session('usr_id'),
+                'trx_id' => $trx_id,
+                'pmnt_ref_id' => $pmt_ref_id,
+                'trx_mode_of_payment' => $mode_of_payment,
+                'pmnt_amount' => $trx_amount_paid,
+                'pmnt_received' => $pmnt_received,
+                'pmnt_change' => $pmnt_change,
+                'pmnt_date' => $trx_date,
+                'pmnt_time' => date('H:i:s'),
+                'pmnt_check_no' => $pmnt_check_no,
+                'pmnt_check_date' => $pmnt_check_date
+            ]);
     
-        }   
+            //IMAGE UPLOAD FOR GCASH
+            if($request->file('pmnt_attachment_gcash'))
+            {
+                $pmnt_id = DB::table('payments')
+                ->select('pmnt_id')
+                ->orderBy('pmnt_id', 'desc')
+                ->first();
+        
+                $file = $request->file('pmnt_attachment_gcash');
+    
+                $validator = Validator::make( 
+                    [
+                        'file' => $file,
+                        'extension' => strtolower($file->getClientOriginalExtension()),
+                    ],
+                    [
+                        'file' => 'required',
+                        'file' => 'max:3072', //3MB
+                        'extension' => 'required|in:jpg,png,gif',
+                    ]
+                );
+        
+                if ($validator->fails()) 
+                {
+                    session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+        
+                $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+        
+                Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+    
+                DB::table('payments')
+                ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+                ->update([
+                    'pmnt_attachment' => $fileName,
+                ]);  
+            }   
+            
+            //IMAGE UPLOAD FOR CHECK
+            if($request->file('pmnt_attachment_check'))
+            {
+                $pmnt_id = DB::table('payments')
+                ->select('pmnt_id')
+                ->orderBy('pmnt_id', 'desc')
+                ->first();
+        
+                $file = $request->file('pmnt_attachment_check');
+    
+                $validator = Validator::make( 
+                    [
+                        'file' => $file,
+                        'extension' => strtolower($file->getClientOriginalExtension()),
+                    ],
+                    [
+                        'file' => 'required',
+                        'file' => 'max:3072', //3MB
+                        'extension' => 'required|in:jpg,png,gif',
+                    ]
+                );
+        
+                if ($validator->fails()) 
+                {
+                    session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+        
+                $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+        
+                Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+    
+                DB::table('payments')
+                ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+                ->update([
+                    'pmnt_attachment' => $fileName,
+                ]);  
+            }   
 
+        }
+        else{
+            $trx_amount_cash = (float)$request->trx_amount_cash;
+            $trx_amount_credit = (float)$request->trx_amount_credit;
+            $trx_amount_gcash = (float)$request->trx_amount_gcash;
+            $trx_amount_check = (float)$request->trx_amount_check;
+
+            if($trx_amount_cash > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_cash,
+                    'pmnt_received' => $trx_amount_paid,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+            if($trx_amount_credit > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_credit,
+                    'pmnt_received' => $trx_amount_paid,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+            if($trx_amount_gcash > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_gcash,
+                    'pmnt_received' => $trx_amount_paid,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+
+                //IMAGE UPLOAD FOR GCASH
+                if($request->file('pmnt_attachment_gcash'))
+                {
+                    $pmnt_id = DB::table('payments')
+                    ->select('pmnt_id')
+                    ->orderBy('pmnt_id', 'desc')
+                    ->first();
+            
+                    $file = $request->file('pmnt_attachment_gcash');
+        
+                    $validator = Validator::make( 
+                        [
+                            'file' => $file,
+                            'extension' => strtolower($file->getClientOriginalExtension()),
+                        ],
+                        [
+                            'file' => 'required',
+                            'file' => 'max:3072', //3MB
+                            'extension' => 'required|in:jpg,png,gif',
+                        ]
+                    );
+            
+                    if ($validator->fails()) 
+                    {
+                        session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+            
+                    $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+            
+                    Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+        
+                    DB::table('payments')
+                    ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+                    ->update([
+                        'pmnt_attachment' => $fileName,
+                    ]);  
+                }   
+            }
+            if($trx_amount_check > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_check,
+                    'pmnt_received' => $trx_amount_paid,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+
+                //IMAGE UPLOAD FOR CHECK
+                if($request->file('pmnt_attachment_check'))
+                {
+                    $pmnt_id = DB::table('payments')
+                    ->select('pmnt_id')
+                    ->orderBy('pmnt_id', 'desc')
+                    ->first();
+            
+                    $file = $request->file('pmnt_attachment_check');
+        
+                    $validator = Validator::make( 
+                        [
+                            'file' => $file,
+                            'extension' => strtolower($file->getClientOriginalExtension()),
+                        ],
+                        [
+                            'file' => 'required',
+                            'file' => 'max:3072', //3MB
+                            'extension' => 'required|in:jpg,png,gif',
+                        ]
+                    );
+            
+                    if ($validator->fails()) 
+                    {
+                        session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+            
+                    $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
+            
+                    Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+        
+                    DB::table('payments')
+                    ->where('pmnt_id','=',$pmnt_id->pmnt_id)
+                    ->update([
+                        'pmnt_attachment' => $fileName,
+                    ]);  
+                }   
+            }
+        }
+
+        session(['pmnt_check_no' => $pmnt_check_no]);
         session(['latest_trx_id' => $trx_id]);
 
         session()->flash('successMessage','Transaction complete!');
@@ -533,10 +724,9 @@ class SalesController extends Controller
         else{
             $pmnt_id += 1;
         }
-        
-        session(['latest_pmnt_id' => $pmnt_id]);
 
         $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
+        $pmnt_date = $request->pmnt_date;
 
         $transaction = DB::table('transactions')
         ->where('trx_id','=',$request->trx_id)
@@ -556,8 +746,12 @@ class SalesController extends Controller
             $new_trx_balance  = 0;
         }
         
+        $mode_of_payment = $request->mode_of_payment;
         $pmnt_received = (float)$request->pmnt_amount;
         $pmnt_change =  (double)$trx_balance - (double)$pmnt_received;
+        
+        $pmnt_check_no = $request->pmnt_check_no;
+        $pmnt_check_date = $request->pmnt_check_date;
         
         if($pmnt_change <= 0){
             $pmnt_change = $pmnt_change * -1;
@@ -565,20 +759,237 @@ class SalesController extends Controller
         else if($pmnt_change > 0){
             $pmnt_change = 0;
         }
+
+        //FOR PAYMENTS
+        if($mode_of_payment != 5){
+
+            DB::table('payments')
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'usr_id' => session('usr_id'),
+                'trx_id' => $request->trx_id,
+                'pmnt_ref_id' => $pmt_ref_id,
+                'trx_mode_of_payment' => $mode_of_payment,
+                'pmnt_amount' => $pmnt_amount,
+                'pmnt_received' => $pmnt_received,
+                'pmnt_change' => $pmnt_change,
+                'pmnt_date' => $pmnt_date,
+                'pmnt_time' => date('H:i:s'),
+                'pmnt_check_no' => $pmnt_check_no,
+                'pmnt_check_date' => $pmnt_check_date
+            ]);
     
-        DB::table('payments')
-        ->insert([
-            'acc_id' => session('acc_id'),
-            'usr_id' => session('usr_id'),
-            'trx_id' => $request->trx_id,
-            'pmnt_ref_id' => $pmt_ref_id,
-            'trx_mode_of_payment' => $request->mode_of_payment,
-            'pmnt_amount' => $pmnt_amount,
-            'pmnt_received' => $pmnt_received,
-            'pmnt_change' => $pmnt_change,
-            'pmnt_date' => date('Y-m-d'),
-            'pmnt_time' => date('H:i:s')
-        ]);
+            //IMAGE UPLOAD FOR GCASH
+            if($request->file('pmnt_attachment_gcash'))
+            {
+                $pmnt_id_att = DB::table('payments')
+                ->select('pmnt_id')
+                ->orderBy('pmnt_id', 'desc')
+                ->first();
+        
+                $file = $request->file('pmnt_attachment_gcash');
+    
+                $validator = Validator::make( 
+                    [
+                        'file' => $file,
+                        'extension' => strtolower($file->getClientOriginalExtension()),
+                    ],
+                    [
+                        'file' => 'required',
+                        'file' => 'max:3072', //3MB
+                        'extension' => 'required|in:jpg,png,gif',
+                    ]
+                );
+        
+                if ($validator->fails()) 
+                {
+                    session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+        
+                $fileName = $pmnt_id_att->pmnt_id . '.' . $file->getClientOriginalExtension();
+        
+                Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+    
+                DB::table('payments')
+                ->where('pmnt_id','=',$pmnt_id_att->pmnt_id)
+                ->update([
+                    'pmnt_attachment' => $fileName,
+                ]);  
+            }   
+            
+            //IMAGE UPLOAD FOR CHECK
+            if($request->file('pmnt_attachment_check'))
+            {
+                $pmnt_id_att = DB::table('payments')
+                ->select('pmnt_id')
+                ->orderBy('pmnt_id', 'desc')
+                ->first();
+        
+                $file = $request->file('pmnt_attachment_check');
+    
+                $validator = Validator::make( 
+                    [
+                        'file' => $file,
+                        'extension' => strtolower($file->getClientOriginalExtension()),
+                    ],
+                    [
+                        'file' => 'required',
+                        'file' => 'max:3072', //3MB
+                        'extension' => 'required|in:jpg,png,gif',
+                    ]
+                );
+        
+                if ($validator->fails()) 
+                {
+                    session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+        
+                $fileName = $pmnt_id_att->pmnt_id . '.' . $file->getClientOriginalExtension();
+        
+                Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+    
+                DB::table('payments')
+                ->where('pmnt_id','=',$pmnt_id_att->pmnt_id)
+                ->update([
+                    'pmnt_attachment' => $fileName,
+                ]);  
+            }   
+
+            session(['pmnt_amount' => $pmnt_amount]);
+        }
+        else{
+            $pmnt_amount_cash = (float)$request->pmnt_amount_cash;
+            $pmnt_amount_gcash = (float)$request->pmnt_amount_gcash;
+            $pmnt_amount_check = (float)$request->pmnt_amount_check;
+
+            if($pmnt_amount_cash > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $request->trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $pmnt_amount_cash,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $pmnt_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+            if($pmnt_amount_gcash > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $request->trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $pmnt_amount_gcash,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $pmnt_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+
+                //IMAGE UPLOAD FOR GCASH
+                if($request->file('pmnt_attachment_gcash'))
+                {
+                    $pmnt_id_att = DB::table('payments')
+                    ->select('pmnt_id')
+                    ->orderBy('pmnt_id', 'desc')
+                    ->first();
+            
+                    $file = $request->file('pmnt_attachment_gcash');
+        
+                    $validator = Validator::make( 
+                        [
+                            'file' => $file,
+                            'extension' => strtolower($file->getClientOriginalExtension()),
+                        ],
+                        [
+                            'file' => 'required',
+                            'file' => 'max:3072', //3MB
+                            'extension' => 'required|in:jpg,png,gif',
+                        ]
+                    );
+            
+                    if ($validator->fails()) 
+                    {
+                        session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+            
+                    $fileName = $pmnt_id_att->pmnt_id . '.' . $file->getClientOriginalExtension();
+            
+                    Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+        
+                    DB::table('payments')
+                    ->where('pmnt_id','=',$pmnt_id_att->pmnt_id)
+                    ->update([
+                        'pmnt_attachment' => $fileName,
+                    ]);  
+                }   
+            }
+            if($pmnt_amount_check > 0){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $request->trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $pmnt_amount_check,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => 0,
+                    'pmnt_date' => $pmnt_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+
+                //IMAGE UPLOAD FOR CHECK
+                if($request->file('pmnt_attachment_check'))
+                {
+                    $pmnt_id_att = DB::table('payments')
+                    ->select('pmnt_id')
+                    ->orderBy('pmnt_id', 'desc')
+                    ->first();
+            
+                    $file = $request->file('pmnt_attachment_check');
+        
+                    $validator = Validator::make( 
+                        [
+                            'file' => $file,
+                            'extension' => strtolower($file->getClientOriginalExtension()),
+                        ],
+                        [
+                            'file' => 'required',
+                            'file' => 'max:3072', //3MB
+                            'extension' => 'required|in:jpg,png,gif',
+                        ]
+                    );
+            
+                    if ($validator->fails()) 
+                    {
+                        session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+            
+                    $fileName = $pmnt_id_att->pmnt_id . '.' . $file->getClientOriginalExtension();
+            
+                    Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
+        
+                    DB::table('payments')
+                    ->where('pmnt_id','=',$pmnt_id_att->pmnt_id)
+                    ->update([
+                        'pmnt_attachment' => $fileName,
+                    ]);  
+                }   
+            }
+
+            session(['pmnt_amount' => $pmnt_received]);
+        }
         
         
         $updated_payment = $transaction->trx_amount_paid + $pmnt_amount;
@@ -590,46 +1001,8 @@ class SalesController extends Controller
                 'trx_amount_paid' => $updated_payment,
         ]);  
 
-
-        //IMAGE UPLOAD 
-        if($request->file('pmnt_attachment'))
-        {
-            $pmnt_id = DB::table('payments')
-            ->select('pmnt_id')
-            ->orderBy('pmnt_id', 'desc')
-            ->first();
-    
-            $file = $request->file('pmnt_attachment');
-
-            $validator = Validator::make( 
-                [
-                    'file' => $file,
-                    'extension' => strtolower($file->getClientOriginalExtension()),
-                ],
-                [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
-                    'extension' => 'required|in:jpg,png,gif',
-                ]
-            );
-    
-            if ($validator->fails()) 
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-    
-            $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-    
-            Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
-
-            DB::table('payments')
-            ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-            ->update([
-                'pmnt_attachment' => $fileName,
-            ]);  
-    
-        } 
+        session(['pmnt_check_no' => $pmnt_check_no]);
+        session(['latest_pmnt_id' => $pmnt_id]);
 
         session()->flash('successMessage','Payment saved');
         return redirect()->action('PrintController@paymentReceipt');

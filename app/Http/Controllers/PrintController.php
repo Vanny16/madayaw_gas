@@ -142,6 +142,8 @@ class PrintController extends Controller
         ->where('transactions.trx_id', '=' ,$latest_trx_id)
         ->first();
 
+        // dd($transactions);
+
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->where('trx_id', '=' ,$latest_trx_id)
@@ -159,7 +161,7 @@ class PrintController extends Controller
             ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
             ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
             ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-            ->where('pmnt_id', '=', strval($latest_pmnt_id))
+            ->where('pmnt_id', '=', (string) $latest_pmnt_id)
             ->first();
 
         session()->flash('successMessage','Payment updated!');
