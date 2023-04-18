@@ -341,7 +341,7 @@
                                 </div>
                                 
                                 
-                                <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 420px; width: 170px; transform: rotate(-90deg); border-radius: 90px; margin: 188px; margin-bottom: -100px; margin-top: -100px;">
+                                <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 420px; width: 170px; transform: rotate(-90deg); border-radius: 90px; margin: 188px; margin-bottom: -100px; margin-top: -120px;">
                                     <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
                                     </div>   
