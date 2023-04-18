@@ -356,16 +356,12 @@
                                             <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
                                         </div>
                                     </div>
-                                </div>--}}
-                                    
-                                
+                                </div>--}}                              
                             </div>
                         @endforeach
                     </div>
                 </div>
-            </div>
-                
-                
+            </div> 
 
                 {{-- <div class="col-md-12">
                     <div class="card">
