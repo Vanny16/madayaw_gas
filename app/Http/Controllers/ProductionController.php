@@ -68,7 +68,7 @@ class ProductionController extends Controller
         ->where('verify_acc_id', '=', session('acc_id'))
         ->get(); 
 
-        dd($product_verifications);
+        // dd($product_verifications);
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
