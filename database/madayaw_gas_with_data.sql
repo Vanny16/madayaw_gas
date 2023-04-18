@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : server
-Source Server Version : 50610
+Source Server         : localhost
+Source Server Version : 50741
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50610
+Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-14 18:39:47
+Date: 2023-04-18 23:37:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -50,7 +50,7 @@ CREATE TABLE `bad_orders` (
   `bo_time` varchar(20) DEFAULT NULL,
   `bo_datetime` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`bo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_orders
@@ -58,6 +58,7 @@ CREATE TABLE `bad_orders` (
 INSERT INTO `bad_orders` VALUES ('1', 'BO-20230413-1', '1', '22', '3', null, '1', '2023-04-13', '17:39:12', '2023-04-13 17:39:12');
 INSERT INTO `bad_orders` VALUES ('2', 'BO-20230413-2', '1', '22', '3', null, '2', '2023-04-13', '17:39:51', '2023-04-13 17:39:51');
 INSERT INTO `bad_orders` VALUES ('3', 'BO-20230413-3', '1', '22', '3', null, '4', '2023-04-13', '17:44:10', '2023-04-13 17:44:10');
+INSERT INTO `bad_orders` VALUES ('4', 'BO-20230415-4', '1', '34', '3', null, '1', '2023-04-15', '21:24:37', '2023-04-15 21:24:37');
 
 -- ----------------------------
 -- Table structure for `customers`
@@ -86,36 +87,6 @@ INSERT INTO `customers` VALUES ('1', '1', 'b4pje0fqknvb69ss1ulsxxnrhpwxt82v', 'M
 INSERT INTO `customers` VALUES ('2', '1', 'xoxh928ievszk8jcft7t3wf4mzhyu1hk', 'DJV', 'Indangan', '09800989080', '1.5', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, null, '1');
 
 -- ----------------------------
--- Table structure for `fuel_prices`
--- ----------------------------
-DROP TABLE IF EXISTS `fuel_prices`;
-CREATE TABLE `fuel_prices` (
-  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
-  `prc_date` date DEFAULT NULL,
-  `prc_price` decimal(10,0) DEFAULT NULL,
-  PRIMARY KEY (`prc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of fuel_prices
--- ----------------------------
-
--- ----------------------------
--- Table structure for `migrations`
--- ----------------------------
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ----------------------------
--- Records of migrations
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `movement_logs`
 -- ----------------------------
 DROP TABLE IF EXISTS `movement_logs`;
@@ -132,7 +103,7 @@ CREATE TABLE `movement_logs` (
   `log_date` date DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -157,6 +128,7 @@ INSERT INTO `movement_logs` VALUES ('17', '1', '3', '0', '0', '100', '0', '0', '
 INSERT INTO `movement_logs` VALUES ('18', '1', '3', '0', '1', '0', '0', '0', '1', '2023-04-13', '3');
 INSERT INTO `movement_logs` VALUES ('19', '1', '3', '0', '2', '0', '0', '0', '1', '2023-04-13', '3');
 INSERT INTO `movement_logs` VALUES ('20', '1', '3', '0', '4', '0', '0', '0', '1', '2023-04-13', '3');
+INSERT INTO `movement_logs` VALUES ('21', '1', '3', '0', '1', '0', '0', '0', '1', '2023-04-15', '3');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -200,7 +172,7 @@ CREATE TABLE `oppositions` (
 -- ----------------------------
 -- Records of oppositions
 -- ----------------------------
-INSERT INTO `oppositions` VALUES ('1', 'kda2cl0kccsjmn9cg7elskjq9wtj0kd2', 'Tripler', 'T1', 'Tripler', '148', null, null, '1', '1');
+INSERT INTO `oppositions` VALUES ('1', 'kda2cl0kccsjmn9cg7elskjq9wtj0kd2', 'Tripler', 'T1', 'Tripler', '160', null, null, '1', '1');
 
 -- ----------------------------
 -- Table structure for `payments`
@@ -222,7 +194,7 @@ CREATE TABLE `payments` (
   `pmnt_check_no` varchar(30) DEFAULT NULL,
   `pmnt_check_date` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`pmnt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of payments
@@ -266,6 +238,75 @@ INSERT INTO `payments` VALUES ('1', '36', 'PMT20230414-32', '32', '116', null, '
 INSERT INTO `payments` VALUES ('1', '37', 'PMT20230414-32', '32', '400', '37.jpg', '1', '2023-04-14', '18:17:38', '5', '516', '0', null, null);
 INSERT INTO `payments` VALUES ('1', '38', 'PMT20230414-33', '33', '15', null, '1', '2023-04-14', '18:18:57', '5', '30', '0', null, null);
 INSERT INTO `payments` VALUES ('1', '39', 'PMT20230414-33', '33', '15', '39.png', '1', '2023-04-14', '18:18:57', '5', '30', '0', 'BPI234', '2023-04-14');
+INSERT INTO `payments` VALUES ('1', '40', 'PMT20230415-34', '34', '60', null, '1', '2023-04-15', '21:19:37', '5', '360', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '41', 'PMT20230415-34', '34', '300', '41.png', '1', '2023-04-15', '21:19:37', '5', '360', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '42', 'PMT20230415-35', '35', '0', null, '1', '2023-04-15', '21:29:48', '2', '0', '0', null, '2023-04-15');
+INSERT INTO `payments` VALUES ('1', '43', 'PMT20230415-36', '36', '0', null, '1', '2023-04-15', '21:31:17', '2', '0', '0', null, '2023-04-15');
+INSERT INTO `payments` VALUES ('1', '44', 'PMT20230415-37', '37', '0', null, '1', '2023-04-15', '22:01:38', '2', '0', '0', null, '2023-04-15');
+INSERT INTO `payments` VALUES ('1', '45', 'PMT20230415-45', '37', '1', null, '1', '2023-04-15', '22:22:55', '1', '1', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '46', 'PMT20230415-46', '37', '1', null, '1', '2023-04-15', '23:32:35', '1', '1', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '47', 'PMT20230415-47', '37', '1', null, '1', '2023-04-15', '23:32:47', '3', '1', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '48', 'PMT20230415-48', '37', '1', null, '1', '2023-04-15', '23:33:11', '4', '1', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '49', 'PMT20230415-49', '37', '2', null, '1', '2023-04-15', '23:33:29', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '50', 'PMT20230416-50', '37', '1', null, '1', '2023-04-16', '00:09:06', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '51', 'PMT20230416-51', '37', '1', null, '1', '2023-04-16', '00:09:18', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '52', 'PMT20230416-52', '37', '1', null, '1', '2023-04-16', '00:09:42', '4', '1', '0', 'JKL780', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '53', 'PMT20230416-53', '37', '1', null, '1', '2023-04-16', '00:10:09', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '54', 'PMT20230416-53', '37', '1', null, '1', '2023-04-16', '00:10:09', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '55', 'PMT20230416-53', '37', '1', null, '1', '2023-04-16', '00:10:09', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '56', 'PMT20230416-56', '37', '2', null, '1', '2023-04-16', '00:23:38', '1', '2', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '57', 'PMT20230416-57', '37', '1', null, '1', '2023-04-16', '00:27:39', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '58', 'PMT20230416-58', '37', '1', null, '1', '2023-04-16', '00:27:49', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '59', 'PMT20230416-59', '37', '1', null, '1', '2023-04-16', '00:28:05', '4', '1', '0', 'ewd32', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '60', 'PMT20230416-60', '37', '2', null, '1', '2023-04-16', '00:28:53', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '61', 'PMT20230416-60', '37', '2', null, '1', '2023-04-16', '00:28:53', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '62', 'PMT20230416-60', '37', '2', null, '1', '2023-04-16', '00:28:53', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '63', 'PMT20230416-63', '37', '1', null, '1', '2023-04-16', '00:29:24', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '64', 'PMT20230416-63', '37', '1', null, '1', '2023-04-16', '00:29:24', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '65', 'PMT20230416-63', '37', '1', null, '1', '2023-04-16', '00:29:25', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '66', 'PMT20230416-66', '36', '1', null, '1', '2023-04-16', '00:34:16', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '67', 'PMT20230416-67', '37', '1', null, '1', '2023-04-16', '00:38:57', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '68', 'PMT20230416-67', '37', '1', null, '1', '2023-04-16', '00:38:57', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '69', 'PMT20230416-67', '37', '1', null, '1', '2023-04-16', '00:38:57', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '70', 'PMT20230416-70', '36', '1', null, '1', '2023-04-16', '00:42:21', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '71', 'PMT20230416-70', '36', '1', null, '1', '2023-04-16', '00:42:21', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '72', 'PMT20230416-70', '36', '1', null, '1', '2023-04-16', '00:42:21', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '73', 'PMT20230416-73', '36', '1', null, '1', '2023-04-16', '00:43:08', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '74', 'PMT20230416-74', '36', '1', null, '1', '2023-04-16', '00:45:06', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '75', 'PMT20230416-75', '36', '1', '75.jpg', '1', '2023-04-16', '00:45:33', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '76', 'PMT20230416-76', '36', '1', '76.jpg', '1', '2023-04-16', '00:48:17', '4', '1', '0', '213', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '77', 'PMT20230416-77', '36', '1', null, '1', '2023-04-16', '00:52:23', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '78', 'PMT20230416-77', '36', '1', null, '1', '2023-04-16', '00:52:23', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '79', 'PMT20230416-79', '36', '1', null, '1', '2023-04-16', '00:52:44', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '80', 'PMT20230416-79', '36', '1', null, '1', '2023-04-16', '00:52:44', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '81', 'PMT20230416-81', '36', '1', null, '1', '2023-04-16', '00:53:05', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '82', 'PMT20230416-82', '36', '1', '82.jpg', '1', '2023-04-16', '00:53:19', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '83', 'PMT20230416-83', '36', '1', '83.jpg', '1', '2023-04-16', '00:56:25', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '84', 'PMT20230416-84', '36', '1', null, '1', '2023-04-16', '00:57:45', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '85', 'PMT20230416-85', '36', '1', null, '1', '2023-04-16', '00:57:51', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '86', 'PMT20230416-85', '36', '1', null, '1', '2023-04-16', '00:57:51', '5', '2', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '87', 'PMT20230416-87', '36', '1', '87.jpg', '1', '2023-04-16', '00:58:08', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '88', 'PMT20230416-88', '36', '1', null, '1', '2023-04-16', '01:04:04', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '89', 'PMT20230416-89', '36', '1', '89.jpg', '1', '2023-04-16', '01:04:20', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '90', 'PMT20230416-90', '36', '1', '90.jpg', '1', '2023-04-16', '01:10:35', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '91', 'PMT20230416-91', '36', '1', null, '1', '2023-04-16', '01:11:00', '1', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '92', 'PMT20230416-92', '36', '1', '92.png', '1', '2023-04-16', '01:11:15', '3', '1', '0', null, '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '93', 'PMT20230416-93', '36', '1', '93.jpg', '1', '2023-04-16', '01:11:33', '4', '1', '0', '12w', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '94', 'PMT20230416-94', '36', '1', null, '1', '2023-04-17', '01:12:28', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '95', 'PMT20230416-94', '36', '2', '95.jpg', '1', '2023-04-17', '01:12:28', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '96', 'PMT20230416-94', '36', '3', '96.png', '1', '2023-04-17', '01:12:28', '5', '6', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '97', 'PMT20230416-97', '38', '1', null, '1', '2023-04-16', '21:11:33', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '98', 'PMT20230416-97', '38', '1', null, '1', '2023-04-16', '21:11:33', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '99', 'PMT20230416-97', '38', '1', null, '1', '2023-04-16', '21:11:33', '5', '3', '0', '12q1', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '100', 'PMT20230416-100', '39', '1', null, '1', '2023-04-16', '21:12:18', '4', '1', '0', '121', '2023-04-16');
+INSERT INTO `payments` VALUES ('1', '101', 'PMT20230416-101', '40', '1', null, '1', '2023-04-16', '21:14:05', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '102', 'PMT20230416-101', '40', '1', null, '1', '2023-04-16', '21:14:05', '5', '3', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '103', 'PMT20230416-101', '40', '1', null, '1', '2023-04-16', '21:14:05', '5', '3', '0', '12344', '2023-04-15');
+INSERT INTO `payments` VALUES ('1', '104', 'PMT20230416-104', '41', '200', null, '1', '2023-04-16', '21:19:52', '5', '700', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '105', 'PMT20230416-104', '41', '250', '105.png', '1', '2023-04-16', '21:19:52', '5', '700', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '106', 'PMT20230416-104', '41', '250', '106.jpg', '1', '2023-04-16', '21:19:52', '5', '700', '0', '250', '2023-04-17');
+INSERT INTO `payments` VALUES ('1', '107', 'PMT20230416-107', '42', '1', null, '1', '2023-04-16', '21:21:22', '5', '251', '0', null, null);
+INSERT INTO `payments` VALUES ('1', '108', 'PMT20230416-107', '42', '250', '108.jpg', '1', '2023-04-16', '21:21:22', '5', '251', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `payment_types`
@@ -343,29 +384,15 @@ CREATE TABLE `products` (
 -- ----------------------------
 INSERT INTO `products` VALUES ('1', '1', '6yu8x39d3a8zr3s54o2x8zmk69y8j8q2', 'MR Valve', 'MR Valve', 'MRV', null, null, '0', '7895', '0', '0', '0', '0', '1000', null, '1', '1', '0', '1', '0', null, '0', null, null);
 INSERT INTO `products` VALUES ('2', '1', 'm6hanwc9u1ik3y8inh2o1l7vwj8mc4o6', 'MS Valve', 'MS Valve', 'MSV', null, null, '0', '9000', '0', '0', '0', '0', '1000', null, '1', '1', '0', '1', '0', null, '0', null, null);
-INSERT INTO `products` VALUES ('3', '1', 'ayrjsmj0z0hlhouabj6k9jksp47sv41z', 'Madayaw Round', 'MR LPG', 'MR170', null, '20.00', '35', '31', '12', '1127', '0', '50', '1000', null, '2', '1', '1', '1', '1', '170', '8898', '1', '8');
-INSERT INTO `products` VALUES ('4', '1', 'reg89nc0wyi98jzr9hd7aiozsc6ba7tj', 'Madayaw Square', 'MS LPG', 'MS170', null, '20.00', '35', '287', '0', '556', '0', '0', '1000', null, '2', '1', '1', '1', '1', '170', '9000', '2', null);
+INSERT INTO `products` VALUES ('3', '1', 'ayrjsmj0z0hlhouabj6k9jksp47sv41z', 'Madayaw Round', 'MR LPG', 'MR170', null, '20.00', '35', '13', '13', '1130', '0', '50', '1000', null, '2', '1', '1', '1', '1', '170', '8898', '1', '8');
+INSERT INTO `products` VALUES ('4', '1', 'reg89nc0wyi98jzr9hd7aiozsc6ba7tj', 'Madayaw Square', 'MS LPG', 'MS170', null, '20.00', '35', '260', '0', '573', '0', '0', '1000', null, '2', '1', '1', '1', '1', '170', '9000', '2', null);
 INSERT INTO `products` VALUES ('5', '1', 'ydg5a6fi8dit015u5wr6ehi02la4jgfa', 'Botin', 'BOTIN170', 'BOTIN170', null, '20.00', '35', '452', '0', '500', '0', '0', '1000', null, '2', '1', '1', '1', '1', '170', '9001', '1', null);
-INSERT INTO `products` VALUES ('6', '1', '851bmkfdi98c2gk2vom508y4m8q8gb58', 'Gas Stove', 'Gas Stove 1 Burner', 'GS1B', null, '700.00', '0', '992', '0', '0', '0', '0', '1000', null, '1', '1', '0', '0', '1', null, '0', null, null);
+INSERT INTO `products` VALUES ('6', '1', '851bmkfdi98c2gk2vom508y4m8q8gb58', 'Gas Stove', 'Gas Stove 1 Burner', 'GS1B', null, '700.00', '0', '990', '0', '0', '0', '0', '1000', null, '1', '1', '0', '0', '1', null, '0', null, null);
 INSERT INTO `products` VALUES ('8', '1', 'qqh27g0i5x1t35vuhv3c40um2bla1ger', 'Seal', 'Seal', 'Seal', null, null, '0', '0', '0', '0', '0', '0', '12323', null, '1', '1', '0', '1', '0', null, '0', null, null);
 INSERT INTO `products` VALUES ('9', '1', 'cfbgf3pnxws9svdsytvbou1n6d1fvzwk', 'Botin 2.0', 'BOTIN 2nd Version', 'Botin 2.0 170g', null, '20.00', '35', '0', '0', '0', '0', '0', '2000', null, '1', '1', '1', '1', '1', '170', '0', '1', '8');
 INSERT INTO `products` VALUES ('10', '1', 'osge7t90by1h2zpaid2jktia76f5v6yo', 'Canister', 'Canister', 'Canister170', null, '20.00', '35', '0', '0', '0', '0', '0', '2000', null, '1', '1', '1', '1', '1', '170', '0', null, null);
 INSERT INTO `products` VALUES ('11', '1', 'o9vys9nqjuvrogs72zri1i1rbnslnvvk', 'Canisters', 'asdfas', 'skskskskkskksskka', null, '20.00', '35', '0', '0', '0', '0', '0', '5000', null, '1', '1', '1', '1', '1', '170', '0', '2', '8');
 INSERT INTO `products` VALUES ('12', '1', 'zmusxpf7i6hfx36zhpyh2zzesq0jxqix', '1', '6', '2', null, '3.00', '4', '0', '0', '0', '0', '0', '7', null, '1', '1', '1', '1', '1', '5', '0', '1', null);
-
--- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -387,7 +414,7 @@ CREATE TABLE `purchases` (
   `pur_loose_in` int(11) DEFAULT NULL,
   `can_type_in` int(11) DEFAULT NULL,
   PRIMARY KEY (`pur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchases
@@ -434,6 +461,18 @@ INSERT INTO `purchases` VALUES ('39', '31', '5', '3', '0', '0.00', '0.00', '774.
 INSERT INTO `purchases` VALUES ('40', '31', '4', '2', '0', '0.00', '0.00', '516.00', '24', '21.50', '4', '2', '0', '1');
 INSERT INTO `purchases` VALUES ('41', '32', '3', '2', '0', '0.00', '0.00', '516.00', '24', '21.50', '3', '2', '0', '1');
 INSERT INTO `purchases` VALUES ('42', '33', '3', '0', '1', '0.00', '0.00', '30.00', '1', '30.00', '3', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('43', '34', '3', '1', '0', '0.00', '0.00', '360.00', '12', '30.00', '3', '1', '0', '1');
+INSERT INTO `purchases` VALUES ('44', '35', '4', '2', '0', '0.00', '420.00', '360.00', '24', '15.00', '4', '1', '0', '1');
+INSERT INTO `purchases` VALUES ('45', '35', '3', '1', '0', '0.00', '0.00', '360.00', '12', '30.00', '1', '1', '0', '2');
+INSERT INTO `purchases` VALUES ('46', '36', '4', '0', '1', '0.00', '-35.00', '15.00', '1', '15.00', '4', '0', '2', '1');
+INSERT INTO `purchases` VALUES ('47', '36', '3', '0', '2', '0.00', '35.00', '60.00', '2', '30.00', '3', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('48', '37', '3', '0', '1', '0.00', '0.00', '30.00', '1', '30.00', '3', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('49', '38', '3', '0', '1', '0.00', '0.00', '30.00', '1', '30.00', '4', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('50', '38', '4', '0', '1', '0.00', '0.00', '15.00', '1', '15.00', '4', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('51', '39', '4', '0', '1', '0.00', '0.00', '21.50', '1', '21.50', '4', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('52', '40', '3', '0', '1', '0.00', '0.00', '21.50', '1', '21.50', '3', '0', '1', '1');
+INSERT INTO `purchases` VALUES ('53', '41', '6', '0', '1', '0.00', '0.00', '700.00', '1', '700.00', '0', '0', '0', '0');
+INSERT INTO `purchases` VALUES ('54', '42', '6', '0', '1', '0.00', '0.00', '701.50', '1', '701.50', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `quantity_logs`
@@ -448,7 +487,7 @@ CREATE TABLE `quantity_logs` (
   `log_datetime` datetime DEFAULT NULL,
   `pdn_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -492,6 +531,10 @@ INSERT INTO `quantity_logs` VALUES ('36', '1', '4', '1', '1', '2023-04-13 17:43:
 INSERT INTO `quantity_logs` VALUES ('37', '1', '3', '1', '4', '2023-04-13 17:44:10', '3');
 INSERT INTO `quantity_logs` VALUES ('38', '1', '4', '1', '4', '2023-04-13 17:44:20', '3');
 INSERT INTO `quantity_logs` VALUES ('39', '1', '3', '1', '1478558558', '2023-04-13 17:44:37', '3');
+INSERT INTO `quantity_logs` VALUES ('40', '1', '3', '1', '1', '2023-04-15 21:24:37', '3');
+INSERT INTO `quantity_logs` VALUES ('41', '1', '4', '1', '1', '2023-04-15 21:24:55', '3');
+INSERT INTO `quantity_logs` VALUES ('42', '1', '2', '1', '1000', '2023-04-18 23:25:33', '3');
+INSERT INTO `quantity_logs` VALUES ('43', '1', '2', '1', '4000000', '2023-04-18 23:25:43', '3');
 
 -- ----------------------------
 -- Table structure for `reset_password`
@@ -572,15 +615,15 @@ CREATE TABLE `stocks_logs` (
 -- ----------------------------
 -- Records of stocks_logs
 -- ----------------------------
-INSERT INTO `stocks_logs` VALUES ('1', '1', '3', null, '328', '1', '0', '21828', '0', '0', '50', '50');
-INSERT INTO `stocks_logs` VALUES ('2', '1', '4', null, '476', '1', '0', '4626', '500', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('1', '1', '3', null, '328', '1', '0', '26354', '0', '0', '50', '50');
+INSERT INTO `stocks_logs` VALUES ('2', '1', '4', null, '476', '1', '0', '7480', '500', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('3', '1', '5', null, '500', '1', '0', '0', '500', '0', '0', '0');
-INSERT INTO `stocks_logs` VALUES ('4', '1', '3', '328', '228', '2', '0', '21828', '0', '0', '100', '0');
-INSERT INTO `stocks_logs` VALUES ('5', '1', '4', '476', '476', '2', '0', '4626', '0', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('4', '1', '3', '328', '228', '2', '0', '26354', '0', '0', '100', '0');
+INSERT INTO `stocks_logs` VALUES ('5', '1', '4', '476', '476', '2', '0', '7480', '0', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('6', '1', '5', '500', '500', '2', '0', '0', '0', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('7', '1', '7', null, '10', '2', '1000', '0', '10', '0', '0', '0');
-INSERT INTO `stocks_logs` VALUES ('8', '1', '3', '228', null, '3', '0', '21828', '0', '7', '0', '0');
-INSERT INTO `stocks_logs` VALUES ('9', '1', '4', '476', null, '3', '0', '4626', '0', '0', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('8', '1', '3', '228', null, '3', '0', '26354', '0', '8', '0', '0');
+INSERT INTO `stocks_logs` VALUES ('9', '1', '4', '476', null, '3', '0', '7480', '0', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('10', '1', '5', '500', null, '3', '1', '0', '0', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('11', '1', '7', '10', null, '3', '0', '0', '0', '0', '0', '0');
 INSERT INTO `stocks_logs` VALUES ('12', '1', '9', null, null, '3', '0', '0', '0', '0', '0', '0');
@@ -672,12 +715,13 @@ CREATE TABLE `tanks` (
   `tnk_uuid` int(11) DEFAULT NULL,
   `tnk_active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`tnk_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tanks
 -- ----------------------------
 INSERT INTO `tanks` VALUES ('1', '1', 'Tank 1', '5000000', '4635000', null, null, '1');
+INSERT INTO `tanks` VALUES ('2', '1', 'Tank 2', '5000000', '4001000', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `tank_logs`
@@ -721,7 +765,7 @@ CREATE TABLE `transactions` (
   `trx_can_dec` varchar(30) DEFAULT NULL,
   `trx_del_rec` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`trx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactions
@@ -759,6 +803,15 @@ INSERT INTO `transactions` VALUES ('30', 'POS-20230414-30', '1', '1', '2', '2023
 INSERT INTO `transactions` VALUES ('31', 'POS-20230414-31', '1', '1', '2', '2023-04-14 18:13:23', '2023-04-14', '18:13:23', '1290', '0', '1290', '1290', '1', 'dfgdfg', 'wrwe23');
 INSERT INTO `transactions` VALUES ('32', 'POS-20230414-32', '1', '1', '2', '2023-04-14 18:17:38', '2023-04-14', '18:17:38', '516', '0', '516', '516', '1', '213', '32');
 INSERT INTO `transactions` VALUES ('33', 'POS-20230414-33', '1', '1', '1', '2023-04-14 18:18:57', '2023-04-14', '18:18:57', '30', '0', '30', '30', '1', '3453452', '23232');
+INSERT INTO `transactions` VALUES ('34', 'POS-20230415-34', '1', '1', '1', '2023-04-15 21:19:37', '2023-04-15', '21:19:37', '360', '0', '360', '360', '0', '095656', '1232');
+INSERT INTO `transactions` VALUES ('35', 'POS-20230415-35', '1', '1', '1', '2023-04-15 21:29:48', '2023-04-15', '21:29:48', '0', '1140', '720', '1140', '1', '0872', '0899');
+INSERT INTO `transactions` VALUES ('36', 'POS-20230415-36', '1', '1', '1', '2023-04-15 21:31:17', '2023-04-15', '21:31:17', '29', '46', '75', '75', '1', 'CD456', 'DR454');
+INSERT INTO `transactions` VALUES ('37', 'POS-20230415-37', '1', '1', '1', '2023-04-15 22:01:38', '2023-04-15', '22:01:38', '30', '0', '30', '30', '1', '2121', '21212');
+INSERT INTO `transactions` VALUES ('38', 'POS-20230416-38', '1', '1', '1', '2023-04-16 21:11:33', '2023-04-16', '21:11:33', '3', '42', '45', '45', '1', 'asdasd', 'asdasd');
+INSERT INTO `transactions` VALUES ('39', 'POS-20230416-39', '1', '1', '2', '2023-04-16 21:12:18', '2023-04-16', '21:12:18', '1', '21', '22', '22', '1', 'asda', 'aaa');
+INSERT INTO `transactions` VALUES ('40', 'POS-20230416-40', '1', '1', '2', '2023-04-16 21:14:05', '2023-04-16', '21:14:05', '3', '19', '22', '22', '1', '234234', 'sadfdsfsd');
+INSERT INTO `transactions` VALUES ('41', 'POS-20230416-41', '1', '1', '1', '2023-04-16 21:19:52', '2023-04-16', '21:19:52', '700', '0', '700', '700', '1', 'CD12312', 'DR4323');
+INSERT INTO `transactions` VALUES ('42', 'POS-20230416-42', '1', '1', '2', '2023-04-16 21:21:22', '2023-04-16', '21:21:22', '252', '450', '702', '702', '1', 'CD4546', 'DR55');
 
 -- ----------------------------
 -- Table structure for `users`

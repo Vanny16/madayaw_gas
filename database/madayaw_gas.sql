@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-05 23:49:47
+Date: 2023-04-18 23:39:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -188,6 +188,7 @@ INSERT INTO `payment_types` VALUES ('1', 'Cash');
 INSERT INTO `payment_types` VALUES ('2', 'Credit');
 INSERT INTO `payment_types` VALUES ('3', 'G-Cash');
 INSERT INTO `payment_types` VALUES ('4', 'Check');
+INSERT INTO `payment_types` VALUES ('5', 'Split Payment');
 
 -- ----------------------------
 -- Table structure for `production_logs`
@@ -300,6 +301,26 @@ CREATE TABLE `reset_password` (
 
 -- ----------------------------
 -- Records of reset_password
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sales_reports`
+-- ----------------------------
+DROP TABLE IF EXISTS `sales_reports`;
+CREATE TABLE `sales_reports` (
+  `sls_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cus_id` int(11) DEFAULT NULL,
+  `prd_id` int(11) DEFAULT NULL,
+  `sls_quantity` float DEFAULT NULL,
+  `sls_discount` float DEFAULT NULL,
+  `sls_sub_total` float DEFAULT NULL,
+  `sls_time` time DEFAULT NULL,
+  `pdn_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`sls_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of sales_reports
 -- ----------------------------
 
 -- ----------------------------
@@ -481,17 +502,15 @@ CREATE TABLE `users` (
   `usr_password` varchar(255) DEFAULT NULL,
   `usr_address` varchar(255) DEFAULT NULL,
   `usr_image` varchar(255) DEFAULT NULL,
-  `usr_active` tinyint(4) DEFAULT '1',
+  `usr_active` tinyint(255) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
-INSERT INTO `users` VALUES ('2', '1', 'smd2fxqsidkfov8tnw6y45g9jqryc0gy', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tan Kudarat', null, '1', '3');
-INSERT INTO `users` VALUES ('3', '1', '632uwv97etvmckms0k1sos0sz901ndhi', 'Mark', 'mark', 'ea82410c7a9991816b5eeeebe195e20a', 'Seoul Tan Kudarat', null, '1', '2');
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, null, '1', '1');
 
 -- ----------------------------
 -- Table structure for `user_types`
@@ -501,7 +520,7 @@ CREATE TABLE `user_types` (
   `typ_id` int(11) NOT NULL AUTO_INCREMENT,
   `typ_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of user_types
@@ -509,3 +528,5 @@ CREATE TABLE `user_types` (
 INSERT INTO `user_types` VALUES ('1', 'Administrator');
 INSERT INTO `user_types` VALUES ('2', 'Employee');
 INSERT INTO `user_types` VALUES ('3', 'Observer');
+INSERT INTO `user_types` VALUES ('4', 'Supervisor');
+INSERT INTO `user_types` VALUES ('5', 'Plant Manager');
