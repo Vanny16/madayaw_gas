@@ -257,7 +257,7 @@
                                                 <td><b>Total Stocks</b></td>
                                                 @if(isset($canisters))
                                                     @foreach($canisters as $canister)
-                                                        <strong><th>{!! get_total_stock_report($canister->prd_id, $pdn_id) !!}</th></strong>
+                                                        <strong><th>{!! get_product_total_stock_from_pdn_date($canister->prd_id, $pdn_id) !!}</th></strong>
                                                     @endforeach
                                                 @endif
                                             </tr>
@@ -281,14 +281,16 @@
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @foreach($canisters as $canister)
-                                                <tr>
-                                                    <td>{{ $canister->prd_name}}</td>
-                                                    <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 5) !!}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
+                                        {{-- <div style="overflow-y:auto;"> --}}
+                                            <tbody>
+                                                @foreach($canisters as $canister)
+                                                    <tr>
+                                                        <td>{{ $canister->prd_name}}</td>
+                                                        <td>{!! get_quantity_of_canisters($canister->prd_id, $pdn_id, 5) !!}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        {{-- </div> --}}
                                     </table>
                                 </div>
                             </div>

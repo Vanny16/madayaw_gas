@@ -1105,7 +1105,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                if($verification->verify_prd_id == $canister->prd_id)
                                                                 {
                                                                     $verify_quantity = $verification->verify_opening;
                                                                 }
@@ -1127,7 +1127,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                if($verification->verify_prd_id == $canister->prd_id)
                                                                 {
                                                                     $verify_quantity = $verification->verify_closing;
                                                                 }
@@ -1181,7 +1181,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                if($verification->verify_prd_id == $tank->tnk_id)
                                                                 {
                                                                     $verify_quantity = ($verification->verify_opening) / 1000;
                                                                 }
@@ -1203,7 +1203,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                if($verification->verify_prd_id == $tank->tnk_id)
                                                                 {
                                                                     $verify_quantity = ($verification->verify_closing) / 1000;
                                                                 }
@@ -1317,7 +1317,7 @@
                                             @if($tank->tnk_active == 1)
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
-                                                <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
+                                                <td><input type="text" class="form-control" {{-- name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
                                                 @if($extra_th_display)
                                                     <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                 @endif
