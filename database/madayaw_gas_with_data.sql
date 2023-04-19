@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50741
+Source Server         : server
+Source Server Version : 50610
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50741
+Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-04-18 23:37:01
+Date: 2023-04-19 17:19:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -85,6 +85,36 @@ CREATE TABLE `customers` (
 -- ----------------------------
 INSERT INTO `customers` VALUES ('1', '1', 'b4pje0fqknvb69ss1ulsxxnrhpwxt82v', 'Mark Glenn Rojas', 'Indangan', '09800989080', '0', '3,4,6,', '30.00,15.00,700.00,', null, null, '1');
 INSERT INTO `customers` VALUES ('2', '1', 'xoxh928ievszk8jcft7t3wf4mzhyu1hk', 'DJV', 'Indangan', '09800989080', '1.5', '3,4,5,6,', '20.00,20.00,20.00,700.00,', null, null, '1');
+
+-- ----------------------------
+-- Table structure for `fuel_prices`
+-- ----------------------------
+DROP TABLE IF EXISTS `fuel_prices`;
+CREATE TABLE `fuel_prices` (
+  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prc_date` date DEFAULT NULL,
+  `prc_price` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`prc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of fuel_prices
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `migrations`
+-- ----------------------------
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of migrations
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `movement_logs`
@@ -395,6 +425,20 @@ INSERT INTO `products` VALUES ('11', '1', 'o9vys9nqjuvrogs72zri1i1rbnslnvvk', 'C
 INSERT INTO `products` VALUES ('12', '1', 'zmusxpf7i6hfx36zhpyh2zzesq0jxqix', '1', '6', '2', null, '3.00', '4', '0', '0', '0', '0', '0', '7', null, '1', '1', '1', '1', '1', '5', '0', '1', null);
 
 -- ----------------------------
+-- Table structure for `product_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_types`;
+CREATE TABLE `product_types` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of product_types
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `purchases`
 -- ----------------------------
 DROP TABLE IF EXISTS `purchases`;
@@ -651,32 +695,33 @@ CREATE TABLE `stock_statuses` (
 DROP TABLE IF EXISTS `stock_verifications`;
 CREATE TABLE `stock_verifications` (
   `verify_id` int(11) NOT NULL AUTO_INCREMENT,
-  `verify_stock_id` int(11) DEFAULT NULL,
+  `verify_prd_id` int(11) DEFAULT NULL,
   `verify_opening` int(11) DEFAULT NULL,
   `verify_closing` int(11) DEFAULT NULL,
   `verify_is_product` int(11) DEFAULT NULL,
   `verify_pdn_id` int(11) DEFAULT NULL,
   `verify_acc_id` int(11) DEFAULT NULL,
+  `verify_user_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`verify_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of stock_verifications
 -- ----------------------------
-INSERT INTO `stock_verifications` VALUES ('1', '1', '5000000', '4745000', '0', '1', '1');
-INSERT INTO `stock_verifications` VALUES ('2', '3', null, '328', '1', '1', '1');
-INSERT INTO `stock_verifications` VALUES ('3', '4', null, '476', '1', '1', '1');
-INSERT INTO `stock_verifications` VALUES ('4', '5', null, '500', '1', '1', '1');
-INSERT INTO `stock_verifications` VALUES ('5', '3', '328', '228', '1', '2', '1');
-INSERT INTO `stock_verifications` VALUES ('6', '4', '476', '476', '1', '2', '1');
-INSERT INTO `stock_verifications` VALUES ('7', '5', '500', '500', '1', '2', '1');
-INSERT INTO `stock_verifications` VALUES ('8', '1', '4745000', '4635000', '0', '2', '1');
-INSERT INTO `stock_verifications` VALUES ('9', '7', null, '10', '1', '2', '1');
-INSERT INTO `stock_verifications` VALUES ('10', '3', '228', '228', '1', '3', '1');
-INSERT INTO `stock_verifications` VALUES ('11', '4', '476', '476', '1', '3', '1');
-INSERT INTO `stock_verifications` VALUES ('12', '5', '500', '500', '1', '3', '1');
-INSERT INTO `stock_verifications` VALUES ('13', '7', '10', '10', '1', '3', '1');
-INSERT INTO `stock_verifications` VALUES ('14', '1', '4635000', '4635000', '0', '3', '1');
+INSERT INTO `stock_verifications` VALUES ('1', '1', '5000000', '4745000', '0', '1', '1', null);
+INSERT INTO `stock_verifications` VALUES ('2', '3', null, '328', '1', '1', '1', null);
+INSERT INTO `stock_verifications` VALUES ('3', '4', null, '476', '1', '1', '1', null);
+INSERT INTO `stock_verifications` VALUES ('4', '5', null, '500', '1', '1', '1', null);
+INSERT INTO `stock_verifications` VALUES ('5', '3', '328', '228', '1', '2', '1', null);
+INSERT INTO `stock_verifications` VALUES ('6', '4', '476', '476', '1', '2', '1', null);
+INSERT INTO `stock_verifications` VALUES ('7', '5', '500', '500', '1', '2', '1', null);
+INSERT INTO `stock_verifications` VALUES ('8', '1', '4745000', '4635000', '0', '2', '1', null);
+INSERT INTO `stock_verifications` VALUES ('9', '7', null, '10', '1', '2', '1', null);
+INSERT INTO `stock_verifications` VALUES ('10', '3', '228', '228', '1', '3', '1', null);
+INSERT INTO `stock_verifications` VALUES ('11', '4', '476', '476', '1', '3', '1', null);
+INSERT INTO `stock_verifications` VALUES ('12', '5', '500', '500', '1', '3', '1', null);
+INSERT INTO `stock_verifications` VALUES ('13', '7', '10', '10', '1', '3', '1', null);
+INSERT INTO `stock_verifications` VALUES ('14', '1', '4635000', '4635000', '0', '3', '1', null);
 
 -- ----------------------------
 -- Table structure for `suppliers`

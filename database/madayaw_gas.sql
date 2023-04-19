@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50741
+Source Server         : server
+Source Server Version : 50610
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50741
+Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-04-18 23:39:48
+Date: 2023-04-19 17:20:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,6 +78,36 @@ CREATE TABLE `customers` (
 
 -- ----------------------------
 -- Records of customers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `fuel_prices`
+-- ----------------------------
+DROP TABLE IF EXISTS `fuel_prices`;
+CREATE TABLE `fuel_prices` (
+  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prc_date` date DEFAULT NULL,
+  `prc_price` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`prc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of fuel_prices
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `migrations`
+-- ----------------------------
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of migrations
 -- ----------------------------
 
 -- ----------------------------
@@ -244,6 +274,20 @@ CREATE TABLE `products` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `product_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `product_types`;
+CREATE TABLE `product_types` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of product_types
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `purchases`
 -- ----------------------------
 DROP TABLE IF EXISTS `purchases`;
@@ -390,12 +434,13 @@ CREATE TABLE `stock_statuses` (
 DROP TABLE IF EXISTS `stock_verifications`;
 CREATE TABLE `stock_verifications` (
   `verify_id` int(11) NOT NULL AUTO_INCREMENT,
-  `verify_stock_id` int(11) DEFAULT NULL,
+  `verify_prd_id` int(11) DEFAULT NULL,
   `verify_opening` int(11) DEFAULT NULL,
   `verify_closing` int(11) DEFAULT NULL,
   `verify_is_product` int(11) DEFAULT NULL,
   `verify_pdn_id` int(11) DEFAULT NULL,
   `verify_acc_id` int(11) DEFAULT NULL,
+  `verify_user_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`verify_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
