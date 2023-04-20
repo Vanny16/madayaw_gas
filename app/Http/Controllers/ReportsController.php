@@ -417,6 +417,63 @@ class ReportsController extends Controller
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
     }
 
+    public function paymentsToday()
+    {
+        $payments_date_from = date("Y-m-d");
+        $payments_date_to = date("Y-m-d");
+
+        $transactions = DB::table('transactions')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->where('trx_active','=','1')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->orderBy('transactions.trx_ref_id', 'DESC')
+        ->get();
+
+        $payments = DB::table('payments')
+        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+        ->get();
+
+        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+    }
+
+    public function paymentsFilter(Request $request)
+    {
+        $payments_date_from = $request->payments_date_from;
+        $payments_date_to = $request->payments_date_to;
+        $select_show = $request->select_show;
+        
+        if($select_show == "Transactions"){
+            $transactions = DB::table('transactions')
+            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            ->where('trx_active','=','1')
+            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+            ->orderBy('transactions.trx_ref_id', 'DESC')
+            ->get();
+        }
+        else{
+            $transactions = DB::table('payments')
+            ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+            ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+            ->orderBy('payments.pmnt_id', 'DESC')
+            ->get();
+        }
+
+        $payments = DB::table('payments')
+        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+        ->get();
+
+        session(['select_show' => $select_show]);
+        
+        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+    }
+
     public function production(Request $request)
     {
         $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d'); 

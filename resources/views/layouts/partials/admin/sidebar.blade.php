@@ -37,11 +37,18 @@
                         </p>
                     </a>
                 </li>
+
+                <?php $state = ""; if(check_production_log()){$state = "disabled";}?>
                 
                 @if(session('typ_id') != '3')
                 <li class="nav-header">SALES</li>
                 <li class="nav-item">
+                  
+                @if($state == "disabled")
+                    <a class="nav-link">
+                @else
                     <a href="{{ action('SalesController@main') }}" class="nav-link">
+                @endif
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
                             Point of Sale
@@ -50,7 +57,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('SalesController@paymentsToday') }}" class="nav-link">
+                    <a href="{{ action('ReportsController@paymentsToday') }}" class="nav-link">
                         <i class="nav-icon fas fa-coins"></i>
                         <p>
                             Payments

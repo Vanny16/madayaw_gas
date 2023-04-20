@@ -67,48 +67,6 @@ class SalesController extends Controller
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
     }
 
-    public function paymentsToday()
-    {
-        $payments_date_from = date("Y-m-d");
-        $payments_date_to = date("Y-m-d");
-
-        $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('trx_active','=','1')
-        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-        ->orderBy('transactions.trx_ref_id', 'DESC')
-        ->get();
-
-        $payments = DB::table('payments')
-        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
-        ->get();
-
-        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
-    }
-
-    public function paymentsFilter(Request $request)
-    {
-        $payments_date_from = $request->payments_date_from;
-        $payments_date_to = $request->payments_date_to;
-
-        $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('trx_active','=','1')
-        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-        ->orderBy('transactions.trx_ref_id', 'DESC')
-        ->get();
-
-        $payments = DB::table('payments')
-        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
-        ->get();
-
-        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
-    }
-
     public function selectCustomer(Request $request)
     {
         $client_id = $request->client_id;

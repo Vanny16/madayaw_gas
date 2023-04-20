@@ -51,39 +51,60 @@
                             $date_label = "All Transactions";
                         @endphp
                     @endif
+                    
+                    @if(session('select_show') == "Transactions")
+                        @php
+                            $select_transactions = "selected";
+                            $select_payments = "";
+                        @endphp
+                    @else
+                        @php
+                            $select_transactions = "";
+                            $select_payments = "selected";
+                        @endphp
+                    @endif
 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
-                            <form method="POST" action="{{ action('SalesController@paymentsFilter') }}">
+                            <form method="POST" action="{{ action('ReportsController@paymentsFilter') }}">
                                 {{ csrf_field() }} 
                                 <div class="row">
-                                    <div class="col-md-3 mb-3">
-                                        <label for="date_from">From</label>
-                                        <input type="date" class="form-control" id="payments_date_from" name="payments_date_from" value="{{ $date_from }}" required/>     
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="date_to">To</label>
-                                        <input type="date" class="form-control" id="payments_date_to" name="payments_date_to" value="{{ $date_to }}" required/>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label>Status</label>
-                                        <select id="status_filter" class="form-control">
-                                            <option value="POS">All</option>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Paid">Paid</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
                                             <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Search Date</button>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_from">From</label>
+                                        <input type="date" class="form-control" id="payments_date_from" name="payments_date_from" value="{{ $date_from }}" required/>     
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="date_to">To</label>
+                                        <input type="date" class="form-control" id="payments_date_to" name="payments_date_to" value="{{ $date_to }}" required/>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label>Show by</label>
+                                        <select id="select_show" name="select_show" class="form-control">
+                                            <option value="Transactions" {{$select_transactions}}>Transactions</option>
+                                            <option value="Payments" {{$select_payments}}>Payments</option>
+                                        </select>
+                                    </div>
+
+                                    @if(session('select_show') == "Transactions")
+                                        <div class="col-md-2 mb-3">
+                                            <label>Status</label>
+                                            <select id="status_filter" class="form-control">
+                                                <option value="POS">All</option>
+                                                <option value="Pending">Pending</option>
+                                                <option value="Paid">Paid</option>
+                                            </select>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-1 mb-3">
+                                        <label for="">&nbsp;</label>
+                                        <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
                             </form>
@@ -98,7 +119,7 @@
                                 <div class="col-md-8">
                                     <a href="{{ action('SalesController@payments') }}" class="float-right text-danger ml-2 mr-2"> All Transactions</a>
                                     <span class="float-right">|</span>
-                                    <a href="{{ action('SalesController@paymentsToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Transactions</a>
+                                    <a href="{{ action('ReportsController@paymentsToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Transactions</a>
                                 </div>
                             </div>
                         </div>
@@ -106,23 +127,35 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments</h3>
+                            <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments History</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
                                 <table class="table table-hover table-condensed">
                                     <thead>
-                                        <tr>
-                                            <th>Reference #</th>
-                                            <th>Customer</th>
-                                            <th>Transaction Date</th>
-                                            <th>Amount Payable</th>
-                                            <th>Amount Paid</th>
-                                            <th>Balance</th>
-                                            <th>Status</th>
-                                            <th width="35px"></th>
-                                            <th width="35px"></th>
-                                        </tr>
+                                        @if(session('select_show') == "Transactions")
+                                            <tr>
+                                                <th>Reference #</th>
+                                                <th>Customer</th>
+                                                <th>Transaction Date</th>
+                                                <th>Amount Payable</th>
+                                                <th>Amount Paid</th>
+                                                <th>Balance</th>
+                                                <th>Status</th>
+                                                <th width="35px"></th>
+                                                <th width="35px"></th>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <th>Payment #</th>
+                                                <th>Transaction #</th>
+                                                <th>Customer</th>
+                                                <th>Payment Date</th>
+                                                <th>Amount Paid</th>
+                                                <th>Payment Type</th>
+                                                <th>Cashier</th>
+                                            </tr>
+                                        @endif
                                     </thead>
                                     <tbody id="tbl-payments">
                                         @foreach($transactions as $transaction)
@@ -135,17 +168,30 @@
                                                 @php($text_color = "text-success")
                                                 @php($btn_action = '<button class="btn btn-sm btn-light text-success"><i class="fa fa-check"></i></button>')
                                             @endif
-                                            <tr class='clickable-row' >
-                                                <td>{{ $transaction->trx_ref_id }}</td>
-                                                <td>{{ $transaction->cus_name }}</td>
-                                                <td>{{ $transaction->trx_datetime }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_total, 2, '.', ',') }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_amount_paid, 2, '.', ',') }}</td>
-                                                <td>₱ {{ number_format($transaction->trx_balance, 2, '.', ',') }}</td>
-                                                <td class="{{ $text_color }}">{!! $status !!}</td>
-                                                <td>{!! $btn_action !!}</td>
-                                                <td><button class="btn btn-sm btn-light text-secondary" data-toggle="modal" data-target="#history_modal{{ $transaction->trx_id }}"><i class="fa fa-history"></i></button></td>
-                                            </tr>
+                                            
+                                            @if(session('select_show') == "Transactions")
+                                                <tr class='clickable-row' >
+                                                    <td>{{ $transaction->trx_ref_id }}</td>
+                                                    <td>{{ $transaction->cus_name }}</td>
+                                                    <td>{{ $transaction->trx_datetime }}</td>
+                                                    <td>₱ {{ number_format($transaction->trx_total, 2, '.', ',') }}</td>
+                                                    <td>₱ {{ number_format($transaction->trx_amount_paid, 2, '.', ',') }}</td>
+                                                    <td>₱ {{ number_format($transaction->trx_balance, 2, '.', ',') }}</td>
+                                                    <td class="{{ $text_color }}">{!! $status !!}</td>
+                                                    <td>{!! $btn_action !!}</td>
+                                                    <td><button class="btn btn-sm btn-light text-secondary" data-toggle="modal" data-target="#history_modal{{ $transaction->trx_id }}"><i class="fa fa-history"></i></button></td>
+                                                </tr>
+                                            @else
+                                                <tr class='clickable-row' >
+                                                    <td>{{ $transaction->pmnt_ref_id }}</td>
+                                                    <td>{{ $transaction->trx_ref_id }}</td>
+                                                    <td>{{ $transaction->cus_name }}</td>
+                                                    <td>{{ $transaction->trx_datetime }}</td>
+                                                    <td>₱ {{ number_format($transaction->pmnt_amount, 2, '.', ',') }}</td>
+                                                    <td>{{ $transaction->payment_name }}</td>
+                                                    <td>{{ $transaction->usr_full_name }}</td>
+                                                </tr>
+                                            @endif
 
                                             <!-- History Modal -->
                                             <div class="modal fade show" id="history_modal{{ $transaction->trx_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -279,7 +325,7 @@
                                                                             <input type="text" class="form-control" id="pmnt_amount_gcash{{ $transaction->trx_id }}" name="pmnt_amount_gcash" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
                                                                             <input type="text" class="form-control" id="pmnt_amount_check{{ $transaction->trx_id }}" name="pmnt_amount_check" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
                                                                             <input type="text" class="form-control" id="pmnt_amount{{ $transaction->trx_id }}" name="pmnt_amount" placeholder="Enter Amount"  onkeypress="return isNumberKey(this, event);" value="0" required hidden/>
-                                                                            <input type="text" class="form-control" name="trx_id" value="{{ $transaction->trx_id }}" onkeypress="return isNumberKey(this, event);" hidden/>
+                                                                            <input type="hidden" class="form-control" name="trx_id" value="{{ $transaction->trx_id }}" onkeypress="return isNumberKey(this, event);"/>
                                                                             <input type="hidden" id="mode_of_payment{{ $transaction->trx_id }}" name="mode_of_payment" class="form-control"></input>
                                                                         </div>
                                                                         <div class="form-group" id="pmnt_attachment_gcash{{ $transaction->trx_id }}">
