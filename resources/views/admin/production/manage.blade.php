@@ -1105,7 +1105,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                if($verification->verify_prd_id == $canister->prd_id)
                                                                 {
                                                                     $verify_quantity = $verification->verify_opening;
                                                                 }
@@ -1127,7 +1127,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $canister->prd_id)
+                                                                if($verification->verify_prd_id == $canister->prd_id)
                                                                 {
                                                                     $verify_quantity = $verification->verify_closing;
                                                                 }
@@ -1181,7 +1181,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                if($verification->verify_prd_id == $tank->tnk_id)
                                                                 {
                                                                     $verify_quantity = ($verification->verify_opening) / 1000;
                                                                 }
@@ -1203,7 +1203,7 @@
                                                                     continue;
                                                                 }
 
-                                                                if($verification->verify_stock_id == $tank->tnk_id)
+                                                                if($verification->verify_prd_id == $tank->tnk_id)
                                                                 {
                                                                     $verify_quantity = ($verification->verify_closing) / 1000;
                                                                 }
@@ -1317,7 +1317,7 @@
                                             @if($tank->tnk_active == 1)
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
-                                                <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
+                                                <td><input type="text" class="form-control" {{-- name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
                                                 @if($extra_th_display)
                                                     <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                 @endif
@@ -1444,22 +1444,22 @@
                                                     @if($extra_th_display)
                                                         <td><i>{{$canister->prd_name}}</i></td>
                                                         {{-- <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required></td>
                                                         {{-- <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required></td>
                                                         {{-- <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required></td>
                                                         {{-- <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required></td>
                                                         {{-- <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required></td>
                                                         {{-- <td>{!! get_product_total_stock($canister->prd_id) !!}</td>--}}
-                                                        <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" {{-- name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
                                                     @else
                                                         <td><i>{{$canister->prd_name}}</i></td>
