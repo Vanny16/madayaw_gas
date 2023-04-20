@@ -90,10 +90,10 @@
                                         <div class="col-md-12">
                                             <small><strong>{{$tank->tnk_name}}</strong></small>
                                             <div class="row">
-                                                <small>Capacity: {{number_format($tank->tnk_capacity)}} kg</small>
+                                                <small><strong>Capacity:</strong> {{number_format($tank->tnk_capacity)}} kg</small>
                                             </div>
                                             <div class="row">
-                                                <small>Volume: {{number_format($tank->tnk_remaining)}} kg</small>
+                                                <small><strong>Volume:</strong> {{number_format($tank->tnk_remaining)}} kg</small>
                                             </div>
                                         </div>
                                     </div>
