@@ -50,7 +50,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('SalesController@paymentsToday') }}" class="nav-link">
+                    <a href="{{ action('ReportsController@paymentsToday') }}" class="nav-link">
                         <i class="nav-icon fas fa-coins"></i>
                         <p>
                             Payments
