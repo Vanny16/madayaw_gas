@@ -1265,11 +1265,9 @@
 
 <?php 
     $input_text_display = "";
-    $extra_th_display = false;
-    if(session('typ_id') == 1 || session('typ_id') == 5 )
+    if(session('typ_id') == 1 || session('typ_id') == 4 )
     {
         $input_text_display = "disabled";
-        $extra_th_display = true;
     }
 ?>
 <!-- Verify Production Modal -->
@@ -1303,7 +1301,7 @@
                                             <th>Confirm Closing Tank</th>
                                         @endif
                                         <!-- <th class="text-center"><i>Plant Manager</i></th> -->
-                                        @if($extra_th_display)
+                                        @if(session('typ_id') == 1 || session('typ_id') == 4)
                                             <th class="text-center"><em>Plant Manager</em></th>
                                             <th class="text-center"><em>Supervisor</em></th>
                                         @else
@@ -1318,9 +1316,10 @@
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
                                                 <td><input type="text" class="form-control" {{-- name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
-                                                @if($extra_th_display)
+                                                @if(session('typ_id') == 1 || session('typ_id') == 4)
                                                     <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                 @endif
+                                                <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                             @endif
                                         @endforeach
                                    @endif
@@ -1400,7 +1399,7 @@
                                 <table class="table table-hover ">
                                     <thead>
                                         <tr>
-                                            @if($extra_th_display)
+                                            @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                 <th>Canister</th>
                                                 <th colspan="2" class="text-center" style="min-width: 250px;">Filled</th>
                                                 <th colspan="2" class="text-center" style="min-width: 250px;">Leakers</th>
@@ -1422,7 +1421,7 @@
                                     <tbody>
                                         @if(isset($canisters))
                                             <tr>
-                                                @if($extra_th_display)
+                                                @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                     <td></td>
                                                     <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
@@ -1441,7 +1440,7 @@
                                             </tr>
                                             @foreach($canisters as $canister)
                                                 <tr>
-                                                    @if($extra_th_display)
+                                                    @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                         <td><i>{{$canister->prd_name}}</i></td>
                                                         {{-- <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td> --}}
                                                         <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
@@ -1461,6 +1460,7 @@
                                                         {{-- <td>{!! get_product_total_stock($canister->prd_id) !!}</td>--}}
                                                         <td><input type="text" class="form-control" {{-- name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                     @else
                                                         <td><i>{{$canister->prd_name}}</i></td>
                                                         {{-- <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td> --}}
@@ -1475,6 +1475,7 @@
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required></td>
                                                         {{-- <td>{!! get_product_total_stock($canister->prd_id) !!}</td>--}}
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
+                                                        <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                     @endif
                                                  </tr>
                                             @endforeach

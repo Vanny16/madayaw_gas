@@ -37,11 +37,18 @@
                         </p>
                     </a>
                 </li>
+
+                <?php $state = ""; if(check_production_log()){$state = "disabled";}?>
                 
                 @if(session('typ_id') != '3')
                 <li class="nav-header">SALES</li>
                 <li class="nav-item">
+                  
+                @if($state == "disabled")
+                    <a class="nav-link">
+                @else
                     <a href="{{ action('SalesController@main') }}" class="nav-link">
+                @endif
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
                             Point of Sale
