@@ -64,11 +64,13 @@ class ProductionController extends Controller
         ->get(); 
 
         $product_verifications = DB::table('stock_verifications')
+        ->join('products', 'products.prd_id', '=', 'stock_verifications.verify_prd_id')
         ->where('verify_pdn_id', '=', get_last_production_id())
         ->where('verify_acc_id', '=', session('acc_id'))
         ->get(); 
 
         // dd($product_verifications);
+        // dd(get_last_production_id());
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
@@ -242,9 +244,11 @@ class ProductionController extends Controller
         array_pop($temp_details);
         array_pop($temp_tank_details);
         
+        // dd($request->canister_details);
+
         $canister_details = [];
         $tank_details = [];
-        dd($canister_details);
+
         foreach($temp_details as $details)
         {   
             $detail = explode("|", $details);
@@ -262,7 +266,7 @@ class ProductionController extends Controller
             session()->flash('errorMessage','Must add tanks before starting production!');
             return redirect()->action('ProductionController@manage');
         }
-
+// dd($pdn_flag);
         if($pdn_flag)
         {
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -272,10 +276,19 @@ class ProductionController extends Controller
                     $input_field = "verify_stock_quantity" . $prd_id;
                     
                     $verify_checker = DB::table('stock_verifications')
-                    ->where('verify_stock_id', '=', $prd_id)
+                    ->where('verify_prd_id', '=', $prd_id)
                     ->where('verify_is_product', '=', 1)
                     ->where('verify_pdn_id', '=', get_last_production_id() + 1)
                     ->first();
+                    
+                    if(session('typ_id') == 4)
+                    {
+                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        {
+                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            return redirect()->action('ProductionController@manage');
+                        }
+                    }
 
                     if($verify_checker <> '' || $verify_checker <> null)
                     {
@@ -284,11 +297,12 @@ class ProductionController extends Controller
 
                     DB::table('stock_verifications')
                     ->insert([
-                        'verify_stock_id' => $prd_id,
+                        'verify_prd_id' => $prd_id,
                         'verify_opening' => $request->$input_field,
                         'verify_is_product' => 1,
                         'verify_pdn_id' => get_last_production_id() + 1,
                         'verify_acc_id' => session('acc_id'),
+                        'verify_user_type' => session('typ_id'),
                     ]);
                 }
 
@@ -297,11 +311,20 @@ class ProductionController extends Controller
                     $input_field = "verify_tank_remaining" . $tnk_id;
 
                     $verify_checker = DB::table('stock_verifications')
-                    ->where('verify_stock_id', '=', $tnk_id)
+                    ->where('verify_prd_id', '=', $tnk_id)
                     ->where('verify_is_product', '=', 0)
                     ->where('verify_pdn_id', '=', get_last_production_id() + 1)
                     ->first();
                     
+                    if(session('typ_id') == 4)
+                    {
+                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        {
+                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            return redirect()->action('ProductionController@manage');
+                        }
+                    }
+
                     if($verify_checker <> '' || $verify_checker <> null)
                     {
                         break;
@@ -309,11 +332,12 @@ class ProductionController extends Controller
 
                     DB::table('stock_verifications')
                     ->insert([
-                        'verify_stock_id' => $tnk_id,
+                        'verify_prd_id' => $tnk_id,
                         'verify_opening' => ($request->$input_field) * 1000,
                         'verify_is_product' => 0,
                         'verify_pdn_id' => get_last_production_id() + 1,
                         'verify_acc_id' => session('acc_id'),
+                        'verify_user_type' => session('typ_id'),
                     ]);
                 }
             }
@@ -332,11 +356,20 @@ class ProductionController extends Controller
                     $verification_check = DB::table('stock_verifications')
                     ->where('verify_acc_id', '=', session('acc_id'))
                     ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_stock_id', '=', $prd_id)
+                    ->where('verify_prd_id', '=', $prd_id)
                     ->first();
+                    
+                    if(session('typ_id') == 4)
+                    {
+                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        {
+                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            return redirect()->action('ProductionController@manage');
+                        }
+                    }
 
                     // $verify_checker = DB::table('stock_verifications')
-                    // ->where('verify_stock_id', '=', $prd_id)
+                    // ->where('verify_prd_id', '=', $prd_id)
                     // ->where('verify_is_product', '=', 1)
                     // ->where('verify_pdn_id', '=', get_last_production_id())
                     // ->first();
@@ -350,17 +383,18 @@ class ProductionController extends Controller
                     {
                         DB::table('stock_verifications')
                         ->insert([
-                            'verify_stock_id' => $prd_id,
+                            'verify_prd_id' => $prd_id,
                             'verify_closing' => $request->$input_field,
                             'verify_is_product' => 1,
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
+                            'verify_user_type' => session('typ_id'),
                         ]);  
                     }
                   
                     DB::table('stock_verifications')
                     ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_stock_id', '=', $prd_id)
+                    ->where('verify_prd_id', '=', $prd_id)
                     ->where('verify_is_product', '=', 1)
                     ->update([
                         'verify_closing' => $request->$input_field,
@@ -373,12 +407,21 @@ class ProductionController extends Controller
 
                     $verification_check = DB::table('stock_verifications')
                     ->where('verify_acc_id', '=', session('acc_id'))
-                    ->where('verify_stock_id', '=', $tnk_id)
+                    ->where('verify_prd_id', '=', $tnk_id)
                     ->where('verify_pdn_id', '=', get_last_production_id())
                     ->first();
 
+                    if(session('typ_id') == 4)
+                    {
+                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        {
+                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            return redirect()->action('ProductionController@manage');
+                        }
+                    }
+
                     // $verify_checker = DB::table('stock_verifications')
-                    // ->where('verify_stock_id', '=', $tnk_id)
+                    // ->where('verify_prd_id', '=', $tnk_id)
                     // ->where('verify_is_product', '=', 0)
                     // ->where('verify_pdn_id', '=', get_last_production_id())
                     // ->first();
@@ -392,17 +435,18 @@ class ProductionController extends Controller
                     {
                         DB::table('stock_verifications')
                         ->insert([
-                            'verify_stock_id' => $tnk_id,
+                            'verify_prd_id' => $tnk_id,
                             'verify_closing' => $request->$input_field,
                             'verify_is_product' => 0,
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
+                            'verify_user_type' => session('typ_id'),
                         ]);  
                     }
 
                     DB::table('stock_verifications')
                     ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_stock_id', '=', $tnk_id)
+                    ->where('verify_prd_id', '=', $tnk_id)
                     ->where('verify_is_product', '=', 0)
                     ->update([
                         'verify_closing' => ($request->$input_field) * 1000,
@@ -1703,6 +1747,22 @@ class ProductionController extends Controller
         ->first();
 
         if($seals->prd_quantity < $qty)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function check_plant_manager_verification($prd_id, $pdn_id)
+    {
+        $verification_check = DB::table('stock_verifications')
+        ->where('verify_user_type', '=', [1, 5])
+        ->where('verify_pdn_id', '=', $prd_id)
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->get();
+dd(empty($verification_check));
+        if(!$verification_check)
         {
             return false;
         }
