@@ -25,7 +25,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    @if(session('typ_id') == 1)
+                    @if(session('typ_id') == 1 || session('typ_id') == '4')
                         @if($pdn_flag)
                             <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
                         @else
@@ -34,7 +34,7 @@
                     @endif
                     @if(session('typ_id') == 3)
                         <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Verify Production</a>
-                    @elseif(session('typ_id') == 1)
+                    @elseif(session('typ_id') == 1 || session('typ_id') == '4')
                         <div class="dropdown dropleft" style="float:right;">
                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="dropdown-menu">
@@ -222,7 +222,13 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
+                                                                @if(session('typ_id') <> 1)
+                                                                    <td></td>
+                                                                @else
+                                                                    <td>
+                                                                        <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         @endforeach
                                                     @endif 

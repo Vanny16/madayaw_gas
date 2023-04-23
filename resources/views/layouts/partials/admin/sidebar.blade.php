@@ -66,11 +66,11 @@
                 </li>
                 @endif
 
-                @if(session('typ_id') == '1' || session('typ_id') == '3')
+                @if(session('typ_id') == '1' || session('typ_id') == '3' || session('typ_id') == '4')
                 <li class="nav-header">INVENTORY</li>
                 @endif
 
-                @if(session('typ_id') == '1')
+                @if(session('typ_id') == '1' || session('typ_id') == '4')
                 <li class="nav-item">
                     <a href="{{ action('ProductController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-box-open"></i>
@@ -108,7 +108,7 @@
                 </li>
                 @endif
 
-                @if(session('typ_id') == '1' || session('typ_id') == '3')
+                @if(session('typ_id') == '1' || session('typ_id') == '3' || session('typ_id') == '4')
                 <li class="nav-item">
                     <a href="{{ action('ProductionController@manage') }}" class="nav-link">
                         <i class="nav-icon fas fa-pallet"></i>
@@ -119,11 +119,11 @@
                 </li>
                 @endif
                  
-                @if(session('typ_id') == '1' || session('typ_id') == '3')
+                @if(session('typ_id') == '1' || session('typ_id') == '3' || session('typ_id') == '4')
                 <li class="nav-header">REPORTS</li>
                 @endif
 
-                @if(session('typ_id') == '1')
+                @if(session('typ_id') == '1' || session('typ_id') == '4')
                 <li class="nav-item">
                     <a href="{{ action('ReportsController@salesToday') }}" class="nav-link">
                         <i class="nav-icon fa fa-bar-chart"></i>
@@ -143,7 +143,7 @@
                 </li>
                 @endif
 
-                @if(session('typ_id') == '1' || session('typ_id') == '3')
+                @if(session('typ_id') == '1' || session('typ_id') == '3' || session('typ_id') == '4')
                 <li class="nav-item">
                     <form id="go_productions" method="POST" action="{{ action('ReportsController@production') }}">
                     {{ csrf_field() }}
@@ -157,7 +157,7 @@
                 </li>
                 @endif
                 
-                @if(session('typ_id') == '1')
+                @if(session('typ_id') == '1' || session('typ_id') == '4')
                 <li class="nav-header">ACCOUNTS</li>
 
                 <li class="nav-item">
