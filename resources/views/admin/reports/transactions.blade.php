@@ -358,7 +358,7 @@
                                             </div>
                                         @endforeach
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="7"></td>
+                                            <td colspan="10"></td>
                                         </tr>
                                     </tbody>
                                 </table>

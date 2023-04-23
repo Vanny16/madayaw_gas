@@ -130,6 +130,9 @@ Route::group(['prefix' => 'reports'], function()
     Route::get('sales', 'ReportsController@sales');
     Route::get('sales/today', 'ReportsController@salesToday');
     Route::post('sales-filter', 'ReportsController@salesFilter');
+    
+    Route::get('payments/today', 'ReportsController@paymentsToday');
+    Route::post('payments/date-filter', 'ReportsController@paymentsFilter');
 
     Route::get('transactions', 'ReportsController@transactions');
     Route::get('transactions/today', 'ReportsController@transactionsToday');
@@ -143,8 +146,6 @@ Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
     Route::get('payments', 'SalesController@payments');
-    Route::get('payments/today', 'SalesController@paymentsToday');
-    Route::post('payments/date-filter', 'SalesController@paymentsFilter');
 
     Route::post('select-customer', 'SalesController@selectCustomer');
     Route::post('create-customer', 'SalesController@createCustomer');
