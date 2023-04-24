@@ -47,80 +47,70 @@
                                 @php($tank_bg = "bg-danger")
                             @endif
                         
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-10">   
-                                            <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
-                                        </div>
-                                        <div class="col-md-2">
-                                            @if($tank->tnk_active == 0)
-                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                            @else    
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                        <!-- <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li> -->
-                                                    </ul>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>   
-                                
-                                    <div class="row" style="margin: 10px;">      
-                                        <div class="col-md-12">
+                            <div class="row"> 
+                                <div class="col-md-6 mt-1">
+                                    <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1 ml-3" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-6 mt-1">
+                                    <div class="dropdown">
+                                        <button class="btn btn-default bg-transparent btn-outline-trasparent float-right" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical mr-2"></i></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit" aria-hidden="true"></i>Edit Info</a></li>
+
                                             @if($tank->tnk_active == 1) 
-                                            <span class="badge badge-success">Active</span>
-                                                <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
                                             @else
-                                            <span class="badge badge-danger">Inactive</span>
-                                                <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}" aria-hidden="true"></a>
+                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-check mr-2" aria-hidden="true"></i>Activate</a></li>
                                             @endif
-                                        </div>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 270px; width: 100px; transform: rotate(-90deg); border-radius: 90px; margin: 140px; margin-bottom: -80px; margin-top: -50px;">
-                                            <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
-                                            </div>   
-                                        </div>
-                                        <div class="row">
-                                            <table class="table-condensed">
-                                                <tbody>
-                                                    <td>
-                                                        <div class="col-md-12"> 
-                                                            <div class="row">
-                                                                <small><strong>{{$tank->tnk_name}}</strong></small>
-                                                            </div>
-                                                            <div class="row">
-                                                                <small><strong>Capacity:</strong> {{number_format($tank->tnk_capacity)}} kg</small>
-                                                            </div>
-                                                            
-                                                            <div class="row">
-                                                                <small><strong>Volume:</strong> {{number_format($tank->tnk_remaining)}} kg</small>
-                                                            </div>
-                                                        </div>
-                                                    </td> 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <hr>
-                                </div>
-                                {{--<div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
-                                            <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
-                                        </div>
-                                    </div>
-                                </div>--}}                              
                             </div>
+                            <div class="row">
+                                <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 270px; width: 120px; transform: rotate(-90deg); border-radius: 90px; margin: 130px; margin-bottom: -80px; margin-top: -50px;">
+                                    <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                        <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
+                                    </div>   
+                                </div>
+                                <div class="row">
+                                    <table >
+                                        <tr>
+                                            <td colspan="2"><strong>{{$tank->tnk_name}}</strong></td>
+                                        </tr> 
+                                        
+                                        <tr>
+                                            <td><small><strong>Capacity:</strong></small></td>
+                                            <td><small>{{number_format($tank->tnk_capacity)}} kg</small></td>
+                                        </tr> 
+                                        
+                                        <tr>
+                                            <td><small><strong>Volume:</strong></small></td>
+                                            <td><small>{{number_format($tank->tnk_remaining)}} kg</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td> 
+                                                @if($tank->tnk_active == 1) 
+                                                <span class="badge badge-success">Active</span>
+                                                @else
+                                                <span class="badge badge-danger">Inactive</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div><br>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                            {{--<div class="card-footer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <small class="float-left">{{number_format($tank->tnk_remaining, 2)}}/{{$tank->tnk_capacity}} g</small>
+                                        <small class="float-right">{{number_format($tank->tnk_remaining / 1000, 2)}}/{{ number_format((float)$tank->tnk_capacity / 1000, 2) }} kg</small>
+                                    </div>
+                                </div>
+                            </div>--}}                              
+                         
                             <!-- Edit Tank Modal -->
                             <div class="modal fade" id="tank-edit-modal-{{$tank->tnk_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-sm" role="document">
