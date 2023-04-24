@@ -67,9 +67,10 @@ class ProductionController extends Controller
         ->join('products', 'products.prd_id', '=', 'stock_verifications.verify_prd_id')
         ->where('verify_pdn_id', '=', get_last_production_id())
         ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_user_type', '=', 5) //5 IS THE USER_TYPE OF PLANT MANAGER  
         ->get(); 
 
-        // dd($product_verifications);
+        dd($product_verifications);
         // dd(get_last_production_id());
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
@@ -100,7 +101,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications'));
     }
 
     //PRODUCTION
