@@ -27,7 +27,6 @@
             </div>
 
             @if($transactions_date_from != "" && $transactions_date_to != "")
-
                 @if($transactions_date_from == date('Y-m-d') && $transactions_date_to == date('Y-m-d'))
                     @php
                         $date_from = Carbon\Carbon::parse()->format('Y-m-d');
@@ -83,13 +82,20 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
-                                        <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
+                                        <button type="submit" name="filter_btn" value="find" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1 mb-3">
+                                        <button type="submit" name="filter_btn" value="print" class="btn btn-light text-success form-control"><span class="fa fa-print"></span> Print</button>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span class="fa fa-file-export"></span> Export</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-
-                        <div class="card-footer">
+                        <div class="card-footer" style="background-color:#ececec;">
                             <div class="row">
                                 <div class="col-md-4">
                                     <span>{{ $date_label }}</span>
@@ -104,7 +110,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-12 mb-3"> 
                             <form method="POST" action="{{ action('PrintController@alltransactionReports')}}">
                             {{ csrf_field() }}
@@ -113,7 +119,8 @@
                                 <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
+                    <hr>
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>

@@ -70,7 +70,7 @@
                                 <div class="progress" style="border-style: double; border-color: grey; border-width: 5px; height: 270px; width: 120px; transform: rotate(-90deg); border-radius: 90px; margin: 130px; margin-bottom: -80px; margin-top: -50px;">
                                     <div class="bg-success progress-bar" role="progressbar" style="width: {{$tank_percentage}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         <span style="transform: rotate(90deg);">{{number_format($tank_percentage, 2)}}%</span>
-                                    </div>   
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <table >

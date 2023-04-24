@@ -98,6 +98,7 @@ class ReportsController extends Controller
         $select_set = $request->input('select_set') ?? session('select_set_arr');
         $tbl_sales_form = "";
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
+        $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
         if($select_grp != -1){
 
@@ -303,6 +304,7 @@ class ReportsController extends Controller
         session(['paginate_row' => $paginate_row]);
         
         session(['select_set_arr' => $select_set]);
+        session(['filter_btn' => $filter_btn]);
         if($select_grp != -1){
             session(['select_set' => $select_set[$select_grp]]);
         }
@@ -310,7 +312,15 @@ class ReportsController extends Controller
             session(['select_set' => '0']);
         }
         
-        return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+        if($filter_btn == "find"){
+            return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+        }
+        else if($filter_btn == "print"){
+            return view('admin.print.salesreports', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+        }
+        else if($filter_btn == "export"){
+            return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+        }
     }
 
     public function transactions()
@@ -392,6 +402,7 @@ class ReportsController extends Controller
         $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
         $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
+        $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -427,8 +438,17 @@ class ReportsController extends Controller
         session(['transactions_date_from' => $transactions_date_from]);
         session(['transactions_date_to' => $transactions_date_to]);
         session(['paginate_row' => $paginate_row]);
-
-        return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+        session(['filter_btn' => $filter_btn]);
+    
+        if($filter_btn == "find"){
+            return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+        }
+        else if($filter_btn == "print"){
+            return view('admin.print.transactionreport', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+        }
+        else if($filter_btn == "export"){
+            return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+        }
     }
 
     public function paymentsToday()

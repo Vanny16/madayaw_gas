@@ -82,6 +82,12 @@
                             $select_pending = "";
                             $select_paid = "selected";
                         @endphp
+                    @else
+                        @php
+                            $select_all = "";
+                            $select_pending = "";
+                            $select_paid = "";
+                        @endphp
                     @endif
                     
                     @if(session('search_payments'))
@@ -146,8 +152,7 @@
                                 </div>
                             </form>
                         </div>
-                        
-                        <div class="card-footer">
+                        <div class="card-footer" style="background-color:#ececec;">
                             <div class="row">
                                 <div class="col-md-4">
                                     <span>{{ $date_label }}</span>
