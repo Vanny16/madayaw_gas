@@ -49,6 +49,12 @@
                 @endphp
             @endif
             
+            @if(session('paginate_row'))
+                @php($paginate_row = session('paginate_row'))
+            @else
+                @php($paginate_row = "10")
+            @endif
+            
             <div class="row">
                 <div class="col-md-12"> 
                     <div class="card">
@@ -56,7 +62,7 @@
                             <h3 class="card-title"><i class="fas fa-calendar"></i> Selected Date</h3>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ action('ReportsController@transactionsFilter')}}">
+                            <form method="GET" action="{{ route('transactions-filter')}}">
                             {{ csrf_field() }} 
                                 <div class="row">
                                     <div class="col-md-2 mb-3">
@@ -73,7 +79,7 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="search_string">Rows</label>
-                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="{{ $paginate_row }}" min="1" onkeypress="return isNumberKey(this, event);" onclick="select()" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
@@ -111,6 +117,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>
+                            <div class="card-tools">{{ $transactions->links() }}</div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">

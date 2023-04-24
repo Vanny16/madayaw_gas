@@ -22,7 +22,7 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->where('trx_active','=','1')
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->paginate(10);
+                    ->paginate(50);
         
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
@@ -61,7 +61,7 @@ class ReportsController extends Controller
                     ->where('trx_active','=','1')
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->paginate(10);
+                    ->paginate(50);
 
         $purchases = DB::table('purchases')
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -90,12 +90,12 @@ class ReportsController extends Controller
 
     public function salesFilter(Request $request)
     {
-        $sales_date_from = $request->sales_date_from;
-        $sales_date_to = $request->sales_date_to;
-        $select_grp = $request->select_grp;
-        $select_set = $request->input('select_set');
+        $sales_date_from = $request->input('sales_date_from') ?? session('sales_date_from');
+        $sales_date_to = $request->input('sales_date_to') ?? session('sales_date_to');
+        $select_grp = $request->input('select_grp') ?? session('select_grp');
+        $select_set = $request->input('select_set') ?? session('select_set_arr');
         $tbl_sales_form = "";
-        $paginate_row = (int)$request->paginate_row;
+        $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
 
         if($select_grp != -1){
 
@@ -201,7 +201,6 @@ class ReportsController extends Controller
                         ->groupBy('customers.cus_name')
                         ->paginate($paginate_row);
                         // ->get();     
-                        // dd($sales);
 
                         $tbl_sales_form = "customers";
                     }
@@ -294,16 +293,21 @@ class ReportsController extends Controller
         ->where('prd_for_POS','=','1')
         ->get();
 
+        session(['sales_date_from' => $sales_date_from]);
+        session(['sales_date_to' => $sales_date_to]);
+
         session(['tbl_sales_form' => $tbl_sales_form]);
         session(['select_grp' => $select_grp]);
-
+        session(['paginate_row' => $paginate_row]);
+        
+        session(['select_set_arr' => $select_set]);
         if($select_grp != -1){
             session(['select_set' => $select_set[$select_grp]]);
         }
         else{
             session(['select_set' => '0']);
         }
-
+        
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
     }
 
@@ -319,7 +323,7 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where('trx_active','=','1')
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate(50);
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
@@ -356,7 +360,7 @@ class ReportsController extends Controller
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate(50);
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -381,8 +385,9 @@ class ReportsController extends Controller
 
     public function transactionsFilter(Request $request)
     {
-        $transactions_date_from = $request->transactions_date_from;
-        $transactions_date_to = $request->transactions_date_to;
+        $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
+        $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
+        $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
 
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -392,7 +397,7 @@ class ReportsController extends Controller
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->get();
+                        ->paginate($paginate_row);
                         
                         // dd($transactions);
 
@@ -414,6 +419,11 @@ class ReportsController extends Controller
                         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->get();
 
+                        
+        session(['transactions_date_from' => $transactions_date_from]);
+        session(['transactions_date_to' => $transactions_date_to]);
+        session(['paginate_row' => $paginate_row]);
+
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
     }
 
@@ -434,6 +444,9 @@ class ReportsController extends Controller
         ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
+
+        
+        // dd($transactions);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
     }
