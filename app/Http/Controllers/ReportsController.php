@@ -14,6 +14,7 @@ class ReportsController extends Controller
     {
         $sales_date_from = "";
         $sales_date_to = "";
+        $paginate_row = session('paginate_row') ?? '50';
 
         $sales = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -22,7 +23,7 @@ class ReportsController extends Controller
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->where('trx_active','=','1')
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->paginate(50);
+                    ->paginate($paginate_row);
         
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
@@ -52,6 +53,7 @@ class ReportsController extends Controller
     {
         $sales_date_from = date("Y-m-d");
         $sales_date_to = date("Y-m-d");
+        $paginate_row = session('paginate_row') ?? '50';
 
         $sales = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -61,7 +63,7 @@ class ReportsController extends Controller
                     ->where('trx_active','=','1')
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->paginate(50);
+                    ->paginate($paginate_row);
 
         $purchases = DB::table('purchases')
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -315,6 +317,7 @@ class ReportsController extends Controller
     {
         $transactions_date_from = "";
         $transactions_date_to = "";
+        $paginate_row = session('paginate_row') ?? '50';
                         
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -323,7 +326,7 @@ class ReportsController extends Controller
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->where('trx_active','=','1')
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->paginate(50);
+                        ->paginate($paginate_row);
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')   
@@ -351,6 +354,7 @@ class ReportsController extends Controller
     {
         $transactions_date_from = date("Y-m-d");
         $transactions_date_to = date("Y-m-d");
+        $paginate_row = session('paginate_row') ?? '50';
 
         $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -360,7 +364,7 @@ class ReportsController extends Controller
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
-                        ->paginate(50);
+                        ->paginate($paginate_row);
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -431,13 +435,14 @@ class ReportsController extends Controller
     {
         $payments_date_from = date("Y-m-d");
         $payments_date_to = date("Y-m-d");
+        $paginate_row = session('paginate_row') ?? '50';
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->where('trx_active','=','1')
         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
         ->orderBy('transactions.trx_ref_id', 'DESC')
-        ->get();
+        ->paginate($paginate_row);
 
         $payments = DB::table('payments')
         ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
@@ -445,25 +450,56 @@ class ReportsController extends Controller
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
 
-        
-        // dd($transactions);
+        session(['select_show' => 'Transactions']);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
     }
 
     public function paymentsFilter(Request $request)
     {
-        $payments_date_from = $request->payments_date_from;
-        $payments_date_to = $request->payments_date_to;
-        $select_show = $request->select_show;
+        $search_payments = $request->input('search_payments');
+        $payments_date_from = $request->input('payments_date_from') ?? session('payments_date_from');
+        $payments_date_to = $request->input('payments_date_to') ?? session('payments_date_to');
+        $select_show = $request->input('select_show') ?? session('select_show');
+        $status_filter = $request->input('status_filter') ?? session('status_filter');
+        $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         
         if($select_show == "Transactions"){
-            $transactions = DB::table('transactions')
-            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-            ->where('trx_active','=','1')
-            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-            ->orderBy('transactions.trx_ref_id', 'DESC')
-            ->get();
+            if($search_payments != null){
+                $transactions = DB::table('transactions')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->where('trx_active','=','1')
+                ->where('trx_ref_id','=',$search_payments)
+                ->paginate($paginate_row);
+            }
+            else{
+                if($status_filter == "Pending"){
+                    $transactions = DB::table('transactions')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->where('trx_active','=','1')
+                    ->where('trx_balance','>','0')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->orderBy('transactions.trx_ref_id', 'DESC')
+                    ->paginate($paginate_row);
+                }
+                else if($status_filter == "Paid"){
+                    $transactions = DB::table('transactions')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->where('trx_active','=','1')
+                    ->where('trx_balance','<=','0')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->orderBy('transactions.trx_ref_id', 'DESC')
+                    ->paginate($paginate_row);
+                }
+                else{
+                    $transactions = DB::table('transactions')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->where('trx_active','=','1')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->orderBy('transactions.trx_ref_id', 'DESC')
+                    ->paginate($paginate_row);
+                }
+            }
         }
         else{
             $transactions = DB::table('payments')
@@ -473,7 +509,7 @@ class ReportsController extends Controller
             ->join('users', 'users.usr_id', '=', 'payments.usr_id')
             ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
             ->orderBy('payments.pmnt_id', 'DESC')
-            ->get();
+            ->paginate($paginate_row);
         }
 
         $payments = DB::table('payments')
@@ -482,7 +518,12 @@ class ReportsController extends Controller
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
 
+        session(['search_payments' => $search_payments]);
+        session(['payments_date_from' => $payments_date_from]);
+        session(['payments_date_to' => $payments_date_to]);
         session(['select_show' => $select_show]);
+        session(['status_filter' => $status_filter]);
+        session(['paginate_row' => $paginate_row]);
         
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
     }
