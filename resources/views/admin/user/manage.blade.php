@@ -131,15 +131,13 @@
                                                     <td>
                                                         {{ $user->usr_address }}
                                                     </td>
-                                                    @if($user->typ_id == 1)
-                                                        <td>Administrator</td>
-                                                    @elseif($user->typ_id == 2)
-                                                        <td>Employee</td>
-                                                    @elseif($user->typ_id == 3)
-                                                        <td>Observer</td>
-                                                    @elseif($user->typ_id == null)
-                                                    <td>-</td>    
-                                                    @endif
+                                                    @foreach($user_types as $user_type)
+                                                        @if($user->typ_id == $user_type->typ_id)
+                                                            <td>{{ $user_type->typ_name }}</td>
+                                                        @elseif($user->typ_id == null)
+                                                            <td>-</td>    
+                                                        @endif
+                                                    @endforeach
                                                     @if($user->usr_active == 0)
                                                         <td>
                                                             <span class="badge badge-danger">Inactive</span>
@@ -174,8 +172,6 @@
                                                             </div>
                                                         @endif
                                                     </td>
-
-                                                    
                                                     <td>
                                                         @foreach($reset_passwords as $reset_password)
                                                             @if($reset_password->usr_id == $user->usr_id)
@@ -339,9 +335,13 @@
                                     <div class="col-md-12">
                                         <label for="typ_id">User Type<span style="color:red;">*</span></label>
                                         <select class="form-control" name="typ_id" required>
-                                            <option value="1" selected>Admin</option>
-                                            <option value="2">Employee</option>
-                                            <option value="3">Observer</option>
+                                            @foreach($user_types as $user_type)
+                                                @if($typ_id == $user_type->typ_id)
+                                                    <option value="{{ $user_type->typ_id }}" selected>{{ $user_type->typ_name }}</option>
+                                                @else
+                                                    <option value="{{ $user_type->typ_id }}">{{ $user_type->typ_name }}</option>
+                                                @endif
+                                            @endforeach
                                         </select> 
                                     </div>
                                     <div class="col-md-12">

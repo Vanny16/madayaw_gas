@@ -25,7 +25,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    @if(session('typ_id') == 1)
+                    @if(session('typ_id') == 1 || session('typ_id') == '4')
                         @if($pdn_flag)
                             <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
                         @else
@@ -34,7 +34,7 @@
                     @endif
                     @if(session('typ_id') == 3)
                         <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Verify Production</a>
-                    @elseif(session('typ_id') == 1)
+                    @elseif(session('typ_id') == 1 || session('typ_id') == '4')
                         <div class="dropdown dropleft" style="float:right;">
                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="dropdown-menu">
@@ -222,7 +222,13 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
+                                                                @if(session('typ_id') <> 1)
+                                                                    <td></td>
+                                                                @else
+                                                                    <td>
+                                                                        <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
+                                                                    </td>
+                                                                @endif
                                                             </tr>
                                                         @endforeach
                                                     @endif 
@@ -1049,10 +1055,13 @@
     $tank_details = "";
     foreach($canisters as $canister){$canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";}
     foreach($tanks as $tank){$tank_details = $tank_details . $tank->tnk_id . "|" . $tank->tnk_name . ",";}
+    
+    $input_text_display = "";
+    if(session('typ_id') == 1 || session('typ_id') == 4 ){$input_text_display = "disabled";}
 ?>
 <!-- Toggle Production Modal -->
 <div class="modal fade" id="production-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 @if($pdn_flag)
@@ -1066,7 +1075,171 @@
             </div>
             <form method="POST" action="{{ action('ProductionController@toggleProduction') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
-                <div class="modal-body">
+            <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-12" style="display: flex; justify-content: center; align-items: center;">
+                                    <h3>Tanks</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="overflow-x:auto;">
+                            <table class="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        @if($pdn_flag)
+                                            <th>Confirm Opening Tank</th>
+                                        @else
+                                            <th>Confirm Closing Tank</th>
+                                        @endif
+                                        <th class="text-center"><em>Plant Manager</em></th>
+                                        <th class="text-center"><em>Supervisor</em></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   @if(isset($tanks[0]))
+                                        @foreach($tanks as $tank)
+                                            @if($tank->tnk_active == 1)
+                                                @php($tank_remaining = ($tank->tnk_remaining) / 1000)
+                                                <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
+                                                <td><input type="text" class="form-control" {{-- name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
+                                                @if(session('typ_id') == 1 || session('typ_id') == 4)
+                                                    <td><input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                @endif
+                                                <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                            @endif
+                                        @endforeach
+                                   @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                   
+                    <div style="padding: 20px;"></div>
+
+                    <!-- COMMENTED FOR TESTING -->
+                    <div>
+                        {{--
+                            <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="col-12">
+                                    @if(isset($tanks[0]))
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    @if($pdn_flag)
+                                                        <label for="stocks_quantity">Confirm Opening Tank</label>
+                                                    @else
+                                                        <label for="stocks_quantity">Confirm Closing Tank</label>
+                                                    @endif
+                                                </div>
+                                                <div class="col-8"></div>
+                                            </div>
+                                        </div>
+                                        @foreach($tanks as $tank)
+                                            @if($tank->tnk_active == 1)
+                                                @php($tank_remaining = ($tank->tnk_remaining) / 1000)
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            @if($pdn_flag)
+                                                                <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                            @else
+                                                                <input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
+                                                            @endif
+                                                            <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <hr>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        --}}
+                    </div>
+                    
+                    <div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
+                                        <h3>Canisters</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="overflow-x:auto;">
+                                <table class="table table-hover ">
+                                    <thead>
+                                        <tr>
+                                            <th>Canister</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">Filled</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">Leakers</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">Empty</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">For Revalving</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">Scraps</th>
+                                            <th colspan="2" class="text-center" style="min-width: 250px;">Total Stocks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(isset($canisters))
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                            </tr>
+                                            @foreach($canisters as $canister)
+                                                <tr>
+                                                    <td><i>{{$canister->prd_name}}</i></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required></td>
+                                                    <td><input type="text" class="form-control" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
+                                                    <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
+                                                 </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                                <hr>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- COMMENTED TEST CODE -->
+            {{-- <div class="modal-body">
                     <div class="row">
                         <div class="col-6">
                             @if(isset($canisters[0]))
@@ -1220,7 +1393,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="modal-footer">
                     <?php
                         $opening_visibility = "disabled";
@@ -1438,42 +1611,31 @@
                                                 @else
                                                 @endif
                                             </tr>
+                                            @php(dd($product_verifications))
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                         <td><i>{{$canister->prd_name}}</i></td>
-                                                        {{-- <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td> --}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{!! get_product_total_stock($canister->prd_id) !!}</td>--}}
-                                                        <td><input type="text" class="form-control" {{-- name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" --}} value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
+                                                        <td><input type="text" class="form-control" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
                                                         <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                     @else
                                                         <td><i>{{$canister->prd_name}}</i></td>
-                                                        {{-- <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td> --}}
                                                         <td><input type="form-check-input" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_quantity }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td> --}}
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_leakers }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td> --}}
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td> --}}
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td> --}}
                                                         <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{{ $canister->prd_scraps }}" onclick="this.select();" required></td>
-                                                        {{-- <td>{!! get_product_total_stock($canister->prd_id) !!}</td>--}}
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" placeholder="Enter Stocks Quantity" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" required></td>
                                                         <input type="text" class="form-control" name="canister_details" placeholder="Enter Stocks Quantity" value="{{$canister_details}}" hidden/>
                                                     @endif

@@ -48,6 +48,12 @@
                     $date_label = "All Sales";
                 @endphp
             @endif
+
+            @if(session('paginate_row'))
+                @php($paginate_row = session('paginate_row'))
+            @else
+                @php($paginate_row = "10")
+            @endif
             
             <div class="row">
                 <div class="col-md-12"> 
@@ -56,7 +62,7 @@
                             <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ action('ReportsController@salesFilter')}}">
+                            <form method="GET" action="{{ route('sales-filter')}}">
                             {{ csrf_field() }} 
                                 <div class="row">
                                     <div class="col-md-2 mb-3">
@@ -119,39 +125,13 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="search_string">Rows</label>
-                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="10" min="1" onkeypress="return isNumberKey(this, event);" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="{{ $paginate_row }}" min="1" onkeypress="return isNumberKey(this, event);" onclick="select()" onkeyup="noNegativeValue(this.id)" onchange="noNegativeValue(this.id)">
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
                                         <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
                                     </div>
                                 </div>
-                                {{-- <hr>
-                                <div class="row">
-                                    <label for="">Choose Columns: </label>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" value="">Reference ID
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" value="">Cashier
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" value="">Customer
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" value="">Date & Time
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> --}}
                             </form>
                         </div>
 
