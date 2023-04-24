@@ -132,7 +132,7 @@ Route::group(['prefix' => 'reports'], function()
     Route::get('sales-filter', 'ReportsController@salesFilter')->name('sales-filter');
     
     Route::get('payments/today', 'ReportsController@paymentsToday');
-    Route::post('payments/date-filter', 'ReportsController@paymentsFilter');
+    Route::get('payments-filter', 'ReportsController@paymentsFilter')->name('payments-filter');
 
     Route::get('transactions', 'ReportsController@transactions');
     Route::get('transactions/today', 'ReportsController@transactionsToday');

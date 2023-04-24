@@ -51,12 +51,13 @@ class SalesController extends Controller
     {
         $payments_date_from = "";
         $payments_date_to = "";
+        $paginate_row = session('paginate_row') ?? '50';
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->where('trx_active','=','1')
         ->orderBy('transactions.trx_ref_id', 'DESC')
-        ->get();
+        ->paginate($paginate_row);
 
         $payments = DB::table('payments')
         ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')

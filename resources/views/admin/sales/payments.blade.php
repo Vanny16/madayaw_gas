@@ -63,18 +63,50 @@
                             $select_payments = "selected";
                         @endphp
                     @endif
+                    
+                    @if(session('status_filter') == "POS")
+                        @php
+                            $select_all = "selected";
+                            $select_pending = "";
+                            $select_paid = "";
+                        @endphp
+                    @elseif(session('status_filter') == "Pending")
+                        @php
+                            $select_all = "";
+                            $select_pending = "selected";
+                            $select_paid = "";
+                        @endphp
+                    @elseif(session('status_filter') == "Paid")
+                        @php
+                            $select_all = "";
+                            $select_pending = "";
+                            $select_paid = "selected";
+                        @endphp
+                    @endif
+                    
+                    @if(session('search_payments'))
+                        @php($search_payments = session('search_payments'))
+                    @else
+                        @php($search_payments = "")
+                    @endif
+
+                    @if(session('paginate_row'))
+                        @php($paginate_row = session('paginate_row'))
+                    @else
+                        @php($paginate_row = "10")
+                    @endif
 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
-                            <form method="POST" action="{{ action('ReportsController@paymentsFilter') }}">
+                            <form method="GET" action="{{ route('payments-filter')}}">
                                 {{ csrf_field() }} 
                                 <div class="row">
                                     <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
-                                            <input type="text" class="form-control" id="search_payments" name="search_payments" placeholder="Search">
+                                        <input type="text" class="form-control" id="search_payments" name="search_payments" value="{{ $search_payments }}" placeholder="Search">
                                     </div>
                                     <div class="col-md-2 mb-3">
                                         <label for="date_from">From</label>
@@ -95,13 +127,18 @@
                                     @if(session('select_show') == "Transactions")
                                         <div class="col-md-2 mb-3">
                                             <label>Status</label>
-                                            <select id="status_filter" class="form-control">
-                                                <option value="POS">All</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Paid">Paid</option>
+                                            <select id="status_filter" name="status_filter" class="form-control">
+                                                <option value="POS" {{$select_all}}>All</option>
+                                                <option value="Pending" {{$select_pending}}>Pending</option>
+                                                <option value="Paid" {{$select_paid}}>Paid</option>
                                             </select>
                                         </div>
                                     @endif
+                                    
+                                    <div class="col-md-1 mb-3">
+                                        <label for="search_string">Rows</label>
+                                        <input type="number" class="form-control" id="paginate_row" name="paginate_row" value="{{ $paginate_row }}" min="1" onkeypress="return isNumberKey(this, event);" onclick="select()" onkeyup="setToDefault(this.id)" onchange="setToDefault(this.id)">
+                                    </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
                                         <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
@@ -128,6 +165,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments History</h3>
+                            <div class="card-tools">{{ $transactions->links() }}</div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -502,6 +540,19 @@ function noNegativeValue(id){
     var value = document.getElementById(id).value;
     if(value < 0 || value == ""){
         document.getElementById(id).value ="0";
+    }
+}
+
+function setToDefault(id){
+    $("#"+id).on("input", function() {
+        if (/^0/.test(this.value)) {
+            this.value = this.value.replace(/^0/, "")
+        }
+    });
+
+    var value = document.getElementById(id).value;
+    if(value < 0 || value == ""){
+        document.getElementById(id).value ="10";
     }
 }
 </script>
