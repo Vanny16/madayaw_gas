@@ -67,16 +67,81 @@ class ProductionController extends Controller
         ->join('products', 'products.prd_id', '=', 'stock_verifications.verify_prd_id')
         ->where('verify_pdn_id', '=', get_last_production_id())
         ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_user_type', '=', 5) //5 IS THE USER_TYPE OF PLANT MANAGER  
+        // ->where('verify_user_type', '=', 5) //5 IS THE USER_TYPE OF PLANT MANAGER  
         ->get(); 
+// dd($verifications);
 
-        dd($product_verifications);
-        // dd(get_last_production_id());
+        $opening_visibility = "";
+        $closing_visibility = "";
+        if(session('typ_id') <> 1)
+        {
+            $opening_visibility = "disabled";
+            $verify_production_id = get_last_production_id();
+            if($pdn_flag)
+            {
+                $verify_production_id = $verify_production_id + 1;
+            }
+            foreach($verifications as $verification)
+            {
+                if($verification->verify_pdn_id == $verify_production_id)
+                {
+                    if(is_null($verification->verify_closing))
+                    {
+                        $opening_visibility = "";
+                        $closing_visibility = "disabled";
+                        break;
+                    }
+                }
+            }
+        }
+
+        $verify_opening_visibility = "";
+        $verify_closing_visibility = "";
+        if(session('typ_id') == 4)
+        {
+            $verify_production_id = get_last_production_id();
+            if($pdn_flag)
+            {
+                $verify_production_id = $verify_production_id + 1;
+            }
+            foreach($verifications as $verification)
+            {
+                if($verification->verify_pdn_id == $verify_production_id)
+                {
+                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1) )
+                    {
+                        $verify_opening_visibility = "";
+                        $verify_closing_visibility = "disabled";
+                        break;
+                    }
+                }
+            }
+        }
+        
+        $canister_details = "";
+        $tank_details = "";
+        foreach($canisters as $canister)
+        {
+            $canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";
+        }
+
+        foreach($tanks as $tank)
+        {
+            $tank_details = $tank_details . $tank->tnk_id . "|" . $tank->tnk_name . ",";
+        }
+        
+        $input_text_display = "";
+        if(session('typ_id') == 1 || session('typ_id') == 4 )
+        {
+            $input_text_display = "disabled";
+        }
+
         $pdn_date = "";
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --'; 
 
-        if(isset($production_times)){
+        if(isset($production_times))
+        {
             if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
             {
                 if($production_times->pdn_end_time <> 0)
@@ -101,7 +166,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 
     //PRODUCTION
