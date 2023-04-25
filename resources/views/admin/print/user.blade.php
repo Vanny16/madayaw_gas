@@ -27,8 +27,6 @@
                             <th>Username</th>
                             <th>Address</th>
                             <th>user Type</th>
-                            <th>Status</th>
-                            <th width="20px"></th>
                         </tr>
                         <tr>
                         
@@ -41,15 +39,6 @@
                             <td>{{$all_user_detail->usr_name}}</td>
                             <td>{{$all_user_detail->usr_address}}</td>
                             <td>{{$all_user_detail->typ_name}}</td>
-                            @if($all_user_detail->usr_active == 0)
-                                <td>
-                                    <span class="badge badge-danger">Inactive</span>
-                                </td>
-                            @else
-                                <td>
-                                    <span class="badge badge-success">Active</span>
-                                </td>
-                            @endif
                         </tr> 
                         @endforeach
                     </tbody>

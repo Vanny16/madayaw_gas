@@ -29,8 +29,6 @@
                             <th>Contact #</th>
                             <th>Address</th>
                             <th>Accessible Products</th>
-                            <th>Status</th>
-                            <th width="20px"></th>
                         </tr>
                         <tr>
                         
@@ -90,15 +88,6 @@
                                             @endforeach
                                         @endif
                                     </div>
-                                </td>
-                            @endif
-                            @if($all_customer_detail->cus_active == 0)
-                                <td>
-                                    <span class="badge badge-danger">Inactive</span>
-                                </td>
-                            @else
-                                <td>
-                                    <span class="badge badge-success">Active</span>
                                 </td>
                             @endif
                         </tr> 

@@ -83,15 +83,6 @@
                     </thead>
                     <tbody id="tbl-payments">
                         @foreach($transactions as $transaction)
-                            @if($transaction->trx_balance > 0)
-                                @php($status = '<badge class="badge badge-sm">PENDING<badge>')
-                                @php($text_color = "text-danger")
-                                @php($btn_action = '<button class="btn btn-sm btn-light text-warning" data-toggle="modal" data-target="#payment_modal' . $transaction->trx_id . '"><i class="fa fa-coins"></i></button>')
-                            @else
-                                @php($status = '<badge class="badge badge-sm">PAID<badge>')
-                                @php($text_color = "text-success")
-                                @php($btn_action = '<button class="btn btn-sm btn-light text-success"><i class="fa fa-check"></i></button>')
-                            @endif
                             
                             @if(session('select_show') == "Transactions")
                                 <tr>
