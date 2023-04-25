@@ -31,13 +31,6 @@ class ExcelExport implements FromQuery, WithHeadings
                 ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                 ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                ->select
-                    (
-                        'products.prd_name', 
-                        DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), 
-                        DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), 
-                        DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid')
-                    )
                 ->orderBy('transactions.trx_datetime', 'DESC');
     }
 
