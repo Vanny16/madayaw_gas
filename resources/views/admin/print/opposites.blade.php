@@ -71,6 +71,32 @@
     </div>
 </div>
 <script type="text/javascript"> 
-    window.addEventListener("load", window.print());
+    // Define a function to handle the beforeprint event
+    function handleBeforePrint() {
+        // Remove the event listener to prevent an infinite loop
+        window.removeEventListener("beforeprint", handleBeforePrint);
+
+        // Display a confirmation dialog to allow the user to select print settings
+        if (confirm("Click 'OK' to show preview")) {
+            // Open the print dialog
+            setTimeout(function() {
+                window.print();
+            }, 500);
+        }
+        else{
+            window.location.href = "{{ action('ProductController@opposite') }}";
+        }
+    }
+
+    // Add an event listener for the beforeprint event
+    window.addEventListener("beforeprint", handleBeforePrint);
+
+    // Call the print method when the page finishes loading
+    window.addEventListener("load", function() {
+        setTimeout(function() {
+            window.print();
+            window.location.href = "{{ action('ProductController@opposite') }}";
+        }, 500);
+    });
 </script>
 @endsection
