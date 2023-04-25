@@ -109,22 +109,10 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- <div class="row">
-                        <div class="col-md-12 mb-3"> 
-                            <form method="POST" action="{{ action('PrintController@alltransactionReports')}}">
-                            {{ csrf_field() }}
-                                <button type="submit" class="btn btn-info col-md-1 col-12 float-left" href="" target="_BLANK"><i class="fa fa-print"></i> Print</button>
-                                <input type="date_from" class="form-control" id="transactions_date_from" name="transactions_date_from" value="{{ $date_from }}" hidden/>
-                                <input type="date_to" class="form-control" id="transactions_date_to" name="transactions_date_to" value="{{ $date_to }}" hidden/>
-                            </form>
-                        </div>
-                    </div> --}}
                     <hr>
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>
-                            <div class="card-tools">{{ $transactions->links() }}</div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
@@ -376,6 +364,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="card-tools">{{ $transactions->links() }}</div>
                             </div>
                         </div>
                     </div>
