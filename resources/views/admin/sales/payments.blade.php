@@ -147,7 +147,15 @@
                                     </div>
                                     <div class="col-md-1 mb-3">
                                         <label for="">&nbsp;</label>
-                                        <button type="submit" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
+                                        <button type="submit" name="filter_btn" value="find" class="btn btn-success form-control"><span class="fa fa-search"></span> Find</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1 mb-3">
+                                        <button type="submit" name="filter_btn" value="print" class="btn btn-light text-success form-control"><span class="fa fa-print"></span> Print</button>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span class="fa fa-file-export"></span> Export</button>
                                     </div>
                                 </div>
                             </form>

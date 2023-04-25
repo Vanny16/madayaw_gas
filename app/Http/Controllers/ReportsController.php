@@ -483,6 +483,7 @@ class ReportsController extends Controller
         $select_show = $request->input('select_show') ?? session('select_show');
         $status_filter = $request->input('status_filter') ?? session('status_filter');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
+        $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
         
         if($select_show == "Transactions"){
             if($search_payments != null){
@@ -544,8 +545,18 @@ class ReportsController extends Controller
         session(['select_show' => $select_show]);
         session(['status_filter' => $status_filter]);
         session(['paginate_row' => $paginate_row]);
-        
-        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+        session(['filter_btn' => $filter_btn]);
+    
+        if($filter_btn == "find"){
+            return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+        }
+        else if($filter_btn == "print"){
+            return view('admin.print.paymentsreports', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+        }
+        else if($filter_btn == "export"){
+            return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+        }
+
     }
 
     public function production(Request $request)
