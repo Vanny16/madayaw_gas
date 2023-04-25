@@ -8,8 +8,7 @@ use DB;
 
 use Illuminate\Http\Request;
 
-use App\Exports\SalesExport;
-// use App\Exports\TransactionsExport;
+use App\Exports\ExcelExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportsController extends Controller
@@ -207,7 +206,6 @@ class ReportsController extends Controller
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
                         ->groupBy('customers.cus_name')
                         ->paginate($paginate_row);
-                        // ->get();     
 
                         $tbl_sales_form = "customers";
                     }
@@ -240,18 +238,6 @@ class ReportsController extends Controller
                         $tbl_sales_form = "cashiers";
                     }
                 }
-
-                // $sales = DB::table('transactions')
-                // ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                // ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                // ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                // ->where($col_name,'=', $col_val)
-                // ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                // ->orderBy('transactions.trx_datetime', 'DESC')
-                // ->get();
-
-                // dd($sales);
             }
             else{
                 session()->flash('errorMessage',  "Invalid search");
@@ -324,7 +310,7 @@ class ReportsController extends Controller
         }
         else if($filter_btn == "export"){
             // session()->flash('successMessage',  "Invalid search");
-            return Excel::download(new SalesExport, 'sales-export.xlsx');
+            return Excel::download(new ExcelExport('salesExport'), 'sales-export.xlsx');
         }
     }
 
