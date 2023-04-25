@@ -332,19 +332,25 @@ class ProductionController extends Controller
             session()->flash('errorMessage','Must add tanks before starting production!');
             return redirect()->action('ProductionController@manage');
         }
-// dd($pdn_flag);
+
         if($pdn_flag)
         {
             if($temp_details <> "" && $temp_tank_details <> "")
             {
                 foreach($canister_details as $prd_id)
                 {
-                    $input_field = "verify_stock_quantity" . $prd_id;
+                    $total_input = 'verify_total_stock_quantity' . $prd_id;
+                    $filled_input = 'verify_filled_stock_quantity' . $prd_id;
+                    $empty_input = 'verify_empty_stock_quantity' . $prd_id;
+                    $leakers_input = 'verify_leakers_stock_quantity' . $prd_id;
+                    $for_revalving_input = 'verify_revalving_stock_quantity' . $prd_id;
+                    $scrap_input = 'verify_scraps_stock_quantity' . $prd_id;
                     
                     $verify_checker = DB::table('stock_verifications')
                     ->where('verify_prd_id', '=', $prd_id)
                     ->where('verify_is_product', '=', 1)
                     ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                    ->where('verify_user_type', '=', session('typ_id'))
                     ->first();
                     
                     if(session('typ_id') == 4)
@@ -364,7 +370,12 @@ class ProductionController extends Controller
                     DB::table('stock_verifications')
                     ->insert([
                         'verify_prd_id' => $prd_id,
-                        'verify_opening' => $request->$input_field,
+                        'verify_opening' => $request->$total_input,
+                        'verify_opening_filled' => $request->$filled_input,
+                        'verify_opening_empty' => $request->$empty_input,
+                        'verify_opening_leakers' => $request->$leakers_input,
+                        'verify_opening_for_revalving' => $request->$leakers_input,
+                        'verify_opening_scraps' => $request->$leakers_input,
                         'verify_is_product' => 1,
                         'verify_pdn_id' => get_last_production_id() + 1,
                         'verify_acc_id' => session('acc_id'),
@@ -380,6 +391,7 @@ class ProductionController extends Controller
                     ->where('verify_prd_id', '=', $tnk_id)
                     ->where('verify_is_product', '=', 0)
                     ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                    ->where('verify_user_type', '=', session('typ_id'))
                     ->first();
                     
                     if(session('typ_id') == 4)
@@ -417,12 +429,18 @@ class ProductionController extends Controller
             {
                 foreach($canister_details as $prd_id)
                 {
-                    $input_field = "verify_stock_quantity" . $prd_id;
+                    $total_input = 'verify_total_stock_quantity' . $prd_id;
+                    $filled_input = 'verify_filled_stock_quantity' . $prd_id;
+                    $empty_input = 'verify_empty_stock_quantity' . $prd_id;
+                    $leakers_input = 'verify_leakers_stock_quantity' . $prd_id;
+                    $for_revalving_input = 'verify_revalving_stock_quantity' . $prd_id;
+                    $scrap_input = 'verify_scraps_stock_quantity' . $prd_id;
 
                     $verification_check = DB::table('stock_verifications')
                     ->where('verify_acc_id', '=', session('acc_id'))
                     ->where('verify_pdn_id', '=', get_last_production_id())
                     ->where('verify_prd_id', '=', $prd_id)
+                    ->where('verify_user_type', '=', session('typ_id'))
                     ->first();
                     
                     if(session('typ_id') == 4)
@@ -433,24 +451,19 @@ class ProductionController extends Controller
                             return redirect()->action('ProductionController@manage');
                         }
                     }
-
-                    // $verify_checker = DB::table('stock_verifications')
-                    // ->where('verify_prd_id', '=', $prd_id)
-                    // ->where('verify_is_product', '=', 1)
-                    // ->where('verify_pdn_id', '=', get_last_production_id())
-                    // ->first();
-                    
-                    // if($verify_checker <> '' || $verify_checker <> null)
-                    // {
-                    //     break;
-                    // }
-
+                    // dd($verification_check);
                     if($verification_check == '' || $verification_check == null)
                     {
+                        
                         DB::table('stock_verifications')
                         ->insert([
                             'verify_prd_id' => $prd_id,
-                            'verify_closing' => $request->$input_field,
+                            'verify_closing' => $request->$total_input,
+                            'verify_closing_filled' => $request->$filled_input,
+                            'verify_closing_empty' => $request->$empty_input,
+                            'verify_closing_leakers' => $request->$leakers_input,
+                            'verify_closing_for_revalving' => $request->$for_revalving_input,
+                            'verify_closing_scraps' => $request->$scrap_input,
                             'verify_is_product' => 1,
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
@@ -458,12 +471,19 @@ class ProductionController extends Controller
                         ]);  
                     }
                   
+                    // dd(($request->$total_input));
                     DB::table('stock_verifications')
                     ->where('verify_pdn_id', '=', get_last_production_id())
                     ->where('verify_prd_id', '=', $prd_id)
                     ->where('verify_is_product', '=', 1)
+                    ->where('verify_user_type', '=', session('typ_id'))
                     ->update([
-                        'verify_closing' => $request->$input_field,
+                        'verify_closing' => $request->$total_input,
+                        'verify_closing_filled' => $request->$filled_input,
+                        'verify_closing_empty' => $request->$empty_input,
+                        'verify_closing_leakers' => $request->$leakers_input,
+                        'verify_closing_for_revalving' => $request->$for_revalving_input,
+                        'verify_closing_scraps' => $request->$scrap_input,
                     ]);
                 }
 
@@ -475,6 +495,7 @@ class ProductionController extends Controller
                     ->where('verify_acc_id', '=', session('acc_id'))
                     ->where('verify_prd_id', '=', $tnk_id)
                     ->where('verify_pdn_id', '=', get_last_production_id())
+                    ->where('verify_user_type', '=', session('typ_id'))
                     ->first();
 
                     if(session('typ_id') == 4)
@@ -502,7 +523,7 @@ class ProductionController extends Controller
                         DB::table('stock_verifications')
                         ->insert([
                             'verify_prd_id' => $tnk_id,
-                            'verify_closing' => $request->$input_field,
+                            'verify_closing' => ($request->$input_field) * 1000,
                             'verify_is_product' => 0,
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
@@ -1823,11 +1844,11 @@ class ProductionController extends Controller
     private function check_plant_manager_verification($prd_id, $pdn_id)
     {
         $verification_check = DB::table('stock_verifications')
-        ->where('verify_user_type', '=', [1, 5])
-        ->where('verify_pdn_id', '=', $prd_id)
+        ->where('verify_user_type', [1, 5])//
+        ->where('verify_prd_id', '=', $prd_id)
         ->where('verify_pdn_id', '=', $pdn_id)
         ->get();
-dd(empty($verification_check));
+        
         if(!$verification_check)
         {
             return false;

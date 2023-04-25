@@ -1449,13 +1449,13 @@
                                                     @else
                                                         <td><i>{{$canister->prd_name}}</i></td>
                                                         
-                                                        <td><input type="form-check-input" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="form-check-input" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="text" class="form-control" name="verify_revalving_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         
-                                                        <td><input type="text" class="form-control" name="verify_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="text" class="form-control" name="verify_scraps_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}"value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         
                                                         <input type="text" class="form-control" name="canister_details" value="{{$canister_details}}" hidden/>
@@ -1741,7 +1741,7 @@
                 <div class="modal-footer">
                     @if($pdn_flag)
                         @if($verify_opening_visibility == "disabled")
-                            <strong>Plant Manager must verify first!</strong>
+                            <strong>Plant Manager / Admin must verify first!</strong>
                         @else
                             <strong>Are you sure you want to verify the opening stocks?</strong>
                         @endif
@@ -1751,7 +1751,7 @@
                         </div>
                     @else
                         @if($verify_closing_visibility == "disabled")
-                            <strong>Plant Manager must verify first!</strong>
+                            <strong>Plant Manager / Admin must verify first!</strong>
                         @else
                             <strong>Are you sure you want to verify and print the closing stocks?</strong>
                         @endif

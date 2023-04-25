@@ -475,8 +475,9 @@ function get_product_total_stock($prd_id)
     $total_stock = 0;
 
     $total_stock = $total_stock + $product->prd_quantity + $product->prd_leakers + $product->prd_empty_goods + $product->prd_for_revalving + $product->prd_scraps;
-
-    return number_format($total_stock, 0, '.', ',');
+    
+    return $total_stock;
+    // return number_format($total_stock, 0, '.', ',');
 }
 
 function check_materials($flag, $qty, $prd_id)
