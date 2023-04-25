@@ -64,12 +64,10 @@ class ProductionController extends Controller
         ->get(); 
 
         $product_verifications = DB::table('stock_verifications')
-        ->join('products', 'products.prd_id', '=', 'stock_verifications.verify_prd_id')
         ->where('verify_pdn_id', '=', get_last_production_id())
         ->where('verify_acc_id', '=', session('acc_id'))
-        // ->where('verify_user_type', '=', 5) //5 IS THE USER_TYPE OF PLANT MANAGER  
+        ->whereIn('verify_user_type', [1, 3, 5])
         ->get(); 
-// dd($verifications);
 
         $opening_visibility = "";
         $closing_visibility = "";
@@ -108,7 +106,7 @@ class ProductionController extends Controller
             {
                 if($verification->verify_pdn_id == $verify_production_id)
                 {
-                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1) )
+                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1))
                     {
                         $verify_opening_visibility = "";
                         $verify_closing_visibility = "disabled";
@@ -117,7 +115,47 @@ class ProductionController extends Controller
                 }
             }
         }
+
+        if(session('typ_id') == 3 || session('typ_id') == 5)
+        {
+            $verify_production_id = get_last_production_id();
+            if($pdn_flag)
+            {
+                $verify_production_id = $verify_production_id + 1;
+            }
+            foreach($verifications as $verification)
+            {
+                if($verification->verify_pdn_id == $verify_production_id)
+                {
+                    // dd($verification);
+                    if(is_null($verification->verify_closing) || ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
+                    {
+                        $verify_opening_visibility = "verified";
+                        $verify_closing_visibility = "verified";
+                        break;
+                    }
+                }
+            }
+        }
         
+        //FOR VALUES IN VERIFICATION MODAL
+        if($pdn_flag)
+        {
+            $filled_output = "{{"."$"."verification->verify_opening_filled}}";
+            $empty_output = "{{"."$"."verification->verify_opening_empty}}";
+            $leakers_output = "{{"."$"."verification->verify_opening_leakers}}";
+            $for_revalving_output = "{{"."$"."verification->verify_opening_for_revalving}}";
+            $scraps_output =  "{{"."$"."verification->verify_opening_scraps}}";
+        }
+        else
+        {
+            $filled_output = "$"."verification->verify_closing_filled";
+            $empty_output = 'value = "{{'."$"."verification->verify_closing_filled}}".'"';
+            $leakers_output = 'value = "{{'."$"."verification->verify_closing_filled}}".'"';
+            $for_revalving_output = "{{"."$"."verification->verify_closing_for_revalving}}";
+            $scraps_output =  "{{"."$"."verification->verify_closing_scraps}}";
+        }
+        // dd($empty_output);
         $canister_details = "";
         $tank_details = "";
         foreach($canisters as $canister)
@@ -166,7 +204,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility','filled_output', 'empty_output', 'leakers_output', 'for_revalving_output', 'scraps_output'));
     }
 
     //PRODUCTION
@@ -333,6 +371,9 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
 
+        $is_updated = false;
+        $is_added = false;
+
         if($pdn_flag)
         {
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -364,23 +405,43 @@ class ProductionController extends Controller
 
                     if($verify_checker <> '' || $verify_checker <> null)
                     {
-                        break;
-                    }
+                        DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_prd_id', '=', $prd_id)
+                        ->where('verify_is_product', '=', 1)
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->update([
+                            'verify_opening' => $request->$total_input,
+                            'verify_opening_filled' => $request->$filled_input,
+                            'verify_opening_empty' => $request->$empty_input,
+                            'verify_opening_leakers' => $request->$leakers_input,
+                            'verify_opening_for_revalving' => $request->$leakers_input,
+                            'verify_opening_scraps' => $request->$leakers_input,
+                            'verify_user_id' => session('usr_id')
+                        ]);
 
-                    DB::table('stock_verifications')
-                    ->insert([
-                        'verify_prd_id' => $prd_id,
-                        'verify_opening' => $request->$total_input,
-                        'verify_opening_filled' => $request->$filled_input,
-                        'verify_opening_empty' => $request->$empty_input,
-                        'verify_opening_leakers' => $request->$leakers_input,
-                        'verify_opening_for_revalving' => $request->$leakers_input,
-                        'verify_opening_scraps' => $request->$leakers_input,
-                        'verify_is_product' => 1,
-                        'verify_pdn_id' => get_last_production_id() + 1,
-                        'verify_acc_id' => session('acc_id'),
-                        'verify_user_type' => session('typ_id'),
-                    ]);
+                        $is_updated = true;
+                    }
+                    else
+                    {
+                        DB::table('stock_verifications')
+                        ->insert([
+                            'verify_prd_id' => $prd_id,
+                            'verify_opening' => $request->$total_input,
+                            'verify_opening_filled' => $request->$filled_input,
+                            'verify_opening_empty' => $request->$empty_input,
+                            'verify_opening_leakers' => $request->$leakers_input,
+                            'verify_opening_for_revalving' => $request->$leakers_input,
+                            'verify_opening_scraps' => $request->$leakers_input,
+                            'verify_is_product' => 1,
+                            'verify_pdn_id' => get_last_production_id() + 1,
+                            'verify_acc_id' => session('acc_id'),
+                            'verify_user_type' => session('typ_id'),
+                            'verify_user_id' => session('usr_id')
+                        ]);
+
+                        $is_added = true;
+                    }
                 }
 
                 foreach($tank_details as $tnk_id)
@@ -405,22 +466,52 @@ class ProductionController extends Controller
 
                     if($verify_checker <> '' || $verify_checker <> null)
                     {
-                        break;
+                        DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_prd_id', '=', $tnk_id)
+                        ->where('verify_is_product', '=', 0)
+                        ->update([
+                            'verify_opening' => ($request->$input_field) * 1000,
+                            'verify_user_id' => session('usr_id')
+                        ]);
+
+                        $is_updated = true;
+                    }
+                    else
+                    {
+                        DB::table('stock_verifications')
+                        ->insert([
+                            'verify_prd_id' => $tnk_id,
+                            'verify_opening' => ($request->$input_field) * 1000,
+                            'verify_is_product' => 0,
+                            'verify_pdn_id' => get_last_production_id() + 1,
+                            'verify_acc_id' => session('acc_id'),
+                            'verify_user_type' => session('typ_id'),
+                            'verify_user_id' => session('usr_id')
+                        ]);
+
+                        $is_added = true;
                     }
 
-                    DB::table('stock_verifications')
-                    ->insert([
-                        'verify_prd_id' => $tnk_id,
-                        'verify_opening' => ($request->$input_field) * 1000,
-                        'verify_is_product' => 0,
-                        'verify_pdn_id' => get_last_production_id() + 1,
-                        'verify_acc_id' => session('acc_id'),
-                        'verify_user_type' => session('typ_id'),
-                    ]);
+                    
                 }
             }
 
-            session()->flash('successMessage','Verification added!');
+            if($is_added == true && $is_updated == false)
+            {
+                session()->flash('successMessage','Verification added!');
+            }
+
+            if($is_added == false && $is_updated == true)
+            {
+                session()->flash('successMessage','Verification updated!');
+            }
+
+            if($is_added == true && $is_updated == true)
+            {
+                session()->flash('successMessage','Verification added and updated!');
+            }
+
             return redirect()->action('ProductionController@manage');
         }
         else
@@ -451,7 +542,7 @@ class ProductionController extends Controller
                             return redirect()->action('ProductionController@manage');
                         }
                     }
-                    // dd($verification_check);
+                    
                     if($verification_check == '' || $verification_check == null)
                     {
                         
@@ -468,23 +559,30 @@ class ProductionController extends Controller
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
                             'verify_user_type' => session('typ_id'),
+                            'verify_user_id' => session('usr_id')
                         ]);  
+
+                        $is_added = true;
                     }
-                  
-                    // dd(($request->$total_input));
-                    DB::table('stock_verifications')
-                    ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_prd_id', '=', $prd_id)
-                    ->where('verify_is_product', '=', 1)
-                    ->where('verify_user_type', '=', session('typ_id'))
-                    ->update([
-                        'verify_closing' => $request->$total_input,
-                        'verify_closing_filled' => $request->$filled_input,
-                        'verify_closing_empty' => $request->$empty_input,
-                        'verify_closing_leakers' => $request->$leakers_input,
-                        'verify_closing_for_revalving' => $request->$for_revalving_input,
-                        'verify_closing_scraps' => $request->$scrap_input,
-                    ]);
+                    else
+                    {
+                        DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_prd_id', '=', $prd_id)
+                        ->where('verify_is_product', '=', 1)
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->update([
+                            'verify_closing' => $request->$total_input,
+                            'verify_closing_filled' => $request->$filled_input,
+                            'verify_closing_empty' => $request->$empty_input,
+                            'verify_closing_leakers' => $request->$leakers_input,
+                            'verify_closing_for_revalving' => $request->$for_revalving_input,
+                            'verify_closing_scraps' => $request->$scrap_input,
+                            'verify_user_id' => session('usr_id')
+                        ]);
+
+                        $is_updated = true;
+                    }
                 }
 
                 foreach($tank_details as $tnk_id)
@@ -507,17 +605,6 @@ class ProductionController extends Controller
                         }
                     }
 
-                    // $verify_checker = DB::table('stock_verifications')
-                    // ->where('verify_prd_id', '=', $tnk_id)
-                    // ->where('verify_is_product', '=', 0)
-                    // ->where('verify_pdn_id', '=', get_last_production_id())
-                    // ->first();
-                    
-                    // if($verify_checker <> '' || $verify_checker <> null)
-                    // {
-                    //     break;
-                    // }
-
                     if($verification_check == '' || $verification_check == null)
                     {
                         DB::table('stock_verifications')
@@ -528,20 +615,42 @@ class ProductionController extends Controller
                             'verify_pdn_id' => get_last_production_id(),
                             'verify_acc_id' => session('acc_id'),
                             'verify_user_type' => session('typ_id'),
+                            'verify_user_id' => session('usr_id')
                         ]);  
-                    }
 
-                    DB::table('stock_verifications')
-                    ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_prd_id', '=', $tnk_id)
-                    ->where('verify_is_product', '=', 0)
-                    ->update([
-                        'verify_closing' => ($request->$input_field) * 1000,
-                    ]);
+                        $is_added = true;
+                    }
+                    else
+                    {
+                        DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_prd_id', '=', $tnk_id)
+                        ->where('verify_is_product', '=', 0)
+                        ->update([
+                            'verify_closing' => ($request->$input_field) * 1000,
+                            'verify_user_id' => session('usr_id')
+                        ]);
+
+                        $is_updated = true;
+                    }
                 }
             }
 
-            session()->flash('successMessage','Verification added!');
+            if($is_added == true && $is_updated == false)
+            {
+                session()->flash('successMessage','Verification added!');
+            }
+
+            if($is_added == false && $is_updated == true)
+            {
+                session()->flash('successMessage','Verification updated!');
+            }
+
+            if($is_added == true && $is_updated == true)
+            {
+                session()->flash('successMessage','Verification added and updated!');
+            }
+
             return redirect()->action('ProductionController@manage');
         }
     }
@@ -1855,5 +1964,26 @@ class ProductionController extends Controller
         }
 
         return true;
+    }
+
+    private function check_supervisor_verification($prd_id, $pdn_id)
+    {
+        $verification_check = DB::table('stock_verifications')
+        ->where('verify_user_type', [1, 4])//
+        ->where('verify_prd_id', '=', $prd_id)
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->get();
+        
+        if(!$verification_check)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function submit_button_visibility($type)
+    {
+
     }
 }

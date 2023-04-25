@@ -97,7 +97,7 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_quantity}}</td> -->
                                                                 <td>
-                                                                    @if(session('typ_id') == '1')
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
                                                                     @endif
                                                                 </td>
@@ -127,7 +127,7 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <!-- <th>Quantity</th> -->
-                                                        @if(session('typ_id') == '1')
+                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                         <th></th>
                                                         <th></th>
                                                         @endif
@@ -148,7 +148,7 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_leakers}}</td> -->
 
-                                                                @if(session('typ_id') == '1')
+                                                                @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                 <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
@@ -170,7 +170,7 @@
                                                         <th width="50px"></th>
                                                         <th>Canister</th>
                                                         <!-- <th>Quantity</th> -->
-                                                        @if(session('typ_id') == '1')
+                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                         <th></th>
                                                         @endif
                                                     </tr>
@@ -188,7 +188,7 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_for_revalving}}</td> -->
-                                                                @if(session('typ_id') == '1')
+                                                                @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Decant and Revalve</a></td>
                                                                 @endif
                                                             </tr>
@@ -222,7 +222,7 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
-                                                                @if(session('typ_id') <> 1)
+                                                                @if(session('typ_id') <> 1  || session('typ_id') <> '4')
                                                                     <td></td>
                                                                 @else
                                                                     <td>
@@ -325,25 +325,25 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if(session('typ_id') == '1')
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                     <button type="button" class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$raw_material->prd_id}}, 0)"><i class="fa fa-plus-circle"></i> Stock-in</button>
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @if($raw_material->prd_active == 0)
                                                                         <span class="badge badge-danger">Inactive</span>
-                                                                        @if(session('typ_id') == '1')
+                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                         <a class="fa fa-toggle-off" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
                                                                         @endif
                                                                     @else
                                                                         <span class="badge badge-success">Active</span>
-                                                                        @if(session('typ_id') == '1')
+                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                         <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
                                                                         @endif
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if(session('typ_id') == '1')
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                                         <ul class="dropdown-menu">
@@ -607,7 +607,7 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_empty_goods}}</td> -->
                                                                 <td>
-                                                                    @if(session('typ_id') == '1')
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 1)">
                                                                         <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Crimp New Cans
                                                                     </a>
@@ -658,7 +658,7 @@
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_quantity}}</td> -->
                                                                 <td>
-                                                                    @if(session('typ_id') == '1')
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                     <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
                                                                     @endif
                                                                 </td>
@@ -829,7 +829,7 @@
                                     <tbody id="tbl-products">
                                         @php($production_id = get_last_production_id())
                                         @php($stocks_flag = 1)
-                                        <tr {{-- class='clickable-row' data-toggle="modal" data-target="#stocks-modal" --}}>
+                                        <tr>
                                             <td><i>Opening Stocks</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
@@ -838,7 +838,7 @@
                                             @endif
                                         </tr>
                                         @php($stocks_flag = 2)
-                                        <tr {{-- class='clickable-row' data-toggle="modal" data-target="#stocks-modal" --}}>
+                                        <tr>
                                             <td><i>Closing Stocks</i></td>
                                             @if(isset($canisters))
                                                 @foreach($canisters as $canister)
@@ -1094,7 +1094,7 @@
                                             @if($tank->tnk_active == 1)
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
-                                                <td><input type="text" class="form-control" {{-- name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
+                                                <td><input type="text" class="form-control" value="{{ $tank_remaining }}" disabled></td>
                                                 @if(session('typ_id') == 1 || session('typ_id') == 4)
                                                     <td><input type="text" class="form-control" name="tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                 @endif
@@ -1197,7 +1197,7 @@
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>    
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
@@ -1206,22 +1206,22 @@
                                             @foreach($canisters as $canister)
                                                 <tr>
                                                     <td><i>{{$canister->prd_name}}</i></td>
-                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_quantity }}" disabled></td>
                                                     <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
-                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_leakers }}" disabled></td>
                                                     <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
-                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_empty_goods }}" disabled></td>
                                                     <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
-                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_for_revalving }}" disabled></td>
                                                     <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
-                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{{ $canister->prd_scraps }}" disabled></td>
                                                     <td><input type="text" class="form-control" name="stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
-                                                    <td><input type="text" class="form-control" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
+                                                    <td><input type="text" class="form-control" value="{!! get_product_total_stock($canister->prd_id) !!}" disabled></td>
                                                     <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                     
                                                     <input type="text" class="form-control" name="canister_details" value="{{$canister_details}}" hidden/>
@@ -1296,15 +1296,34 @@
                                 <tbody>
                                    @if(isset($tanks[0]))
                                         @foreach($tanks as $tank)
-                                            @if($tank->tnk_active == 1)
-                                                @php($tank_remaining = ($tank->tnk_remaining) / 1000)
-                                                <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
-                                                <td><input type="text" class="form-control" {{-- name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" --}} value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required {{$input_text_display}}></td>
-                                                @if(session('typ_id') == 1 || session('typ_id') == 4)
-                                                    <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                            <tr>
+                                                @if($tank->tnk_active == 1)
+                                                    <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
+                                                    @if(session('typ_id') == 1 || session('typ_id') == 4)
+                                                        @if(count($product_verifications) <> 0)
+                                                            @foreach($product_verifications as $verification)
+                                                                @if($verification->verify_prd_id == $tank->tnk_id && $verification->verify_is_product == 0)
+                                                                    @if($pdn_flag)
+                                                                        @php($tank_remaining = ($verification->verify_opening) / 1000)
+                                                                    @else
+                                                                        @php($tank_remaining = ($verification->verify_closing) / 1000)
+                                                                    @endif
+                                                                    <td><input type="text" class="form-control" value="{{ $tank_remaining }}"disabled></td>
+                                                                    <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        @endif
+                                                    @else
+                                                        @php($tank_remaining = ($tank->tnk_remaining) / 1000)
+                                                        <td><input type="text" class="form-control" value="{{ $tank_remaining }}"disabled></td>
+                                                        <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                    @endif
+                                                    <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
                                                 @endif
-                                                <input type="text" class="form-control" name="tank_details" placeholder="Enter Stocks Quantity" value="{{$tank_details}}" hidden/>
-                                            @endif
+                                            </tr>
                                         @endforeach
                                    @endif
                                 </tbody>
@@ -1426,24 +1445,68 @@
                                                 <tr>
                                                     @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                         <td><i>{{$canister->prd_name}}</i></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_quantity }}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_leakers }}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_revalving_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{{ $canister->prd_scraps }}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_scraps_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
-                                                        
-                                                        <td><input type="text" class="form-control" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" {{$input_text_display}}></td>
-                                                        <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        @if(count($product_verifications) <> 0)
+                                                            @foreach($product_verifications as $verification)
+                                                                @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
+                                                                    
+                                                                    @if($pdn_flag)
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_revalving_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_scraps_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_opening}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                    @else
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing_filled}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing_leakers}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing_empty}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing_for_revalving}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_revalving_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing_scraps}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_scraps_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                        
+                                                                        <td><input type="text" class="form-control" value="{{$verification->verify_closing}}" disabled></td>
+                                                                        <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_revalving_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_for_revalving }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_scraps_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_scraps }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            
+                                                            <td><input type="text" class="form-control" value="N/A" disabled></td>
+                                                            <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        @endif
                                                         
                                                         <input type="text" class="form-control" name="canister_details" value="{{$canister_details}}" hidden/>
                                                     @else
@@ -1742,6 +1805,9 @@
                     @if($pdn_flag)
                         @if($verify_opening_visibility == "disabled")
                             <strong>Plant Manager / Admin must verify first!</strong>
+                        @elseif($verify_opening_visibility == "verified")
+                            <strong>Supervisor / Admin already verified!</strong>
+                            @php($verify_opening_visibility = "disabled")
                         @else
                             <strong>Are you sure you want to verify the opening stocks?</strong>
                         @endif
@@ -1752,6 +1818,9 @@
                     @else
                         @if($verify_closing_visibility == "disabled")
                             <strong>Plant Manager / Admin must verify first!</strong>
+                        @elseif($verify_closing_visibility == "verified")
+                            <strong>Supervisor / Admin already verified!</strong>
+                            @php($verify_closing_visibility = "disabled")
                         @else
                             <strong>Are you sure you want to verify and print the closing stocks?</strong>
                         @endif
