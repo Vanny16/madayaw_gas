@@ -31,9 +31,9 @@
                 
                 <li class="nav-item">
                     <a href="{{ action('MainController@home') }}" class="nav-link">
-                        <i class="nav-icon fa fa-home"></i>
+                        <i class="nav-icon fa fa-bullhorn"></i>
                         <p>
-                            Home 
+                            News & Announcements 
                         </p>
                     </a>
                 </li>
