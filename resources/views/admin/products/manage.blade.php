@@ -202,7 +202,7 @@
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
-                                                            @if(session('typ_id') == '1' || session('typ_id') == '2')
+                                                            @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product price won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-product-modal-{{$product->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                             @endif
                                                             <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$product->prd_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
@@ -250,9 +250,13 @@
                                                                                 <label for="prd_sku">Status <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="sts_name" value=""/>
                                                                             </div>--}}
+                                                                            @php($status = "")
+                                                                            @if(session('typ_id') == 4)
+                                                                                @php($status = "disabled")
+                                                                            @endif
                                                                             <div class="form-group">
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" {{ $status }}/>
                                                                             </div>
                                                                             <!-- <div class="form-group">
                                                                                 <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>

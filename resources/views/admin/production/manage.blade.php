@@ -460,14 +460,17 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-
+                                                                                            @php($status = "")
+                                                                                            @if(session('typ_id') == 4)
+                                                                                                @php($status = "disabled")
+                                                                                            @endif
                                                                                             <div class="form-group">
                                                                                                 <label for="set_prd_price">Price <span style="color:red">*</span></label>
-                                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                                                                                                <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" {{$status}}/>
                                                                                             </div>
                                                                                             <div class="form-group">
                                                                                                 <label for="set_prd_deposit">Deposit Price <span style="color:red">*</span></label>
-                                                                                                <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
+                                                                                                <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);" {{$status}}/>
                                                                                             </div>
                                                                                             <div class="form-group">
                                                                                                 <label for="set_prd_weight">Net Weight (g) <span style="color:red">*</span></label>

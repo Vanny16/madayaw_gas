@@ -236,7 +236,7 @@
                                                     <div class="dropdown">
                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
-                                                            @if(session('typ_id') == '1' || session('typ_id') == '2')
+                                                            @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                 <li>
                                                                     <a class="ml-3" id="cus_edit_button" href="javascript:void(0)" data-toggle="modal" data-target="#edit-customer-modal-{{$customer->cus_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a>
                                                                     <input type="hidden" name="cus_id" value="{{$customer->cus_id}}">
@@ -320,9 +320,6 @@
                                                                                         <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                         <label for="">{{$product->prd_name}}</label>
                                                                                         <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="<?php echo($displayed_price)?>">
-                                                                                        {{--<input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
-                                                                                        <label for="">{{$product->prd_name}}</label>
-                                                                                        <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">--}}
                                                                                     @endif
                                                                                 </div>
                                                                             @endforeach
@@ -432,12 +429,13 @@
                                                                                                                     @php($displayed_price = $product->prd_price)
                                                                                                                 @endif
                                                                                                             @endforeach
+                                                                                                            @php($status = "")
+                                                                                                            @if(session('typ_id') == 4)
+                                                                                                                @php($status = "disabled")
+                                                                                                            @endif
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="<?php echo($displayed_price)?>">
-                                                                                                                {{--<input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
-                                                                                                                <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="product{{$product->prd_id}}" name="cus_accessibles[]" value="<?php echo($displayed_price)?>">--}}
+                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="<?php echo($displayed_price)?>" {{$status}}>
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
