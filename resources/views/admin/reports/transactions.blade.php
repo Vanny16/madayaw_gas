@@ -48,6 +48,12 @@
                 @endphp
             @endif
             
+            @if(session('search_transactions'))
+                @php($search_transactions = session('search_transactions'))
+            @else
+                @php($search_transactions = "")
+            @endif
+            
             @if(session('paginate_row'))
                 @php($paginate_row = session('paginate_row'))
             @else
@@ -66,7 +72,7 @@
                                 <div class="row">
                                     <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
-                                        <input type="text" class="form-control" id="search_transactions" name="search_transactions" placeholder="Search">
+                                        <input type="text" class="form-control" id="search_transactions" name="search_transactions" value="{{ $search_transactions }}" placeholder="Search">
                                     </div>
                                     <div class="col-md-2 mb-3">
                                         <label for="date_from">From</label>

@@ -310,7 +310,7 @@ class ReportsController extends Controller
         }
         else if($filter_btn == "export"){
             // session()->flash('successMessage',  "Invalid search");
-            return Excel::download(new ExcelExport('salesExport'), 'sales-export.xlsx');
+            return Excel::download(new ExcelExport('salesExport', 'salesHeader', date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))), 'sales-export.xlsx');
         }
     }
 
@@ -390,12 +390,24 @@ class ReportsController extends Controller
 
     public function transactionsFilter(Request $request)
     {
+        $search_transactions = $request->input('search_transactions');
         $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
         $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
-        $transactions = DB::table('transactions')
+        if($search_transactions != null){
+            $transactions = DB::table('transactions')
+                        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->where('trx_ref_id','=', $search_transactions)
+                        ->paginate($paginate_row);
+    
+        }
+        else{
+            $transactions = DB::table('transactions')
                         ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
@@ -404,8 +416,7 @@ class ReportsController extends Controller
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->paginate($paginate_row);
-                        
-                        // dd($transactions);
+        }
 
         $purchases = DB::table('purchases')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -426,6 +437,7 @@ class ReportsController extends Controller
                         ->get();
 
                         
+        session(['search_transactions' => $search_transactions]);
         session(['transactions_date_from' => $transactions_date_from]);
         session(['transactions_date_to' => $transactions_date_to]);
         session(['paginate_row' => $paginate_row]);
@@ -438,7 +450,7 @@ class ReportsController extends Controller
             return view('admin.print.transactionreport', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
         }
         else if($filter_btn == "export"){
-            return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders'));
+            return Excel::download(new ExcelExport('transactionsExport', 'transactionsHeader', date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))), 'transaction-export.xlsx');
         }
     }
 
@@ -545,7 +557,7 @@ class ReportsController extends Controller
             return view('admin.print.paymentsreports', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
         }
         else if($filter_btn == "export"){
-            return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+            return Excel::download(new ExcelExport('paymentsExport', 'paymentsHeader', date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))), 'payments-export.xlsx');
         }
 
     }
