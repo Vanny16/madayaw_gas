@@ -23,10 +23,10 @@
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th width="500px">Full Name</th>
+                            <th>Full Name</th>
                             <th>Username</th>
-                            <th width="500px">Address</th>
-                            <th width="500px">user Type</th>
+                            <th>Address</th>
+                            <th>user Type</th>
                             <th>Status</th>
                             <th width="20px"></th>
                         </tr>

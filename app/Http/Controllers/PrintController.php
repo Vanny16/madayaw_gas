@@ -208,25 +208,6 @@ class PrintController extends Controller
         return view('admin.print.salesreports', compact('sale_reports', 'purchases', 'sales_date_from', 'sales_date_to'));
     }
 
-    public function allsalesReports(Request $request)
-    {   
-        $sales_date_from = $request->sales_date_from;
-        $sales_date_to = $request->sales_date_to;
-
-        $all_sales_reports = DB::table('transactions')
-        ->join('users', 'users.usr_id', '=', 'transactions.usr_id')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-        ->get();
-
-        $purchases = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->get();
-
-        return view('admin.print.salesreports', compact('all_sales_reports', 'purchases', 'sales_date_from', 'sales_date_to'));
-    }
-
-
     public function transactionReports(Request $request)
     {   
         $transactions_date_from = $request->transactions_date_from;

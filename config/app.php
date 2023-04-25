@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //Maat Website Excel Eportation
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*
