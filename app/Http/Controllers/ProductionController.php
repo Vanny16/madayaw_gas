@@ -138,24 +138,14 @@ class ProductionController extends Controller
             }
         }
         
-        //FOR VALUES IN VERIFICATION MODAL
-        if($pdn_flag)
+        //CHECK IF PLANT MANAGER AND SUPERVISOR INPUT
+        if(!$this->verification_comparison())
         {
-            $filled_output = "{{"."$"."verification->verify_opening_filled}}";
-            $empty_output = "{{"."$"."verification->verify_opening_empty}}";
-            $leakers_output = "{{"."$"."verification->verify_opening_leakers}}";
-            $for_revalving_output = "{{"."$"."verification->verify_opening_for_revalving}}";
-            $scraps_output =  "{{"."$"."verification->verify_opening_scraps}}";
+            $opening_visibility = "discrepancy";
+            $closing_visibility = "discrepancy";
+            session()->flash('errorMessage','Production Verification Discrepancy!');
         }
-        else
-        {
-            $filled_output = "$"."verification->verify_closing_filled";
-            $empty_output = 'value = "{{'."$"."verification->verify_closing_filled}}".'"';
-            $leakers_output = 'value = "{{'."$"."verification->verify_closing_filled}}".'"';
-            $for_revalving_output = "{{"."$"."verification->verify_closing_for_revalving}}";
-            $scraps_output =  "{{"."$"."verification->verify_closing_scraps}}";
-        }
-        // dd($empty_output);
+
         $canister_details = "";
         $tank_details = "";
         foreach($canisters as $canister)
@@ -204,7 +194,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility','filled_output', 'empty_output', 'leakers_output', 'for_revalving_output', 'scraps_output'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 
     //PRODUCTION
@@ -1966,24 +1956,167 @@ class ProductionController extends Controller
         return true;
     }
 
-    private function check_supervisor_verification($prd_id, $pdn_id)
+    private function verification_comparison()
     {
-        $verification_check = DB::table('stock_verifications')
-        ->where('verify_user_type', [1, 4])//
-        ->where('verify_prd_id', '=', $prd_id)
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->get();
+        // $verification = DB::table('stock_verifications')
+        // ->where('verify_acc_id', '=', session('acc_id'));
         
-        if(!$verification_check)
+        $pm_canisters = DB::table('stock_verifications')
+                            ->where('verify_acc_id', '=', session('acc_id'))
+                            ->whereIn('verify_user_type', [1, 3, 5])
+                            ->where('verify_is_product', '=', 1)
+                            ->get();
+
+        $pm_tanks = DB::table('stock_verifications')
+                        ->where('verify_acc_id', '=', session('acc_id'))
+                        ->whereIn('verify_user_type', [1, 3, 5])
+                        ->where('verify_is_product', '=', 0)
+                        ->get();
+
+        $supervisor_canisters = DB::table('stock_verifications')
+                                    ->where('verify_acc_id', '=', session('acc_id'))
+                                    ->whereIn('verify_user_type', [1, 4])
+                                    ->where('verify_is_product', '=', 1)
+                                    ->get();
+
+        $supervisor_tanks = DB::table('stock_verifications')
+                                ->where('verify_acc_id', '=', session('acc_id'))
+                                ->whereIn('verify_user_type', [1, 4])
+                                ->where('verify_is_product', '=', 0)
+                                ->get();
+                                        // dd($pm_tanks);                    
+        foreach($pm_canisters as $pm_canister)
         {
-            return false;
+            foreach($supervisor_canisters as $supervisor_canister)
+            {
+                if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
+                {
+                    if(check_production_log())
+                    {
+                        if
+                        (
+                            $pm_canister->verify_opening <> $supervisor_canister->verify_opening ||
+                            $pm_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
+                            $pm_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
+                            $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
+                            $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
+                            $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
+                        ){return false;}
+                        else
+                        {continue;}
+                    }
+                    else
+                    {
+                        // dd($pm_canister->verify_closing_filled, $supervisor_canister->verify_closing_filled);
+                        if
+                        (
+                            $pm_canister->verify_closing <> $supervisor_canister->verify_closing ||
+                            $pm_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
+                            $pm_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
+                            $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
+                            $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
+                            $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
+                        ){return false;}
+                        else
+                        {continue;}
+                    }
+                }
+            }
         }
 
-        return true;
+        foreach($pm_tanks as $pm_tank)
+        {
+            foreach($supervisor_tanks as $supervisor_tank)
+            {
+                if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
+                {
+                    if(check_production_log())
+                    {
+                        if
+                        (
+                            $pm_tank->verify_opening <> $supervisor_tank->verify_opening ||
+                            $pm_tank->verify_opening_filled <> $supervisor_tank->verify_opening_filled ||
+                            $pm_tank->verify_opening_empty <> $supervisor_tank->verify_opening_empty ||
+                            $pm_tank->verify_opening_leakers <> $supervisor_tank->verify_opening_leakers || 
+                            $pm_tank->verify_opening_for_revalving <> $supervisor_tank->verify_opening_for_revalving ||
+                            $pm_tank->verify_opening_scraps <> $supervisor_tank->verify_opening_scraps
+                        ){return false;}
+                        else
+                        {return true;}
+                    }
+                    else
+                    {
+                        if
+                        (
+                            $pm_tank->verify_closing <> $supervisor_tank->verify_closing ||
+                            $pm_tank->verify_closing_filled <> $supervisor_tank->verify_closing_filled ||
+                            $pm_tank->verify_closing_empty <> $supervisor_tank->verify_closing_empty ||
+                            $pm_tank->verify_closing_leakers <> $supervisor_tank->verify_closing_leakers || 
+                            $pm_tank->verify_closing_for_revalving <> $supervisor_tank->verify_closing_for_revalving ||
+                            $pm_tank->verify_closing_scraps <> $supervisor_tank->verify_closing_scraps
+                        ){return false;}
+                        else
+                        {return true;}
+                    }
+                }
+            }
+        }                       
     }
 
-    private function submit_button_visibility($type)
+    private function createNews()
     {
+        DB::table('news')
+            ->insert([
+                'news_title' => "Production Discrepancy",
+                'news_content' => "",
+                'news_date' => date('Y-m-d'),
+                'news_time' => date('H:i:s'),
+                'news_datetime' => date('Y-m-d H:i:s')
+            ]);
 
+
+        //IMAGE UPLOAD 
+        if($request->file('news_image'))
+        {
+            $news_id = DB::table('news')
+            ->select('news_id')
+            ->orderBy('news_id', 'desc')
+            ->first();
+    
+            $file = $request->file('news_image');
+
+            $validator = Validator::make( 
+                [
+                    'file' => $file,
+                    'extension' => strtolower($file->getClientOriginalExtension()),
+                ],
+                [
+                    'file' => 'required',
+                    'file' => 'max:3072', //3MB
+                    'extension' => 'required|in:jpg,png,gif',
+                ]
+            );
+    
+            if ($validator->fails()) 
+            {
+                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+    
+            $fileName = $news_id->news_id . '.' . $file->getClientOriginalExtension();
+    
+            Storage::disk('local')->put('img/news/' . $fileName, fopen($file, 'r+'));
+
+            DB::table('news')
+            ->where('news_id','=',$news_id->news_id)
+            ->update([
+                'news_img' => $fileName,
+            ]);  
+    
+        }   
+
+            
+        session()->flash('successMessage','Your message has been posted!');
+        return redirect()->action('ProductionController@home');
     }
 }

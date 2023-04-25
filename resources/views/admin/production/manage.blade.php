@@ -1240,13 +1240,27 @@
                 </div>
                 <div class="modal-footer">
                     @if($pdn_flag)
-                        <strong>Are you sure you want to start the production?</strong>
+                        @if($verify_opening_visibility == "disabled")
+                            <strong>Plant Manager / Admin must verify first!</strong>
+                        @elseif($opening_visibility == "discrepancy")
+                            <strong>Please resolve Production discrepancy!</strong>
+                            @php($opening_visibility = "disabled")
+                        @else
+                            <strong>Are you sure you want to end the production?</strong>
+                        @endif
                         <div>
                             <button type="submit" class="btn btn-success" {{ $opening_visibility }}><i class="fa fa-check mr-1"> </i>Start Production</button>
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
-                        <strong>Are you sure you want to end the production?</strong>
+                        @if($verify_closing_visibility == "disabled")
+                            <strong>Plant Manager / Admin must verify first!</strong>
+                        @elseif($closing_visibility == "discrepancy")
+                            <strong>Please resolve Production discrepancy!</strong>
+                            @php($closing_visibility = "disabled")
+                        @else
+                            <strong>Are you sure you want to end the production?</strong>
+                        @endif
                         <div>
                             <button type="submit" class="btn btn-danger" {{ $closing_visibility }}><i class="fa fa-ban mr-1"> </i>End Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
