@@ -90,6 +90,15 @@
                                     </div>
                                 </td>
                             @endif
+                            @if($all_customer_detail->cus_active == 0)
+                                <td>
+                                    <span class="badge badge-danger">Inactive</span>
+                                </td>
+                            @else
+                                <td>
+                                    <span class="badge badge-success">Active</span>
+                                </td>
+                            @endif
                         </tr> 
                         @endforeach
                     </tbody>
