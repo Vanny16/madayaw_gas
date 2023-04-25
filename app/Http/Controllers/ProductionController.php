@@ -14,6 +14,7 @@ class ProductionController extends Controller
 {
     public function manage()
     {
+        $this->printProduction();
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -63,8 +64,14 @@ class ProductionController extends Controller
         ->where('verify_acc_id', '=', session('acc_id'))
         ->get(); 
 
+        $pdn_for_verifications = get_last_production_id();
+        if(check_production_log())
+        {
+            $pdn_for_verifications = $pdn_for_verifications + 1;
+        }
+
         $product_verifications = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', get_last_production_id())
+        ->where('verify_pdn_id', '=', $pdn_for_verifications)
         ->where('verify_acc_id', '=', session('acc_id'))
         ->whereIn('verify_user_type', [1, 3, 5])
         ->get(); 
@@ -95,11 +102,12 @@ class ProductionController extends Controller
 
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
-        if(session('typ_id') == 4)
+        if(session('typ_id') == 1)
         {
             $verify_production_id = get_last_production_id();
             if($pdn_flag)
             {
+                $verify_opening_visibility = "disabled";
                 $verify_production_id = $verify_production_id + 1;
             }
             foreach($verifications as $verification)
@@ -107,7 +115,29 @@ class ProductionController extends Controller
                 if($verification->verify_pdn_id == $verify_production_id)
                 {
                     if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1))
-                    {
+                    {   
+                        $verify_opening_visibility = "";
+                        $verify_closing_visibility = "disabled";
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(session('typ_id') == 4)
+        {
+            $verify_production_id = get_last_production_id();
+            if($pdn_flag)
+            {
+                $verify_opening_visibility = "disabled";
+                $verify_production_id = $verify_production_id + 1;
+            }
+            foreach($verifications as $verification)
+            {
+                if($verification->verify_pdn_id == $verify_production_id)
+                {
+                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1))
+                    {   
                         $verify_opening_visibility = "";
                         $verify_closing_visibility = "disabled";
                         break;
@@ -127,10 +157,14 @@ class ProductionController extends Controller
             {
                 if($verification->verify_pdn_id == $verify_production_id)
                 {
-                    // dd($verification);
-                    if(is_null($verification->verify_closing) || ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
+                    if(!is_null($verification->verify_opening) && ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
                     {
                         $verify_opening_visibility = "verified";
+                        break;
+                    }
+
+                    if(!is_null($verification->verify_closing) && ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
+                    {
                         $verify_closing_visibility = "verified";
                         break;
                     }
@@ -239,19 +273,24 @@ class ProductionController extends Controller
             {
                 foreach($canister_details as $prd_id)
                 {
-                    $input_field = "stock_quantity" . $prd_id;
+                    $total_input = 'total_stock_quantity' . $prd_id;
+                    $filled_input = 'filled_stock_quantity' . $prd_id;
+                    $empty_input = 'empty_stock_quantity' . $prd_id;
+                    $leakers_input = 'leakers_stock_quantity' . $prd_id;
+                    $for_revalving_input = 'revalving_stock_quantity' . $prd_id;
+                    $scrap_input = 'scraps_stock_quantity' . $prd_id;
 
-                    DB::table('products')
-                    ->where('prd_id', '=', $prd_id)
-                    ->update([
-                        'prd_quantity' => $request->$input_field,
-                    ]);
+                    // DB::table('products')
+                    // ->where('prd_id', '=', $prd_id)
+                    // ->update([
+                    //     'prd_quantity' => $request->$total_input,
+                    // ]);
                     
                     DB::table('stocks_logs')
                     ->insert([
                         'acc_id' => session('acc_id'),
                         'prd_id' => $prd_id,
-                        'opening_stocks' => $request->$input_field,
+                        'opening_stocks' => $request->$total_input,
                         'pdn_id' => get_last_production_id()
                     ]);
                 }
@@ -260,17 +299,17 @@ class ProductionController extends Controller
                 {
                     $input_field = "tank_remaining" . $tnk_id;
 
-                    DB::table('tanks')
-                    ->where('tnk_id', '=', $tnk_id)
-                    ->update([
-                        'tnk_remaining' => $request->$input_field * 1000,
-                    ]);
+                    // DB::table('tanks')
+                    // ->where('tnk_id', '=', $tnk_id)
+                    // ->update([
+                    //     'tnk_remaining' => $request->$total_input * 1000,
+                    // ]);
 
                     DB::table('tank_logs')
                     ->insert([
                         'acc_id' => session('acc_id'),
                         'tnk_id' => $tnk_id,
-                        'log_tnk_opening' => ($request->$input_field) * 1000,
+                        'log_tnk_opening' => ($request->$total_input) * 1000,
                         'pdn_id' => get_last_production_id()
                     ]);
                 }
@@ -290,19 +329,24 @@ class ProductionController extends Controller
             {
                 foreach($canister_details as $prd_id)
                 {
-                    $input_field = "stock_quantity" . $prd_id;
+                    $total_input = 'total_stock_quantity' . $prd_id;
+                    $filled_input = 'filled_stock_quantity' . $prd_id;
+                    $empty_input = 'empty_stock_quantity' . $prd_id;
+                    $leakers_input = 'leakers_stock_quantity' . $prd_id;
+                    $for_revalving_input = 'revalving_stock_quantity' . $prd_id;
+                    $scrap_input = 'scraps_stock_quantity' . $prd_id;
                   
-                    DB::table('products')
-                    ->where('prd_id', '=', $prd_id)
-                    ->update([
-                        'prd_quantity' => $request->$input_field,
-                    ]);
+                    // DB::table('products')
+                    // ->where('prd_id', '=', $prd_id)
+                    // ->update([
+                    //     'prd_quantity' => $request->$total_input,
+                    // ]);
 
                     DB::table('stocks_logs')
                     ->where('prd_id', '=', $prd_id)
                     ->where('pdn_id', '=', get_last_production_id())
                     ->update([
-                        'closing_stocks' => $request->$input_field,
+                        'closing_stocks' => $request->$total_input,
                     ]);
                 }
 
@@ -310,20 +354,24 @@ class ProductionController extends Controller
                 {
                     $input_field = "tank_remaining" . $tnk_id;
 
-                    DB::table('tanks')
-                    ->where('tnk_id', '=', $tnk_id)
-                    ->update([
-                        'tnk_remaining' => $request->$input_field * 1000,
-                    ]);
+                    // DB::table('tanks')
+                    // ->where('tnk_id', '=', $tnk_id)
+                    // ->update([
+                    //     'tnk_remaining' => $request->$total_input * 1000,
+                    // ]);
 
                     DB::table('tank_logs')
                     ->where('pdn_id', '=', get_last_production_id())
                     ->where('tnk_id', '=', $tnk_id)
                     ->update([
-                        'log_tnk_closing' => ($request->$input_field) * 1000,
+                        'log_tnk_closing' => ($request->$total_input) * 1000,
                     ]);
                 }
             }
+
+            //DATA NEEDED FOR PRODUCTION PRINT
+            //ENTER HERE THE FUNCTION FOR PRINTING
+            $this->printProduction();
 
             session()->flash('successMessage','Production ended!');
             return redirect()->action('ProductionController@manage');
@@ -337,12 +385,10 @@ class ProductionController extends Controller
         $temp_tank_details = explode(",", $request->tank_details);
         array_pop($temp_details);
         array_pop($temp_tank_details);
-        
-        // dd($request->canister_details);
 
         $canister_details = [];
         $tank_details = [];
-
+        $this->printProduction();
         foreach($temp_details as $details)
         {   
             $detail = explode("|", $details);
@@ -363,7 +409,7 @@ class ProductionController extends Controller
 
         $is_updated = false;
         $is_added = false;
-
+        
         if($pdn_flag)
         {
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -392,11 +438,16 @@ class ProductionController extends Controller
                             return redirect()->action('ProductionController@manage');
                         }
                     }
-
-                    if($verify_checker <> '' || $verify_checker <> null)
+                    // dd($request->$total_input,
+                    // $request->$filled_input,
+                    // $request->$empty_input,
+                    // $request->$leakers_input,
+                    // $request->$for_revalving_input,
+                    // $request->$scrap_input);
+                    if($verify_checker <> '' || !is_null($verify_checker))
                     {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
                         ->where('verify_prd_id', '=', $prd_id)
                         ->where('verify_is_product', '=', 1)
                         ->where('verify_user_type', '=', session('typ_id'))
@@ -405,8 +456,8 @@ class ProductionController extends Controller
                             'verify_opening_filled' => $request->$filled_input,
                             'verify_opening_empty' => $request->$empty_input,
                             'verify_opening_leakers' => $request->$leakers_input,
-                            'verify_opening_for_revalving' => $request->$leakers_input,
-                            'verify_opening_scraps' => $request->$leakers_input,
+                            'verify_opening_for_revalving' => $request->$for_revalving_input,
+                            'verify_opening_scraps' => $request->$scrap_input,
                             'verify_user_id' => session('usr_id')
                         ]);
 
@@ -421,8 +472,8 @@ class ProductionController extends Controller
                             'verify_opening_filled' => $request->$filled_input,
                             'verify_opening_empty' => $request->$empty_input,
                             'verify_opening_leakers' => $request->$leakers_input,
-                            'verify_opening_for_revalving' => $request->$leakers_input,
-                            'verify_opening_scraps' => $request->$leakers_input,
+                            'verify_opening_for_revalving' => $request->$for_revalving_input,
+                            'verify_opening_scraps' => $request->$scrap_input,
                             'verify_is_product' => 1,
                             'verify_pdn_id' => get_last_production_id() + 1,
                             'verify_acc_id' => session('acc_id'),
@@ -454,10 +505,10 @@ class ProductionController extends Controller
                         }
                     }
 
-                    if($verify_checker <> '' || $verify_checker <> null)
+                    if($verify_checker <> '' || !is_null($verify_checker))
                     {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
                         ->where('verify_prd_id', '=', $tnk_id)
                         ->where('verify_is_product', '=', 0)
                         ->update([
@@ -585,7 +636,7 @@ class ProductionController extends Controller
                     ->where('verify_pdn_id', '=', get_last_production_id())
                     ->where('verify_user_type', '=', session('typ_id'))
                     ->first();
-
+                    
                     if(session('typ_id') == 4)
                     {
                         if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
@@ -1958,33 +2009,41 @@ class ProductionController extends Controller
 
     private function verification_comparison()
     {
-        // $verification = DB::table('stock_verifications')
-        // ->where('verify_acc_id', '=', session('acc_id'));
+        $pdn_id = get_last_production_id();
+
+        if(check_production_log())
+        {
+            $pdn_id = $pdn_id + 1;
+        }
         
         $pm_canisters = DB::table('stock_verifications')
+                            ->where('verify_pdn_id', '=', $pdn_id)
                             ->where('verify_acc_id', '=', session('acc_id'))
                             ->whereIn('verify_user_type', [1, 3, 5])
                             ->where('verify_is_product', '=', 1)
                             ->get();
 
         $pm_tanks = DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', $pdn_id)
                         ->where('verify_acc_id', '=', session('acc_id'))
                         ->whereIn('verify_user_type', [1, 3, 5])
                         ->where('verify_is_product', '=', 0)
                         ->get();
 
         $supervisor_canisters = DB::table('stock_verifications')
+                                    ->where('verify_pdn_id', '=', $pdn_id)
                                     ->where('verify_acc_id', '=', session('acc_id'))
                                     ->whereIn('verify_user_type', [1, 4])
                                     ->where('verify_is_product', '=', 1)
                                     ->get();
 
         $supervisor_tanks = DB::table('stock_verifications')
+                                ->where('verify_pdn_id', '=', $pdn_id)
                                 ->where('verify_acc_id', '=', session('acc_id'))
                                 ->whereIn('verify_user_type', [1, 4])
                                 ->where('verify_is_product', '=', 0)
                                 ->get();
-                                        // dd($pm_tanks);                    
+                                                 
         foreach($pm_canisters as $pm_canister)
         {
             foreach($supervisor_canisters as $supervisor_canister)
@@ -2001,13 +2060,17 @@ class ProductionController extends Controller
                             $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
                             $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
                             $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
-                        ){return false;}
-                        else
-                        {continue;}
+                        )
+                        {
+                            return false;
+                        }
+                        // else
+                        // {
+                        //     continue;
+                        // }
                     }
                     else
                     {
-                        // dd($pm_canister->verify_closing_filled, $supervisor_canister->verify_closing_filled);
                         if
                         (
                             $pm_canister->verify_closing <> $supervisor_canister->verify_closing ||
@@ -2016,14 +2079,19 @@ class ProductionController extends Controller
                             $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
                             $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
                             $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
-                        ){return false;}
-                        else
-                        {continue;}
+                        )
+                        {
+                            return false;
+                        }
+                        // else
+                        // {
+                        //     continue;
+                        // }
                     }
                 }
             }
         }
-
+        
         foreach($pm_tanks as $pm_tank)
         {
             foreach($supervisor_tanks as $supervisor_tank)
@@ -2040,9 +2108,14 @@ class ProductionController extends Controller
                             $pm_tank->verify_opening_leakers <> $supervisor_tank->verify_opening_leakers || 
                             $pm_tank->verify_opening_for_revalving <> $supervisor_tank->verify_opening_for_revalving ||
                             $pm_tank->verify_opening_scraps <> $supervisor_tank->verify_opening_scraps
-                        ){return false;}
-                        else
-                        {return true;}
+                        )
+                        {
+                            return false;
+                        }
+                        // else
+                        // {
+                        //     return true;
+                        // }
                     }
                     else
                     {
@@ -2054,69 +2127,52 @@ class ProductionController extends Controller
                             $pm_tank->verify_closing_leakers <> $supervisor_tank->verify_closing_leakers || 
                             $pm_tank->verify_closing_for_revalving <> $supervisor_tank->verify_closing_for_revalving ||
                             $pm_tank->verify_closing_scraps <> $supervisor_tank->verify_closing_scraps
-                        ){return false;}
-                        else
-                        {return true;}
+                        )
+                        {
+                            return false;
+                        }
+                        // else
+                        // {
+                        //     return true;
+                        // }
                     }
                 }
             }
-        }                       
+        }
+
+        return true;                       
     }
 
-    private function createNews()
+    private function printProduction()
     {
-        DB::table('news')
-            ->insert([
-                'news_title' => "Production Discrepancy",
-                'news_content' => "",
-                'news_date' => date('Y-m-d'),
-                'news_time' => date('H:i:s'),
-                'news_datetime' => date('Y-m-d H:i:s')
-            ]);
+        $canisters = DB::table('products')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('prd_is_refillable', '=', 1)
+        ->where('prd_for_production', '=', 1)
+        ->where('prd_active', '=', 1)
+        ->get();
+        
+        $production_logs = DB::table('production_logs')
+        ->where('pdn_id', '=', get_last_production_id())
+        ->first();
 
+        $production_date = date("F j, Y", strtotime($production_logs->pdn_date));
 
-        //IMAGE UPLOAD 
-        if($request->file('news_image'))
-        {
-            $news_id = DB::table('news')
-            ->select('news_id')
-            ->orderBy('news_id', 'desc')
-            ->first();
-    
-            $file = $request->file('news_image');
+        $product_verifications = DB::table('stock_verifications')
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_pdn_id', '=', get_last_production_id())
+        ->get();
 
-            $validator = Validator::make( 
-                [
-                    'file' => $file,
-                    'extension' => strtolower($file->getClientOriginalExtension()),
-                ],
-                [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
-                    'extension' => 'required|in:jpg,png,gif',
-                ]
-            );
-    
-            if ($validator->fails()) 
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-    
-            $fileName = $news_id->news_id . '.' . $file->getClientOriginalExtension();
-    
-            Storage::disk('local')->put('img/news/' . $fileName, fopen($file, 'r+'));
+        $tanks = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('tnk_active', '=', 1)
+        ->get();
 
-            DB::table('news')
-            ->where('news_id','=',$news_id->news_id)
-            ->update([
-                'news_img' => $fileName,
-            ]);  
-    
-        }   
-
-            
-        session()->flash('successMessage','Your message has been posted!');
-        return redirect()->action('ProductionController@home');
+        $users = DB::table('users')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('usr_active', '=', 1)
+        ->get();
+dd('test');
+        return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
     }
 }
