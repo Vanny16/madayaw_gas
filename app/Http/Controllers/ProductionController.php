@@ -12,9 +12,8 @@ use DB;
 
 class ProductionController extends Controller
 {
-    public function manage()
-    {
-        $this->printProduction();
+    public function manage(){ 
+
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -316,7 +315,9 @@ class ProductionController extends Controller
             }
 
             session()->flash('successMessage','Production started!');
-            return redirect()->action('ProductionController@manage');
+            // return redirect()->action('ProductionController@manage');
+            $view = $this->printProduction();
+            return $view;
         }
         else
         {
@@ -371,10 +372,11 @@ class ProductionController extends Controller
 
             //DATA NEEDED FOR PRODUCTION PRINT
             //ENTER HERE THE FUNCTION FOR PRINTING
-            $this->printProduction();
 
             session()->flash('successMessage','Production ended!');
-            return redirect()->action('ProductionController@manage');
+            // return redirect()->action('ProductionController@manage');
+            $view = $this->printProduction();
+            return $view;
         }
     }
 
@@ -2172,7 +2174,8 @@ class ProductionController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->where('usr_active', '=', 1)
         ->get();
-dd('test');
+        
+        // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
         return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
     }
 }

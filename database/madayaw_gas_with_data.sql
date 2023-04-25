@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : server
-Source Server Version : 50610
+Source Server         : localhost
+Source Server Version : 50741
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50610
+Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-19 17:19:25
+Date: 2023-04-26 06:41:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -697,31 +697,46 @@ CREATE TABLE `stock_verifications` (
   `verify_id` int(11) NOT NULL AUTO_INCREMENT,
   `verify_prd_id` int(11) DEFAULT NULL,
   `verify_opening` int(11) DEFAULT NULL,
+  `verify_opening_filled` int(11) DEFAULT NULL,
+  `verify_opening_empty` int(11) DEFAULT NULL,
+  `verify_opening_leakers` int(11) DEFAULT NULL,
+  `verify_opening_for_revalving` int(11) DEFAULT NULL,
+  `verify_opening_scraps` int(11) DEFAULT NULL,
   `verify_closing` int(11) DEFAULT NULL,
+  `verify_closing_filled` int(11) DEFAULT NULL,
+  `verify_closing_empty` int(11) DEFAULT NULL,
+  `verify_closing_leakers` int(11) DEFAULT NULL,
+  `verify_closing_for_revalving` int(11) DEFAULT NULL,
+  `verify_closing_scraps` int(11) DEFAULT NULL,
   `verify_is_product` int(11) DEFAULT NULL,
   `verify_pdn_id` int(11) DEFAULT NULL,
   `verify_acc_id` int(11) DEFAULT NULL,
   `verify_user_type` int(11) DEFAULT NULL,
+  `verify_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`verify_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of stock_verifications
 -- ----------------------------
-INSERT INTO `stock_verifications` VALUES ('1', '1', '5000000', '4745000', '0', '1', '1', null);
-INSERT INTO `stock_verifications` VALUES ('2', '3', null, '328', '1', '1', '1', null);
-INSERT INTO `stock_verifications` VALUES ('3', '4', null, '476', '1', '1', '1', null);
-INSERT INTO `stock_verifications` VALUES ('4', '5', null, '500', '1', '1', '1', null);
-INSERT INTO `stock_verifications` VALUES ('5', '3', '328', '228', '1', '2', '1', null);
-INSERT INTO `stock_verifications` VALUES ('6', '4', '476', '476', '1', '2', '1', null);
-INSERT INTO `stock_verifications` VALUES ('7', '5', '500', '500', '1', '2', '1', null);
-INSERT INTO `stock_verifications` VALUES ('8', '1', '4745000', '4635000', '0', '2', '1', null);
-INSERT INTO `stock_verifications` VALUES ('9', '7', null, '10', '1', '2', '1', null);
-INSERT INTO `stock_verifications` VALUES ('10', '3', '228', '228', '1', '3', '1', null);
-INSERT INTO `stock_verifications` VALUES ('11', '4', '476', '476', '1', '3', '1', null);
-INSERT INTO `stock_verifications` VALUES ('12', '5', '500', '500', '1', '3', '1', null);
-INSERT INTO `stock_verifications` VALUES ('13', '7', '10', '10', '1', '3', '1', null);
-INSERT INTO `stock_verifications` VALUES ('14', '1', '4635000', '4635000', '0', '3', '1', null);
+INSERT INTO `stock_verifications` VALUES ('1', '3', null, null, null, null, null, null, '1243', '50', '1130', '13', '0', '50', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('2', '4', null, null, null, null, null, null, '573', '0', '573', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('3', '5', null, null, null, null, null, null, '500', '0', '500', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('4', '9', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('5', '10', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('6', '11', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('7', '12', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('8', '1', null, null, null, null, null, null, '0', null, null, null, null, null, '0', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('9', '2', null, null, null, null, null, null, '0', null, null, null, null, null, '0', '5', '1', '3', '2');
+INSERT INTO `stock_verifications` VALUES ('10', '3', null, null, null, null, null, null, '1243', '50', '1130', '13', '0', '50', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('11', '4', null, null, null, null, null, null, '573', '0', '573', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('12', '5', null, null, null, null, null, null, '500', '0', '500', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('13', '9', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('14', '10', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('15', '11', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('16', '12', null, null, null, null, null, null, '0', '0', '0', '0', '0', '0', '1', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('17', '1', null, null, null, null, null, null, '0', null, null, null, null, null, '0', '5', '1', '4', '4');
+INSERT INTO `stock_verifications` VALUES ('18', '2', null, null, null, null, null, null, '0', null, null, null, null, null, '0', '5', '1', '4', '4');
 
 -- ----------------------------
 -- Table structure for `suppliers`

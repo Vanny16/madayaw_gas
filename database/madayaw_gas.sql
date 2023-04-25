@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : server
-Source Server Version : 50610
+Source Server         : localhost
+Source Server Version : 50741
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50610
+Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-19 17:20:11
+Date: 2023-04-26 06:42:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -436,11 +436,22 @@ CREATE TABLE `stock_verifications` (
   `verify_id` int(11) NOT NULL AUTO_INCREMENT,
   `verify_prd_id` int(11) DEFAULT NULL,
   `verify_opening` int(11) DEFAULT NULL,
+  `verify_opening_filled` int(11) DEFAULT NULL,
+  `verify_opening_empty` int(11) DEFAULT NULL,
+  `verify_opening_leakers` int(11) DEFAULT NULL,
+  `verify_opening_for_revalving` int(11) DEFAULT NULL,
+  `verify_opening_scraps` int(11) DEFAULT NULL,
   `verify_closing` int(11) DEFAULT NULL,
+  `verify_closing_filled` int(11) DEFAULT NULL,
+  `verify_closing_empty` int(11) DEFAULT NULL,
+  `verify_closing_leakers` int(11) DEFAULT NULL,
+  `verify_closing_for_revalving` int(11) DEFAULT NULL,
+  `verify_closing_scraps` int(11) DEFAULT NULL,
   `verify_is_product` int(11) DEFAULT NULL,
   `verify_pdn_id` int(11) DEFAULT NULL,
   `verify_acc_id` int(11) DEFAULT NULL,
   `verify_user_type` int(11) DEFAULT NULL,
+  `verify_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`verify_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -547,15 +558,17 @@ CREATE TABLE `users` (
   `usr_password` varchar(255) DEFAULT NULL,
   `usr_address` varchar(255) DEFAULT NULL,
   `usr_image` varchar(255) DEFAULT NULL,
-  `usr_active` tinyint(255) DEFAULT '1',
+  `usr_active` tinyint(4) DEFAULT '1',
   `typ_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, null, '1', '1');
+INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
+INSERT INTO `users` VALUES ('2', '1', 'smd2fxqsidkfov8tnw6y45g9jqryc0gy', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tan Kudarat', null, '1', '3');
+INSERT INTO `users` VALUES ('3', '1', '632uwv97etvmckms0k1sos0sz901ndhi', 'Mark', 'mark', 'ea82410c7a9991816b5eeeebe195e20a', 'Seoul Tan Kudarat', null, '1', '2');
 
 -- ----------------------------
 -- Table structure for `user_types`
