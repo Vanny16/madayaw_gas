@@ -8,6 +8,10 @@ use DB;
 
 use Illuminate\Http\Request;
 
+use App\Exports\SalesExport;
+// use App\Exports\TransactionsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ReportsController extends Controller
 {
     public function sales()
@@ -319,7 +323,8 @@ class ReportsController extends Controller
             return view('admin.print.salesreports', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
         }
         else if($filter_btn == "export"){
-            return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+            // session()->flash('successMessage',  "Invalid search");
+            return Excel::download(new SalesExport, 'sales-export.xlsx');
         }
     }
 
