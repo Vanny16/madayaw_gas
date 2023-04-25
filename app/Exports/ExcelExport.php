@@ -128,7 +128,7 @@ class ExcelExport implements FromQuery, WithHeadings
                 ->where('trx_active','=','1')
                 ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($this->dateFrom)), date("Y-m-d", strtotime($this->dateTo))])
                 ->select(
-                    'purchases.pur_id',
+                    'purchases.pur_id AS ID',
                     'transactions.trx_id',
                     'transactions.trx_ref_id',
                     'transactions.trx_date',
@@ -158,6 +158,76 @@ class ExcelExport implements FromQuery, WithHeadings
                     'customers.cus_active'
                 )
                 ->orderBy('transactions.trx_datetime', 'DESC');
+    }
+
+    //SALES
+    public function paymentsHeader(){
+        return [
+            'PMNT ID',
+            'PMNT REFERENCE ID',
+            'TRX REFERENCE ID',
+            'DATE',
+            'TIME',
+            'AMOUNT RECEIVED',
+            'AMOUNT PAID',
+            'CHANGE',
+            'M.O.P.',
+            'CHECK #',
+            'CHECK DATE',
+            'CASHIER',
+            'CUSTOMER',
+            'CUSTOMER_ADDRESS',
+            'CUSTOMER_CONTACT',
+            'CUSTOMER_STATUS',
+        ];
+    }
+
+    public function paymentsExport()
+    {
+        return DB::table('payments')
+        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($this->dateFrom)), date("Y-m-d", strtotime($this->dateTo))])
+        ->select(
+            'payments.pmnt_id',
+            'payments.pmnt_ref_id',
+            'transactions.trx_ref_id',
+            'payments.pmnt_date',
+            'payments.pmnt_time',
+            'payments.pmnt_received',
+            'payments.pmnt_amount',
+            'payments.pmnt_change',
+            'payments.trx_mode_of_payment',
+            'payments.pmnt_check_no',
+            'payments.pmnt_check_date',
+            'users.usr_full_name',
+            'customers.cus_name',
+            'customers.cus_address',
+            'customers.cus_contact',
+            'customers.cus_active',
+        )
+        ->groupBy(
+            'payments.pmnt_id',
+            'payments.pmnt_ref_id',
+            'transactions.trx_ref_id',
+            'payments.pmnt_date',
+            'payments.pmnt_time',
+            'payments.pmnt_received',
+            'payments.pmnt_amount',
+            'payments.pmnt_change',
+            'payments.trx_mode_of_payment',
+            'payments.pmnt_check_no',
+            'payments.pmnt_check_date',
+            'users.usr_full_name',
+            'customers.cus_name',
+            'customers.cus_address',
+            'customers.cus_contact',
+            'customers.cus_active',
+        )
+        ->orderBy('payments.pmnt_id', 'DESC');
+    
     }
 }
 
