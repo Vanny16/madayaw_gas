@@ -557,7 +557,7 @@ class ReportsController extends Controller
             return view('admin.print.paymentsreports', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
         }
         else if($filter_btn == "export"){
-            return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+            return Excel::download(new ExcelExport('paymentsExport', 'paymentsHeader', date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))), 'payments-export.xlsx');
         }
 
     }

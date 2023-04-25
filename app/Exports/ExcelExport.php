@@ -96,7 +96,6 @@ class ExcelExport implements FromQuery, WithHeadings
                     'customers.cus_active'
                 )
                 ->orderBy('transactions.trx_datetime', 'DESC');
-    
     }
     
     //TRANSACTIONS
