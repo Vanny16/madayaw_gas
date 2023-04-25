@@ -26,8 +26,8 @@
             </div>
 
 			<div class="row">
-				<div class="col-md-8">
-					<div class="col-md-12"> 
+				<div class="col-md-12">
+					{{-- <div class="col-md-12"> 
                         @if(session('typ_id') == 1)
                             <div class="card">
                                 <div class="card-header">
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         @endif
-					</div>
+					</div> --}}
 
 					<div class="col-md-12"> 
 						<div class="card">
@@ -137,7 +137,7 @@
 					</div>
 				</div>
 				
-				<div class="col-md-4"> 
+				{{-- <div class="col-md-4"> 
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-clock"></i> Tank Operation</h3>
@@ -207,8 +207,9 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
+        </div>
 	</section>
 	<div class="modal fade" id="createNews">
 		<div class="modal-dialog modal-lg">
