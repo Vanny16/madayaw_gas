@@ -231,10 +231,10 @@
                                                 
                                                 <td>
                                                 @if($customer->cus_active == 0)
-                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                    <button class="btn btn-default bg-transparent btn-outline-trasparent float-right" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
                                                 @else   
                                                     <div class="dropdown">
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent float-right" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                         <ul class="dropdown-menu">
                                                             @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                 <li>
