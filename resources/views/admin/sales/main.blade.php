@@ -505,7 +505,7 @@
                             <br>
                             <div class="form-group">
                                 <label for="cus_address">Transaction Date <span style="color:red">*</span></label>
-                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>
