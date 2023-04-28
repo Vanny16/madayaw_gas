@@ -13,7 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-
+        // $view = $this->printProduction();
+        //     return $view;
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -315,9 +316,9 @@ class ProductionController extends Controller
             }
 
             session()->flash('successMessage','Production started!');
-            // return redirect()->action('ProductionController@manage');
-            $view = $this->printProduction();
-            return $view;
+            return redirect()->action('ProductionController@manage');
+            // $view = $this->printProduction();
+            // return $view;
         }
         else
         {
@@ -390,7 +391,7 @@ class ProductionController extends Controller
 
         $canister_details = [];
         $tank_details = [];
-        $this->printProduction();
+        
         foreach($temp_details as $details)
         {   
             $detail = explode("|", $details);
@@ -2045,7 +2046,7 @@ class ProductionController extends Controller
                                 ->whereIn('verify_user_type', [1, 4])
                                 ->where('verify_is_product', '=', 0)
                                 ->get();
-                                                 
+        // dd($pm_canisters, $supervisor_canisters);         
         foreach($pm_canisters as $pm_canister)
         {
             foreach($supervisor_canisters as $supervisor_canister)
@@ -2064,6 +2065,7 @@ class ProductionController extends Controller
                             $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
                         )
                         {
+                            
                             return false;
                         }
                         // else
@@ -2082,7 +2084,7 @@ class ProductionController extends Controller
                             $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
                             $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
                         )
-                        {
+                        {dd( $supervisor_canister);  
                             return false;
                         }
                         // else
@@ -2112,6 +2114,7 @@ class ProductionController extends Controller
                             $pm_tank->verify_opening_scraps <> $supervisor_tank->verify_opening_scraps
                         )
                         {
+                            dd($pm_tank->verify_opening, $supervisor_tank->verify_opening);
                             return false;
                         }
                         // else
@@ -2160,9 +2163,21 @@ class ProductionController extends Controller
 
         $production_date = date("F j, Y", strtotime($production_logs->pdn_date));
 
+        $pm_product_verifications = DB::table('stock_verifications')
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_pdn_id', '=', get_last_production_id())
+        ->whereIn('verify_user_type', [1, 3, 5])
+        ->get();
         $product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
         ->where('verify_pdn_id', '=', get_last_production_id())
+        ->whereIn('verify_user_type', [1, 3, 5])
+        ->get();
+
+        $supervisor_product_verifications = DB::table('stock_verifications')
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_pdn_id', '=', get_last_production_id())
+        ->whereIn('verify_user_type', [1, 4])
         ->get();
 
         $tanks = DB::table('tanks')
@@ -2176,6 +2191,6 @@ class ProductionController extends Controller
         ->get();
         
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
-        return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
+        return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'pm_product_verifications','supervisor_product_verifications','tanks', 'users'));
     }
 }

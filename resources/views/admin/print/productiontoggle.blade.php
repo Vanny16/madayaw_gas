@@ -30,15 +30,7 @@
                     <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
                         <div class="card-tools">
-                            <strong class="mx-auto">{{$production_date}}</strong> <br>
-                            <span class="text-danger">
-                                8:00 - 
-                                @if(empty($pdn_end_time))
-                                    -- : -- : -- --
-                                @else    
-                                    {{$pdn_end_time}}
-                                @endif
-                            </span>
+                            <div class="row"> <p>Date: </p>&nbsp<strong class="mx-auto">{{$production_date}}</strong> <br> </div>
                         </div>
                     </div>
                     
@@ -198,8 +190,8 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            {{-- <div class="card-body">
+                </div> 
+            {{--<div class="card-body">
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
@@ -213,7 +205,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="text-center"><strong> Opening Stocks </strong></td></tr>
                         <tr>
                             <td></td>
                             <td class="text-center"><em>Plant Manager</em></td>
@@ -232,9 +223,9 @@
                         @foreach($canisters as $canister)
                             <tr>
                                 <td><i>{{$canister->prd_name}}</i></td>
-                                @foreach($product_verifications as $verification)
+                                @foreach($pm_product_verifications as $verification)
                                     @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
-                                        
+                                    
                                         @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
                                             <td>{{$verification->verify_opening_filled}}</td>
                                         @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
@@ -273,55 +264,58 @@
                                     @endif
                                 @endforeach
                             </tr>
-                            <tr><td class="text-center"><strong> Closing Stocks </strong></td></tr>
-                        
-                            <tr>
-                                <td><i>{{$canister->prd_name}}</i></td>
-                                @foreach($product_verifications as $verification)
-                                    @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
-                                        
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_filled}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_filled}}</td>
-                                        @endif
-
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_leakers}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_leakers}}</td>
-                                        @endif
-
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_empty}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_empty}}</td>
-                                        @endif
-                                        
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_for_revalving}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_for_revalving}}</td>
-                                        @endif
-
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_scraps}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing_scraps}}</td>
-                                        @endif
-
-                                        @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing}}</td>
-                                        @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
-                                            <td>{{$verification->verify_closing}}</td>
-                                        @endif
-                                    @endif
-                                @endforeach
-                            </tr>
+                            
                         @endforeach
+
+                        {{-- <tr><td class="text-center"><strong> Closing Stocks </strong></td></tr>
+                        
+                        <tr>
+                            <td><i>{{$canister->prd_name}}</i></td>
+                            @foreach($product_verifications as $verification)
+                                @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
+                                    
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_filled}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_filled}}</td>
+                                    @endif
+
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_leakers}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_leakers}}</td>
+                                    @endif
+
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_empty}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_empty}}</td>
+                                    @endif
+                                    
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_for_revalving}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_for_revalving}}</td>
+                                    @endif
+
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_scraps}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing_scraps}}</td>
+                                    @endif
+
+                                    @if(($verification->verify_user_type == 3 || $verification->verify_user_type == 5) && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing}}</td>
+                                    @elseif($verification->verify_user_type == 4 && $verification->verify_is_product == 1)
+                                        <td>{{$verification->verify_closing}}</td>
+                                    @endif
+                                @endif
+                            @endforeach
+                        </tr> --}}
+
                     </tbody>
                 </table>
-            </div> --}}
+            </div>--}}
         </div>
     </div>
 </div>
