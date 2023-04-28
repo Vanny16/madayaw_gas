@@ -390,7 +390,7 @@ class ReportsController extends Controller
 
     public function transactionsFilter(Request $request)
     {
-        $search_transactions = $request->input('search_transactions');
+        $search_transactions = $request->input('search_transactions') ?? session('search_transactions');
         $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
         $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
@@ -402,9 +402,30 @@ class ReportsController extends Controller
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                        ->where('trx_ref_id','=', $search_transactions)
+                        ->where('trx_ref_id', 'LIKE', '%'.$search_transactions.'%')
                         ->paginate($paginate_row);
-    
+
+            if($transactions->isEmpty()) {
+                $transactions = DB::table('transactions')
+                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                            ->where('customers.cus_name', 'LIKE', '%'.$search_transactions.'%')
+                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                            ->paginate($paginate_row);
+
+                if($transactions->isEmpty()) {
+                    $transactions = DB::table('transactions')
+                                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where('products.prd_name', 'LIKE', '%'.$search_transactions.'%')
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                                ->paginate($paginate_row);
+                }
+            }
         }
         else{
             $transactions = DB::table('transactions')

@@ -176,6 +176,42 @@
                     </div>
 
                     <div class="card">
+                        <div class="card-body" style="overflow-x:auto;">
+                            <div class="row">
+
+                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <i class="fas fa-coins text-warning fa-2x"></i>
+                                            </div>
+                                            <div class="col">
+                                                <h2 style="color:#238ab2;">₱ 34.00</h2>
+                                                <p>Total Sales</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <i class="fas fa-credit-card text-secondary fa-2x"></i>
+                                            </div>
+                                            <div class="col">
+                                                <h2 style="color:#238ab2;">₱ 34.00</h2>
+                                                <p>Total Pending Balances</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-coins"></i> Transaction Payments History</h3>
                             <div class="card-tools">{{ $transactions->links() }}</div>
@@ -520,6 +556,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="card-tools">{{ $transactions->links() }}</div>
                             </div>
                         </div>
                     </div>

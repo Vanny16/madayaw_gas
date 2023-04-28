@@ -119,6 +119,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Transaction Reports</h3>
+                            <div class="card-tools">{{ $transactions->links() }}</div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
