@@ -32,7 +32,7 @@
                             <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
                         @endif
                     @endif
-                    @if(session('typ_id') == 3)
+                    @if(session('typ_id') == 5)
                         <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Verify Production</a>
                     @elseif(session('typ_id') == 1 || session('typ_id') == '4')
                         <div class="dropdown dropleft" style="float:right;">
