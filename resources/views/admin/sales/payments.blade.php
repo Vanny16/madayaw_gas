@@ -52,18 +52,6 @@
                         @endphp
                     @endif
                     
-                    @if(session('select_show') == "Transactions")
-                        @php
-                            $select_transactions = "selected";
-                            $select_payments = "";
-                        @endphp
-                    @else
-                        @php
-                            $select_transactions = "";
-                            $select_payments = "selected";
-                        @endphp
-                    @endif
-                    
                     @if(session('status_filter') == "POS")
                         @php
                             $select_all = "selected";
@@ -106,13 +94,13 @@
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
                         </div>
-                        <div class="card-body" style="overflow-x:auto;">
-                            <form method="GET" action="{{ route('payments-filter')}}">
-                                {{ csrf_field() }} 
+                        <form id="filter_form" method="GET" action="{{ route('payments-filter')}}">
+                        {{ csrf_field() }} 
+                            <div class="card-body" style="overflow-x:auto;">
                                 <div class="row">
                                     <div class="col-md-2 mb-3">
                                         <label for="search_string">Find</label>
-                                        <input type="text" class="form-control" id="search_payments" name="search_payments" value="{{ $search_payments }}" placeholder="Search">
+                                        <input type="text" class="form-control" id="search_payments" name="search_payments" onclick="select()" value="{{ $search_payments }}" placeholder="Search">
                                     </div>
                                     <div class="col-md-2 mb-3">
                                         <label for="date_from">From</label>
@@ -125,21 +113,19 @@
                                     <div class="col-md-2 mb-3">
                                         <label>Show by</label>
                                         <select id="select_show" name="select_show" class="form-control">
-                                            <option value="Transactions" {{$select_transactions}}>Transactions</option>
-                                            <option value="Payments" {{$select_payments}}>Payments</option>
+                                            <option value="Transactions">Transactions</option>
+                                            <option value="Payments">Payments</option>
                                         </select>
                                     </div>
 
-                                    @if(session('select_show') == "Transactions")
-                                        <div class="col-md-2 mb-3">
-                                            <label>Status</label>
-                                            <select id="status_filter" name="status_filter" class="form-control">
-                                                <option value="POS" {{$select_all}}>All</option>
-                                                <option value="Pending" {{$select_pending}}>Pending</option>
-                                                <option value="Paid" {{$select_paid}}>Paid</option>
-                                            </select>
-                                        </div>
-                                    @endif
+                                    <div id="select_status" class="col-md-2 mb-3">
+                                        <label>Status</label>
+                                        <select id="status_filter" name="status_filter" class="form-control">
+                                            <option value="POS" {{$select_all}}>All</option>
+                                            <option value="Pending" {{$select_pending}}>Pending</option>
+                                            <option value="Paid" {{$select_paid}}>Paid</option>
+                                        </select>
+                                    </div>
                                     
                                     <div class="col-md-1 mb-3">
                                         <label for="search_string">Rows</label>
@@ -158,21 +144,21 @@
                                         <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span class="fa fa-file-export"></span> Export</button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="card-footer" style="background-color:#ececec;">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <span>{{ $date_label }}</span>
-                                </div>
+                            </div>
+                            <div class="card-footer" style="background-color:#ececec;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span>{{ $date_label }}</span>
+                                    </div>
 
-                                <div class="col-md-8">
-                                    <a href="{{ action('SalesController@payments') }}" class="float-right text-danger ml-2 mr-2"> All Transactions</a>
-                                    <span class="float-right">|</span>
-                                    <a href="{{ action('ReportsController@paymentsToday') }}" class="float-right text-danger ml-2 mr-2"> Today's Transactions</a>
+                                    <div class="col-md-8">
+                                        <button  href="#" onclick="submitFilter()" name="quick_btn" value="all" class="float-right text-danger ml-2 mr-2" style="border: none;"> All Transactions</button>
+                                        <span class="float-right">|</span>
+                                        <button href="#" onclick="submitFilter()" name="quick_btn" value="today" class="float-right text-danger ml-2 mr-2" style="border: none;"> Today's Transactions</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
 
                     <div class="card">
@@ -281,9 +267,33 @@
                                                     <td>{{ $transaction->pmnt_ref_id }}</td>
                                                     <td>{{ $transaction->trx_ref_id }}</td>
                                                     <td>{{ $transaction->cus_name }}</td>
-                                                    <td>{{ $transaction->trx_datetime }}</td>
+                                                    <td>{{ $transaction->pmnt_date .' '. $transaction->pmnt_time }}</td>
                                                     <td>₱ {{ number_format($transaction->pmnt_amount, 2, '.', ',') }}</td>
-                                                    <td>{{ $transaction->payment_name }}</td>
+                                                    <td>
+                                                        @if($transaction->pmnt_attachment <> '')
+                                                            <!--Attachment Modal -->
+                                                            <div class="modal fade" id="pmnt_attachment-modal-{{$transaction->pmnt_ref_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-md" role="document">
+                                                                    <div class="modal-content bg-transparent">
+                                                                        <div class="modal-body">
+                                                                            <button type="button" class="close text-dark" data-dismiss="modal" data-target="#pmnt_attachment-modal-{{$transaction->pmnt_ref_id}}" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        
+                                                                            <div class="row">
+                                                                                <div class="col-12 text-center">
+                                                                                    <img src="{{ asset('img/payments/' . $transaction->pmnt_attachment) }}" style="max-height:100%; max-width:100%; min-height:100%; min-width:100%; object-fit: contain;">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#pmnt_attachment-modal-{{$transaction->pmnt_ref_id}}">{{ $transaction->payment_name }}</a>
+                                                        @else
+                                                            {{ $transaction->payment_name }}
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $transaction->usr_full_name }}</td>
                                                 </tr>
                                             @endif
@@ -577,6 +587,24 @@
 </div>
 
 <script>
+    
+@if(session('select_show') == "Transactions")
+    $("#select_show").val("Transactions");
+    $("#select_status").show();
+@else
+    $("#select_show").val("Payments");
+    $("#select_status").hide();
+@endif
+
+$("#select_show").on("load change", function() {
+    if($("#select_show").val() == "Transactions"){
+        $("#select_status").show();
+    }
+    else{
+        $("#select_status").hide();
+    }
+});
+
 $("#status_filter, #search_payments").on("change keyup", function() {
     var searchValue = $("#search_payments").val().toLowerCase();
     var statusValue = $("#status_filter").val().toLowerCase();
@@ -614,6 +642,10 @@ function setToDefault(id){
     if(value < 0 || value == ""){
         document.getElementById(id).value ="10";
     }
+}
+
+function submitFilter() {
+  document.getElementById("filter_form").submit();
 }
 </script>
 @endsection 

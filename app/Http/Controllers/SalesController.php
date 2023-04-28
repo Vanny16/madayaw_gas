@@ -64,6 +64,8 @@ class SalesController extends Controller
         ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
+        
+        session(['select_show' => 'Transactions']);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
     }
