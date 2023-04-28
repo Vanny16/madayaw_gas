@@ -179,6 +179,14 @@
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
 
+                                @php($total_sales=0)
+                                @php($total_balance=0)
+                                    
+                                @foreach($transactions as $transaction)
+                                    @php($total_sales += $transaction->trx_amount_paid)
+                                    @php($total_balance += $transaction->trx_balance)
+                                @endforeach
+
                                 <div class="card col-md-3 col-12 ml-md-2 mr-md-2">
                                     <div class="card-body">
                                         <div class="row align-items-center">
@@ -186,7 +194,7 @@
                                                 <i class="fas fa-coins text-warning fa-2x"></i>
                                             </div>
                                             <div class="col">
-                                                <h2 style="color:#238ab2;">₱ 34.00</h2>
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_sales, 2, '.', ',') }}</h2>
                                                 <p>Total Sales</p>
                                             </div>
                                         </div>
@@ -200,8 +208,8 @@
                                                 <i class="fas fa-credit-card text-secondary fa-2x"></i>
                                             </div>
                                             <div class="col">
-                                                <h2 style="color:#238ab2;">₱ 34.00</h2>
-                                                <p>Total Pending Balances</p>
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_balance, 2, '.', ',') }}</h2>
+                                                <p>Total Pending Payments</p>
                                             </div>
                                         </div>
                                     </div>

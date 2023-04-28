@@ -501,7 +501,15 @@ class ReportsController extends Controller
 
     public function paymentsFilter(Request $request)
     {
-        $search_payments = $request->input('search_payments');
+        $page_number = session('page_number') ?? 1;
+
+        if($page_number == 1){
+            $search_payments = $request->input('search_payments');
+        }
+        else{
+            $search_payments = $request->input('search_payments') ?? session('search_payments');
+        }
+
         $payments_date_from = $request->input('payments_date_from') ?? session('payments_date_from');
         $payments_date_to = $request->input('payments_date_to') ?? session('payments_date_to');
         $select_show = $request->input('select_show') ?? session('select_show');
@@ -514,8 +522,18 @@ class ReportsController extends Controller
                 $transactions = DB::table('transactions')
                 ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 ->where('trx_active','=','1')
-                ->where('trx_ref_id','=',$search_payments)
+                ->where('trx_ref_id', 'LIKE', '%'.$search_payments.'%')
                 ->paginate($paginate_row);
+
+                
+                if($transactions->isEmpty()) {
+                    $transactions = DB::table('transactions')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->where('trx_active','=','1')
+                    ->where('customers.cus_name', 'LIKE', '%'.$search_payments.'%')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->paginate($paginate_row);
+                }
             }
             else{
                 if($status_filter == "Pending"){
@@ -523,6 +541,7 @@ class ReportsController extends Controller
                     ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                     ->where('trx_active','=','1')
                     ->where('trx_balance','>','0')
+                    ->where($col_name,'=',$col_val)
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
                     ->orderBy('transactions.trx_ref_id', 'DESC')
                     ->paginate($paginate_row);
@@ -570,6 +589,7 @@ class ReportsController extends Controller
         session(['status_filter' => $status_filter]);
         session(['paginate_row' => $paginate_row]);
         session(['filter_btn' => $filter_btn]);
+        session(['page_number' => $page_number + 1]);
     
         if($filter_btn == "find"){
             return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
