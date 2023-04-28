@@ -1456,9 +1456,9 @@
                                                             @foreach($product_verifications as $verification)
                                                                 @if($verification->verify_prd_id == $tank->tnk_id && $verification->verify_is_product == 0)
                                                                     @if($pdn_flag)
-                                                                        @php($tank_remaining = ($verification->verify_opening) / 1000)
+                                                                        @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                                     @else
-                                                                        @php($tank_remaining = ($verification->verify_closing) / 1000)
+                                                                        @php($tank_remaining = ($verification->verify_opening) / 1000)
                                                                     @endif
                                                                     <td><input type="text" class="form-control" value="{{ $tank_remaining }}"disabled></td>
                                                                     <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
@@ -1513,6 +1513,7 @@
                                                             <em>{{$tank->tnk_name}} <strong>(kg)</strong></em>
                                                         </div>
                                                         <div class="col-6">
+                                                            @php(dd($tank))
                                                             @if($pdn_flag)
                                                                 <input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required>
                                                             @else
