@@ -435,9 +435,9 @@ class ProductionController extends Controller
                     
                     if(session('typ_id') == 4)
                     {
-                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
-                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            session()->flash('errorMessage','Supervisor / Admin must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
@@ -501,7 +501,7 @@ class ProductionController extends Controller
                     
                     if(session('typ_id') == 4)
                     {
-                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
                             session()->flash('errorMessage','Plant Managers must verify first!');
                             return redirect()->action('ProductionController@manage');
@@ -580,7 +580,7 @@ class ProductionController extends Controller
                     
                     if(session('typ_id') == 4)
                     {
-                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
                             session()->flash('errorMessage','Plant Managers must verify first!');
                             return redirect()->action('ProductionController@manage');
@@ -642,7 +642,7 @@ class ProductionController extends Controller
                     
                     if(session('typ_id') == 4)
                     {
-                        if(!$this->check_plant_manager_verification($prd_id, get_last_production_id()))
+                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
                             session()->flash('errorMessage','Plant Managers must verify first!');
                             return redirect()->action('ProductionController@manage');
@@ -1994,7 +1994,7 @@ class ProductionController extends Controller
         return true;
     }
 
-    private function check_plant_manager_verification($prd_id, $pdn_id)
+    private function check_supervisor_verification($prd_id, $pdn_id)
     {
         $verification_check = DB::table('stock_verifications')
         ->where('verify_user_type', [1, 5])//
@@ -2019,34 +2019,60 @@ class ProductionController extends Controller
             $pdn_id = $pdn_id + 1;
         }
         
-        $pm_canisters = DB::table('stock_verifications')
+        $supervisor_canisters = DB::table('stock_verifications')
                             ->where('verify_pdn_id', '=', $pdn_id)
                             ->where('verify_acc_id', '=', session('acc_id'))
-                            ->whereIn('verify_user_type', [1, 3, 5])
-                            ->where('verify_is_product', '=', 1)
-                            ->get();
-
-        $pm_tanks = DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', $pdn_id)
-                        ->where('verify_acc_id', '=', session('acc_id'))
-                        ->whereIn('verify_user_type', [1, 3, 5])
-                        ->where('verify_is_product', '=', 0)
-                        ->get();
-
-        $supervisor_canisters = DB::table('stock_verifications')
-                                    ->where('verify_pdn_id', '=', $pdn_id)
-                                    ->where('verify_acc_id', '=', session('acc_id'))
-                                    ->whereIn('verify_user_type', [1, 4])
-                                    ->where('verify_is_product', '=', 1)
-                                    ->get();
+                            ->where('verify_is_product', '=', 1);
+        if($supervisor_canisters ->where('verify_user_type', '=', 1))
+        {
+            $supervisor_canisters = $supervisor_canisters->where('verify_user_type', '=', 1)->first();
+        }
+        else
+        {
+            $supervisor_canisters = $supervisor_canisters->where('verify_user_type', '=', 5)->first();
+        }
 
         $supervisor_tanks = DB::table('stock_verifications')
+                        ->where('verify_pdn_id', '=', $pdn_id)
+                        ->where('verify_acc_id', '=', session('acc_id'))
+                        ->where('verify_is_product', '=', 0);
+        if($supervisor_tanks ->where('verify_user_type', '=', 1))
+        {
+            $supervisor_tanks = $supervisor_tanks->where('verify_user_type', '=', 1)->first();
+        }
+        else
+        {
+            $supervisor_tanks = $supervisor_tanks->where('verify_user_type', '=', 5)->first();
+        }
+
+        $pm_canisters = DB::table('stock_verifications')
+                                    ->where('verify_acc_id', '=', session('acc_id'))
+                                    ->where('verify_pdn_id', '=', $pdn_id)
+                                    ->where('verify_is_product', '=', 1);
+        if($pm_canisters ->where('verify_user_type', '=', 1))
+        {
+            $pm_canisters = $pm_canisters->where('verify_user_type', '=', 1)->first();
+        }
+        else
+        {
+            $pm_canisters = $pm_canisters->where('verify_user_type', '=', 4)->first();
+        }
+                                    
+
+        $pm_tanks = DB::table('stock_verifications')
                                 ->where('verify_pdn_id', '=', $pdn_id)
                                 ->where('verify_acc_id', '=', session('acc_id'))
-                                ->whereIn('verify_user_type', [1, 4])
-                                ->where('verify_is_product', '=', 0)
-                                ->get();
-        // dd($pm_canisters, $supervisor_canisters);         
+                                ->where('verify_is_product', '=', 0);
+        if($pm_tanks ->where('verify_user_type', '=', 1))
+        {
+            $pm_tanks = $pm_tanks->where('verify_user_type', '=', 1)->first();
+        }
+        else
+        {
+            $pm_tanks = $pm_tanks->where('verify_user_type', '=', 4)->first();
+        }
+                  
+                                     
         foreach($pm_canisters as $pm_canister)
         {
             foreach($supervisor_canisters as $supervisor_canister)
@@ -2084,7 +2110,7 @@ class ProductionController extends Controller
                             $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
                             $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
                         )
-                        {dd( $supervisor_canister);  
+                        {
                             return false;
                         }
                         // else
@@ -2100,7 +2126,9 @@ class ProductionController extends Controller
         {
             foreach($supervisor_tanks as $supervisor_tank)
             {
-                if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
+                // dd($pm_tanks->verify_prd_id, $supervisor_tanks->verify_prd_id);
+                dd($pm_tanks, $supervisor_tanks);
+                if($pm_tanks->verify_prd_id == $supervisor_tanks->verify_prd_id)
                 {
                     if(check_production_log())
                     {
@@ -2114,7 +2142,7 @@ class ProductionController extends Controller
                             $pm_tank->verify_opening_scraps <> $supervisor_tank->verify_opening_scraps
                         )
                         {
-                            dd($pm_tank->verify_opening, $supervisor_tank->verify_opening);
+                            dd($pm_tank, $supervisor_tank);
                             return false;
                         }
                         // else
