@@ -823,7 +823,11 @@
                             </table>
                             <hr>
                             <br>
-                            <div class="text-center"><h5>Total Internal Canister Population: <h2>{!! get_total_canister_report() !!}</h2></h5></div>
+                            <div class="row p-2">
+                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Madayaw Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
+                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Opposition Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
+                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Total Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
+                            </div>
                         </div>
 
                         <!-- Canisters -->
