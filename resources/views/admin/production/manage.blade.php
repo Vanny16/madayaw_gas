@@ -800,12 +800,16 @@
                                         <td colspan=<?php echo count($canisters) + 1 ?>><b>Opposition Canisters</b></td>
                                     </tr>
                                     @if(isset($oppositions))
-                                        @foreach($oppositions as $opposition)
-                                            <tr>
+                                        <tr>
+                                            @foreach($oppositions as $opposition)
                                                 <td><i>{{ $opposition->ops_name }}</i></td>
+                                            @endforeach
+                                        </tr>
+                                        <tr>
+                                            @foreach($oppositions as $opposition)
                                                 <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
-                                            </tr>
-                                        @endforeach
+                                            @endforeach
+                                        </tr>
                                     @endif
                                 </tbody>
                             </table>
