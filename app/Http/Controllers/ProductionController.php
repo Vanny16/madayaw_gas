@@ -2027,6 +2027,8 @@ class ProductionController extends Controller
         ->where('prd_is_refillable','=','0')
         ->first();
 
+        // dd($product->prd_seals);
+
         if($seals->prd_quantity < $qty)
         {
             return false;
