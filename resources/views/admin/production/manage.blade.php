@@ -1360,7 +1360,7 @@
                 <div class="modal-footer">
                     @if($pdn_flag)
                         @if($verify_opening_visibility == "disabled")
-                            <strong>Plant Manager / Admin must verify first!</strong>
+                            <strong>Supervisor / Admin must verify first!</strong>
                             @php($opening_visibility = "disabled")
                         @elseif($opening_visibility == "discrepancy")
                             <strong>Please resolve Production discrepancy!</strong>
@@ -1998,9 +1998,9 @@
                     @if($pdn_flag)
                         @if(session('typ_id') <> 1)
                             @if($verify_opening_visibility == "disabled")
-                                <strong>Plant Manager / Admin must verify first!</strong>
+                                <strong>Supervisor / Admin must verify first!</strong>
                             @elseif($verify_opening_visibility == "verified")
-                                <strong>Supervisor / Admin already verified!</strong>
+                                <strong>Plant Manager / Admin already verified!</strong>
                                 @php($verify_opening_visibility = "disabled")
                             @else
                                 <strong>Are you sure you want to verify the opening stocks?</strong>
@@ -2016,9 +2016,9 @@
                     @else
                         @if(session('typ_id') <> 1)
                             @if($verify_closing_visibility == "disabled")
-                                <strong>Plant Manager / Admin must verify first!</strong>
+                                <strong>Supervisor / Admin must verify first!</strong>
                             @elseif($verify_closing_visibility == "verified")
-                                <strong>Supervisor / Admin already verified!</strong>
+                                <strong>Plant Manager / Admin already verified!</strong>
                                 @php($verify_closing_visibility = "disabled")
                             @else
                                 <strong>Are you sure you want to verify and print the closing stocks?</strong>

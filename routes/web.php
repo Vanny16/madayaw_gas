@@ -86,7 +86,7 @@ Route::group(['prefix' => 'print'], function()
 Route::group(['prefix' => 'production'], function()
 {
     Route::get('tank', 'ProductionController@tank');
-    Route::get('manage', 'ProductionController@manage');
+    Route::get('/', 'ProductionController@manage');
     Route::get('activate/{prd_uuid}', 'ProductionController@activateProduct');
     Route::get('tank-activation/{tnk_id}/{tnk_active}', 'ProductionController@tankActivation');
     

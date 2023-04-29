@@ -60,15 +60,16 @@ class ProductionController extends Controller
         ->where('acc_id', '=', session('acc_id'))
         ->get(); 
 
-        $verifications = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->get(); 
-
         $pdn_for_verifications = get_last_production_id();
         if(check_production_log())
         {
             $pdn_for_verifications = $pdn_for_verifications + 1;
         }
+
+        $verifications = DB::table('stock_verifications')
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_pdn_id', '=', $pdn_for_verifications);
+        // ->get(); 
 
         $product_verifications = DB::table('stock_verifications')
         ->where('verify_pdn_id', '=', $pdn_for_verifications)
@@ -78,101 +79,136 @@ class ProductionController extends Controller
 
         $opening_visibility = "";
         $closing_visibility = "";
-        if(session('typ_id') <> 1)
-        {
-            $opening_visibility = "disabled";
-            $verify_production_id = get_last_production_id();
-            if($pdn_flag)
-            {
-                $verify_production_id = $verify_production_id + 1;
-            }
-            foreach($verifications as $verification)
-            {
-                if($verification->verify_pdn_id == $verify_production_id)
-                {
-                    if(is_null($verification->verify_closing))
-                    {
-                        $opening_visibility = "";
-                        $closing_visibility = "disabled";
-                        break;
-                    }
-                }
-            }
-        }
-
+        
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
-        if(session('typ_id') == 1)
-        {
-            $verify_production_id = get_last_production_id();
-            if($pdn_flag)
-            {
-                $verify_opening_visibility = "disabled";
-                $verify_production_id = $verify_production_id + 1;
-            }
-            foreach($verifications as $verification)
-            {
-                if($verification->verify_pdn_id == $verify_production_id)
-                {
-                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1))
-                    {   
-                        $verify_opening_visibility = "";
-                        $verify_closing_visibility = "disabled";
-                        break;
-                    }
-                }
-            }
-        }
 
-        if(session('typ_id') == 4)
+        if(count($verifications->get()) <> 0)
         {
-            $verify_production_id = get_last_production_id();
-            if($pdn_flag)
+            if(session('typ_id') <> 1)
             {
-                $verify_opening_visibility = "disabled";
-                $verify_production_id = $verify_production_id + 1;
-            }
-            foreach($verifications as $verification)
-            {
-                if($verification->verify_pdn_id == $verify_production_id)
+                $opening_visibility = "disabled";
+                
+                $visibility_verifications = $verifications->where('verify_user_type', '!=', 1)->first();
+                // dd($visibility_verifications);
+                if(is_null($visibility_verifications->verify_closing))
                 {
-                    if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 3 || $verification->verify_user_type == 1))
-                    {   
-                        $verify_opening_visibility = "";
-                        $verify_closing_visibility = "disabled";
-                        break;
-                    }
+                    $opening_visibility = "";
+                    $closing_visibility = "disabled";
                 }
+                // else
+                // {
+                    
+                // }
+                // foreach($verifications as $verification)
+                // {
+                //     if($verification->verify_pdn_id == $verify_production_id)
+                //     {
+                //         if(is_null($verification->verify_closing))
+                //         {
+                //             $opening_visibility = "";
+                //             $closing_visibility = "disabled";
+                //             break;
+                //         }
+                //     }
+                // }
             }
-        }
 
-        if(session('typ_id') == 3 || session('typ_id') == 5)
-        {
-            $verify_production_id = get_last_production_id();
-            if($pdn_flag)
+            if(session('typ_id') == 1)
             {
-                $verify_production_id = $verify_production_id + 1;
+                $admin_verifications  = DB::table('stock_verifications')
+                ->where('verify_acc_id', '=', session('acc_id'))
+                ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                ->where('verify_user_type', '=', 4)
+                ->first();
+
+                if(is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 5 || $admin_verifications->verify_user_type == 1))
+                {   
+                    $verify_opening_visibility = "";
+                    $verify_closing_visibility = "disabled";
+                }
+
+                // $verify_production_id = get_last_production_id();
+                // if($pdn_flag)
+                // {
+                //     $verify_opening_visibility = "disabled";
+                //     $verify_production_id = $verify_production_id + 1;
+                // }
+                // foreach($verifications as $verification)
+                // {
+                //     if($verification->verify_pdn_id == $verify_production_id)
+                //     {
+                //         if(is_null($verification->verify_closing) && ($verification->verify_user_type == 5 || $verification->verify_user_type == 1))
+                //         {   
+                //             $verify_opening_visibility = "";
+                //             $verify_closing_visibility = "disabled";
+                //             break;
+                //         }
+                //     }
+                // }
             }
-            foreach($verifications as $verification)
+
+            if(session('typ_id') == 4)
             {
-                if($verification->verify_pdn_id == $verify_production_id)
+                $pm_verifications  = DB::table('stock_verifications')
+                ->where('verify_acc_id', '=', session('acc_id'))
+                ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                ->where('verify_user_type', '=', 4)
+                ->first();
+
+                if($pdn_flag)
                 {
-                    if(!is_null($verification->verify_opening) && ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
-                    {
-                        $verify_opening_visibility = "verified";
-                        break;
-                    }
-
-                    if(!is_null($verification->verify_closing) && ($verification->verify_user_type == 4 || $verification->verify_user_type == 1))
-                    {
-                        $verify_closing_visibility = "verified";
-                        break;
-                    }
+                    $verify_opening_visibility = "disabled";
                 }
+
+                if(is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 5 || $pm_verifications->verify_user_type == 1))
+                {   
+                    $verify_opening_visibility = "";
+                    $verify_closing_visibility = "disabled";
+                }
+                // dd($pm_verifications);
+                // foreach($verifications as $verification)
+                // {
+                //     if($verification->verify_pdn_id == $verify_production_id)
+                //     {
+                        
+                //     }
+                // }
+            }
+
+            if(session('typ_id') == 5)
+            {
+                $supervisor_verifications  = DB::table('stock_verifications')
+                ->where('verify_acc_id', '=', session('acc_id'))
+                ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                ->where('verify_user_type', '=', 4)
+                ->first();
+
+                if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                {
+                    $verify_opening_visibility = "verified";
+                }
+
+                if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                {
+                    $verify_closing_visibility = "verified";
+                }
+
+                // if($pdn_flag)
+                // {
+                //     $verify_production_id = $verify_production_id + 1;
+                // }
+                // foreach($verifications as $verification)
+                // {
+                //     if($verification->verify_pdn_id == $verify_production_id)
+                //     {
+                        
+                //     }
+                // }
             }
         }
         
-        //CHECK IF PLANT MANAGER AND SUPERVISOR INPUT
+        //CHECK IF PLANT MANAGER AND SUPERVISOR INPUT ARE BALANCED
         if(!$this->verification_comparison())
         {
             $opening_visibility = "discrepancy";
@@ -228,7 +264,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'verifications', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 
     //PRODUCTION
@@ -503,7 +539,7 @@ class ProductionController extends Controller
                     {
                         if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
-                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            session()->flash('errorMessage','Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
@@ -582,7 +618,7 @@ class ProductionController extends Controller
                     {
                         if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
-                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            session()->flash('errorMessage','Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
@@ -644,7 +680,7 @@ class ProductionController extends Controller
                     {
                         if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
                         {
-                            session()->flash('errorMessage','Plant Managers must verify first!');
+                            session()->flash('errorMessage','Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
@@ -1997,11 +2033,11 @@ class ProductionController extends Controller
     private function check_supervisor_verification($prd_id, $pdn_id)
     {
         $verification_check = DB::table('stock_verifications')
-        ->where('verify_user_type', [1, 5])//
+        ->whereIn('verify_user_type', [1, 5])//
         ->where('verify_prd_id', '=', $prd_id)
         ->where('verify_pdn_id', '=', $pdn_id)
         ->get();
-        
+        dd($verification_check);
         if(!$verification_check)
         {
             return false;
@@ -2020,160 +2056,204 @@ class ProductionController extends Controller
         }
         
         $supervisor_canisters = DB::table('stock_verifications')
-                            ->where('verify_pdn_id', '=', $pdn_id)
-                            ->where('verify_acc_id', '=', session('acc_id'))
-                            ->where('verify_is_product', '=', 1);
-        if($supervisor_canisters ->where('verify_user_type', '=', 1))
-        {
-            $supervisor_canisters = $supervisor_canisters->where('verify_user_type', '=', 1)->first();
-        }
-        else
-        {
-            $supervisor_canisters = $supervisor_canisters->where('verify_user_type', '=', 5)->first();
-        }
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_is_product', '=', 1)
+        ->where('verify_user_type', '=', 5)
+        ->get();
 
         $supervisor_tanks = DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', $pdn_id)
-                        ->where('verify_acc_id', '=', session('acc_id'))
-                        ->where('verify_is_product', '=', 0);
-        if($supervisor_tanks ->where('verify_user_type', '=', 1))
-        {
-            $supervisor_tanks = $supervisor_tanks->where('verify_user_type', '=', 1)->first();
-        }
-        else
-        {
-            $supervisor_tanks = $supervisor_tanks->where('verify_user_type', '=', 5)->first();
-        }
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_is_product', '=', 0)
+        ->where('verify_user_type', '=', 5)
+        ->get();
 
         $pm_canisters = DB::table('stock_verifications')
-                                    ->where('verify_acc_id', '=', session('acc_id'))
-                                    ->where('verify_pdn_id', '=', $pdn_id)
-                                    ->where('verify_is_product', '=', 1);
-        if($pm_canisters ->where('verify_user_type', '=', 1))
-        {
-            $pm_canisters = $pm_canisters->where('verify_user_type', '=', 1)->first();
-        }
-        else
-        {
-            $pm_canisters = $pm_canisters->where('verify_user_type', '=', 4)->first();
-        }
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_is_product', '=', 1)
+        ->where('verify_user_type', '=', 4)
+        ->get();
                                     
-
         $pm_tanks = DB::table('stock_verifications')
-                                ->where('verify_pdn_id', '=', $pdn_id)
-                                ->where('verify_acc_id', '=', session('acc_id'))
-                                ->where('verify_is_product', '=', 0);
-        if($pm_tanks ->where('verify_user_type', '=', 1))
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_is_product', '=', 0)
+        ->where('verify_user_type', '=', 4)
+        ->get();
+
+        $admin_canisters = DB::table('stock_verifications')
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_is_product', '=', 0)
+        ->where('verify_user_type', '=', 1)
+        ->get();
+
+        $admin_tanks = DB::table('stock_verifications')
+        ->where('verify_pdn_id', '=', $pdn_id)
+        ->where('verify_acc_id', '=', session('acc_id'))
+        ->where('verify_is_product', '=', 0)
+        ->where('verify_user_type', '=', 1)
+        ->get();
+
+        //IF ADMIN INPUT BEFORE SUPERVISOR
+        if((count($admin_canisters) <> 0 && count($admin_tanks) <> 0) && (count($supervisor_canisters) == 0 && count($supervisor_tanks) == 0))
         {
-            $pm_tanks = $pm_tanks->where('verify_user_type', '=', 1)->first();
-        }
-        else
-        {
-            $pm_tanks = $pm_tanks->where('verify_user_type', '=', 4)->first();
-        }
-                  
-                                     
-        foreach($pm_canisters as $pm_canister)
-        {
-            foreach($supervisor_canisters as $supervisor_canister)
-            {
-                if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
-                {
-                    if(check_production_log())
-                    {
-                        if
-                        (
-                            $pm_canister->verify_opening <> $supervisor_canister->verify_opening ||
-                            $pm_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
-                            $pm_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
-                            $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
-                            $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
-                            $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
-                        )
-                        {
-                            
-                            return false;
-                        }
-                        // else
-                        // {
-                        //     continue;
-                        // }
-                    }
-                    else
-                    {
-                        if
-                        (
-                            $pm_canister->verify_closing <> $supervisor_canister->verify_closing ||
-                            $pm_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
-                            $pm_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
-                            $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
-                            $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
-                            $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
-                        )
-                        {
-                            return false;
-                        }
-                        // else
-                        // {
-                        //     continue;
-                        // }
-                    }
-                }
-            }
-        }
-        
-        foreach($pm_tanks as $pm_tank)
-        {
-            foreach($supervisor_tanks as $supervisor_tank)
-            {
-                // dd($pm_tanks->verify_prd_id, $supervisor_tanks->verify_prd_id);
-                dd($pm_tanks, $supervisor_tanks);
-                if($pm_tanks->verify_prd_id == $supervisor_tanks->verify_prd_id)
-                {
-                    if(check_production_log())
-                    {
-                        if
-                        (
-                            $pm_tank->verify_opening <> $supervisor_tank->verify_opening ||
-                            $pm_tank->verify_opening_filled <> $supervisor_tank->verify_opening_filled ||
-                            $pm_tank->verify_opening_empty <> $supervisor_tank->verify_opening_empty ||
-                            $pm_tank->verify_opening_leakers <> $supervisor_tank->verify_opening_leakers || 
-                            $pm_tank->verify_opening_for_revalving <> $supervisor_tank->verify_opening_for_revalving ||
-                            $pm_tank->verify_opening_scraps <> $supervisor_tank->verify_opening_scraps
-                        )
-                        {
-                            dd($pm_tank, $supervisor_tank);
-                            return false;
-                        }
-                        // else
-                        // {
-                        //     return true;
-                        // }
-                    }
-                    else
-                    {
-                        if
-                        (
-                            $pm_tank->verify_closing <> $supervisor_tank->verify_closing ||
-                            $pm_tank->verify_closing_filled <> $supervisor_tank->verify_closing_filled ||
-                            $pm_tank->verify_closing_empty <> $supervisor_tank->verify_closing_empty ||
-                            $pm_tank->verify_closing_leakers <> $supervisor_tank->verify_closing_leakers || 
-                            $pm_tank->verify_closing_for_revalving <> $supervisor_tank->verify_closing_for_revalving ||
-                            $pm_tank->verify_closing_scraps <> $supervisor_tank->verify_closing_scraps
-                        )
-                        {
-                            return false;
-                        }
-                        // else
-                        // {
-                        //     return true;
-                        // }
-                    }
-                }
-            }
+            return true;
         }
 
-        return true;                       
+        //IF SUPERVISOR INPUT BEFORE ADMIN
+        if(count($supervisor_canisters) <> 0 && count($supervisor_tanks) <> 0)
+        {
+            //IF ADMIN HAS INPUT
+            if(count($admin_canisters) <> 0 && count($admin_tanks) <> 0)
+            {
+                foreach($supervisor_canisters as $supervisor_canister)
+                {
+                    foreach($admin_canisters as $admin_canister)
+                    {
+                        if($admin_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
+                        {
+                            if(check_production_log())
+                            {
+                                if
+                                (
+                                    $admin_canister->verify_opening <> $supervisor_canister->verify_opening ||
+                                    $admin_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
+                                    $admin_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
+                                    $admin_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
+                                    $admin_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
+                                    $admin_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                if
+                                (
+                                    $admin_canister->verify_closing <> $supervisor_canister->verify_closing ||
+                                    $admin_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
+                                    $admin_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
+                                    $admin_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
+                                    $admin_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
+                                    $admin_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                foreach($supervisor_tanks as $supervisor_tank)
+                {
+                    foreach($admin_tanks as $admin_tank)
+                    {
+                        if($admin_tank->verify_prd_id == $supervisor_tank->verify_prd_id)
+                        {
+                            if(check_production_log())
+                            {
+                                if
+                                (
+                                    $admin_tank->verify_opening <> $supervisor_tank->verify_opening
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                if
+                                (
+                                    $admin_tank->verify_closing <> $supervisor_tank->verify_closing 
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+
+            //PLANT MANAGER INPUT
+            if(count($pm_canisters) <> 0 && count($pm_tanks) <> 0)
+            {
+                foreach($supervisor_canisters as $supervisor_canister)
+                {
+                    foreach($pm_canisters as $pm_canister)
+                    {
+                        if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
+                        {
+                            if(check_production_log())
+                            {
+                                if
+                                (
+                                    $pm_canister->verify_opening <> $supervisor_canister->verify_opening ||
+                                    $pm_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
+                                    $pm_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
+                                    $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
+                                    $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
+                                    $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                if
+                                (
+                                    $pm_canister->verify_closing <> $supervisor_canister->verify_closing ||
+                                    $pm_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
+                                    $pm_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
+                                    $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
+                                    $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
+                                    $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                foreach($supervisor_tanks as $supervisor_tank)
+                {
+                    foreach($pm_tanks as $pm_tank)
+                    {
+                        if($pm_tank->verify_prd_id == $supervisor_tank->verify_prd_id)
+                        {
+                            if(check_production_log())
+                            {
+                                if
+                                (
+                                    $pm_tank->verify_opening <> $supervisor_tank->verify_opening
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                if
+                                (
+                                    $pm_tank->verify_closing <> $supervisor_tank->verify_closing 
+                                )
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private function printProduction()
