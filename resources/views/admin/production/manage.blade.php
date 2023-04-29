@@ -224,7 +224,7 @@
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
                                                                 @if(session('typ_id') == 1  || session('typ_id') == '4')
                                                                     <td>
-                                                                        <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a>
+                                                                        <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#disposal-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a>
                                                                     </td>
                                                                 @else
                                                                     <td>
