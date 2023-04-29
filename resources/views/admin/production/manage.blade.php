@@ -975,7 +975,7 @@
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
                                                     <label>
-                                                        <input type="radio" name="valve" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
+                                                        <input type="radio" name="valve" value="{{$raw_material->prd_id}}" @if($loop->first) @endif/> {{$raw_material->prd_name}}
                                                     </label>
                                                 </div>
                                             @endif
@@ -991,7 +991,7 @@
                                             @if($raw_material->prd_is_refillable == 0)
                                                 <div class="col-4">
                                                     <label>
-                                                        <input type="radio" name="seal" value="{{$raw_material->prd_id}}" @if($loop->first) required @endif/> {{$raw_material->prd_name}}
+                                                        <input type="radio" name="seal" value="{{$raw_material->prd_id}}" @if($loop->first) @endif/> {{$raw_material->prd_name}}
                                                     </label>
                                                 </div>
                                             @endif
