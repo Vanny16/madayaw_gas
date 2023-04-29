@@ -796,22 +796,30 @@
                                             @endforeach
                                         @endif
                                     </tr>
-                                    <tr>
-                                        <td colspan=<?php echo count($canisters) + 1 ?>><b>Opposition Canisters</b></td>
-                                    </tr>
-                                    @if(isset($oppositions))
-                                        <tr>
-                                            @foreach($oppositions as $opposition)
-                                                <td><i>{{ $opposition->ops_name }}</i></td>
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            @foreach($oppositions as $opposition)
-                                                <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
-                                            @endforeach
-                                        </tr>
-                                    @endif
                                 </tbody>
+                            </table>
+                            <hr>
+
+                            <hr>
+                            <strong class="ml-2">Opposition Canisters</strong>
+                            <hr>
+                            <table class="table table-hover table-condensed">
+                                @if(isset($oppositions))
+                                <thead>
+                                    <tr>
+                                        @foreach($oppositions as $opposition)
+                                            <th><i>{{ $opposition->ops_name }}</i></th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @foreach($oppositions as $opposition)
+                                            <td>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                                @endif
                             </table>
                             <hr>
                             <br>
