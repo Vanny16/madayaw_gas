@@ -28,18 +28,39 @@
                 <hr><br>
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-clock"></i> Production Summary</h3>
+                        <h3 class="card-title"><i class="fa fa-file-text-o"></i> <strong>CANISTER DAILY ACTIVITY REPORT </strong></h3>
                         <div class="card-tools">
                             <div class="row"> <p>Date: </p>&nbsp<strong class="mx-auto">{{$production_date}}</strong> <br> </div>
                         </div>
                     </div>
                     
                     <!-- Canisters -->
-                    <div class="row mb-3">
-                        <div class="col-12 text-center bg-info">
-                            <p><i class="fa fa-pallet mt-3"></i> Canister Movement</p>
-                        </div>
+                    <div class="card-body" style="overflow-x:auto;">
+                        <table class="table table-hover table-condensed">
+                            <hr>
+                            <thead>
+                                <tr>
+                                    <th colspan = "3"></th>
+                                    @if(isset($canisters))
+                                        @foreach($canisters as $canister)
+                                            <th>{{$canister->prd_name}}</th>
+                                        @endforeach
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan = "3"><i>Opening Canister Stock</i></td>
+                                    @if(isset($canisters))
+                                        @foreach($canisters as $canister)
+                                            <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                                        @endforeach
+                                    @endif
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+
                     <div class="card-body" style="overflow-x:auto;">
                         <table class="table table-hover table-condensed">
                             <hr>
