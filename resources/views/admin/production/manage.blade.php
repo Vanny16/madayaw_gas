@@ -222,11 +222,12 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
-                                                                @if(session('typ_id') <> 1  || session('typ_id') <> '4')
-                                                                    <td></td>
+                                                                @if(session('typ_id') == 1  || session('typ_id') == '4')
+                                                                    <td>
+                                                                        <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a>
+                                                                    </td>
                                                                 @else
                                                                     <td>
-                                                                        <td> <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#scrap-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a></td>
                                                                     </td>
                                                                 @endif
                                                             </tr>
@@ -810,7 +811,7 @@
                             </table>
                             <hr>
                             <br>
-                            <div class="text-center"><h5>Total Canister Population: <h2>{!! get_total_stock_report() !!}</h2></h5></div>
+                            <div class="text-center"><h5>Total Internal Canister Population: <h2>{!! get_total_canister_report() !!}</h2></h5></div>
                         </div>
 
                         <!-- Canisters -->
@@ -1377,7 +1378,7 @@
                         @endif --}}
                             
                         <div>
-                            <button type="submit" class="btn btn-success" {{ $opening_visibility }} onclick="this.disabled=true; this.innerHTML='Starting...';" ><i class="fa fa-check mr-1"></i>Start Production</button>
+                            <button type="submit" class="btn btn-success" {{ $opening_visibility }} onclick="this.disabled=true; this.innerHTML='Starting...'; this.form.submit();" ><i class="fa fa-check mr-1"></i>Start Production</button>
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
@@ -1397,7 +1398,7 @@
                         @endif --}}
 
                         <div>
-                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }} onclick="this.disabled=true; this.innerHTML='Ending...';"><i class="fa fa-ban mr-1"></i>End Production</button>
+                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }} onclick="this.disabled=true; this.innerHTML='Ending...'; this.form.submit();" ><i class="fa fa-ban mr-1"></i>End Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
                         </div>
                     @endif
@@ -2113,7 +2114,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...';"><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...'; this.form.submit();"><i class="fa fa-save"></i> Save</button>
                 </div>
                 <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
@@ -2176,12 +2177,12 @@
                                     <label for="cus_name">Customer <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="cus_name" name="cus_name" readonly/>
                                 </div>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
-                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                             </div>
                         </div>
                     </div>
@@ -2247,12 +2248,12 @@
                                     <label for="cus_name">Customer <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="cus_name" name="cus_name" readonly/>
                                 </div>
+                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 <div id="crate">
                                     <label for="quantity" id="lbl-crate">Crate <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="crate-quantity" name="crate_quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                                 </div>
-                                <label for="quantity"id="lbl-loose">Loose <span style="color:red">*</span></label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)"/>
                             </div>
                         </div>
                     </div>

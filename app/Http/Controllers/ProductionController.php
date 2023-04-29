@@ -1050,6 +1050,20 @@ class ProductionController extends Controller
 
         elseif($flag == 1)
         {
+            if(!($this->check_has_valve($prd_id)))
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Valve not found! Check canister info for valve selection');
+                return redirect()->action('ProductionController@manage');
+            }
+
+            if(!($this->check_valve_quantity($prd_id, $prd_quantity)))
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Valves insufficient!');
+                return redirect()->action('ProductionController@manage');
+            }
+
             if(check_materials($flag, $prd_quantity, $prd_id))
             {
                 //ADD QUANTITY TO EMPTY GOODS
@@ -1107,8 +1121,14 @@ class ProductionController extends Controller
         
         elseif($flag == 2)
         {
-            // dd($this->check_has_seal($prd_id));
-            if(!($this->check_has_seal($prd_id, $prd_quantity)))
+            if(!($this->check_has_seal($prd_id)))
+            {
+                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('errorMessage','Seal not found! Check canister info for seal selection');
+                return redirect()->action('ProductionController@manage');
+            }
+
+            if(!($this->check_seal_quantity($prd_id, $prd_quantity)))
             {
                 session()->flash('getProdValues', array( $prodValues));
                 session()->flash('errorMessage','Seal insufficient!');
@@ -2011,7 +2031,77 @@ class ProductionController extends Controller
         }
     }
 
-    private function check_has_seal($prd_id, $qty)
+    private function check_has_valve($prd_id)
+    {
+        $product = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        $valves = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$product->prd_components)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->first();
+
+        if(is_null($valves))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private function check_valve_quantity($prd_id, $qty)
+    {
+        $product = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        $valves = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$product->prd_components)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->first();
+
+        if($valves->prd_quantity < $qty)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function check_has_seal($prd_id)
+    {
+        $product = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$prd_id)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','1')
+        ->first();
+
+        $seals = DB::table('products')
+        ->where('products.acc_id', '=', session('acc_id'))
+        ->where('prd_id','=',$product->prd_seals)
+        ->where('prd_for_production','=','1')
+        ->where('prd_is_refillable','=','0')
+        ->first();
+
+        if(is_null($seals))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private function check_seal_quantity($prd_id, $qty)
     {
         $product = DB::table('products')
         ->where('products.acc_id', '=', session('acc_id'))
