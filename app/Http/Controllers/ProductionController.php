@@ -83,7 +83,12 @@ class ProductionController extends Controller
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
 
-        if(count($verifications->get()) <> 0)
+        if(count($verifications->get()) == 0)
+        {
+            $opening_visibility = "disabled";
+            $verify_opening_visibility = "disabled";
+        }
+        else
         {
             if(session('typ_id') <> 1)
             {
@@ -119,9 +124,9 @@ class ProductionController extends Controller
                 $admin_verifications  = DB::table('stock_verifications')
                 ->where('verify_acc_id', '=', session('acc_id'))
                 ->where('verify_pdn_id', '=', $pdn_for_verifications)
-                ->where('verify_user_type', '=', 4)
+                ->where('verify_user_type', '=', 1)
                 ->first();
-
+                // dd($admin_verifications);
                 if(is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 5 || $admin_verifications->verify_user_type == 1))
                 {   
                     $verify_opening_visibility = "";
@@ -333,7 +338,7 @@ class ProductionController extends Controller
 
                 foreach($tank_details as $tnk_id)
                 {
-                    $input_field = "tank_remaining" . $tnk_id;
+                    $total_input = "tank_remaining" . $tnk_id;
 
                     // DB::table('tanks')
                     // ->where('tnk_id', '=', $tnk_id)
@@ -390,7 +395,7 @@ class ProductionController extends Controller
 
                 foreach($tank_details as $tnk_id)
                 {
-                    $input_field = "tank_remaining" . $tnk_id;
+                    $total_input = "tank_remaining" . $tnk_id;
 
                     // DB::table('tanks')
                     // ->where('tnk_id', '=', $tnk_id)
