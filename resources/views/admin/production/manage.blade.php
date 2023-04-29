@@ -823,11 +823,40 @@
                             </table>
                             <hr>
                             <br>
-                            <div class="row p-2">
-                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Madayaw Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
-                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Opposition Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
-                                <div class="border p-4 col-md-4 col-12 text-center"><h5>Total Canister Population<h2 class="text-info">{!! get_total_canister_report() !!}</h2></h5></div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-4 col-12 mb-3">
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <p>Madayaw Canister Population</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12 mb-3">
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <p>Opposition Canister Population</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12 mb-3">
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <p>Total Canister Population</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
                         <!-- Canisters -->
