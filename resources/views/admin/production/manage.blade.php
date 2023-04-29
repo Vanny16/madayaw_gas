@@ -1377,7 +1377,7 @@
                         @endif --}}
                             
                         <div>
-                            <button type="submit" class="btn btn-success" {{ $opening_visibility }}><i class="fa fa-check mr-1"></i>Start Production</button>
+                            <button type="submit" class="btn btn-success" {{ $opening_visibility }} onclick="this.disabled=true; this.innerHTML='Starting...';" ><i class="fa fa-check mr-1"></i>Start Production</button>
                             <a class="btn btn-default text-success" data-dismiss="modal"><i class="text-success"></i>Cancel</a>
                         </div>
                     @else
@@ -1397,7 +1397,7 @@
                         @endif --}}
 
                         <div>
-                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }}><i class="fa fa-ban mr-1"></i>End Production</button>
+                            <button type="submit" class="btn btn-danger" {{ $closing_visibility }} onclick="this.disabled=true; this.innerHTML='Ending...';"><i class="fa fa-ban mr-1"></i>End Production</button>
                             <a class="btn btn-default text-danger" data-dismiss="modal"><i class="text-danger"></i>Cancel</a>
                         </div>
                     @endif
@@ -2113,7 +2113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.innerHTML='Saving...';"><i class="fa fa-save"></i> Save</button>
                 </div>
                 <input type="text" id="sup_prd_name" name="sup_prd_name" hidden/>
                 <input type="text" id="sup_prd_sku" name="sup_prd_sku" placeholder="Enter SKU" value="" hidden/>
