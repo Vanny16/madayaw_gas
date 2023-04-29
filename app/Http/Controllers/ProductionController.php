@@ -28,11 +28,6 @@ class ProductionController extends Controller
         ->where('prd_is_refillable','=','1')
         ->get();
 
-        $products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->get();
-
         $suppliers = DB::table('suppliers')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
@@ -269,7 +264,7 @@ class ProductionController extends Controller
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'products', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
+        return view('admin.production.manage',compact('raw_materials', 'canisters', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 
     //PRODUCTION
