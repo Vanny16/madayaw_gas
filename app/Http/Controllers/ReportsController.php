@@ -390,7 +390,7 @@ class ReportsController extends Controller
 
     public function transactionsFilter(Request $request)
     {
-        $search_transactions = $request->input('search_transactions');
+        $search_transactions = $request->input('search_transactions') ?? session('search_transactions');
         $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
         $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
@@ -402,9 +402,30 @@ class ReportsController extends Controller
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                        ->where('trx_ref_id','=', $search_transactions)
+                        ->where('trx_ref_id', 'LIKE', '%'.$search_transactions.'%')
                         ->paginate($paginate_row);
-    
+
+            if($transactions->isEmpty()) {
+                $transactions = DB::table('transactions')
+                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                            ->where('customers.cus_name', 'LIKE', '%'.$search_transactions.'%')
+                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                            ->paginate($paginate_row);
+
+                if($transactions->isEmpty()) {
+                    $transactions = DB::table('transactions')
+                                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where('products.prd_name', 'LIKE', '%'.$search_transactions.'%')
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                                ->paginate($paginate_row);
+                }
+            }
         }
         else{
             $transactions = DB::table('transactions')
@@ -480,60 +501,116 @@ class ReportsController extends Controller
 
     public function paymentsFilter(Request $request)
     {
-        $search_payments = $request->input('search_payments');
+        $page_number = $request->input('page');
+        
+        if($page_number == null){
+            $search_payments = $request->input('search_payments');
+        }
+        else{
+            $search_payments = $request->input('search_payments') ?? session('search_payments');
+        }
+
         $payments_date_from = $request->input('payments_date_from') ?? session('payments_date_from');
         $payments_date_to = $request->input('payments_date_to') ?? session('payments_date_to');
         $select_show = $request->input('select_show') ?? session('select_show');
         $status_filter = $request->input('status_filter') ?? session('status_filter');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
+        $quick_btn = $request->input('quick_btn');
+
+        // dd($quick_btn);
         
+        if($quick_btn == "all"){
+            $date_from = DB::table('transactions')
+            ->where('trx_id','=','1')
+            ->first();
+
+            $select_show = "Transactions";
+            $payments_date_from = $date_from->trx_date;
+            $payments_date_to = date("Y-m-d");
+            $search_payments = null;
+            $status_filter = "All";
+            $filter_btn = "find";
+        }
+        else if($quick_btn == "today"){
+            $select_show = "Transactions";
+            $payments_date_from = date("Y-m-d");
+            $payments_date_to = date("Y-m-d");
+            $search_payments = null;
+            $status_filter = "All";
+            $filter_btn = "find";
+        }
+
         if($select_show == "Transactions"){
             if($search_payments != null){
+
                 $transactions = DB::table('transactions')
                 ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 ->where('trx_active','=','1')
-                ->where('trx_ref_id','=',$search_payments)
+                ->where('trx_ref_id', 'LIKE', '%'.$search_payments.'%')
+                ->when($status_filter == 'Pending', function ($query) {return $query->where('trx_balance', '>', 0);})
+                ->when($status_filter == 'Paid', function ($query) {return $query->where('trx_balance', '<=', 0);})
+                ->orderBy('transactions.trx_datetime', 'DESC')
                 ->paginate($paginate_row);
+
+                
+                if($transactions->isEmpty()) {
+                    $transactions = DB::table('transactions')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->where('trx_active','=','1')
+                    ->where('customers.cus_name', 'LIKE', '%'.$search_payments.'%')
+                    ->when($status_filter == 'Pending', function ($query) {return $query->where('trx_balance', '>', 0);})
+                    ->when($status_filter == 'Paid', function ($query) {return $query->where('trx_balance', '<=', 0);})
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->orderBy('transactions.trx_datetime', 'DESC')
+                    ->paginate($paginate_row);
+                }
             }
             else{
-                if($status_filter == "Pending"){
-                    $transactions = DB::table('transactions')
-                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                    ->where('trx_active','=','1')
-                    ->where('trx_balance','>','0')
-                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-                    ->orderBy('transactions.trx_ref_id', 'DESC')
-                    ->paginate($paginate_row);
-                }
-                else if($status_filter == "Paid"){
-                    $transactions = DB::table('transactions')
-                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                    ->where('trx_active','=','1')
-                    ->where('trx_balance','<=','0')
-                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-                    ->orderBy('transactions.trx_ref_id', 'DESC')
-                    ->paginate($paginate_row);
-                }
-                else{
-                    $transactions = DB::table('transactions')
-                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                    ->where('trx_active','=','1')
-                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-                    ->orderBy('transactions.trx_ref_id', 'DESC')
-                    ->paginate($paginate_row);
-                }
+                $transactions = DB::table('transactions')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->where('trx_active','=','1')
+                ->when($status_filter == 'Pending', function ($query) {return $query->where('trx_balance', '>', 0);})
+                ->when($status_filter == 'Paid', function ($query) {return $query->where('trx_balance', '<=', 0);})
+                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                ->orderBy('transactions.trx_datetime', 'DESC')
+                ->paginate($paginate_row);
             }
         }
         else{
-            $transactions = DB::table('payments')
-            ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
-            ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-            ->join('users', 'users.usr_id', '=', 'payments.usr_id')
-            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
-            ->orderBy('payments.pmnt_id', 'DESC')
-            ->paginate($paginate_row);
+            if($search_payments != null){
+                $transactions = DB::table('payments')
+                ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+                ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+                ->where('trx_ref_id', 'LIKE', '%'.$search_payments.'%')
+                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                ->orderBy('payments.pmnt_id', 'DESC')
+                ->paginate($paginate_row);
+                
+                if($transactions->isEmpty()) {
+                    $transactions = DB::table('payments')
+                    ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+                    ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+                    ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+                    ->where('customers.cus_name', 'LIKE', '%'.$search_payments.'%')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                    ->orderBy('payments.pmnt_id', 'DESC')
+                    ->paginate($paginate_row);
+                }
+            }
+            else{
+                $transactions = DB::table('payments')
+                ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+                ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                ->orderBy('payments.pmnt_id', 'DESC')
+                ->paginate($paginate_row);
+            }
         }
 
         $payments = DB::table('payments')

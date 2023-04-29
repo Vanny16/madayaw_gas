@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-26 06:41:57
+Date: 2023-04-28 21:25:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -914,5 +914,5 @@ CREATE TABLE `user_types` (
 INSERT INTO `user_types` VALUES ('1', 'Administrator');
 INSERT INTO `user_types` VALUES ('2', 'Employee');
 INSERT INTO `user_types` VALUES ('3', 'Observer');
-INSERT INTO `user_types` VALUES ('4', 'Supervisor');
-INSERT INTO `user_types` VALUES ('5', 'Plant Manager');
+INSERT INTO `user_types` VALUES ('4', 'Plant Manager');
+INSERT INTO `user_types` VALUES ('5', 'Supervisor');

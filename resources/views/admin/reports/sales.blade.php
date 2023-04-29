@@ -160,6 +160,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fa fa-bar-chart"></i> Sales Reports</h3>
+                            <div class="card-tools">{{ $sales->links() }}</div>
                         </div>
                         <div class="card-body" style="overflow-x:auto;">
                             <div class="row">
