@@ -428,7 +428,7 @@
                                                                                                                 @endforeach
                                                                                                                 <div class="col-4">
                                                                                                                     <label>
-                                                                                                                        <input type="radio" name="valve" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) required @endif/> {{$component->prd_name}}
+                                                                                                                        <input type="radio" name="valve" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) @endif/> {{$component->prd_name}}
                                                                                                                     </label>
                                                                                                                 </div>
                                                                                                             @endif
@@ -452,7 +452,7 @@
                                                                                                                 @endforeach
                                                                                                                 <div class="col-4">
                                                                                                                     <label>
-                                                                                                                        <input type="radio" name="seal" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) required @endif/> {{$component->prd_name}}
+                                                                                                                        <input type="radio" name="seal" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) @endif/> {{$component->prd_name}}
                                                                                                                     </label>
                                                                                                                 </div>
                                                                                                             @endif
