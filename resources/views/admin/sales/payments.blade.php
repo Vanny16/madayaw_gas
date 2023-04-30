@@ -152,9 +152,9 @@
                                     </div>
 
                                     <div class="col-md-8">
-                                        <button  href="#" onclick="submitFilter()" name="quick_btn" value="all" class="float-right text-danger ml-2 mr-2" style="border: none;"> All Transactions</button>
+                                        <button  href="#" onclick="submitFilter()" name="quick_btn" value="all" class="bg-transparent float-right text-danger ml-2 mr-2" style="border: none;"> All Transactions</button>
                                         <span class="float-right">|</span>
-                                        <button href="#" onclick="submitFilter()" name="quick_btn" value="today" class="float-right text-danger ml-2 mr-2" style="border: none;"> Today's Transactions</button>
+                                        <button href="#" onclick="submitFilter()" name="quick_btn" value="today" class="bg-transparent float-right text-danger ml-2 mr-2" style="border: none;"> Today's Transactions</button>
                                     </div>
                                 </div>
                             </div>

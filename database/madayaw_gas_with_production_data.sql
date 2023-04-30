@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50741
 File Encoding         : 65001
 
-Date: 2023-04-29 23:25:45
+Date: 2023-04-30 19:50:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -93,21 +93,6 @@ CREATE TABLE `fuel_prices` (
 
 -- ----------------------------
 -- Records of fuel_prices
--- ----------------------------
-
--- ----------------------------
--- Table structure for `migrations`
--- ----------------------------
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ----------------------------
--- Records of migrations
 -- ----------------------------
 
 -- ----------------------------
@@ -296,20 +281,6 @@ INSERT INTO `products` VALUES ('2', '1', '9bd36ybm25cnp3hdypv80938ihs0cluk', 'Se
 INSERT INTO `products` VALUES ('3', '1', 'iccitks09lc1v707co3afiroxfo7aray', 'Madayaw Round', 'MR LPG 170G', 'MR170G', null, '20.00', '35', '20240', '21', '12128', '229', '0', '100', null, '4', '1', '1', '1', '1', '170', '0', '1', '2');
 INSERT INTO `products` VALUES ('4', '1', '3hy5b5ht0e95vdal6tg8wqptvmgrro1e', 'Madayaw Square', 'MS LPG 170G', 'MS170G', null, '20.00', '35', '1341', '0', '8479', '142', '0', '100', null, '4', '1', '1', '1', '1', '170', '0', '1', '2');
 INSERT INTO `products` VALUES ('5', '1', '7yb1wqk0skpffoi5tu4nufoc03jr6mln', 'Botin', 'Botin170G', 'Botin170G', null, '20.00', '35', '1135', '0', '1473', '792', '0', '100', null, '4', '1', '1', '1', '1', '170', '0', '1', '2');
-
--- ----------------------------
--- Table structure for `product_types`
--- ----------------------------
-DROP TABLE IF EXISTS `product_types`;
-CREATE TABLE `product_types` (
-  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
-  `typ_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of product_types
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `purchases`
@@ -603,6 +574,7 @@ CREATE TABLE `transactions` (
   `trx_active` tinyint(2) DEFAULT '1',
   `trx_can_dec` varchar(30) DEFAULT NULL,
   `trx_del_rec` varchar(30) DEFAULT NULL,
+  `trx_confirm` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`trx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
