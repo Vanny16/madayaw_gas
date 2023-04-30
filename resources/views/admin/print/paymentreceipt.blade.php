@@ -125,7 +125,7 @@
             }, 500);
         }
         else{
-            window.location.href = "{{ action('SalesController@payments') }}";
+            window.location.href = "{{ action('ReportsController@paymentsToday') }}";
         }
     }
 
@@ -136,7 +136,7 @@
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
-            window.location.href = "{{ action('SalesController@payments') }}";
+            window.location.href = "{{ action('ReportsController@paymentsToday') }}";
         }, 500);
     });
 </script>

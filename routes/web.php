@@ -17,6 +17,7 @@ Route::get('/', 'LoginController@login');
 Route::post('/validate', 'LoginController@validateUser');
 Route::get('/logout', 'LoginController@logout');
 Route::post('/confirm-void', 'LoginController@confirmVoid');
+Route::post('/confirm-transaction', 'LoginController@confirmTransaction');
 
 Route::group(['prefix' => 'home'], function()
 {

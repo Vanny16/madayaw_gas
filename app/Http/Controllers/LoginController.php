@@ -75,8 +75,9 @@ class LoginController extends Controller
         $users = DB::table('users')
         ->join('accounts','accounts.acc_id','=','users.acc_id')
         ->join('user_types','user_types.typ_id','=','users.typ_id')
+        ->where('users.typ_id','=', 1)
         ->where('usr_name','=', session('usr_name'))
-        ->where('usr_password','=',md5($usr_password))// COMMENTED FOR TESTING
+        ->where('usr_password','=',md5($usr_password))
         ->first();
         
         $transactions = DB::table('transactions')
@@ -168,6 +169,37 @@ class LoginController extends Controller
         {
             session()->flash('errorMessage', 'Invalid password');
             return redirect()->action('ReportsController@transactionsToday');
+        }       
+    }
+
+    public function confirmTransaction(Request $request){
+        $usr_password = $request->usr_password;
+        $trx_id = $request->trx_id;
+
+        $users = DB::table('users')
+        ->join('accounts','accounts.acc_id','=','users.acc_id')
+        ->join('user_types','user_types.typ_id','=','users.typ_id')
+        ->where('users.typ_id','=', 1)
+        ->where('usr_name','=', session('usr_name'))
+        ->where('usr_password','=',md5($usr_password))
+        ->first();
+    
+        if($users)
+        {
+
+            DB::table('transactions') 
+            ->where('trx_id','=',$trx_id)
+            ->update([
+                'trx_confirm' => '1'
+            ]);
+
+            session()->flash('successMessage', 'Transaction complete');
+            return redirect()->action('ReportsController@paymentsToday');
+        }
+        else
+        {
+            session()->flash('errorMessage', 'Invalid password');
+            return redirect()->action('ReportsController@paymentsToday');
         }       
     }
 

@@ -173,7 +173,7 @@
                                     @php($total_balance += $transaction->trx_balance)
                                 @endforeach
 
-                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2">
+                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2 border">
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
 
-                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2">
+                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2 border">
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
@@ -247,7 +247,12 @@
                                             @else
                                                 @php($status = '<badge class="badge badge-sm">PAID<badge>')
                                                 @php($text_color = "text-success")
-                                                @php($btn_action = '<button class="btn btn-sm btn-light text-success"><i class="fa fa-check"></i></button>')
+
+                                                @if($transaction->trx_confirm == 0)
+                                                    @php($btn_action = '<button class="btn btn-sm border-info btn-light text-info" data-toggle="modal" data-target="#trx_confirm_modal' . $transaction->trx_id . '">Confirm</button>')
+                                                @else
+                                                    @php($btn_action = '<button class="btn btn-sm btn-light text-success"><i class="fa fa-check"></i></button>')
+                                                @endif
                                             @endif
                                             
                                             @if(session('select_show') == "Transactions")
@@ -364,6 +369,37 @@
                                                         <div class="modal-footer">
                                                             <hr>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Payment Modal -->
+                                            <div class="modal fade show" id="trx_confirm_modal{{ $transaction->trx_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm show" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-danger" id="exampleModalLabel"><i class="fa fa-check"></i> Confirmation</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="{{ action('LoginController@confirmTransaction') }}" enctype="multipart/form-data">
+                                                        {{ csrf_field() }} 
+                                                            <div class="modal-body">
+                                                                <p class="mb-4">Please enter your password to verify.</p>
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="">Enter Password <span style="color:red">*</span></label>
+                                                                        <input type="password" class="form-control" name="usr_password" placeholder="Enter Password" required/>
+                                                                        <input type="hidden" class="form-control" name="trx_id" value="{{$transaction->trx_id}}" required/>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-default"><i class="fa fa-key"></i> Confirm Password</button>
+                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
