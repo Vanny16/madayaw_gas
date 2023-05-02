@@ -424,22 +424,39 @@ class SalesController extends Controller
         //FOR PAYMENTS
         if($mode_of_payment != 5){
 
-            DB::table('payments')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_id' => session('usr_id'),
-                'trx_id' => $trx_id,
-                'pmnt_ref_id' => $pmt_ref_id,
-                'trx_mode_of_payment' => $mode_of_payment,
-                'pmnt_amount' => $trx_amount_paid,
-                'pmnt_received' => $pmnt_received,
-                'pmnt_change' => $pmnt_change,
-                'pmnt_date' => $trx_date,
-                'pmnt_time' => date('H:i:s'),
-                'pmnt_check_no' => $pmnt_check_no,
-                'pmnt_check_date' => $pmnt_check_date
-            ]);
-    
+            if($mode_of_payment == 4){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+            }
+            else{
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+
             //IMAGE UPLOAD FOR GCASH
             if($request->file('pmnt_attachment_gcash'))
             {
@@ -702,7 +719,7 @@ class SalesController extends Controller
             return redirect()->action('SalesController@payments');
         }
 
-        if($pmnt_amount > $new_trx_balance){
+        if($pmnt_amount > $trx_balance){
             $pmnt_amount = $trx_balance;
             $new_trx_balance  = 0;
         }
@@ -724,21 +741,38 @@ class SalesController extends Controller
         //FOR PAYMENTS
         if($mode_of_payment != 5){
 
-            DB::table('payments')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_id' => session('usr_id'),
-                'trx_id' => $request->trx_id,
-                'pmnt_ref_id' => $pmt_ref_id,
-                'trx_mode_of_payment' => $mode_of_payment,
-                'pmnt_amount' => $pmnt_amount,
-                'pmnt_received' => $pmnt_received,
-                'pmnt_change' => $pmnt_change,
-                'pmnt_date' => $pmnt_date,
-                'pmnt_time' => date('H:i:s'),
-                'pmnt_check_no' => $pmnt_check_no,
-                'pmnt_check_date' => $pmnt_check_date
-            ]);
+            if($mode_of_payment == 4){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+            }
+            else{
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
     
             //IMAGE UPLOAD FOR GCASH
             if($request->file('pmnt_attachment_gcash'))
