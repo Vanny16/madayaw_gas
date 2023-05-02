@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        // $view = $this->printProduction();
-        //     return $view;
+        $view = $this->printProduction();
+            return $view;
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -1815,143 +1815,6 @@ class ProductionController extends Controller
             return redirect()->action('ProductionController@manage');
         }
     }
-
-    //TANK CONTROLLER
-    public function tank()
-    {
-        $tanks = DB::table('tanks')
-        ->get();
-
-        return view('admin.production.tank', compact('tanks'));
-    }
-
-    //ADD TANK CONTROLLER
-    public function createTank(Request $request)
-    {
-        $tnk_name = $request->tnk_name;
-        $tnk_capacity = $request->tnk_capacity;
-        $tnk_remaining = $request->tnk_remaining;
-        $tnk_notes = $request->tnk_notes;
-
-        $check_tank_name = DB::table('tanks')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('tnk_name','=', $tnk_name)
-        ->first();
-
-        if($check_tank_name != null)
-        {
-            session()->flash('errorMessage','Tank already exist');
-            return redirect()->action('ProductionController@tank');
-        }
-
-        DB::table('tanks')
-        ->insert([
-        'acc_id' => session('acc_id'),
-        'tnk_name' => $tnk_name, 
-        'tnk_capacity' => (float)$tnk_capacity * 1000,
-        'tnk_notes' => $tnk_notes
-        ]);
-
-        session()->flash('successMessage','Tank has been added');
-        return redirect()->action('ProductionController@tank');
-    }
-
-    //EDIT TANK CONTROLLER
-    public function editTank(Request $request)
-    {
-        $tnk_id = $request->tnk_id;
-        $tnk_name = $request->tnk_name;
-        $tnk_capacity = (float)$request->tnk_capacity * 1000;
-        $tnk_remaining = (float)$request->tnk_remaining * 1000;
-        $tnk_notes = $request->tnk_notes;
-        $tnk_uuid = $request->tnk_uuid;
-
-        $tank = DB::table('tanks')
-        ->where('acc_id','=', session('acc_id'))
-        ->where('tnk_name','=', $tnk_name)
-        ->first();
-        
-        if($tank != null && $tank->tnk_id != $tnk_id)
-        {
-            session()->flash('errorMessage','Tank already exist');
-        }
-        else{
-            if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
-                DB::table('tanks')
-                ->where('tnk_id', '=', $tnk_id)
-                ->update([
-                    'tnk_name' => $tnk_name,
-                    'tnk_capacity' => $tnk_capacity,
-                    'tnk_notes' => $tnk_notes
-                ]);
-                session()->flash('successMessage','Tank details updated.');
-            }
-            else{
-                session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
-            }
-        }
-        
-        return redirect()->action('ProductionController@tank');
-    }
-
-    //EDIT TANK CONTROLLER
-    public function tankActivation($tnk_id, $tnk_active)
-    {
-
-        if($tnk_active==1){
-            DB::table('tanks')
-            ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_active' => 0
-            ]);
-            session()->flash('successMessage','Tank deactivated.');
-        }
-        else if($tnk_active==0){
-            DB::table('tanks')
-            ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_active' => 1
-            ]);
-            session()->flash('successMessage','Tank activated.');
-        }
-        
-        return redirect()->action('ProductionController@tank');
-    }
-
-    //REFILL TANK CONTROLLER
-    public function refillTank(Request $request)
-    {
-        $tnk_id = $request->tnk_id;
-        $refill_cty = (float)$request->tnk_remaining * 1000;
-
-        $remaining = DB::table('tanks')
-        ->where('tnk_id', '=', $tnk_id)
-        ->first();
-        
-        $tnk_capacity = (float)$remaining->tnk_capacity;
-        $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
-
-        if($tnk_remaining > $tnk_capacity){
-            session()->flash('errorMessage','Refill must not be greater than tank capacity');
-        }
-        else if($tnk_remaining < 0 || $refill_cty < 0){
-            session()->flash('errorMessage','Refill must not be less than zero');
-        }
-        else{
-            DB::table('tanks')
-            ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_remaining' => (float)$tnk_remaining,
-            ]);
-            
-            record_stockin($tnk_id, $refill_cty);
-
-            session()->flash('successMessage','Tank refilled');
-
-        }
-
-        return redirect()->action('ProductionController@tank');
-    }
     
     //CREATE SUPPLIER
     public function createSupplier(Request $request)
@@ -2393,4 +2256,143 @@ class ProductionController extends Controller
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
         return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'pm_product_verifications','supervisor_product_verifications','tanks', 'users'));
     }
+
+    
+    // //TANK FUNCTIONS REMOVED FROM PRODUCTION
+
+    // public function tank()
+    // {
+    //     $tanks = DB::table('tanks')
+    //     ->get();
+
+    //     return view('admin.production.tank', compact('tanks'));
+    // }
+
+    // //ADD TANK CONTROLLER
+    // public function createTank(Request $request)
+    // {
+    //     $tnk_name = $request->tnk_name;
+    //     $tnk_capacity = $request->tnk_capacity;
+    //     $tnk_remaining = $request->tnk_remaining;
+    //     $tnk_notes = $request->tnk_notes;
+
+    //     $check_tank_name = DB::table('tanks')
+    //     ->where('acc_id', '=', session('acc_id'))
+    //     ->where('tnk_name','=', $tnk_name)
+    //     ->first();
+
+    //     if($check_tank_name != null)
+    //     {
+    //         session()->flash('errorMessage','Tank already exist');
+    //         return redirect()->action('ProductionController@tank');
+    //     }
+
+    //     DB::table('tanks')
+    //     ->insert([
+    //     'acc_id' => session('acc_id'),
+    //     'tnk_name' => $tnk_name, 
+    //     'tnk_capacity' => (float)$tnk_capacity * 1000,
+    //     'tnk_notes' => $tnk_notes
+    //     ]);
+
+    //     session()->flash('successMessage','Tank has been added');
+    //     return redirect()->action('ProductionController@tank');
+    // }
+
+    // //EDIT TANK CONTROLLER
+    // public function editTank(Request $request)
+    // {
+    //     $tnk_id = $request->tnk_id;
+    //     $tnk_name = $request->tnk_name;
+    //     $tnk_capacity = (float)$request->tnk_capacity * 1000;
+    //     $tnk_remaining = (float)$request->tnk_remaining * 1000;
+    //     $tnk_notes = $request->tnk_notes;
+    //     $tnk_uuid = $request->tnk_uuid;
+
+    //     $tank = DB::table('tanks')
+    //     ->where('acc_id','=', session('acc_id'))
+    //     ->where('tnk_name','=', $tnk_name)
+    //     ->first();
+        
+    //     if($tank != null && $tank->tnk_id != $tnk_id)
+    //     {
+    //         session()->flash('errorMessage','Tank already exist');
+    //     }
+    //     else{
+    //         if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
+    //             DB::table('tanks')
+    //             ->where('tnk_id', '=', $tnk_id)
+    //             ->update([
+    //                 'tnk_name' => $tnk_name,
+    //                 'tnk_capacity' => $tnk_capacity,
+    //                 'tnk_notes' => $tnk_notes
+    //             ]);
+    //             session()->flash('successMessage','Tank details updated.');
+    //         }
+    //         else{
+    //             session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
+    //         }
+    //     }
+        
+    //     return redirect()->action('ProductionController@tank');
+    // }
+
+    // //EDIT TANK CONTROLLER
+    // public function tankActivation($tnk_id, $tnk_active)
+    // {
+
+    //     if($tnk_active==1){
+    //         DB::table('tanks')
+    //         ->where('tnk_id', '=', $tnk_id)
+    //         ->update([
+    //             'tnk_active' => 0
+    //         ]);
+    //         session()->flash('successMessage','Tank deactivated.');
+    //     }
+    //     else if($tnk_active==0){
+    //         DB::table('tanks')
+    //         ->where('tnk_id', '=', $tnk_id)
+    //         ->update([
+    //             'tnk_active' => 1
+    //         ]);
+    //         session()->flash('successMessage','Tank activated.');
+    //     }
+        
+    //     return redirect()->action('ProductionController@tank');
+    // }
+
+    // //REFILL TANK CONTROLLER
+    // public function refillTank(Request $request)
+    // {
+    //     $tnk_id = $request->tnk_id;
+    //     $refill_cty = (float)$request->tnk_remaining * 1000;
+
+    //     $remaining = DB::table('tanks')
+    //     ->where('tnk_id', '=', $tnk_id)
+    //     ->first();
+        
+    //     $tnk_capacity = (float)$remaining->tnk_capacity;
+    //     $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
+
+    //     if($tnk_remaining > $tnk_capacity){
+    //         session()->flash('errorMessage','Refill must not be greater than tank capacity');
+    //     }
+    //     else if($tnk_remaining < 0 || $refill_cty < 0){
+    //         session()->flash('errorMessage','Refill must not be less than zero');
+    //     }
+    //     else{
+    //         DB::table('tanks')
+    //         ->where('tnk_id', '=', $tnk_id)
+    //         ->update([
+    //             'tnk_remaining' => (float)$tnk_remaining,
+    //         ]);
+            
+    //         record_stockin($tnk_id, $refill_cty);
+
+    //         session()->flash('successMessage','Tank refilled');
+
+    //     }
+
+    //     return redirect()->action('ProductionController@tank');
+    // }
 }
