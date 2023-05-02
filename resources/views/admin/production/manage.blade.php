@@ -829,7 +829,7 @@
                                     <div class="row">
 
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
                                                     <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
                                                     <p>Madayaw Canister Population</p>
@@ -837,17 +837,17 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{!! get_total_opposition_report() !!}</h2>
                                                     <p>Opposition Canister Population</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{!! get_total_stock_report() !!}</h2>
                                                     <p>Total Canister Population</p>
                                                 </div>
                                             </div>
@@ -2428,6 +2428,7 @@
     }
 
     $(document).ready(function(){
+        
         //RAW MATS, EMPTY GOODS TAB
         @if($tab_1 == 0)
             $("#raw_tab").addClass("active");
@@ -2483,9 +2484,32 @@
             showRefillable();
         @endif
 
-        $("#product-modal").modal('{{$state}}');
+        //Set heights for "Total" cards in Canister Movement Summary
+        setTotalCardsHeight();
 
+        $("#product-modal").modal('{{$state}}');
     });
+
+    function setTotalCardsHeight(){
+        // Get the cards with the class 'card-stretch'
+        var cards = $('.card-stretch');
+     
+        // Set the initial max height to 0
+        var maxHeight = 0;
+        // Loop through each card
+        cards.each(function() {
+            // Get the height of the card
+            var cardHeight = $(this).outerHeight();
+
+            // If the height of the card is greater than the current max height, update the max height
+            if (cardHeight > maxHeight) {
+                maxHeight = cardHeight;
+            }
+        });
+
+        // Set the height of all cards to the max height
+        cards.css('height', maxHeight + 'px');
+    }
 
     function stockIn(prd_id, flag){
         document.getElementById('set_stockin_id').value = prd_id;

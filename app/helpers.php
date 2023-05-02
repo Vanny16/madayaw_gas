@@ -415,6 +415,23 @@ function get_total_canister_report()
     return number_format($total_stock, 0, '.', ',');
 }
 
+function get_total_opposition_report()
+{
+    
+    $oppositions = DB::table('oppositions')
+    ->where('acc_id', '=', session('acc_id'))
+    ->get();
+
+    $total_stock = 0;
+
+    foreach($oppositions as $opposition)
+    {
+        $total_stock = $total_stock + $opposition->ops_quantity;
+    }
+    
+    return number_format($total_stock, 0, '.', ',');
+}
+
 function get_total_stock_report()
 {
     //COMMENTED INCASE OF REVERTING
@@ -453,7 +470,6 @@ function get_total_stock_report()
         $total_stock = $total_stock + $product->prd_leakers;
         $total_stock = $total_stock + $product->prd_empty_goods;
         $total_stock = $total_stock + $product->prd_for_revalving;
-        $total_stock = $total_stock + $product->prd_scraps;
     }
     return number_format($total_stock, 0, '.', ',');
 }
