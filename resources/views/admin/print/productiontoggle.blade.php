@@ -7,7 +7,6 @@
     </div>
     <div class="col-md-12"> 
         <div class="card">
-            
             <div class="row">
                 <div class="col-md-12">
                     
@@ -16,8 +15,11 @@
                             <td><img src="{{ asset('img/accounts/logo-1.jpg' ) }}" style="width:70px;"></td>
                             <td colspan="2">&nbsp; </td>
                             <td>
-                                <p class="ml-2">
+                                <h4 class="ml-2">
                                     <strong>MADAYAW PETROLEUM AND GAS CORPORATION</strong><br>
+                                </h4>
+                                <p class="ml-2">
+                                    
                                     <small>Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City</small>
                                 </p>
                             </td>
@@ -26,215 +28,320 @@
                 </div>
             </div>
             <hr><br>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fa fa-file-text-o"></i> <strong>CANISTER DAILY ACTIVITY REPORT </strong></h3>
-                    <div class="card-tools">
-                        <div class="row"> <p>Date: </p>&nbsp<strong class="mx-auto">{{$production_date}}</strong> <br> </div>
+            <div class="row">
+                <div class="col-md-6"><h3 class="ml-2">
+                    <i class="fa fa-file-text-o"></i> <strong>CANISTER DAILY ACTIVITY REPORT </strong></h3>
+                </div>
+                <div class="col-md-6 align-items-center">
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <p>Date: </p>&nbsp<strong style="text-decoration:underline">{{$production_date}}</strong> <br> 
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card header">
-                    <br>
-                    <div style="background-color: #2489b3" class="d-flex justify-content-center align-items-center">
-                        <strong><p style="color:white">PART 1: FILLING PLANT PRODUCTION</p></strong>
-                    </div>
-                </div>
-                <!-- Canisters -->
-                <div class="card-body" > <!-- style="overflow-x:auto;" -->
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th colspan = "3"></th>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <th>{{$canister->prd_name}}</th>
-                                    @endforeach
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan = "3"><i>Opening Canister Stock</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card header">
-                    <br>
-                    <div style="background-color: #2489b3" class="d-flex justify-content-center align-items-center">
-                        <strong><p style="color:white">PART 2: EMPTY CANISTER MOVEMENT</p></strong>
-                    </div>
-                </div>
-                <div class="card-body" style="overflow-x:auto;">
-                </div>
-
-                <div class="card header">
-                    <br>
-                    <div style="background-color: #2489b3" class="d-flex justify-content-center align-items-center">
-                        <strong><p style="color:white">PART 3: CANISTER MOVEMENT</p></strong>
-                    </div>
-                </div>
-                <div class="card-body" style="overflow-x:auto;">
-                    <table class="table table-hover table-condensed">
-                        <hr>
-                        <thead>
-                            <tr>
-                                <th>Canister</th>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <th>{{$canister->prd_name}}</th>
-                                    @endforeach
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><i>Filled</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td><i>Leakers</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td><i>Empty</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td><i>For Revalving</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td><i>Scrap</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td><b>Total Stocks</b></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr>
-                                <td colspan=<?php echo count($canisters) + 1 ?>><b>Opposition Canisters</b></td>
-                            </tr>
-                            @if(isset($oppositions))
-                                @foreach($oppositions as $opposition)
-                                    <tr>
-                                        <td><i>{{ $opposition->ops_name }}</i></td>
-                                        <td colspan=<?php echo count($canisters) + 1 ?>>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
-                                    </tr>
+            <br>
+            <div class="d-flex align-items-center">
+                <h4><strong>PART 1: FILLING PLANT PRODUCTION</strong></h4>
+            </div>
+            <!-- Canisters -->
+            
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th colspan = "2"></th>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <th>{{$canister->prd_name}}</th>
                                 @endforeach
                             @endif
-                        </tbody>
-                    </table>
-                    <hr>
-                    <br>
-                    <div class="text-center"><h5>Total Canister Population: <h2>{!! get_total_stock_report() !!}</h2></h5></div>
-                </div>
-
-                <!-- Canisters -->
-                <div class="row mb-3 mt-5">
-                    <div class="col-12 text-center bg-info">
-                        <p><i class="fa fa-fill-drip mt-3"></i> Filled Canisters</p>
-                    </div>
-                </div>
-                <div class="card-body" style="overflow-x:auto;">
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Stock Status</th>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <th>{{$canister->prd_name}}</th>
-                                    @endforeach
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody id="tbl-products">
-                            @php($production_id = get_last_production_id())
-                            @php($stocks_flag = 1)
-                            <tr>
-                                <td><i>Opening Stocks</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{!! get_opening_stock($canister->prd_id, $production_id) !!}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            @php($stocks_flag = 2)
-                            <tr>
-                                <td><i>Closing Stocks</i></td>
-                                @if(isset($canisters))
-                                    @foreach($canisters as $canister)
-                                        <td>{!! get_closing_stock($canister->prd_id, $production_id) !!}</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Tank -->
-                <div class="row mb-3">
-                    <div class="col-12 text-center bg-info">
-                        <p class=""><i class="fa fa-gas-pump mt-3"></i> Tank</p>
-                    </div>
-                </div>
-                <div class="card-body" style="overflow-x:auto;">
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Tank Name</th>
-                                <th>Tank Opening</th>
-                                <th>Tank Closing</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(isset($tanks))
-                                @foreach($tanks as $tank)
-                                    <tr>
-                                        <td><i>{{$tank->tnk_name}}</i></td>
-                                        <td>{!! get_opening_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
-                                        <td>{!! get_closing_tank($tank->tnk_id, get_last_production_id()) !!} kg</td>
-                                    </tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan = "2"><i>Opening Filled Canister Stock</i></td>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
                                 @endforeach
                             @endif
-                        </tbody>
-                    </table>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th colspan = "2"></th>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <th>{{$canister->prd_name}}</th>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan = "2"><i>Closing Filled Canister Stock</i></td>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </tbody>
+                </table>
+            
+
+            <br>
+            <div class="d-flex align-items-center">
+                <h4><strong>PART 2: EMPTY CANISTER MOVEMENT</strong></h4>
+            </div>
+            
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="text-align:center">RECEIVED</th>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <th>{{$canister->prd_name}}</th>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align:center"><i>CUSTOMER</i></td>
+                            <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <td></td>
+                                @endforeach
+                            @endif
+                            <!-- add forloop here for how many customers ordered  -->
+                        </tr>
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="text-align:center">ISSUED</th>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <th>{{$canister->prd_name}}</th>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align:center"><i>CUSTOMER</i></td>
+                            <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <td></td>
+                                @endforeach
+                            @endif
+                            <!-- add forloop here for how many customers ordered  -->
+                        </tr>
+                    </tbody>
+                </table>
+            <br>
+            <div class="d-flex align-items-center">
+                <h4><strong>PART 3: CANISTER MOVEMENT</strong></h4>
+            </div>
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Canister</th>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <th>{{$canister->prd_name}}</th>
+                            @endforeach
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i>Filled</i></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <td><i>Leakers</i></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <td><i>Empty</i></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <td><i>For Revalving</i></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <td><i>Scrap</i></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <td><b>Total Stocks</b></td>
+                        @if(isset($canisters))
+                            @foreach($canisters as $canister)
+                                <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                            @endforeach
+                        @endif
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <p><strong>Total Canister Population: </strong><h4>{!! get_total_canister_report() !!}</h4></p>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="text-center">
+                        <h5><strong>BRAND NEW</strong></h5>
+                    </div>
                 </div>
-            </div> 
-            <div class="card">
-                
+                <div class="col-md-1">
+                    <h5 style="text-align:center"><strong>|</strong></h5>
+                </div>
+                <div class="col-md-9 d-flex justify-content-center">
+                    <div class="col-md-4" style="text-align:center">
+                        <p style="text-decoration:underline"><strong>Valve: </strong>{!! get_total_canister_report() !!}</p>
+                    </div>
+                    <div class="col-md-4" style="text-align:center">
+                        <p style="text-decoration:underline"><strong>Seal: </strong>{!! get_total_canister_report() !!}</p>
+                    </div>
+                    <div class="col-md-4" style="text-align:center">
+                        <p style="text-decoration:underline"><strong>Crates: </strong>{!! get_total_canister_report() !!}</p>
+                    </div>
+                </div>
+            </div>
+            <hr><br>
+            <div class="d-flex align-items-center">
+                <h4><strong>PART 4: OPPOSITION CANISTERS</strong></h4>
+            </div>
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                        @if(isset($oppositions))
+                            @foreach($oppositions as $opposition)
+                                <th>{{$opposition->ops_name}}</th>
+                            @endforeach
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if(isset($oppositions))
+                            @foreach($oppositions as $opposition)
+                                <td>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
+                            @endforeach
+                        @endif
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center" style="page-break-inside:avoid">
+                <p><strong>Total Opposition Population: </strong><h4>{!! get_total_opposition_report($canister->prd_id) !!}</h4></p>
+            </div>
+            <div style="page-break-inside:avoid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-center">
+                            <h5><strong>Time Start Ops</strong></h5>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <strong class="text-success">{{$production_start}}</strong> <br> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-center">
+                            <h5><strong>Time End Ops</strong></h5>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <strong class="text-danger">{{$production_end}}</strong> <br> 
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <th style="text-align:center">Tank Opening %</th>
+                                    <th style="text-align:center">%</th>
+                                    <th style="text-align:center">VOL</th>
+                                </thead>
+                                <tbody>
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            @php($tank_percentage = (($tank->log_tnk_opening) / ($tank->tnk_capacity)) * 100)
+                                            @php($converted_volume = ($tank->log_tnk_opening) / 1000)
+                                            <tr>
+                                                <td style="text-align:center">{{ $tank->tnk_name }}</td>
+                                                <td style="text-align:center">{{ $tank_percentage }}%</td>
+                                                <td style="text-align:center">{{ $converted_volume }} kg</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <div class="row">
+                        <table class="table table-hover table-condensed">
+                                <thead>
+                                    <th style="text-align:center">Tank Closing %</th>
+                                    <th style="text-align:center">%</th>
+                                    <th style="text-align:center">VOL</th>
+                                </thead>
+                                <tbody>
+                                    @if(isset($tanks))
+                                        @foreach($tanks as $tank)
+                                            @php($tank_percentage = (($tank->log_tnk_closing) / ($tank->tnk_capacity)) * 100)
+                                            @php($converted_volume = ($tank->log_tnk_closing) / 1000)
+                                            <tr>
+                                                <td style="text-align:center">{{ $tank->tnk_name }}</td>
+                                                <td style="text-align:center">{{ $tank_percentage }}%</td>
+                                                <td style="text-align:center">{{ $converted_volume }} kg</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row">
+                <div class="col-md-6" >
+                    <h5><strong>Prepared by: </strong></h5>
+                </div>
+                <div class="col-md-6">
+                    <h5><strong>Checked by: </strong></h5>
+                </div>
             </div>
         </div>
     </div>

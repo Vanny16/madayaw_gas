@@ -1869,6 +1869,11 @@ class ProductionController extends Controller
         return redirect()->action('ProductionController@manage');
     }
 
+    public function EODReport()
+    {
+        
+    }
+
     private function check_gas_quantity($tnk_id, $prd_id, $prd_quantity)
     {
         $tank = DB::table('tanks')
@@ -2219,13 +2224,20 @@ class ProductionController extends Controller
         ->where('prd_for_production', '=', 1)
         ->where('prd_active', '=', 1)
         ->get();
+
+        $oppositions = DB::table('oppositions')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_active', '=', 1)
+        ->get();
         
         $production_logs = DB::table('production_logs')
         ->where('pdn_id', '=', get_last_production_id())
         ->first();
-
+        
         $production_date = date("F j, Y", strtotime($production_logs->pdn_date));
-
+        $production_start = date("h:i a", strtotime($production_logs->pdn_start_time));
+        $production_end = date("h:i a", strtotime($production_logs->pdn_end_time));
+// dd($production_logs->pdn_end_time);
         $pm_product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
         ->where('verify_pdn_id', '=', get_last_production_id())
@@ -2242,22 +2254,32 @@ class ProductionController extends Controller
         ->where('verify_pdn_id', '=', get_last_production_id())
         ->whereIn('verify_user_type', [1, 4])
         ->get();
+        
+        $sales = DB::table('transactions')
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->where('trx_active','=','1')
+                    ->where('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                    ->orderBy('transactions.trx_datetime', 'DESC')
+                    ->get();
 
-        $tanks = DB::table('tanks')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('tnk_active', '=', 1)
+        $tanks = DB::table('tank_logs')
+        ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
+        ->where('pdn_id', '=', get_last_production_id())
+        ->where('tank_logs.acc_id', '=', session('acc_id'))
         ->get();
-
+// dd($tanks);
         $users = DB::table('users')
         ->where('acc_id', '=', session('acc_id'))
         ->where('usr_active', '=', 1)
         ->get();
         
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
-        return view('admin.print.productiontoggle', compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'pm_product_verifications','supervisor_product_verifications','tanks', 'users'));
+        return view('admin.print.productiontoggle', compact('canisters', 'oppositions', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications','supervisor_product_verifications','tanks', 'users'));
     }
 
-    
     // //TANK FUNCTIONS REMOVED FROM PRODUCTION
 
     // public function tank()
