@@ -418,7 +418,8 @@ class SalesController extends Controller
             'trx_amount_paid' => $trx_amount_paid,
             'trx_balance' => $trx_balance,
             'trx_can_dec' => $trx_can_dec,
-            'trx_del_rec' => $trx_del_rec
+            'trx_del_rec' => $trx_del_rec,
+            'pdn_id' => get_last_production_id()
         ]);
 
         //FOR PAYMENTS

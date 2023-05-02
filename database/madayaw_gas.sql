@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50741
+Source Server         : server
+Source Server Version : 50610
 Source Host           : localhost:3306
 Source Database       : madayaw_gas
 
 Target Server Type    : MYSQL
-Target Server Version : 50741
+Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2023-04-30 19:50:58
+Date: 2023-05-02 14:56:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,21 +78,6 @@ CREATE TABLE `customers` (
 
 -- ----------------------------
 -- Records of customers
--- ----------------------------
-
--- ----------------------------
--- Table structure for `fuel_prices`
--- ----------------------------
-DROP TABLE IF EXISTS `fuel_prices`;
-CREATE TABLE `fuel_prices` (
-  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
-  `prc_date` date DEFAULT NULL,
-  `prc_price` decimal(10,0) DEFAULT NULL,
-  PRIMARY KEY (`prc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of fuel_prices
 -- ----------------------------
 
 -- ----------------------------
@@ -538,9 +523,9 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '1', '23423v ertegrtg545g36h453645h654', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', null, '1.jpg', '1', '1');
-INSERT INTO `users` VALUES ('2', '1', 'smd2fxqsidkfov8tnw6y45g9jqryc0gy', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tan Kudarat', null, '1', '3');
-INSERT INTO `users` VALUES ('3', '1', '632uwv97etvmckms0k1sos0sz901ndhi', 'Mark', 'mark', 'ea82410c7a9991816b5eeeebe195e20a', 'Seoul Tan Kudarat', null, '1', '2');
+INSERT INTO `users` VALUES ('1', '1', 'mldnxhk4yqs9sn5rbonzuras79f3ayc9', 'Aq Cee Admin', 'superadmin', '17c4520f6cfd1ab53d8745e84681eb49', 'University of Malagos', '1.jpg', '1', '1');
+INSERT INTO `users` VALUES ('2', '1', 'uph89gph7a9787mc08kdwxcszmr70u6x', 'Kim Ji Won', 'kimjiwon', 'c17b6630268dbe52c5cf042327a7e65a', 'Seoul Tan Kudarat', null, '1', '4');
+INSERT INTO `users` VALUES ('3', '1', 'd1zj73150d84yfubm7a6pku3uvy84y6a', 'Mark', 'mark', 'ea82410c7a9991816b5eeeebe195e20a', 'Seoul Tan Kudarat', null, '1', '5');
 
 -- ----------------------------
 -- Table structure for `user_types`
