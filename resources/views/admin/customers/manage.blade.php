@@ -111,7 +111,6 @@
                                         <th width="100px">Status</th>
                                         <th></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                                        <th></th>
                                         @endif
                                     </tr>
                                 </thead>

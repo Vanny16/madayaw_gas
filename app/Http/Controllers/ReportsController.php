@@ -390,7 +390,16 @@ class ReportsController extends Controller
 
     public function transactionsFilter(Request $request)
     {
-        $search_transactions = $request->input('search_transactions') ?? session('search_transactions');
+        
+        $page_number = $request->input('page');
+        
+        if($page_number == null){
+            $search_transactions = $request->input('search_transactions');
+        }
+        else{
+            $search_transactions = $request->input('search_transactions') ?? session('search_transactions');
+        }
+
         $transactions_date_from = $request->input('transactions_date_from') ?? session('transactions_date_from');
         $transactions_date_to = $request->input('transactions_date_to') ?? session('transactions_date_to');
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
