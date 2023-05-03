@@ -2381,11 +2381,11 @@ class ProductionController extends Controller
 
                                     if($purchase->prd_id == $canister->prd_id)
                                     {
-                                        $pur_issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                        $pur_issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
                                         array_push($pur_internal_array, $pur_issued);
-
-                                        $received = ($purchase->pur_crate * 12) + $purchase->pur_loose;
-                                        $issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                        
+                                        $issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
+                                        $received = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
                                         $final_amount = 0;
                                         if($issued > $received)
                                         {
