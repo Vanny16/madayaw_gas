@@ -66,7 +66,30 @@
                         </tr>
                     </tbody>
                 </table>
-
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align:center"><i>CUSTOMER</i></td>
+                            <th colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></th>
+                            @if(isset($canisters))
+                                @foreach($canisters as $canister)
+                                    <th><strong>{{$canister->prd_name}}</strong></th>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($purchases_array as $purchase_array)
+                            <tr>
+                                <td colspan="2" style="text-align:center"><i>{{ $purchase_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center"><i>{{ $purchase_array[1] }}</i></td>
+                                @for($index = 2; $index < count($purchase_array); $index++)
+                                    <td><strong>{{$purchase_array[$index]}}</strong></td>    
+                                @endfor
+                            </tr>
+                        @endforeach
+                    </thead>
+                </table>
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
@@ -102,7 +125,7 @@
                             <th colspan="4" style="text-align:center">RECEIVED</th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <th>{{$canister->prd_name}}</th>
+                                    <th></th>
                                 @endforeach
                             @endif
                         </tr>
@@ -113,10 +136,10 @@
                             <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <td></td>
+                                    <td><strong>{{$canister->prd_name}}</strong></td>
                                 @endforeach
                             @endif
-                            <!-- add forloop here for how many customers ordered  -->
+                            
                         </tr>
                     </tbody>
                     <thead>
@@ -124,7 +147,7 @@
                             <th colspan="4" style="text-align:center">ISSUED</th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <th>{{$canister->prd_name}}</th>
+                                    <th></th>
                                 @endforeach
                             @endif
                         </tr>
@@ -135,10 +158,21 @@
                             <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <td></td>
+                                    <td><strong>{{$canister->prd_name}}</strong></td>
                                 @endforeach
                             @endif
+                        </tr>
+                        <tr>
                             <!-- add forloop here for how many customers ordered  -->
+                            @foreach($issued_customers_array as $customers_array)
+                            <tr>
+                                <td colspan="2" style="text-align:center"><i>{{ $customers_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center"><i>{{ $customers_array[1] }}</i></td>
+                                @for($index = 2; $index < count($customers_array); $index++)
+                                    <td><strong>{{$customers_array[$index]}}</strong></td>    
+                                @endfor
+                            </tr>
+                            @endforeach
                         </tr>
                     </tbody>
                 </table>

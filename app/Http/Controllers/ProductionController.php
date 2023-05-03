@@ -2225,6 +2225,11 @@ class ProductionController extends Controller
         ->where('prd_active', '=', 1)
         ->get();
 
+        $customers = DB::table('customers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('cus_active', '=', 1)
+        ->get();
+
         $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->where('ops_active', '=', 1)
@@ -2255,15 +2260,174 @@ class ProductionController extends Controller
         ->whereIn('verify_user_type', [1, 4])
         ->get();
         
-        $sales = DB::table('transactions')
-                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                    ->where('trx_active','=','1')
-                    ->where('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                    ->orderBy('transactions.trx_datetime', 'DESC')
-                    ->get();
+        $customers = DB::table('customers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('cus_active', '=', 1)
+        ->get();
+
+        $purchases = DB::table('purchases')
+        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        // ->where('products.prd_is_refillable', '=', 1)
+        ->orderBy('trx_id', 'DESC')
+        ->get();
+
+        $transactions = DB::table('transactions')
+        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+        ->where('transactions.pdn_id', '=', get_last_production_id())
+        ->where('trx_active','=','1')
+        ->orderBy('transactions.trx_datetime', 'DESC')
+        ->get();
+        // dd($transactions);
+        
+        // $purchases_array = [];
+        // if(isset($transactions))
+        // {
+        //     foreach($transactions as $transaction)
+        //     {
+        //         $internal_array = [];
+        //         $is_not_canister = false;
+        //         foreach($customers as $customer)
+        //         {
+        //             if($transaction->cus_id == $customer->cus_id)
+        //             {
+        //                 array_push($internal_array, $customer->cus_name);
+        //                 array_push($internal_array, $transaction->trx_ref_id);
+        //                 foreach($canisters as $canister)
+        //                 {
+        //                     foreach($purchases as $purchase)
+        //                     {
+        //                         if($purchase->trx_id == $transaction->trx_id)
+        //                         {
+                                    
+        //                             // dd($internal_array);
+        //                             // <td colspan="2" style="text-align:center">{{ $customer->cus_name }}</td>
+        //                             // <td colspan="2" style="text-align:center">{{ $transaction->trx_ref_id }}</td>
+                                
+        //                             if($purchase->prd_id == $canister->prd_id)
+        //                             {
+        //                                 $issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+        //                                 array_push($internal_array, $issued);
+        //                             }
+        //                             else
+        //                             {
+        //                                 $issued = 0;
+        //                                 array_push($internal_array, $issued);
+        //                             }
+        //                         }    
+        //                         // dd($issued_customers_array);     
+        //                     }
+                            
+        //                 }
+        //                 array_unshift($purchases_array, $internal_array);
+        //             }
+                    
+        //         }
+                   
+        //     }
+                
+        // }
+        $purchases_array = [];
+        $received_customers_array = [];
+        $issued_customers_array = [];
+        if(isset($transactions))
+        {
+            foreach($transactions as $transaction)
+            {
+                $internal_array = [];
+                $pur_internal_array = [];
+                $is_not_canister = false;
+                foreach($customers as $customer)
+                {
+                    if($is_not_canister)
+                    {
+                        break;
+                    }
+                    if($transaction->cus_id == $customer->cus_id)
+                    {
+                        if($is_not_canister)
+                        {
+                            break;
+                        }
+                        array_push($pur_internal_array, $customer->cus_name);
+                        array_push($pur_internal_array, $transaction->trx_ref_id);
+
+                        array_push($internal_array, $customer->cus_name);
+                        array_push($internal_array, $transaction->trx_ref_id);
+                        foreach($canisters as $canister)
+                        {
+                            if($is_not_canister)
+                            {
+                                break;
+                            }
+                            foreach($purchases as $purchase)
+                            {
+                                
+                                if($purchase->trx_id == $transaction->trx_id)
+                                {
+                                    if($purchase->prd_is_refillable == 0)
+                                    {
+                                        $is_not_canister = true;
+                                        // dd($purchase);
+                                        break;
+                                    }
+
+                                    if($purchase->prd_is_refillable == 0)
+                                    {
+                                        $is_not_canister = true;
+                                        // dd('test');
+                                        break;
+                                    }
+
+                                    if($purchase->prd_id == $canister->prd_id)
+                                    {
+                                        $pur_issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                        array_push($pur_internal_array, $pur_issued);
+
+                                        $received = ($purchase->pur_crate * 12) + $purchase->pur_loose;
+                                        $issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                        $final_amount = 0;
+                                        if($issued > $received)
+                                        {
+                                            $final_amount = $issued - $received;
+                                        }
+                                        array_push($internal_array, $final_amount);
+                                    }
+                                    else
+                                    {
+                                        $final_amount = 0;
+                                        array_push($internal_array, $final_amount);
+                                        array_push($pur_internal_array, $final_amount);
+                                    }
+                                }    
+                                // dd($issued_customers_array);     
+                            }
+                            
+                        }
+                        if(!$is_not_canister)
+                        {
+                            $amount = 0;
+                            for($index = 2; $index < count($internal_array); $index++)
+                            {
+                                $amount = $amount + $internal_array[$index];
+                            }
+                            if($amount <> 0)
+                            {
+                                array_unshift($issued_customers_array, $internal_array);
+                            }
+                            array_unshift($purchases_array, $pur_internal_array);
+                        }
+                        // dd($issued_customers_array);
+                        
+                    }
+                    
+                }
+                   
+            }
+                
+        }
+           
+        // dd($purchases_array);     
 
         $tanks = DB::table('tank_logs')
         ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
@@ -2271,13 +2435,9 @@ class ProductionController extends Controller
         ->where('tank_logs.acc_id', '=', session('acc_id'))
         ->get();
 // dd($tanks);
-        $users = DB::table('users')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('usr_active', '=', 1)
-        ->get();
         
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
-        return view('admin.print.productiontoggle', compact('canisters', 'oppositions', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications','supervisor_product_verifications','tanks', 'users'));
+        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'issued_customers_array', 'oppositions', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'transactions',));
     }
 
     // //TANK FUNCTIONS REMOVED FROM PRODUCTION
