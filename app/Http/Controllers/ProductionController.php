@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        $view = $this->printProduction();
-            return $view;
+        // $view = $this->printProduction();
+        //     return $view;
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
