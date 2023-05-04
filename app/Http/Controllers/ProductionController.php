@@ -2279,54 +2279,7 @@ class ProductionController extends Controller
         ->orderBy('transactions.trx_datetime', 'DESC')
         ->get();
         // dd($transactions);
-        
-        // $purchases_array = [];
-        // if(isset($transactions))
-        // {
-        //     foreach($transactions as $transaction)
-        //     {
-        //         $internal_array = [];
-        //         $is_not_canister = false;
-        //         foreach($customers as $customer)
-        //         {
-        //             if($transaction->cus_id == $customer->cus_id)
-        //             {
-        //                 array_push($internal_array, $customer->cus_name);
-        //                 array_push($internal_array, $transaction->trx_ref_id);
-        //                 foreach($canisters as $canister)
-        //                 {
-        //                     foreach($purchases as $purchase)
-        //                     {
-        //                         if($purchase->trx_id == $transaction->trx_id)
-        //                         {
-                                    
-        //                             // dd($internal_array);
-        //                             // <td colspan="2" style="text-align:center">{{ $customer->cus_name }}</td>
-        //                             // <td colspan="2" style="text-align:center">{{ $transaction->trx_ref_id }}</td>
-                                
-        //                             if($purchase->prd_id == $canister->prd_id)
-        //                             {
-        //                                 $issued = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
-        //                                 array_push($internal_array, $issued);
-        //                             }
-        //                             else
-        //                             {
-        //                                 $issued = 0;
-        //                                 array_push($internal_array, $issued);
-        //                             }
-        //                         }    
-        //                         // dd($issued_customers_array);     
-        //                     }
-                            
-        //                 }
-        //                 array_unshift($purchases_array, $internal_array);
-        //             }
-                    
-        //         }
-                   
-        //     }
-                
-        // }
+      
         $purchases_array = [];
         $received_customers_array = [];
         $issued_customers_array = [];
@@ -2334,8 +2287,10 @@ class ProductionController extends Controller
         {
             foreach($transactions as $transaction)
             {
-                $internal_array = [];
                 $pur_internal_array = [];
+                $rec_internal_array = [];
+                $internal_array = [];
+                
                 $is_not_canister = false;
                 foreach($customers as $customer)
                 {
@@ -2351,6 +2306,9 @@ class ProductionController extends Controller
                         }
                         array_push($pur_internal_array, $customer->cus_name);
                         array_push($pur_internal_array, $transaction->trx_ref_id);
+
+                        array_push($rec_internal_array, $customer->cus_name);
+                        array_push($rec_internal_array, $transaction->trx_ref_id);
 
                         array_push($internal_array, $customer->cus_name);
                         array_push($internal_array, $transaction->trx_ref_id);
@@ -2379,33 +2337,38 @@ class ProductionController extends Controller
                                         break;
                                     }
 
-                                    if($purchase->prd_id == $canister->prd_id)
+                                    if($purchase->can_type_in == 1)
                                     {
-                                        $pur_issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
-                                        array_push($pur_internal_array, $pur_issued);
-                                        
-                                        $issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
-                                        $received = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
-                                        $final_amount = 0;
-                                        if($issued > $received)
+                                        if($purchase->prd_id == $canister->prd_id)
                                         {
-                                            $final_amount = $issued - $received;
+                                            $pur_issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
+                                            array_push($pur_internal_array, $pur_issued);
+                                            
+                                            $issued = ($purchase->pur_crate * 12) + $purchase->pur_loose;
+                                            $received = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                            $final_amount = 0;
+                                            if($issued > $received)
+                                            {
+                                                $final_amount = $issued - $received;
+                                            }
+                                            array_push($rec_internal_array, $received);
+                                            array_push($internal_array, $final_amount);
                                         }
-                                        array_push($internal_array, $final_amount);
+                                        else
+                                        {
+                                            $final_amount = 0;
+                                            array_push($pur_internal_array, $final_amount);
+                                            array_push($rec_internal_array, $final_amount);
+                                            array_push($internal_array, $final_amount);
+                                        }
                                     }
-                                    else
-                                    {
-                                        $final_amount = 0;
-                                        array_push($internal_array, $final_amount);
-                                        array_push($pur_internal_array, $final_amount);
-                                    }
-                                }    
-                                // dd($issued_customers_array);     
+                                }     
                             }
                             
                         }
                         if(!$is_not_canister)
                         {
+                            //ADD ISSUED / RECEIVED ARRAYS TO DISPLAY IF ISSUED CANISTERS IS NOT EQUAL TO 0
                             $amount = 0;
                             for($index = 2; $index < count($internal_array); $index++)
                             {
@@ -2415,6 +2378,17 @@ class ProductionController extends Controller
                             {
                                 array_unshift($issued_customers_array, $internal_array);
                             }
+
+                            $amount = 0;
+                            for($index = 2; $index < count($rec_internal_array); $index++)
+                            {
+                                $amount = $amount + $rec_internal_array[$index];
+                            }
+                            if($amount <> 0)
+                            {
+                                array_unshift($received_customers_array, $rec_internal_array);
+                            }
+                            
                             array_unshift($purchases_array, $pur_internal_array);
                         }
                         // dd($issued_customers_array);
@@ -2426,18 +2400,124 @@ class ProductionController extends Controller
             }
                 
         }
-           
-        // dd($purchases_array);     
+       
+        //OPPOSITION RECEIVED ARRAY
+        $oppositions_array = [];
+        if(isset($transactions))
+        {
+            foreach($transactions as $transaction)
+            {
+                $ops_internal_array = [];
+                
+                $is_not_opposition = false;
+                foreach($customers as $customer)
+                {
+                    if($is_not_opposition)
+                    {
+                        break;
+                    }
+                    if($transaction->cus_id == $customer->cus_id)
+                    {
+                        if($is_not_opposition)
+                        {
+                            break;
+                        }
+
+                        array_push($ops_internal_array, $customer->cus_name);
+                        array_push($ops_internal_array, $transaction->trx_ref_id);
+                        foreach($oppositions as $opposition)
+                        {
+                            if($is_not_opposition)
+                            {
+                                break;
+                            }
+                            foreach($purchases as $purchase)
+                            {
+                                
+                                if($purchase->trx_id == $transaction->trx_id)
+                                {
+                                    if($purchase->can_type_in <> 2)
+                                    {
+                                        $is_not_opposition = true;
+                                        // dd($purchase);
+                                        break;
+                                    }
+
+                                    if($purchase->can_type_in == 2)
+                                    {
+                                        if($purchase->prd_id == $canister->prd_id)
+                                        {
+                                            $received = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
+                                            array_push($ops_internal_array, $received);
+                                        }
+                                        else
+                                        {
+                                            $final_amount = 0;
+                                            array_push($ops_internal_array, $final_amount);
+                                        }
+                                    }
+                                }     
+                            }
+                            
+                        }
+                        if(!$is_not_opposition)
+                        {   
+                            array_unshift($oppositions_array, $ops_internal_array);
+                        }
+                        // dd($issued_customers_array);
+                    }
+                    
+                }
+                   
+            }
+                
+        }
+
+        $p1_table_rows = 10;
+        $p2r_table_rows = 3;
+        $p2i_table_rows = 3;
 
         $tanks = DB::table('tank_logs')
         ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
         ->where('pdn_id', '=', get_last_production_id())
         ->where('tank_logs.acc_id', '=', session('acc_id'))
         ->get();
-// dd($tanks);
+        
+        // $total_array = [];
+        
+        // foreach($purchases_array as $purchase)
+        // {
+        //     $amount = 0;
+        //     for($index = 2; $index < count($purchase) + 1; $index++)
+        //     {
+        //         if(!$total_array)
+        //         {   
+        //             array_push($total_array, $purchase[$index]);
+        //         }
+        //         else
+        //         {
+        //             // $new = $index - 3);
+        //             $temp = $total_array[$index - 2];
+        //             $total_array[$index - 3] = $temp + $purchase[$index];
+        //         }
+        //     }
+        // }
+        // $total_array;
+
+        $total_array = [];
+
+        foreach ($purchases_array as $purchase) {
+            for ($index = 2; $index < count($purchase); $index++) {
+                if (!isset($total_array[$index - 2])) {
+                    $total_array[$index - 2] = $purchase[$index];
+                } else {
+                    $total_array[$index - 2] += $purchase[$index];
+                }
+            }
+        }
         
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
-        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'issued_customers_array', 'oppositions', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'transactions',));
+        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'received_customers_array', 'issued_customers_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
     }
 
     // //TANK FUNCTIONS REMOVED FROM PRODUCTION
