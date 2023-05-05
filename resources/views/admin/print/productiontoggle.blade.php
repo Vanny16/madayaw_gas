@@ -90,13 +90,14 @@
                             </tr>
                             @php($row_count--)
                         @endforeach
+                        
+                        @php(($td_count = count($canisters)))
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    @php(($td_count = count($purchase_array)))
                                     <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black;">0</td>
                                     <td colspan="2" style="text-indent:-9999px; border-right:1px solid black;">0</td>
-                                    @for($count = 0; $count < count($purchase_array)-2; $count++)
+                                    @for($count = 0; $count < $td_count-2; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black;">0</td>
                                     @endfor
                                 </tr>
@@ -175,11 +176,11 @@
                         </tr>
                         @php($row_count--)
                         @endforeach
+                        @php(($td_count = count($canisters)))
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    @php(($td_count = count($received_array)))
-                                    @for($count = 0; $count < count($received_array)+2; $count++)
+                                    @for($count = 0; $count < $td_count + 2; $count++)
                                         <td style="text-indent:-9999px">0</td>
                                     @endfor
                                 </tr>
@@ -188,6 +189,8 @@
                         @endif
                     </tr>
                 </tbody>
+            </table>
+            <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
                         <th colspan="4" style="text-align:center">ISSUED</th>

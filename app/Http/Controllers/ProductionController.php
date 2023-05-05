@@ -15,6 +15,11 @@ class ProductionController extends Controller
     public function manage(){ 
         // $view = $this->printProduction();
         //     return $view;
+
+        if(session('typ_id') == 3){
+            return redirect()->action('MainController@home');
+        }
+
         $raw_materials = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
         ->where('products.acc_id', '=', session('acc_id'))
@@ -77,41 +82,27 @@ class ProductionController extends Controller
         
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
+// dd($verifications->get());
 
-        if(count($verifications->get()) == 0)
+        if((count($verifications->get()) == 0) && session('typ_id') <> 5)
         {
             $opening_visibility = "disabled";
             $verify_opening_visibility = "disabled";
         }
         else
         {
+            // $verifications = $verifications->get();
             if(session('typ_id') <> 1)
             {
                 $opening_visibility = "disabled";
                 
                 $visibility_verifications = $verifications->where('verify_user_type', '!=', 1)->first();
                 // dd($visibility_verifications);
-                if(is_null($visibility_verifications->verify_closing))
+                if(is_null($visibility_verifications) || is_null($visibility_verifications->verify_closing))
                 {
                     $opening_visibility = "";
                     $closing_visibility = "disabled";
                 }
-                // else
-                // {
-                    
-                // }
-                // foreach($verifications as $verification)
-                // {
-                //     if($verification->verify_pdn_id == $verify_production_id)
-                //     {
-                //         if(is_null($verification->verify_closing))
-                //         {
-                //             $opening_visibility = "";
-                //             $closing_visibility = "disabled";
-                //             break;
-                //         }
-                //     }
-                // }
             }
 
             if(session('typ_id') == 1)
@@ -184,30 +175,22 @@ class ProductionController extends Controller
                 ->where('verify_user_type', '=', 4)
                 ->first();
 
-                if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                if(!is_null($supervisor_verifications))
                 {
-                    $verify_opening_visibility = "verified";
-                }
+                    if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                    {
+                        $verify_opening_visibility = "verified";
+                    }
 
-                if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
-                {
-                    $verify_closing_visibility = "verified";
+                    if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                    {
+                        $verify_closing_visibility = "verified";
+                    }
                 }
-
-                // if($pdn_flag)
-                // {
-                //     $verify_production_id = $verify_production_id + 1;
-                // }
-                // foreach($verifications as $verification)
-                // {
-                //     if($verification->verify_pdn_id == $verify_production_id)
-                //     {
-                        
-                //     }
-                // }
             }
         }
-        
+        // dd(session('typ_id'));
+
         //CHECK IF PLANT MANAGER AND SUPERVISOR INPUT ARE BALANCED
         if(!$this->verification_comparison())
         {
@@ -263,7 +246,7 @@ class ProductionController extends Controller
                 $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
             }
         }
-
+        
         return view('admin.production.manage',compact('raw_materials', 'canisters', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 

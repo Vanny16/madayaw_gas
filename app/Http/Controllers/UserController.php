@@ -12,6 +12,10 @@ class UserController extends Controller
 {
     public function user()
     {
+        if(session('typ_id') <> 1){
+            return redirect()->action('MainController@home');
+        }
+        
         $users = DB::table('users')
         ->join('user_types', 'user_types.typ_id', '=', 'users.typ_id')
         ->where('acc_id', '=',session('acc_id'))

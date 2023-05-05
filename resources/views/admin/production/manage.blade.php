@@ -1272,6 +1272,11 @@
                                         @if(isset($canisters))
                                             <tr>
                                                 <td></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
@@ -1279,11 +1284,6 @@
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>    
-                                                <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>
-                                                <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>
                                             </tr>
                                             @foreach($canisters as $canister)
                                                 <tr>
@@ -1624,7 +1624,6 @@
                                             <tr>
                                                 @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                     <td></td>
-                                                    <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
                                                     <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
@@ -1636,6 +1635,7 @@
                                                     <td class="text-center"><em>Supervisor</em></td>
                                                     <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
+                                                    <td class="text-center"><em>Plant Manager</em></td>
                                                 @else
                                                 @endif
                                             </tr>

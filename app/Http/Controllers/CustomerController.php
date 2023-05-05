@@ -13,6 +13,10 @@ class CustomerController extends Controller
     
     public function manage()
     {
+        if(session('typ_id') <> 1){
+            return redirect()->action('MainController@home');
+        }
+        
         $statuses = array(
             1 => 'All',
             2 => 'Active',

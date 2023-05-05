@@ -13,6 +13,10 @@ class SupplierController extends Controller
     //
     public function manage()
     {
+        if(session('typ_id') <> 1){
+            return redirect()->action('MainController@home');
+        }
+
         $suppliers = DB::table('suppliers')
         ->get();
 
