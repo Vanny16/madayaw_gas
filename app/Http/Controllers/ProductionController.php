@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        // $view = $this->printProduction();
-        //     return $view;
+        $view = $this->printProduction();
+            return $view;
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -144,14 +144,14 @@ class ProductionController extends Controller
                 $pm_verifications  = DB::table('stock_verifications')
                 ->where('verify_acc_id', '=', session('acc_id'))
                 ->where('verify_pdn_id', '=', $pdn_for_verifications)
-                ->where('verify_user_type', '=', 4)
+                ->where('verify_user_type', '=', 5)
                 ->first();
 
                 if($pdn_flag)
                 {
                     $verify_opening_visibility = "disabled";
                 }
-
+                // dd($pm_verifications );
                 if(is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 5 || $pm_verifications->verify_user_type == 1))
                 {   
                     $verify_opening_visibility = "";
@@ -1980,7 +1980,7 @@ class ProductionController extends Controller
         ->where('verify_prd_id', '=', $prd_id)
         ->where('verify_pdn_id', '=', $pdn_id)
         ->get();
-        dd($verification_check);
+        // dd($verification_check);
         if(!$verification_check)
         {
             return false;
@@ -2066,8 +2066,7 @@ class ProductionController extends Controller
                                     $admin_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
                                     $admin_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
                                     $admin_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
-                                    $admin_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
-                                    $admin_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
+                                    $admin_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving 
                                 )
                                 {
                                     return false;
@@ -2081,8 +2080,7 @@ class ProductionController extends Controller
                                     $admin_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
                                     $admin_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
                                     $admin_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
-                                    $admin_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
-                                    $admin_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
+                                    $admin_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving 
                                 )
                                 {
                                     return false;
@@ -2140,8 +2138,7 @@ class ProductionController extends Controller
                                     $pm_canister->verify_opening_filled <> $supervisor_canister->verify_opening_filled ||
                                     $pm_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
                                     $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers || 
-                                    $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving ||
-                                    $pm_canister->verify_opening_scraps <> $supervisor_canister->verify_opening_scraps
+                                    $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving 
                                 )
                                 {
                                     return false;
@@ -2155,8 +2152,7 @@ class ProductionController extends Controller
                                     $pm_canister->verify_closing_filled <> $supervisor_canister->verify_closing_filled ||
                                     $pm_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
                                     $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers || 
-                                    $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving ||
-                                    $pm_canister->verify_closing_scraps <> $supervisor_canister->verify_closing_scraps
+                                    $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving 
                                 )
                                 {
                                     return false;
@@ -2229,13 +2225,28 @@ class ProductionController extends Controller
         $pm_product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
         ->where('verify_pdn_id', '=', get_last_production_id())
-        ->whereIn('verify_user_type', [1, 3, 5])
+        ->whereIn('verify_user_type', [1, 5])
         ->get();
+
         $product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
         ->where('verify_pdn_id', '=', get_last_production_id())
-        ->whereIn('verify_user_type', [1, 3, 5])
+        ->where('verify_is_product', '=', 1)
+        ->whereIn('verify_user_type', [1, 4])
+        ->orderBy('verify_id', 'DESC')
         ->get();
+// dd($product_verifications);
+        $opening_stocks_array = [];
+        foreach($product_verifications as $opening)
+        {
+            array_push($opening_stocks_array, $opening->verify_opening_filled);
+        }
+
+        $closing_stocks_array = []; 
+        foreach($product_verifications as $closing)
+        {
+            array_push($closing_stocks_array, $closing->verify_closing_filled);
+        }
 
         $supervisor_product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
@@ -2466,27 +2477,6 @@ class ProductionController extends Controller
         ->where('tank_logs.acc_id', '=', session('acc_id'))
         ->get();
         
-        // $total_array = [];
-        
-        // foreach($purchases_array as $purchase)
-        // {
-        //     $amount = 0;
-        //     for($index = 2; $index < count($purchase) + 1; $index++)
-        //     {
-        //         if(!$total_array)
-        //         {   
-        //             array_push($total_array, $purchase[$index]);
-        //         }
-        //         else
-        //         {
-        //             // $new = $index - 3);
-        //             $temp = $total_array[$index - 2];
-        //             $total_array[$index - 3] = $temp + $purchase[$index];
-        //         }
-        //     }
-        // }
-        // $total_array;
-
         $total_array = [];
 
         foreach ($purchases_array as $purchase) {
@@ -2498,146 +2488,146 @@ class ProductionController extends Controller
                 }
             }
         }
-        
+
         // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
-        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'received_customers_array', 'issued_customers_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
+        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'closing_stocks_array', 'received_customers_array', 'issued_customers_array', 'opening_stocks_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
     }
 
     // //TANK FUNCTIONS REMOVED FROM PRODUCTION
 
-    // public function tank()
-    // {
-    //     $tanks = DB::table('tanks')
-    //     ->get();
+    public function tank()
+    {
+        $tanks = DB::table('tanks')
+        ->get();
 
-    //     return view('admin.production.tank', compact('tanks'));
-    // }
+        return view('admin.production.tank', compact('tanks'));
+    }
 
-    // //ADD TANK CONTROLLER
-    // public function createTank(Request $request)
-    // {
-    //     $tnk_name = $request->tnk_name;
-    //     $tnk_capacity = $request->tnk_capacity;
-    //     $tnk_remaining = $request->tnk_remaining;
-    //     $tnk_notes = $request->tnk_notes;
+    //ADD TANK CONTROLLER
+    public function createTank(Request $request)
+    {
+        $tnk_name = $request->tnk_name;
+        $tnk_capacity = $request->tnk_capacity;
+        $tnk_remaining = $request->tnk_remaining;
+        $tnk_notes = $request->tnk_notes;
 
-    //     $check_tank_name = DB::table('tanks')
-    //     ->where('acc_id', '=', session('acc_id'))
-    //     ->where('tnk_name','=', $tnk_name)
-    //     ->first();
+        $check_tank_name = DB::table('tanks')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('tnk_name','=', $tnk_name)
+        ->first();
 
-    //     if($check_tank_name != null)
-    //     {
-    //         session()->flash('errorMessage','Tank already exist');
-    //         return redirect()->action('ProductionController@tank');
-    //     }
+        if($check_tank_name != null)
+        {
+            session()->flash('errorMessage','Tank already exist');
+            return redirect()->action('ProductionController@tank');
+        }
 
-    //     DB::table('tanks')
-    //     ->insert([
-    //     'acc_id' => session('acc_id'),
-    //     'tnk_name' => $tnk_name, 
-    //     'tnk_capacity' => (float)$tnk_capacity * 1000,
-    //     'tnk_notes' => $tnk_notes
-    //     ]);
+        DB::table('tanks')
+        ->insert([
+        'acc_id' => session('acc_id'),
+        'tnk_name' => $tnk_name, 
+        'tnk_capacity' => (float)$tnk_capacity * 1000,
+        'tnk_notes' => $tnk_notes
+        ]);
 
-    //     session()->flash('successMessage','Tank has been added');
-    //     return redirect()->action('ProductionController@tank');
-    // }
+        session()->flash('successMessage','Tank has been added');
+        return redirect()->action('ProductionController@tank');
+    }
 
-    // //EDIT TANK CONTROLLER
-    // public function editTank(Request $request)
-    // {
-    //     $tnk_id = $request->tnk_id;
-    //     $tnk_name = $request->tnk_name;
-    //     $tnk_capacity = (float)$request->tnk_capacity * 1000;
-    //     $tnk_remaining = (float)$request->tnk_remaining * 1000;
-    //     $tnk_notes = $request->tnk_notes;
-    //     $tnk_uuid = $request->tnk_uuid;
+    //EDIT TANK CONTROLLER
+    public function editTank(Request $request)
+    {
+        $tnk_id = $request->tnk_id;
+        $tnk_name = $request->tnk_name;
+        $tnk_capacity = (float)$request->tnk_capacity * 1000;
+        $tnk_remaining = (float)$request->tnk_remaining * 1000;
+        $tnk_notes = $request->tnk_notes;
+        $tnk_uuid = $request->tnk_uuid;
 
-    //     $tank = DB::table('tanks')
-    //     ->where('acc_id','=', session('acc_id'))
-    //     ->where('tnk_name','=', $tnk_name)
-    //     ->first();
+        $tank = DB::table('tanks')
+        ->where('acc_id','=', session('acc_id'))
+        ->where('tnk_name','=', $tnk_name)
+        ->first();
         
-    //     if($tank != null && $tank->tnk_id != $tnk_id)
-    //     {
-    //         session()->flash('errorMessage','Tank already exist');
-    //     }
-    //     else{
-    //         if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
-    //             DB::table('tanks')
-    //             ->where('tnk_id', '=', $tnk_id)
-    //             ->update([
-    //                 'tnk_name' => $tnk_name,
-    //                 'tnk_capacity' => $tnk_capacity,
-    //                 'tnk_notes' => $tnk_notes
-    //             ]);
-    //             session()->flash('successMessage','Tank details updated.');
-    //         }
-    //         else{
-    //             session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
-    //         }
-    //     }
+        if($tank != null && $tank->tnk_id != $tnk_id)
+        {
+            session()->flash('errorMessage','Tank already exist');
+        }
+        else{
+            if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
+                DB::table('tanks')
+                ->where('tnk_id', '=', $tnk_id)
+                ->update([
+                    'tnk_name' => $tnk_name,
+                    'tnk_capacity' => $tnk_capacity,
+                    'tnk_notes' => $tnk_notes
+                ]);
+                session()->flash('successMessage','Tank details updated.');
+            }
+            else{
+                session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
+            }
+        }
         
-    //     return redirect()->action('ProductionController@tank');
-    // }
+        return redirect()->action('ProductionController@tank');
+    }
 
-    // //EDIT TANK CONTROLLER
-    // public function tankActivation($tnk_id, $tnk_active)
-    // {
+    //EDIT TANK CONTROLLER
+    public function tankActivation($tnk_id, $tnk_active)
+    {
 
-    //     if($tnk_active==1){
-    //         DB::table('tanks')
-    //         ->where('tnk_id', '=', $tnk_id)
-    //         ->update([
-    //             'tnk_active' => 0
-    //         ]);
-    //         session()->flash('successMessage','Tank deactivated.');
-    //     }
-    //     else if($tnk_active==0){
-    //         DB::table('tanks')
-    //         ->where('tnk_id', '=', $tnk_id)
-    //         ->update([
-    //             'tnk_active' => 1
-    //         ]);
-    //         session()->flash('successMessage','Tank activated.');
-    //     }
+        if($tnk_active==1){
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_active' => 0
+            ]);
+            session()->flash('successMessage','Tank deactivated.');
+        }
+        else if($tnk_active==0){
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_active' => 1
+            ]);
+            session()->flash('successMessage','Tank activated.');
+        }
         
-    //     return redirect()->action('ProductionController@tank');
-    // }
+        return redirect()->action('ProductionController@tank');
+    }
 
-    // //REFILL TANK CONTROLLER
-    // public function refillTank(Request $request)
-    // {
-    //     $tnk_id = $request->tnk_id;
-    //     $refill_cty = (float)$request->tnk_remaining * 1000;
+    //REFILL TANK CONTROLLER
+    public function refillTank(Request $request)
+    {
+        $tnk_id = $request->tnk_id;
+        $refill_cty = (float)$request->tnk_remaining * 1000;
 
-    //     $remaining = DB::table('tanks')
-    //     ->where('tnk_id', '=', $tnk_id)
-    //     ->first();
+        $remaining = DB::table('tanks')
+        ->where('tnk_id', '=', $tnk_id)
+        ->first();
         
-    //     $tnk_capacity = (float)$remaining->tnk_capacity;
-    //     $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
+        $tnk_capacity = (float)$remaining->tnk_capacity;
+        $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
 
-    //     if($tnk_remaining > $tnk_capacity){
-    //         session()->flash('errorMessage','Refill must not be greater than tank capacity');
-    //     }
-    //     else if($tnk_remaining < 0 || $refill_cty < 0){
-    //         session()->flash('errorMessage','Refill must not be less than zero');
-    //     }
-    //     else{
-    //         DB::table('tanks')
-    //         ->where('tnk_id', '=', $tnk_id)
-    //         ->update([
-    //             'tnk_remaining' => (float)$tnk_remaining,
-    //         ]);
+        if($tnk_remaining > $tnk_capacity){
+            session()->flash('errorMessage','Refill must not be greater than tank capacity');
+        }
+        else if($tnk_remaining < 0 || $refill_cty < 0){
+            session()->flash('errorMessage','Refill must not be less than zero');
+        }
+        else{
+            DB::table('tanks')
+            ->where('tnk_id', '=', $tnk_id)
+            ->update([
+                'tnk_remaining' => (float)$tnk_remaining,
+            ]);
             
-    //         record_stockin($tnk_id, $refill_cty);
+            record_stockin($tnk_id, $refill_cty);
 
-    //         session()->flash('successMessage','Tank refilled');
+            session()->flash('successMessage','Tank refilled');
 
-    //     }
+        }
 
-    //     return redirect()->action('ProductionController@tank');
-    // }
+        return redirect()->action('ProductionController@tank');
+    }
 }

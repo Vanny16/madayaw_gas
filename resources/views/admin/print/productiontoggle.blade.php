@@ -47,20 +47,20 @@
                 <table class="table table-hover table-condensed" id="part1Table">
                     <thead>
                         <tr>
-                            <th colspan = "2"></th>
+                            <th colspan = "2" style="text-align:center; border:1px solid black;"></th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <th>{{$canister->prd_name}}</th>
+                                    <th style="text-align:center; border:1px solid black;">{{$canister->prd_name}}</th>
                                 @endforeach
                             @endif
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan = "2"><i>Opening Filled Canister Stock</i></td>
-                            @if(isset($canisters))
-                                @foreach($canisters as $canister)
-                                    <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                            <td colspan = "2" style="text-align:center; border:1px solid black;"><i>Opening Filled Canister Stock</i></td>
+                            @if(isset($opening_stocks_array))
+                                @foreach($opening_stocks_array as $opening_stock)
+                                    <td style="text-align:center; border:1px solid black;">{{ number_format($opening_stock, 0, '.', ',') }}</td>
                                 @endforeach
                             @endif
                         </tr>
@@ -81,6 +81,7 @@
                     <tbody>
                         @php($row_count = $p1_table_rows)
                         @foreach($purchases_array as $purchase_array)
+                        
                             <tr>
                                 <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black;"><i>{{ $purchase_array[0] }}</i></td>
                                 <td colspan="2" style="text-align:center; border-right:1px solid black;"><i>{{ $purchase_array[1] }}</i></td>
@@ -97,38 +98,45 @@
                                 <tr>
                                     <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black;">0</td>
                                     <td colspan="2" style="text-indent:-9999px; border-right:1px solid black;">0</td>
-                                    @for($count = 0; $count < $td_count-2; $count++)
+                                    @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black;">0</td>
                                     @endfor
                                 </tr>
+                                
                                 @php($row_count--)
                             @endwhile
                         @endif
                         <tr>
                             <td colspan="4" style="text-align:center; border:1px solid black"><strong>TOTAL</strong></td>
-                            @foreach($total_array as $value)
-                            <td style="text-align:center; border:1px solid black"><strong>{{ $value }}</strong></td>
-                            @endforeach
+                            @if(count($total_array) > 0)
+                                @foreach($total_array as $value)
+                                    <td style="text-align:center; border-top:1px solid black"><strong>{{ $value }}</strong></td>
+                                @endforeach
+                            @else
+                                @foreach($canisters as $canister)
+                                <td style="text-indent:-9999px; border:1px solid black;"><strong>0</strong></td>
+                                @endforeach
+                            @endif
                         </tr>
                     </tbody>
                 </table>
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th colspan = "2"></th>
+                            <th colspan = "2" style="text-align:center; border:1px solid black;"></th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <th>{{$canister->prd_name}}</th>
+                                    <th style="text-align:center; border:1px solid black;">{{$canister->prd_name}}</th>
                                 @endforeach
                             @endif
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan = "2"><i>Closing Filled Canister Stock</i></td>
-                            @if(isset($canisters))
-                                @foreach($canisters as $canister)
-                                    <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                            <td colspan = "2" style="text-align:center; border:1px solid black;"><i>Closing Filled Canister Stock</i></td>
+                            @if(isset($closing_stocks_array))
+                                @foreach($closing_stocks_array as $closing_stock)
+                                    <td style="text-align:center; border:1px solid black;">{{ number_format($, 0, '.', ',') }}</td>
                                 @endforeach
                             @endif
                         </tr>
@@ -141,24 +149,24 @@
                 <h4><strong>PART 2: EMPTY CANISTER MOVEMENT</strong></h4>
             </div>
         
-            <table class="table table-hover table-condensed">
+            <table class="table table-hover table-condensed"  style="page-break-inside:avoid">
                 <thead>
-                    <tr style="border-bottom:1px solid black">
-                        <th colspan="4" style="text-align:center">RECEIVED</th>
+                    <tr style="border-bottom:1px solid black;">
+                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <th></th>
+                                <th style="border-bottom:1px solid black"></th>
                             @endforeach
                         @endif
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
+                    <tr style="border-bottom:2px solid black;">
+                        <td colspan="2" style="text-align:center; border:1px solid black; "><i>CUSTOMER</i></td>
                         <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black; "><strong>{{$canister->prd_name}}</strong></td>
+                                <td style="text-align:center; border:1px solid black; "><strong>{{$canister->prd_name}}</strong></td>
                             @endforeach
                         @endif
                     </tr>
@@ -166,63 +174,84 @@
                         <!-- add forloop here for how many customers ordered  -->
                         @php($row_count = $p2r_table_rows)
                         @foreach($received_customers_array as $received_array)
-                        <tr>
-                            <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
-                            @for($index = 2; $index < count($received_array); $index++)
-                                <td style="text-align:center; border-right:1px solid black"><strong>{{$received_array[$index]}}</strong></td>    
-                            @endfor
-                            
-                        </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
+                                @for($index = 2; $index < count($received_array); $index++)
+                                    <td style="text-align:center; border-right:1px solid black"><strong>{{$received_array[$index]}}</strong></td>    
+                                @endfor
+                                
+                            </tr>
                         @php($row_count--)
                         @endforeach
+                        
                         @php(($td_count = count($canisters)))
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    @for($count = 0; $count < $td_count + 2; $count++)
-                                        <td style="text-indent:-9999px">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    @for($count = 0; $count < $td_count; $count++)
+                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
                                     @endfor
                                 </tr>
                                 @php($row_count--)
                             @endwhile
                         @endif
                     </tr>
+                    <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>
-            <table class="table table-hover table-condensed">
+            <table class="table table-hover table-condensed" style="page-break-inside:avoid">
                 <thead>
                     <tr>
-                        <th colspan="4" style="text-align:center">ISSUED</th>
+                        <th colspan="4" style="text-align:center; border:1px solid black">ISSUED</th>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <th></th>
+                                <th style="border-bottom:1px solid black"></th>
                             @endforeach
                         @endif
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="2" style="text-align:center"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
+                    <tr style="border-bottom:2px solid black">
+                        <td colspan="2" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td><strong>{{$canister->prd_name}}</strong></td>
+                                <td style="text-align:center; border:1px solid black"><strong>{{$canister->prd_name}}</strong></td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
+                        @php($row_count = $p2i_table_rows)
                         @foreach($issued_customers_array as $customers_array)
-                        <tr>
-                            <td colspan="2" style="text-align:center"><i>{{ $customers_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center"><i>{{ $customers_array[1] }}</i></td>
-                            @for($index = 2; $index < count($customers_array); $index++)
-                                <td><strong>{{$customers_array[$index]}}</strong></td>    
-                            @endfor
-                        </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center; border-right:1px solid black"><i>{{ $customers_array[1] }}</i></td>
+                                @for($index = 2; $index < count($customers_array); $index++)
+                                    <td style="text-align:center; border-right:1px solid black"><strong>{{$customers_array[$index]}}</strong></td>    
+                                @endfor
+                            </tr>
+                            @php($row_count--)
                         @endforeach
+
+                        @php(($td_count = count($canisters)))
+                        @if($row_count <> 0)
+                            @while($row_count > 0)
+                                <tr>
+                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    @for($count = 0; $count < $td_count; $count++)
+                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    @endfor
+                                </tr>
+                                @php($row_count--)
+                            @endwhile
+                        @endif
                     </tr>
+                    <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>
             <br>
@@ -232,60 +261,60 @@
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>Canister</th>
+                        <th  style="text-align:center; border:1px solid black">Canister</th>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <th>{{$canister->prd_name}}</th>
+                                <th style="text-align:center; border:1px solid black">{{$canister->prd_name}}</th>
                             @endforeach
                         @endif
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><i>Filled</i></td>
+                        <td style="text-align:center; border:1px solid black"><i>Filled</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td>{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
-                        <td><i>Leakers</i></td>
+                        <td style="text-align:center; border:1px solid black"><i>Leakers</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td>{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
-                        <td><i>Empty</i></td>
+                        <td style="text-align:center; border:1px solid black"><i>Empty</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td>{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
-                        <td><i>For Revalving</i></td>
+                        <td style="text-align:center; border:1px solid black"><i>For Revalving</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td>{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
-                        <td><i>Scrap</i></td>
+                        <td style="text-align:center; border:1px solid black"><i>Scrap</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td>{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
-                        <td><b>Total Stocks</b></td>
+                        <td style="text-align:center; border:1px solid black"><b>Total Stocks</b></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                                <strong><th style="text-align:center; border:1px solid black">{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
                             @endforeach
                         @endif
                     </tr>
@@ -324,26 +353,27 @@
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th colspan="4" style="text-align:center">RECEIVED</th>
+                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
                         @if(isset($canisters))
-                            @foreach($canisters as $canister)
-                                <th></th>
+                            @foreach($oppositions as $opposition)
+                                <th style="border-bottom:1px solid black"></th>
                             @endforeach
                         @endif
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="2" style="text-align:center"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center"><i>DOCUMENT NO.</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
-                                <td><strong>{{$opposition->ops_name}}</strong></td>
+                                <td style="text-align:center; border:1px solid black"><strong>{{$opposition->ops_name}}</strong></td>
                             @endforeach
                         @endif
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
+                        @php($row_count = $p2i_table_rows)
                         @foreach($oppositions_array as $opposition_array)
                         <tr>
                             <td colspan="2" style="text-align:center"><i>{{ $opposition_array[0] }}</i></td>
@@ -352,8 +382,24 @@
                                 <td><strong>{{$opposition_array[$index]}}</strong></td>    
                             @endfor
                         </tr>
+                        @php($row_count--)
                         @endforeach
+
+                        @php(($td_count = count($oppositions)))
+                        @if($row_count <> 0)
+                            @while($row_count > 0)
+                                <tr>
+                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    @for($count = 0; $count < $td_count; $count++)
+                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    @endfor
+                                </tr>
+                                @php($row_count--)
+                            @endwhile
+                        @endif
                     </tr>
+                    <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>
             <hr><br>
@@ -472,33 +518,33 @@
     </div>
 </div>
 <script type="text/javascript">
-    // Define a function to handle the beforeprint event
-    function handleBeforePrint() {
-        // Remove the event listener to prevent an infinite loop
-        window.removeEventListener("beforeprint", handleBeforePrint);
+    // // Define a function to handle the beforeprint event
+    // function handleBeforePrint() {
+    //     // Remove the event listener to prevent an infinite loop
+    //     window.removeEventListener("beforeprint", handleBeforePrint);
 
-        // Display a confirmation dialog to allow the user to select print settings
-        if (confirm("Click 'OK' to show preview")) {
-            // Open the print dialog
-            setTimeout(function() {
-                window.print();
-            }, 500);
-        }
-        else{
-            window.location.href = "{{ action('ProductionController@manage') }}";
-        }
-    }
+    //     // Display a confirmation dialog to allow the user to select print settings
+    //     if (confirm("Click 'OK' to show preview")) {
+    //         // Open the print dialog
+    //         setTimeout(function() {
+    //             window.print();
+    //         }, 500);
+    //     }
+    //     else{
+    //         window.location.href = "{{ action('ProductionController@manage') }}";
+    //     }
+    // }
 
-    // Add an event listener for the beforeprint event
-    window.addEventListener("beforeprint", handleBeforePrint);
+    // // Add an event listener for the beforeprint event
+    // window.addEventListener("beforeprint", handleBeforePrint);
 
-    // Call the print method when the page finishes loading
-    window.addEventListener("load", function() {
-        setTimeout(function() {
-            window.print();
-            window.location.href = "{{ action('ProductionController@manage') }}";
-        }, 500);
-    });
+    // // Call the print method when the page finishes loading
+    // window.addEventListener("load", function() {
+    //     setTimeout(function() {
+    //         window.print();
+    //         window.location.href = "{{ action('ProductionController@manage') }}";
+    //     }, 500);
+    // });
 
 </script>
 @endsection

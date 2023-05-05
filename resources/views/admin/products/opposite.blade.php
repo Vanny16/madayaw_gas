@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
-                                            <label for="search_string">Find Product</label>
+                                            <label for="search_string">Find Opposition</label>
                                                 <input type="text" class="form-control" id="search_oppositions" name="search_string" placeholder="Opposition Name">
                                         </div>
                                         <div class="col-md-2">
