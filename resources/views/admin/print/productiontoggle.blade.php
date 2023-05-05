@@ -136,7 +136,7 @@
                             <td colspan = "2" style="text-align:center; border:1px solid black;"><i>Closing Filled Canister Stock</i></td>
                             @if(isset($closing_stocks_array))
                                 @foreach($closing_stocks_array as $closing_stock)
-                                    <td style="text-align:center; border:1px solid black;">{{ number_format($, 0, '.', ',') }}</td>
+                                    <td style="text-align:center; border:1px solid black;">{{ number_format($closing_stock, 0, '.', ',') }}</td>
                                 @endforeach
                             @endif
                         </tr>
