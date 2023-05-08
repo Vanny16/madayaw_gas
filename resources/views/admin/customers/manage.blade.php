@@ -631,7 +631,7 @@
                 <div class="modal-body">
                     <div class="form-group"> 
                         <label for="cus_name">Enter Changed Price<span style="color:red">*</span></label>
-                        <input type="decimal"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                        <input type="decimal"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" max="100"/>
                         <input type="text" class="form-control" id="selected-customers" name="selected_customers" value="" hidden>
                     </div>
                 <div class="modal-footer">

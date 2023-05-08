@@ -152,7 +152,7 @@
             <table class="table table-hover table-condensed"  style="page-break-inside:avoid">
                 <thead>
                     <tr style="border-bottom:1px solid black;">
-                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
+                        <th colspan="2" style="text-align:center; border:1px solid black">RECEIVED</th>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <th style="border-bottom:1px solid black"></th>
@@ -162,8 +162,8 @@
                 </thead>
                 <tbody>
                     <tr style="border-bottom:2px solid black;">
-                        <td colspan="2" style="text-align:center; border:1px solid black; "><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black; "><i>CUSTOMER</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <td style="text-align:center; border:1px solid black; "><strong>{{$canister->prd_name}}</strong></td>
@@ -175,8 +175,8 @@
                         @php($row_count = $p2r_table_rows)
                         @foreach($received_customers_array as $received_array)
                             <tr>
-                                <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
-                                <td colspan="2" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
+                                <td colspan="1" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
+                                <td colspan="1" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
                                 @for($index = 2; $index < count($received_array); $index++)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{$received_array[$index]}}</strong></td>    
                                 @endfor
@@ -189,8 +189,8 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border-right:1px solid black">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black">0</td>
                                     @endfor
@@ -205,7 +205,7 @@
             <table class="table table-hover table-condensed" style="page-break-inside:avoid">
                 <thead>
                     <tr>
-                        <th colspan="4" style="text-align:center; border:1px solid black">ISSUED</th>
+                        <th colspan="2" style="text-align:center; border:1px solid black">ISSUED</th>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <th style="border-bottom:1px solid black"></th>
@@ -215,8 +215,8 @@
                 </thead>
                 <tbody>
                     <tr style="border-bottom:2px solid black">
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <td style="text-align:center; border:1px solid black"><strong>{{$canister->prd_name}}</strong></td>
@@ -228,8 +228,8 @@
                         @php($row_count = $p2i_table_rows)
                         @foreach($issued_customers_array as $customers_array)
                             <tr>
-                                <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
-                                <td colspan="2" style="text-align:center; border-right:1px solid black"><i>{{ $customers_array[1] }}</i></td>
+                                <td colspan="1" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
+                                <td colspan="1" style="text-align:center; border-right:1px solid black"><i>{{ $customers_array[1] }}</i></td>
                                 @for($index = 2; $index < count($customers_array); $index++)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{$customers_array[$index]}}</strong></td>    
                                 @endfor
@@ -241,8 +241,8 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border-right:1px solid black">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black">0</td>
                                     @endfor
@@ -410,19 +410,19 @@
             </div>
             <table class="table table-hover table-condensed">
                 <thead>
-                    <tr class="d-flex justify-content-center">
+                    <tr>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
-                                <th>{{$opposition->ops_name}}</th>
+                                <th style="text-align:center">{{$opposition->ops_name}}</th>
                             @endforeach
                         @endif
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="d-flex justify-content-center">
+                    <tr>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
-                                <td>{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
+                                <td style="text-align:center">{{ number_format($opposition->ops_quantity, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>

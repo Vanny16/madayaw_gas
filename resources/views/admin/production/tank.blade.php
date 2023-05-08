@@ -26,7 +26,9 @@
                 </div>
             </div>
             <div class="col-md-12 mb-2">
-                <a class="btn btn-primary col-md-2 col-20 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
+                @if(session('typ_id') == 1)
+                    <a class="btn btn-primary col-md-2 col-20 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#tank-modal"><i class="fa fa-plus mr-1"></i> Add New Tank</a>
+                @endif
             </div>
             <div class="row">
                 <div class="col-md-6"> 
