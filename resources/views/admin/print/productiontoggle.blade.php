@@ -314,7 +314,7 @@
                         <td style="text-align:center; border:1px solid black"><b>Total Stocks</b></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <strong><th style="text-align:center; border:1px solid black">{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                                <strong><th style="text-align:center; border:1px solid black">{!! get_product_total_stock_no_scrap($canister->prd_id) !!}</th></strong>
                             @endforeach
                         @endif
                     </tr>
@@ -335,13 +335,13 @@
                 </div>
                 <div class="col-md-9 d-flex justify-content-center">
                     <div class="col-md-4" style="text-align:center">
-                        <p style="text-decoration:underline"><strong>Valve: </strong>{!! get_total_canister_report() !!}</p>
+                        <p style="text-decoration:underline"><strong>Valve: </strong>{!! get_valve_population() !!}</p>
                     </div>
                     <div class="col-md-4" style="text-align:center">
-                        <p style="text-decoration:underline"><strong>Seal: </strong>{!! get_total_canister_report() !!}</p>
+                        <p style="text-decoration:underline"><strong>Seal: </strong>{!! get_seal_population() !!}</p>
                     </div>
                     <div class="col-md-4" style="text-align:center">
-                        <p style="text-decoration:underline"><strong>Crates: </strong>{!! get_total_canister_report() !!}</p>
+                        <p style="text-decoration:underline"><strong>Crates: </strong>{!! get_crate_population() !!}</p>
                     </div>
                 </div>
             </div>
@@ -518,33 +518,33 @@
     </div>
 </div>
 <script type="text/javascript">
-    // // Define a function to handle the beforeprint event
-    // function handleBeforePrint() {
-    //     // Remove the event listener to prevent an infinite loop
-    //     window.removeEventListener("beforeprint", handleBeforePrint);
+    // Define a function to handle the beforeprint event
+    function handleBeforePrint() {
+        // Remove the event listener to prevent an infinite loop
+        window.removeEventListener("beforeprint", handleBeforePrint);
 
-    //     // Display a confirmation dialog to allow the user to select print settings
-    //     if (confirm("Click 'OK' to show preview")) {
-    //         // Open the print dialog
-    //         setTimeout(function() {
-    //             window.print();
-    //         }, 500);
-    //     }
-    //     else{
-    //         window.location.href = "{{ action('ProductionController@manage') }}";
-    //     }
-    // }
+        // Display a confirmation dialog to allow the user to select print settings
+        if (confirm("Click 'OK' to show preview")) {
+            // Open the print dialog
+            setTimeout(function() {
+                window.print();
+            }, 500);
+        }
+        else{
+            window.location.href = "{{ action('ProductionController@manage') }}";
+        }
+    }
 
-    // // Add an event listener for the beforeprint event
-    // window.addEventListener("beforeprint", handleBeforePrint);
+    // Add an event listener for the beforeprint event
+    window.addEventListener("beforeprint", handleBeforePrint);
 
-    // // Call the print method when the page finishes loading
-    // window.addEventListener("load", function() {
-    //     setTimeout(function() {
-    //         window.print();
-    //         window.location.href = "{{ action('ProductionController@manage') }}";
-    //     }, 500);
-    // });
+    // Call the print method when the page finishes loading
+    window.addEventListener("load", function() {
+        setTimeout(function() {
+            window.print();
+            window.location.href = "{{ action('ProductionController@manage') }}";
+        }, 500);
+    });
 
 </script>
 @endsection

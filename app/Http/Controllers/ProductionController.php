@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        $view = $this->printProduction();
-            return $view;
+        // $view = $this->printProduction();
+        //     return $view;
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -82,7 +82,6 @@ class ProductionController extends Controller
         
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
-// dd($verifications->get());
 
         if((count($verifications->get()) == 0) && session('typ_id') <> 5)
         {
@@ -2235,7 +2234,7 @@ class ProductionController extends Controller
         ->whereIn('verify_user_type', [1, 4])
         ->orderBy('verify_id', 'DESC')
         ->get();
-// dd($product_verifications);
+        
         $opening_stocks_array = [];
         foreach($product_verifications as $opening)
         {
@@ -2261,22 +2260,21 @@ class ProductionController extends Controller
 
         $purchases = DB::table('purchases')
         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        // ->where('products.prd_is_refillable', '=', 1)
         ->orderBy('trx_id', 'DESC')
         ->get();
 
         $transactions = DB::table('transactions')
         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
         ->where('transactions.pdn_id', '=', get_last_production_id())
         ->where('trx_active','=','1')
         ->orderBy('transactions.trx_datetime', 'DESC')
         ->get();
-        // dd($transactions, $purchases);
-
-        // $purchase_products = DB::table('purchases')
-        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        // ->orderBy('trx_id', 'DESC');
+        
+        $tanks = DB::table('tank_logs')
+        ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
+        ->where('pdn_id', '=', get_last_production_id())
+        ->where('tank_logs.acc_id', '=', session('acc_id'))
+        ->get();
         
         $purchases_array = [];
         $received_customers_array = [];
@@ -2441,7 +2439,7 @@ class ProductionController extends Controller
                 }
             }
         }
-        // dd($purchases_array);
+
         //OPPOSITION RECEIVED ARRAY
         $oppositions_array = [];
         $opposition_count = count($oppositions) - 1;
@@ -2450,8 +2448,6 @@ class ProductionController extends Controller
         $ops_internal = [];  
         foreach($transactions as $transaction)
         {
-            // array_push($ops_internal, $customer->cus_name);
-            // array_push($ops_internal, $transaction->trx_ref_id);
             foreach($customers as $customer)
             {
                 if($customer->cus_id == $transaction->cus_id)
@@ -2495,11 +2491,9 @@ class ProductionController extends Controller
         for($x = 0; $x < count($transactions); $x++)
         {
             $array = [];
-            // array_push($array, array_pop($ops_internal));
             for($index = 0; $index < count($oppositions) + 2; $index++)
             {
                 array_push($array, array_shift($ops_internal));
-                // dd($array);
             }
 
             $count = 0;
@@ -2522,12 +2516,6 @@ class ProductionController extends Controller
         $p1_table_rows = 10;
         $p2r_table_rows = 3;
         $p2i_table_rows = 3;
-
-        $tanks = DB::table('tank_logs')
-        ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
-        ->where('pdn_id', '=', get_last_production_id())
-        ->where('tank_logs.acc_id', '=', session('acc_id'))
-        ->get();
         
         $total_array = [];
 
