@@ -2318,12 +2318,9 @@ class ProductionController extends Controller
                         array_push($internal_array, $transaction->trx_ref_id);
 
                         $purchase_products = DB::table('purchases')
-                        // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                        // ->orderBy('trx_id', 'DESC')
                         ->orderBy('prd_id', 'ASC')
                         ->where('can_type_in', '=', 1)
                         ->where('trx_id', '=', $transaction->trx_id)
-                        // ->where('trx_id', '=', 3)
                         ->get();
 
                         //--------------------------------------------
@@ -2340,31 +2337,17 @@ class ProductionController extends Controller
                                 foreach($canisters as $canister)
                                 {
                                     $amount  = DB::table('purchases')
-                                    // ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                                    // ->orderBy('trx_id', 'DESC')
-                                    // ->where('can_type_in', '=', 1)
                                     ->where('trx_id', '=', $transaction->trx_id)
                                     ->where('prd_id', '=', $canister->prd_id)
-                                    // ->where('trx_id', '=', 3)
                                     ->sum('pur_qty');
 
                                     $sum = $pur_internal_array[$pur_index] ?? 0;
                                     $pur_internal_array[$pur_index] = $amount+$sum;
-                                    if($canister->prd_id == $products->prd_id)
-                                    {
-                                        // $pur_internal_array[$pur_index] = $products->pur_qty;
-                                            // dd($previous_prd_id, $products->prd_id);
-                                        // if($previous_prd_id <> $canister->prd_id)
-                                        // {
-                                        //     $pur_index++;
-                                        // }
-                                    }
                                     $pur_index++;
-                                    
                                 }
                             }
                         }
-                        // dd(count($pur_internal_array),count($canisters), $pur_internal_array);
+                        
                         //TRIM PURCHASES ARRAY
                         if(count($pur_internal_array) - 2 > count($canisters))
                         {
@@ -2389,58 +2372,9 @@ class ProductionController extends Controller
                                 break;
                             }
 
-                            // dd(gettype($product_id));
-                            // if($canister->prd_id == $purchase_products->prd_id)
-                            // {
-                            //     $count = $pur_internal_array[$cans_index] ?? 0;
-                            //     $pur_internal_array[$cans_index] = $count + $purchase_products->pur_qty; //where('trx_id', '=', $transaction->trx_id)->first()->
-                            //     $cans_index++;
-                            // }
-
-                            // $amount = 0;
-                            // $previous_id = 0;
-                            // $prd_id_array = [];
-                            // foreach($purchase_products as $products)
-                            // {
-                            //     $previous_id = $products->prd_id;
-                            //     $prd_id = $products->prd_id;
-                            //     // if($previous_id <> $products->prd_id)
-                            //     // {
-                            //     //     $previous_id = $prd_id;
-                            //     //     array_push($prd_id_array, $prd_id);
-                            //     // }
-                            // }
-                            // dd($prd_id_array);
-
                             $previous_id = $canister->prd_id;
                             foreach($purchase_products as $products)
                             {
-
-                                //  //FOR PURCHASED CANISTERS
-                                //  if($canister->prd_id == $products->prd_id)
-                                //  {
-                                //     // foreach($canisters as $canister)
-                                //     // {
-                                //     //     $count = $pur_internal_array[$pur_index] ?? 0;
-                                //     //     $pur_internal_array[$pur_index] = $count + $products->pur_qty; //where('trx_id', '=', $transaction->trx_id)->first()->
-                                //     //     //  $pur_index++;
-                                //     //         // dd($previous_id, $products->prd_id);
-                                //     //     if($previous_id <> $products->prd_id)
-                                //     //     {
-                                //     //         $pur_index++;unshift
-                                //     //     }
-                                //     // }
-                                //     // $count = $pur_internal_array[$pur_index] ?? 0;
-                                //     // $pur_internal_array[$pur_index] = $count + $products->pur_qty; //where('trx_id', '=', $transaction->trx_id)->first()->
-                                //     array_unshift($pur_internal_array, $products->pur_qty);
-                                //     $pur_index++;
-                                //         // dd($previous_id, $products->prd_id);
-                                //     if($previous_id <> $products->prd_id)
-                                //     {
-                                //         $pur_index++;
-                                //     }
-                                //  }
-                                //  dd($products);
                                 //FOR RECEIVED CANISTERS
                                 if($canister->prd_id == $products->prd_id_in)
                                 {
@@ -2458,7 +2392,7 @@ class ProductionController extends Controller
                                 }
                                 elseif($canister->prd_id == $products->prd_id && (($products->pur_crate_in * 12) + ($products->pur_loose_in) == 0))//($products->pur_qty) < ($products->pur_crate_in * 12) + ($products->pur_loose_in)
                                 {
-                                    dd($products);
+                                    // dd($products);
                                     $internal_array[$iss_index] = $count + 0; //where('trx_id', '=', $transaction->trx_id)->first()->
                                     // dd($internal_array);
                                     $iss_index++;
@@ -2510,124 +2444,94 @@ class ProductionController extends Controller
         // dd($purchases_array);
         //OPPOSITION RECEIVED ARRAY
         $oppositions_array = [];
-        if(isset($transactions))
-        {
-            foreach($transactions as $transaction)
-            {
-                $ops_internal_array = [];
-                
-                $is_not_opposition = false;
-                foreach($customers as $customer)
+        $opposition_count = count($oppositions) - 1;
+
+        // dd($transactions);
+        // for($index = 0; $index < count($oppositions); $index++)
+        // {
+            $bool = false;
+            $ops_internal = [];
+            // foreach($oppositions as $opposition)
+            // {   
+                foreach($transactions as $transaction)
                 {
-                    if($is_not_opposition)
+                    // array_push($ops_internal, $customer->cus_name);
+                    // array_push($ops_internal, $transaction->trx_ref_id);
+                    foreach($customers as $customer)
                     {
-                        break;
-                    }
-                    $ops_index = 2;
-                    if($transaction->cus_id == $customer->cus_id)
-                    {
-                        if($is_not_opposition)
+                        if($customer->cus_id == $transaction->cus_id)
                         {
-                            break;
-                        }
-
-                        array_push($ops_internal_array, $customer->cus_name);
-                        array_push($ops_internal_array, $transaction->trx_ref_id);
-                        
-                        // $received_oppositions = DB::table('purchases')
-                        // ->orderBy('prd_id', 'ASC')
-                        // ->where('can_type_in', '=', 2)
-                        // // ->where('trx_id', '=', $transaction->trx_id)
-                        // ->get();
-
-                        // //OPPOSITION ARRAY
-                        // foreach($received_oppositions as $products)
-                        // {
-                        //     if($transaction->trx_id == $products->trx_id)
-                        //     {
-                        //         foreach($oppositions as $opposition)
-                        //         {
-                        //             // $amount  = DB::table('purchases')
-                        //             // ->where('trx_id', '=', $transaction->trx_id)
-                        //             // ->where('prd_id', '=', $opposition->ops_id)
-                        //             // ->where('can_type_in', '=', 2)
-                        //             // // ->where('trx_id', '=', 3)
-                        //             // ->sum('pur_qty');
-
-                        //             $amount = DB::table('purchases')
-                        //             ->select(DB::raw('SUM(pur_crate_in * 12 + pur_loose_in) as total'))
-                        //             ->where('trx_id', '=', $transaction->trx_id)
-                        //             ->where('prd_id', '=', $opposition->ops_id)
-                        //             ->where('can_type_in', '=', 2)
-                        //             ->get()[0]->total;
-
-                        //             dd($amount);
-                        //             $sum = $ops_internal_array[$ops_index] ?? 0;
-                        //             $ops_internal_array[$ops_index] = $amount + $sum;
-                        //             if($opposition->ops_id == $products->prd_id)
-                        //             {
-                        //                 // $pur_internal_array[$pur_index] = $products->pur_qty;
-                        //                     // dd($previous_prd_id, $products->prd_id);
-                        //                 // if($previous_prd_id <> $canister->prd_id)
-                        //                 // {
-                        //                 //     $pur_index++;
-                        //                 // }
-                        //             }
-                        //             $ops_index++;
-                                    
-                        //         }
-                        //     }
-                        // }
-                        
-                        // dd($ops_internal_array, $received_oppositions);
-                        foreach($oppositions as $opposition)
-                        {
-                            // if($is_not_opposition)
-                            // {
-                            //     break;
-                            // }
-                            foreach($purchases as $purchase)
+                            if($bool)
                             {
-                                // dd($purchase, 'test');
-                                if($purchase->trx_id == $transaction->trx_id && $purchase->can_type_in == 2)
-                                {
-                                    dd($transaction->trx_id);
-                                    // if($purchase->can_type_in <> 2)
-                                    // {
-                                    //     $is_not_opposition = true;
-                                    //     // dd($purchase);
-                                    //     break;
-                                    // }
+                                break;
+                            }
+                            array_push($ops_internal, $customer->cus_name);
+                            array_push($ops_internal, $transaction->trx_ref_id);
 
-                                    if($purchase->can_type_in == 2)
+                            foreach($oppositions as $opposition)
+                            {
+                                $purs = DB::table('purchases')
+                                ->where('trx_id', '=', $transaction->trx_id)
+                                ->where('can_type_in', '=', 2)
+                                ->where('prd_id_in', '=', $opposition->ops_id)
+                                ->get();
+                                // dd($purs);
+                                if(count($purs) == 0)
+                                {
+                                    array_push($ops_internal, 0);
+                                    // $bool = true;
+                                    continue;
+                                }
+
+                                foreach($purs as $pur)
+                                {
+                                    // dd('test');
+                                    // dd($pur);
+                                    if($pur->can_type_in == 2)
                                     {
-                                        if($purchase->prd_id == $opposition->ops_id)
+                                        if($pur->prd_id_in == $opposition->ops_id)
                                         {
-                                            $received = ($purchase->pur_crate_in * 12) + $purchase->pur_loose_in;
-                                            array_push($ops_internal_array, $received);
-                                        }
-                                        else
-                                        {
-                                            $final_amount = 0;
-                                            array_push($ops_internal_array, $final_amount);
+                                            array_push($ops_internal, ($pur->pur_loose_in + ($pur->pur_crate_in * 12)));
                                         }
                                     }
-                                }     
+                                }
                             }
-                            
                         }
-                        if(!$is_not_opposition)
-                        {   
-                            array_unshift($oppositions_array, $ops_internal_array);
-                        }
-                        dd($oppositions_array);
+                        
                     }
-                    
                 }
-                   
+            // }
+        // }
+        // dd($ops_internal);
+        for($x = 0; $x < count($transactions); $x++)
+        {
+            $array = [];
+            // array_push($array, array_pop($ops_internal));
+            for($index = 0; $index < count($oppositions) + 2; $index++)
+            {
+                // array_unshift($array, array_pop($ops_internal));
+                array_push($array, array_shift($ops_internal));
+                // dd($array);
             }
-                
+
+            array_unshift($oppositions_array, $array);
         }
+        // dd($ops_array);
+        // $array = [];
+        // $counter = 0;
+        // while (!empty($ops_internal)) {
+        //     array_unshift($array, array_pop($ops_internal));
+
+        //     if($counter > count($oppositions) + 2)
+        //     {
+        //         array_unshift($ops_array, $ops_internal);
+        //         $counter = 0;
+        //     }
+        //     else
+        //     {
+        //         $counter++;
+        //     }
+        // }
 
         $p1_table_rows = 10;
         $p2r_table_rows = 3;
@@ -2641,21 +2545,9 @@ class ProductionController extends Controller
         
         $total_array = [];
 
-        // foreach ($purchases_array as $purchase) {
-        //     for ($index = 2; $index < count($purchase); $index++) {
-        //         if (!isset($total_array[$index - 2])) {
-        //             $total_array[$index - 2] = $purchase[$index];
-        //         } else {
-        //             $total_array[$index - 2] += $purchase[$index];
-        //         }
-        //     }
-        // }
-        // dd($purchases_array);
-        // dd(compact('canisters', 'production_logs', 'production_date', 'product_verifications', 'tanks', 'users'));
         return view('admin.print.productiontoggle', compact('canisters', 'customers', 'closing_stocks_array', 'received_customers_array', 'issued_customers_array', 'opening_stocks_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
     }
 
-    // //TANK FUNCTIONS REMOVED FROM PRODUCTION
 
     public function tank()
     {

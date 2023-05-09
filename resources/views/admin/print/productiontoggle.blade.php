@@ -363,11 +363,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>CUSTOMER</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>DOCUMENT NO.</i></td>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
-                                <td style="text-align:center; border:1px solid black"><strong>{{$opposition->ops_name}}</strong></td>
+                                <td style="text-align:center; border-right:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>
                             @endforeach
                         @endif
                     </tr>
@@ -376,10 +376,10 @@
                         @php($row_count = $p2i_table_rows)
                         @foreach($oppositions_array as $opposition_array)
                         <tr>
-                            <td colspan="2" style="text-align:center"><i>{{ $opposition_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center"><i>{{ $opposition_array[1] }}</i></td>
+                            <td colspan="2" style="text-align:center; border-right:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
+                            <td colspan="2" style="text-align:center; border-right:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
                             @for($index = 2; $index < count($opposition_array); $index++)
-                                <td><strong>{{$opposition_array[$index]}}</strong></td>    
+                                <td style="text-align:center; border-right:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
                             @endfor
                         </tr>
                         @php($row_count--)
