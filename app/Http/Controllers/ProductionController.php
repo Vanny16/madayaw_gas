@@ -2446,93 +2446,79 @@ class ProductionController extends Controller
         $oppositions_array = [];
         $opposition_count = count($oppositions) - 1;
 
-        // dd($transactions);
-        // for($index = 0; $index < count($oppositions); $index++)
-        // {
-            $bool = false;
-            $ops_internal = [];
-            // foreach($oppositions as $opposition)
-            // {   
-                foreach($transactions as $transaction)
+        $bool = false;
+        $ops_internal = [];  
+        foreach($transactions as $transaction)
+        {
+            // array_push($ops_internal, $customer->cus_name);
+            // array_push($ops_internal, $transaction->trx_ref_id);
+            foreach($customers as $customer)
+            {
+                if($customer->cus_id == $transaction->cus_id)
                 {
-                    // array_push($ops_internal, $customer->cus_name);
-                    // array_push($ops_internal, $transaction->trx_ref_id);
-                    foreach($customers as $customer)
+                    if($bool)
                     {
-                        if($customer->cus_id == $transaction->cus_id)
+                        break;
+                    }
+                    array_push($ops_internal, $customer->cus_name);
+                    array_push($ops_internal, $transaction->trx_ref_id);
+
+                    foreach($oppositions as $opposition)
+                    {
+                        $purs = DB::table('purchases')
+                        ->where('trx_id', '=', $transaction->trx_id)
+                        ->where('can_type_in', '=', 2)
+                        ->where('prd_id_in', '=', $opposition->ops_id)
+                        ->get();
+                        
+                        if(count($purs) == 0)
                         {
-                            if($bool)
-                            {
-                                break;
-                            }
-                            array_push($ops_internal, $customer->cus_name);
-                            array_push($ops_internal, $transaction->trx_ref_id);
+                            array_push($ops_internal, 0);
+                            continue;
+                        }
 
-                            foreach($oppositions as $opposition)
+                        foreach($purs as $pur)
+                        {
+                            if($pur->can_type_in == 2)
                             {
-                                $purs = DB::table('purchases')
-                                ->where('trx_id', '=', $transaction->trx_id)
-                                ->where('can_type_in', '=', 2)
-                                ->where('prd_id_in', '=', $opposition->ops_id)
-                                ->get();
-                                // dd($purs);
-                                if(count($purs) == 0)
+                                if($pur->prd_id_in == $opposition->ops_id)
                                 {
-                                    array_push($ops_internal, 0);
-                                    // $bool = true;
-                                    continue;
-                                }
-
-                                foreach($purs as $pur)
-                                {
-                                    // dd('test');
-                                    // dd($pur);
-                                    if($pur->can_type_in == 2)
-                                    {
-                                        if($pur->prd_id_in == $opposition->ops_id)
-                                        {
-                                            array_push($ops_internal, ($pur->pur_loose_in + ($pur->pur_crate_in * 12)));
-                                        }
-                                    }
+                                    array_push($ops_internal, ($pur->pur_loose_in + ($pur->pur_crate_in * 12)));
                                 }
                             }
                         }
-                        
                     }
                 }
-            // }
-        // }
-        // dd($ops_internal);
+                
+            }
+        }
         for($x = 0; $x < count($transactions); $x++)
         {
             $array = [];
             // array_push($array, array_pop($ops_internal));
             for($index = 0; $index < count($oppositions) + 2; $index++)
             {
-                // array_unshift($array, array_pop($ops_internal));
                 array_push($array, array_shift($ops_internal));
                 // dd($array);
             }
 
+            $count = 0;
+            foreach($array as $index)
+            {
+                if(gettype($index) == "string")
+                {
+                    continue;
+                }
+                $count = $count + $index;
+            }
+
+            if($count == 0)
+            {
+                continue;
+            }
             array_unshift($oppositions_array, $array);
         }
-        // dd($ops_array);
-        // $array = [];
-        // $counter = 0;
-        // while (!empty($ops_internal)) {
-        //     array_unshift($array, array_pop($ops_internal));
-
-        //     if($counter > count($oppositions) + 2)
-        //     {
-        //         array_unshift($ops_array, $ops_internal);
-        //         $counter = 0;
-        //     }
-        //     else
-        //     {
-        //         $counter++;
-        //     }
-        // }
-
+        
         $p1_table_rows = 10;
         $p2r_table_rows = 3;
         $p2i_table_rows = 3;
