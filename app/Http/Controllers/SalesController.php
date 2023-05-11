@@ -695,7 +695,6 @@ class SalesController extends Controller
     public function payPending(Request $request){
         
         $trx_id = $request->trx_id;
-        $trx_date = $request->trx_date;
 
         $pmnt_id = DB::table('payments')
         ->max('pmnt_id');
@@ -756,7 +755,7 @@ class SalesController extends Controller
                     'pmnt_amount' => $pmnt_amount,
                     'pmnt_received' => $pmnt_received,
                     'pmnt_change' => $pmnt_change,
-                    'pmnt_date' => $trx_date,
+                    'pmnt_date' => $pmnt_date,
                     'pmnt_time' => date('H:i:s'),
                     'pmnt_check_no' => $pmnt_check_no,
                     'pmnt_check_date' => $pmnt_check_date
@@ -773,7 +772,7 @@ class SalesController extends Controller
                     'pmnt_amount' => $pmnt_amount,
                     'pmnt_received' => $pmnt_received,
                     'pmnt_change' => $pmnt_change,
-                    'pmnt_date' => $trx_date,
+                    'pmnt_date' => $pmnt_date,
                     'pmnt_time' => date('H:i:s')
                 ]);
             }
