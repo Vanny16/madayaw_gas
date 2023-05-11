@@ -454,7 +454,7 @@
                                                                         </div>
                                                                         <div class="form-group" id="payment_check{{ $transaction->trx_id }}">
                                                                             <label for="cus_address">Check No. <span style="color:red">*</span></label>
-                                                                            <input type="text" id="pmnt_check_no{{ $transaction->trx_id }}" name="pmnt_check_no" class="form-control" onclick="select()" required></input>
+                                                                            <input type="text" id="pmnt_check_no{{ $transaction->trx_id }}" name="pmnt_check_no" class="form-control" onclick="select()" required>
                                                                         </div>
                                                                         <div class="form-group" id="payment_check_date{{ $transaction->trx_id }}">
                                                                             <label for="cus_address">Check Date <span style="color:red">*</span></label>
@@ -465,9 +465,9 @@
                                                                             <input type="text" class="form-control" id="pmnt_amount_cash{{ $transaction->trx_id }}" name="pmnt_amount_cash" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
                                                                             <input type="text" class="form-control" id="pmnt_amount_gcash{{ $transaction->trx_id }}" name="pmnt_amount_gcash" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
                                                                             <input type="text" class="form-control" id="pmnt_amount_check{{ $transaction->trx_id }}" name="pmnt_amount_check" placeholder="Enter Amount" onkeyup="noNegativeValue(this.id)" onkeypress="return isNumberKey(this, event);" value="0" onclick="select()" required/>
-                                                                            <input type="text" class="form-control" id="pmnt_amount{{ $transaction->trx_id }}" name="pmnt_amount" placeholder="Enter Amount"  onkeypress="return isNumberKey(this, event);" value="0" required hidden/>
+                                                                            <input type="hidden" class="form-control" id="pmnt_amount{{ $transaction->trx_id }}" name="pmnt_amount" placeholder="Enter Amount"  onkeypress="return isNumberKey(this, event);" value="0" required/>
                                                                             <input type="hidden" class="form-control" name="trx_id" value="{{ $transaction->trx_id }}" onkeypress="return isNumberKey(this, event);"/>
-                                                                            <input type="hidden" id="mode_of_payment{{ $transaction->trx_id }}" name="mode_of_payment" class="form-control"></input>
+                                                                            <input type="hidden" id="mode_of_payment{{ $transaction->trx_id }}" name="mode_of_payment" class="form-control">
                                                                         </div>
                                                                         <div class="form-group" id="pmnt_attachment_gcash{{ $transaction->trx_id }}">
                                                                             <label for="cus_address" id="payment_label">Attachment <span style="color:red">*</span></label>
