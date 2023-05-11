@@ -268,7 +268,8 @@
                                                                     <div class="modal-body">
                                                                         <div class="row">
                                                                             <div class="col-md-5">
-                                                                                <label for="filter_status">Opposite Canisters</label>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                <label for="filter_status">Opposite Canisters</label></div>
                                                                                 <select class="form-control" id="filter_status" name="opposition_canister">
                                                                                     @foreach($oppositions as $opposition)
                                                                                         <option value="{{ $opposition->ops_id }}">{{ $opposition->ops_name }}</option>   
@@ -281,12 +282,12 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-2">
-                                                                                <div class="mx-auto">
+                                                                                <div class="mx-auto d-flex justify-content-center">
                                                                                     <span class="fa fa-exchange"> </span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-5">
-                                                                                <label for="filter_status">Madayaw Canisters</label>
+                                                                                <div class="d-flex justify-content-center"><label for="filter_status">Madayaw Canisters</label></div>
                                                                                 <select class="form-control" id="filter_status" name="madayaw_canister">
                                                                                     @foreach($products as $product)
                                                                                         <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>   
@@ -298,6 +299,10 @@
                                                                                         <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_amount" />
                                                                                     </div>
                                                                                 </div>
+                                                                                <div class="form-group">
+                                <label for="cus_address">Delivery Receipt # <span style="color:red">*</span></label>
+                                <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
+                            </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
