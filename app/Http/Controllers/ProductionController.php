@@ -112,7 +112,8 @@ class ProductionController extends Controller
                 ->where('verify_user_type', '=', 1)
                 ->first();
                 // dd($admin_verifications);
-                if(is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 5 || $admin_verifications->verify_user_type == 1))
+                
+                if(is_null($admin_verifications) || (is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 5 || $admin_verifications->verify_user_type == 1)))
                 {   
                     $verify_opening_visibility = "";
                     $verify_closing_visibility = "disabled";
