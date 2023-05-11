@@ -55,9 +55,14 @@ class ProductController extends Controller
         ->where('prd_is_refillable', '=', '1')
         ->get();
 
+        $customers = DB::table('customers')
+        ->where('acc_id', '=', session('acc_id'))
+        ->where('cus_active', '=', '1')
+        ->get();
+
         $pdn_flag = check_production_log();
         // dd($suppliers);
-        return view('admin.products.opposite',compact('statuses', 'default_status', 'products', 'oppositions', 'pdn_flag'));
+        return view('admin.products.opposite',compact('customers', 'statuses', 'default_status', 'products', 'oppositions', 'pdn_flag'));
     }
 
     public function opsdeactivateProduct($ops_id)
@@ -578,8 +583,10 @@ class ProductController extends Controller
     {
         $opposition_canister_id = $request->opposition_canister;
         $madayaw_canister_id = $request->madayaw_canister;
-        $trade_in_opposition_amount = $request->trade_in_opposition_amount;
-        $trade_in_products_amount = $request->trade_in_madayaw_amount; 
+        $trade_in_opposition_crates = $request->trade_in_opposition_crates;
+        $trade_in_opposition_loose = $request->trade_in_opposition_loose;
+        $trade_in_products_crates = $request->trade_in_madayaw_crates; 
+        $trade_in_products_loose = $request->trade_in_madayaw_loose; 
         //dd($request);
 
         $oppositions = DB::table('oppositions')
@@ -603,7 +610,7 @@ class ProductController extends Controller
         $product_qty = $products->prd_empty_goods;
         
         //CALCULATION
-        $new_opposition_qty = $opposition_qty - $trade_in_opposition_amount;
+        $new_opposition_qty = $opposition_qty - (($trade_in_opposition_crates * 12) + $trade_in_opposition_loose);
 
         if($new_opposition_qty < 0)
         {
@@ -616,12 +623,61 @@ class ProductController extends Controller
             'ops_quantity' => $new_opposition_qty
         ]);
 
-        $new_products_qty = $product_qty + $trade_in_products_amount;
+        $new_products_qty = $product_qty + (($trade_in_products_crates * 12) + $trade_in_products_loose);
         
         DB::table('products')
         ->where('prd_id', '=', $madayaw_canister_id)
         ->update([
             'prd_empty_goods' => $new_products_qty
+        ]);
+
+        //ADD TO TRANSACTIONS AND PURCHASES
+        $trx_id = DB::table('transactions')
+        ->max('trx_id');
+
+        if($trx_id == null){
+            $trx_id = 1;
+        }
+        else{
+            $trx_id += 1;
+        }
+
+        $ops_ref_id = "OPS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
+        $ops_del_rec = $request->ops_del_rec;
+
+        DB::table('transactions')
+        ->insert([
+            'trx_ref_id' => $ops_ref_id,
+            'acc_id' => session('acc_id'),
+            'usr_id' => session('usr_id'),
+            'cus_id' => $opposition_canister_id,
+            'trx_datetime' => date('Y-m-d') . " " . date('H:i:s'),
+            'trx_date' => date('Y-m-d'),
+            'trx_time' => date('H:i:s'),
+            'trx_gross' => 0,
+            'trx_total' => 0,
+            'trx_amount_paid' => 0,
+            'trx_balance' => 0,
+            'trx_can_dec' => "N/A",
+            'trx_del_rec' => $ops_del_rec,
+            'pdn_id' => get_last_production_id()
+        ]);
+
+        DB::table('purchases')
+        ->insert([
+            'trx_id' => $trx_id,
+            'prd_id' => $madayaw_canister_id,
+            'prd_price' => 0,
+            'pur_crate' => $trade_in_opposition_crates,
+            'pur_loose' => $trade_in_opposition_loose,
+            'pur_qty' => (($trade_in_opposition_crates * 12) + $trade_in_opposition_loose),
+            'pur_discount' => 0,
+            'pur_deposit' => 0,
+            'prd_id_in' => $opposition_canister_id,
+            'can_type_in' => 1,
+            'pur_crate_in' => $trade_in_products_crates,
+            'pur_loose_in' => $trade_in_products_loose,
+            'pur_total' => 0
         ]);
 
         session()->flash('successMessage','Canister exchange saved!');

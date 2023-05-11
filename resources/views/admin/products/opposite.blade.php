@@ -267,17 +267,44 @@
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                {{-- <div class="d-flex justify-content-center">
+                                                                                <label for="ops_customer">CUSTOMER</label></div>
+                                                                                <select class="form-control" id="filter_status" name="ops_customer">
+                                                                                    @foreach($oppositions as $opposition)
+                                                                                        <option value="{{ $customer->cus_id }}">{{ $customer->cus_name }}</option>   
+                                                                                    @endforeach 
+                                                                                </select>  --}}
+                                                                            </div>
+                                                                            
+                                                                            <div class="col-md-6">
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label>DELIVERY RECEIPT # <span style="color:red">*</span></label>
+                                                                                </div>
+                                                                                <input type="text" id="trx_del_rec" name="ops_del_rec" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
                                                                             <div class="col-md-5">
                                                                                 <div class="d-flex justify-content-center">
-                                                                                <label for="filter_status">Opposite Canisters</label></div>
+                                                                                    <label for="filter_status">Opposite Canisters</label>
+                                                                                </div>
                                                                                 <select class="form-control" id="filter_status" name="opposition_canister">
                                                                                     @foreach($oppositions as $opposition)
                                                                                         <option value="{{ $opposition->ops_id }}">{{ $opposition->ops_name }}</option>   
                                                                                     @endforeach 
                                                                                 </select> 
                                                                                 <div class="row">
-                                                                                    <div class="form-group col-md-12 mt-2">
-                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_amount" />
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_crates" />
+                                                                                        <div class="d-flex justify-content-center"><em>Crates</em></div>
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_loose" />
+                                                                                        <div class="d-flex justify-content-center"><em>Loose</em></div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -287,7 +314,9 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-5">
-                                                                                <div class="d-flex justify-content-center"><label for="filter_status">Madayaw Canisters</label></div>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label for="filter_status">Madayaw Canisters</label>
+                                                                                </div>
                                                                                 <select class="form-control" id="filter_status" name="madayaw_canister">
                                                                                     @foreach($products as $product)
                                                                                         <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>   
@@ -295,14 +324,15 @@
                                                                                 </select>
 
                                                                                 <div class="row">
-                                                                                    <div class="form-group col-md-12 mt-2">
-                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_amount" />
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_crates" />
+                                                                                        <div class="d-flex justify-content-center"><em>Crates</em></div>
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_loose" />
+                                                                                        <div class="d-flex justify-content-center"><em>Loose</em></div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="form-group">
-                                <label for="cus_address">Delivery Receipt # <span style="color:red">*</span></label>
-                                <input type="text" id="trx_del_rec" name="trx_del_rec" class="form-control" required/>
-                            </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>

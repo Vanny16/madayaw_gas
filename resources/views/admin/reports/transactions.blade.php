@@ -194,7 +194,11 @@
                                                 <td>{{ $transaction->pur_qty }}</td>
                                                 <td>{{ $bo_count }}</td>
                                                 <td>{{ $transaction->usr_full_name }}</td>
-                                                <td>{{ $transaction->cus_name }}</td>
+                                                @if($transaction->trx_total <> 0)
+                                                    <td>{{ $transaction->cus_name }}</td>
+                                                @else
+                                                    <td>{{ $transaction->prd_name }}</td>
+                                                @endif
                                             </tr>
                                            
                                             <!-- Purchases Modal -->
