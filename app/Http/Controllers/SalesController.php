@@ -695,6 +695,7 @@ class SalesController extends Controller
     public function payPending(Request $request){
         
         $trx_id = $request->trx_id;
+        $trx_date = $request->trx_date;
 
         $pmnt_id = DB::table('payments')
         ->max('pmnt_id');
