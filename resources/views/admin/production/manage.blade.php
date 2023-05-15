@@ -792,7 +792,7 @@
                                         <td><b>Total Stocks</b></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                                                <strong><th>{!! get_product_total_stock_no_scrap($canister->prd_id) !!}</th></strong>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -1643,11 +1643,11 @@
                                                 <tr>
                                                     @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                         <td><i>{{$canister->prd_name}}</i></td>
-                                                    
                                                         @if(count($product_verifications) <> 0)
+                                                            <?php $counter = 0; ?><!--for debugging -->
                                                             @foreach($product_verifications as $verification)
                                                                 @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
-                                                                    
+                                                                    @php($counter++) <!--for debugging -->
                                                                     @if($pdn_flag)
                                                                         @if(!is_null($verification->verify_opening) && ($verification->verify_user_type == 3 || $verification->verify_user_type == 5))
                                                                             <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
@@ -1765,6 +1765,7 @@
                                                  </tr>
                                             @endforeach
                                         @endif
+                                                            {{-- @php(dd($counter))<!--for debugging --> --}}
                                     </tbody>
                                 </table>
                                 <hr>    

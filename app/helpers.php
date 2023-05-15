@@ -210,32 +210,32 @@ function get_last_production_id()
 
 function get_opening_stock($prd_id, $pdn_id)
 {
-    $opening_stocks = DB::table('stocks_logs')
-    ->where('prd_id', '=', $prd_id)
-    ->where('pdn_id', '=', $pdn_id)
+    $opening_stocks = DB::table('stock_verifications')
+    ->where('verify_prd_id', '=', $prd_id)
+    ->where('verify_pdn_id', '=', $pdn_id)
     ->first();
     
-    if($opening_stocks == null || $opening_stocks->opening_stocks == null)
+    if($opening_stocks == null || $opening_stocks->verify_opening_filled == null)
     { 
         return 0;
     }
 
-    return number_format($opening_stocks->opening_stocks, 0, '.', ',');
+    return number_format($opening_stocks->verify_opening_filled, 0, '.', ',');
 }
 
 function get_closing_stock($prd_id, $pdn_id)
 {
-    $closing_stocks = DB::table('stocks_logs')
-    ->where('prd_id', '=', $prd_id)
-    ->where('pdn_id', '=', $pdn_id)
+    $closing_stocks = DB::table('stock_verifications')
+    ->where('verify_prd_id', '=', $prd_id)
+    ->where('verify_pdn_id', '=', $pdn_id)
     ->first();
 
-    if($closing_stocks == null || $closing_stocks->closing_stocks == null)
+    if($closing_stocks == null || $closing_stocks->verify_closing_filled == null)
     { 
         return 0;
     }
 
-    return number_format($closing_stocks->closing_stocks, 0, '.', ',');
+    return number_format($closing_stocks->verify_closing_filled, 0, '.', ',');
 }
 
 function get_tank_quantity($tnk_id, $prd_id)

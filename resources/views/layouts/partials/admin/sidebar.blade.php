@@ -81,7 +81,16 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ action('ProductController@opposite') }}" class="nav-link">
+                    {{-- <form id="go_oppositions" method="POST" action="{{ action('OppositionController@opposite') }}">
+                        {{ csrf_field() }}
+                        <button href="" class="nav-link btn btn-transparent text-dark" style="background-color:transparent; color: #0d6efd;"onclick="go_oppositions.submit()">
+                            <i class="nav-icon fa fa-bitbucket"></i>
+                            <p>
+                            Opposition Canisters
+                            </p>
+                        </button>
+                    </form> --}}
+                    <a href="{{ action('OppositionController@opposite') }}" class="nav-link">
                         <i class="nav-icon fa fa-bitbucket"></i>
                         <p>
                             Opposition Canisters

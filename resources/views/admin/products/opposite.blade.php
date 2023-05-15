@@ -32,7 +32,7 @@
                             <h3 class="card-title"><i class="fas fa-box-open"></i> Find Canister</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="{{ action('ProductController@searchProduct') }}">
+                            <form class="form-horizontal" method="POST" action="{{ action('OppositionController@opposite') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
@@ -40,27 +40,33 @@
                                             <label for="search_string">Find Opposition</label>
                                                 <input type="text" class="form-control" id="search_oppositions" name="search_string" placeholder="Opposition Name">
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status">
-                                                @foreach($statuses as $status)
-                                                    @if($status == $default_status) 
-                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
-                                                    @else
-                                                        <option value="{{ $status }}">{{ $status }}</option>
-                                                    @endif
-                                                @endforeach   
-                                                {{--<option value="">All</option>
-                                                <option value="">Active</option>
-                                                <option value="">Inactive</option>--}}
-                                            </select> 
+                                        <div class="col-md-6 d-flex align-items-center">
+
+                                                <a class="btn btn-primary mr-2" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
+
+                                                <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button>
+                                            
+                                                                {{-- <label for="filter_status">Status</label>
+                                                                <select class="form-control" id="filter_status" name="filter_status">
+                                                                    @foreach($statuses as $key => $status)
+                                                                        @if($key == $default_status) 
+                                                                            <option value="{{ $key }}" selected>{{ $status }}</option>
+                                                                        @else
+                                                                            <option value="{{ $key }}">{{ $status }}</option>
+                                                                        @endif
+                                                                    @endforeach   
+                                                                    <option value="">All</option>
+                                                                    <option value="">Active</option>
+                                                                    <option value="">Inactive</option>
+                                                                </select> --}}
                                         </div>
+                                        <div class="col-2"></div>
                                     </div>
-                                    <div class="row">
+                                   {{-- <div class="row">
                                         <div class="col-md-6 col-12 mt-2">
                                             <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -69,8 +75,8 @@
 
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
-                        <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
-                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button>
+                        {{-- <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
+                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button> --}}
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@alloppositeDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
 
@@ -151,10 +157,10 @@
                                                     <td>
                                                         @if($opposition->ops_active == 1) 
                                                             <span class="badge badge-success">Active</span>
-                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('OppositionController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @else
                                                             <span class="badge badge-danger">Inactive</span>
-                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('OppositionController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -182,7 +188,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form method="POST" action="{{ action('ProductController@editOpposition') }}" enctype="multipart/form-data">
+                                                                <form method="POST" action="{{ action('OppositionController@editOpposition') }}" enctype="multipart/form-data">
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
@@ -263,27 +269,23 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form method="POST" action="{{ action('ProductController@tradeCanisters') }}" enctype="multipart/form-data">
+                                                                <form method="POST" action="{{ action('OppositionController@tradeCanisters') }}" enctype="multipart/form-data">
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
-                                                                            <div class="col-md-3">
-                                                                                {{-- <div class="d-flex justify-content-center">
-                                                                                <label for="ops_customer">CUSTOMER</label></div>
-                                                                                <select class="form-control" id="filter_status" name="ops_customer">
-                                                                                    @foreach($oppositions as $opposition)
-                                                                                        <option value="{{ $customer->cus_id }}">{{ $customer->cus_name }}</option>   
-                                                                                    @endforeach 
-                                                                                </select>  --}}
+                                                                            <div class="col-md-5">
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label for="ops_customer">OPPOSITION <span style="color:red">*</span></label>
+                                                                                </div>
+                                                                                <input type="text" id="trx_del_rec" name="opposition_name" class="form-control" required/>
                                                                             </div>
-                                                                            
-                                                                            <div class="col-md-6">
+                                                                            <div class="col-md-2">
+                                                                            </div>
+                                                                            <div class="col-md-5">
                                                                                 <div class="d-flex justify-content-center">
                                                                                     <label>DELIVERY RECEIPT # <span style="color:red">*</span></label>
                                                                                 </div>
                                                                                 <input type="text" id="trx_del_rec" name="ops_del_rec" class="form-control" required/>
-                                                                            </div>
-                                                                            <div class="col-md-3">
                                                                             </div>
                                                                         </div>
                                                                         <br>
@@ -368,7 +370,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@addOpposition') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('OppositionController@addOpposition') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -427,7 +429,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@tradeCanisters') }}">
+            <form method="POST" action="{{ action('OppositionController@tradeCanisters') }}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">

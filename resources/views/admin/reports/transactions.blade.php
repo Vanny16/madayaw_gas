@@ -142,7 +142,6 @@
                                             <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $transaction->trx_ref_id }}" >
                                                 <td>{{ $transaction->trx_ref_id }}</td>
                                                 <td>{{ $transaction->trx_datetime }}</td>
-
                                                 @php($prd_name = "")
                                                 @php($pur_qty_in = ($transaction->pur_crate_in * 12) + $transaction->pur_loose_in)
                                                 @if($transaction->can_type_in == 0 || $transaction->can_type_in == 1)
@@ -150,7 +149,13 @@
                                                         @php($pur_qty_in = "-")
                                                         @php($prd_name = "-")
                                                     @else
-                                                        @php($prd_name = $transaction->prd_name)
+                                                        @if(isset($canisters))
+                                                            @foreach($canisters as $canister)
+                                                                @if($canister->prd_id == $transaction->prd_id_in)
+                                                                    @php($prd_name = $canister->prd_name)
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     @endif
                                                 @else
                                                     @foreach($ops_ins as $ops_in)
@@ -187,8 +192,11 @@
                                                     <p class="text-secondary text-center mt-3 mb-3">No bad orders for this transaction</p>
                                                 @endif --}}
                                                 
-
-                                                <td>{{ $prd_name }}</td>
+                                                @if(!empty($transaction->trx_opposition_name))
+                                                    <td>{{ $transaction->trx_opposition_name }}</td>
+                                                @else
+                                                    <td>{{ $prd_name }}</td>
+                                                @endif
                                                 <td>{{ $pur_qty_in }}</td>
                                                 <td>{{ $transaction->prd_name }}</td>
                                                 <td>{{ $transaction->pur_qty }}</td>
@@ -197,7 +205,7 @@
                                                 @if($transaction->trx_total <> 0)
                                                     <td>{{ $transaction->cus_name }}</td>
                                                 @else
-                                                    <td>{{ $transaction->prd_name }}</td>
+                                                    <td>{{ $transaction->ops_name }}</td>
                                                 @endif
                                             </tr>
                                            

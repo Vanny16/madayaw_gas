@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        // $view = $this->printProduction();
-        //     return $view;
+        $view = $this->printProduction();
+            return $view;
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -2112,6 +2112,7 @@ class ProductionController extends Controller
                                     $admin_tank->verify_closing <> $supervisor_tank->verify_closing 
                                 )
                                 {
+                                    // dd($admin_tank, $supervisor_tank);
                                     return false;
                                 }
                             }
@@ -2170,9 +2171,7 @@ class ProductionController extends Controller
                             if(check_production_log())
                             {
                                 if
-                                (
-                                    $pm_tank->verify_opening <> $supervisor_tank->verify_opening
-                                )
+                                ($pm_tank->verify_opening <> $supervisor_tank->verify_opening)
                                 {
                                     return false;
                                 }
@@ -2180,9 +2179,7 @@ class ProductionController extends Controller
                             else
                             {
                                 if
-                                (
-                                    $pm_tank->verify_closing <> $supervisor_tank->verify_closing 
-                                )
+                                ($pm_tank->verify_closing <> $supervisor_tank->verify_closing)
                                 {
                                     return false;
                                 }
@@ -2386,7 +2383,7 @@ class ProductionController extends Controller
                                 if($canister->prd_id == $products->prd_id && ($products->pur_qty) > ($products->pur_crate_in * 12) + ($products->pur_loose_in))//($canister->prd_id == $products->prd_id )
                                 {
                                     $count = $internal_array[$iss_index] ?? 0;
-                                    $internal_array[$iss_index] = $count + $products->pur_qty; //where('trx_id', '=', $transaction->trx_id)->first()->
+                                    $internal_array[$iss_index] = $count + $products->pur_qty - (($products->pur_crate_in * 12) + ($products->pur_loose_in)); //where('trx_id', '=', $transaction->trx_id)->first()->
                                     $iss_index++;
                                 }
                                 elseif($canister->prd_id == $products->prd_id && (($products->pur_crate_in * 12) + ($products->pur_loose_in) == 0))//($products->pur_qty) < ($products->pur_crate_in * 12) + ($products->pur_loose_in)
@@ -2415,6 +2412,9 @@ class ProductionController extends Controller
                         {
                             //ADD ISSUED / RECEIVED ARRAYS TO DISPLAY IF ISSUED CANISTERS IS NOT EQUAL TO 0
                             $amount = 0;
+
+                            // dd($internal_array, $rec_internal_array);
+                            //START WITH INDEX 2 BECAUSE 0 AND 1 ARE "CUSTOMER NAME" AND "REFERENCE ID" RESPECTIVELY
                             for($index = 2; $index < count($internal_array); $index++)
                             {
                                 $amount = $amount + $internal_array[$index];
