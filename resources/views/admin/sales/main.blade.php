@@ -263,7 +263,7 @@
                                                                             @endif
                                                                         @endforeach 
                                                                         @foreach($oppositions as $opposition)
-                                                                            <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
+                                                                            <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}" style="background-color: yellow">{{ $opposition->ops_name }} </option>
                                                                         @endforeach 
                                                                     </select>
                                                                     <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>

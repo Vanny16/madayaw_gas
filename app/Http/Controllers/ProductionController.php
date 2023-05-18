@@ -13,8 +13,8 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        $view = $this->printProduction();
-            return $view;
+        return $this->printProduction();
+            // return $view;
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -198,6 +198,7 @@ class ProductionController extends Controller
             $closing_visibility = "discrepancy";
             session()->flash('errorMessage','Production Verification Discrepancy!');
         }
+        // dd($opening_visibility, $closing_visibility);
 
         $canister_details = "";
         $tank_details = "";
@@ -2040,11 +2041,62 @@ class ProductionController extends Controller
         ->where('verify_user_type', '=', 1)
         ->get();
 
+        // dd($supervisor_canisters, $supervisor_tanks, get_last_production_id());
         //IF ADMIN INPUT BEFORE SUPERVISOR
-        if((count($admin_canisters) <> 0 && count($admin_tanks) <> 0) && (count($supervisor_canisters) == 0 && count($supervisor_tanks) == 0))
+
+        $did_admin_verify = true;
+        if(check_production_log()) //OPENING
         {
-            return true;
+            foreach($admin_canisters as $canister)
+            {
+                if($canister->verify_opening == null)
+                {
+                    $did_admin_verify = false;
+                }
+            }
+
+            foreach($admin_tanks as $tank)
+            {
+                if($tank->verify_opening == null)
+                {
+                    $did_admin_verify = false;
+                }
+            }
+
+            if($did_admin_verify)
+            {
+                return true;
+            }
         }
+        else //CLOSING
+        {
+            foreach($admin_canisters as $canister)
+            {
+                if($canister->verify_closing == null)
+                {
+                    $did_admin_verify = false;
+                }
+            }
+
+            foreach($admin_tanks as $tank)
+            {
+                if($tank->verify_closing == null)
+                {
+                    $did_admin_verify = false;
+                }
+            }
+            if($did_admin_verify)
+            {
+                return true;
+            }
+        }
+
+        //DEPRECATED ADMIN VERIFICATION
+
+        // if((count($admin_canisters) <> 0 && count($admin_tanks) <> 0) && (count($supervisor_canisters) == 0 && count($supervisor_tanks) == 0))
+        // {
+        //     return true;
+        // }
 
         //IF SUPERVISOR INPUT BEFORE ADMIN
         if(count($supervisor_canisters) <> 0 && count($supervisor_tanks) <> 0)
@@ -2232,18 +2284,37 @@ class ProductionController extends Controller
         ->whereIn('verify_user_type', [1, 4])
         ->orderBy('verify_id', 'DESC')
         ->get();
-        
+
+        // if(!empty($product_verifications->where('verify_user_type', '=', 1)->first()))
+        // {
+        //     $did_admin_verify = true;
+        //     $product_verifications = $product_verifications->where('verify_user_type', '=', 1)->get();
+        // }
+        // else
+        // {
+        //     $product_verifications = $product_verifications->where('verify_user_type', '=', 4)->get();
+        // }
+        // dd($product_verifications);
         $opening_stocks_array = [];
         foreach($product_verifications as $opening)
         {
-            array_push($opening_stocks_array, $opening->verify_opening_filled);
+            // dd($opening->verify_opening);
+            if(!empty($opening->verify_opening))//$opening->verify_user_type == 1 && )
+            {
+                array_unshift($opening_stocks_array, $opening->verify_opening_filled);
+            }
         }
-
+        
         $closing_stocks_array = []; 
         foreach($product_verifications as $closing)
         {
-            array_push($closing_stocks_array, $closing->verify_closing_filled);
+            if(!empty($closing->verify_closing))//$closing->verify_user_type == 1 && )
+            {
+                array_unshift($closing_stocks_array, $closing->verify_closing_filled);
+            }
         }
+
+        // dd($opening_stocks_array, $closing_stocks_array);
 
         $supervisor_product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
@@ -2265,7 +2336,7 @@ class ProductionController extends Controller
         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->where('transactions.pdn_id', '=', get_last_production_id())
         ->where('trx_active','=','1')
-        ->orderBy('transactions.trx_datetime', 'DESC')
+        ->orderBy('transactions.trx_id', 'DESC')
         ->get();
         
         $tanks = DB::table('tank_logs')
@@ -2285,6 +2356,11 @@ class ProductionController extends Controller
                 $rec_internal_array = [];
                 $internal_array = [];
                 
+                if(!empty($transaction->trx_opposition_name))
+                {
+                    continue;
+                }
+
                 $is_not_canister = false;
                 foreach($customers as $customer)
                 {
@@ -2317,8 +2393,9 @@ class ProductionController extends Controller
                         ->orderBy('prd_id', 'ASC')
                         ->where('can_type_in', '=', 1)
                         ->where('trx_id', '=', $transaction->trx_id)
+                        // ->where('trx_id', '=', 3)
                         ->get();
-
+                        // dd($purchase_products);
                         //--------------------------------------------
 
                         //PURCHASES ARRAY
@@ -2374,9 +2451,10 @@ class ProductionController extends Controller
                                 //FOR RECEIVED CANISTERS
                                 if($canister->prd_id == $products->prd_id_in)
                                 {
+                                    // dd($products);
                                     $count = $rec_internal_array[$rec_index] ?? 0;
                                     $rec_internal_array[$rec_index] = $count + $products->pur_qty;
-                                    $rec_index++;
+                                    // $rec_index++;
                                 }
 
                                 //FOR ISSUED CANISTERS
@@ -2394,17 +2472,30 @@ class ProductionController extends Controller
                                     $iss_index++;
                                 }
                             }
+                            $rec_index++;
                         }
 
+                        // dd(($rec_index));
+
                         $canister_count = count($canisters) - (count($rec_internal_array) - 2);
+                        $issued_canister_count = count($canisters) - (count($internal_array) - 2);
+
                         if($canister_count > 0)
                         {
-                            // dd('test');
                             while($canister_count <> 0)
                             {
                                 array_push($rec_internal_array, 0);
-                                array_push($internal_array, 0);
                                 $canister_count--;
+                            }
+                        }
+
+                        if($issued_canister_count > 0)
+                        {
+                            // dd($internal_array);
+                            while($issued_canister_count <> 0)
+                            {
+                                array_push($internal_array, 0);
+                                $issued_canister_count--;
                             }
                         }
                         
@@ -2424,10 +2515,12 @@ class ProductionController extends Controller
                                 array_unshift($issued_customers_array, $internal_array);
                             }
 
+                            // dd($rec_internal_array[3]);
                             $amount = 0;
                             for($index = 2; $index < count($rec_internal_array); $index++)
                             {
-                                $amount = $amount + $rec_internal_array[$index];
+                                // dd($rec_internal_array, $rec_internal_array[$index]);
+                                $amount = $amount + ($rec_internal_array[$index] ?? 0);
                             }
                             if($amount <> 0)
                             {
@@ -2440,6 +2533,8 @@ class ProductionController extends Controller
                 }
             }
         }
+        
+        // dd($purchases_array);
 
         //OPPOSITION RECEIVED ARRAY
         $oppositions_array = [];
@@ -2519,7 +2614,15 @@ class ProductionController extends Controller
         $p2i_table_rows = 3;
         
         $total_array = [];
-
+        foreach($purchases_array as $purchase)
+        {
+            for($index = 0; $index < count($canisters); $index++)
+            {
+                $total_array[$index] = ($total_array[$index] ?? 0) + $purchase[$index + 2];
+            }
+            
+        }
+    
         return view('admin.print.productiontoggle', compact('canisters', 'customers', 'closing_stocks_array', 'received_customers_array', 'issued_customers_array', 'opening_stocks_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
     }
 

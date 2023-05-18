@@ -164,18 +164,20 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                    @if($opposition->ops_active == 0)
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                                    @else   
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                            <ul class="dropdown-menu">
-                                                                @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                @endif
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
-                                                            </ul>
-                                                        </div>
+                                                    @if(session('typ_id') == 1)
+                                                        @if($opposition->ops_active == 0)
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        @else   
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                <ul class="dropdown-menu">
+                                                                    @if(session('typ_id') == '1')
+                                                                    <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                    @endif
+                                                                    {{-- <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li> --}}
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                     </td>
                                                     <!-- Edit Products Modal -->
@@ -495,23 +497,23 @@
     });
 </script>
 <script>
-    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
-    //     document.getElementById('sup_prd_name').value = prd_name;
-    //     document.getElementById('sup_prd_sku').value = prd_sku;
-    //     document.getElementById('sup_prd_description').value = prd_description;
-    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
-    //     document.getElementById('sup_prd_is_production').value = is_production;
-    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    // }
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+        document.getElementById('sup_prd_is_production').value = is_production;
+        document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    }
 
-    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
-    //     document.getElementById('sup_prd_name').value = prd_name;
-    //     document.getElementById('sup_prd_sku').value = prd_sku;
-    //     document.getElementById('sup_prd_description').value = prd_description;
-    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
-    //     document.getElementById('sup_prd_is_production').value = is_production;
-    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    // }
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+        document.getElementById('sup_prd_is_production').value = is_production;
+        document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    }
 </script>
 
 @endsection

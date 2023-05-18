@@ -70,7 +70,7 @@
                     <thead>
                         <tr>
                             <th colspan="2" style="text-align:center; border:1px solid black; border-right:1px solid black;"><i>CUSTOMER</i></td>
-                            <th colspan="2" style="text-align:center; border:1px solid black;"><i>DOCUMENT NO.</i></th>
+                            <th colspan="2" style="text-align:center; border:1px solid black;"><i>REFERENCE ID</i></th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
                                     <th style="text-align:center; border:1px solid black;"><strong>{{$canister->prd_name}}</strong></th>
@@ -110,7 +110,7 @@
                             <td colspan="4" style="text-align:center; border:1px solid black"><strong>TOTAL</strong></td>
                             @if(count($total_array) > 0)
                                 @foreach($total_array as $value)
-                                    <td style="text-align:center; border-top:1px solid black"><strong>{{ $value }}</strong></td>
+                                    <td style="text-align:center; border:1px solid black"><strong>{{ $value }}</strong></td>
                                 @endforeach
                             @else
                                 @foreach($canisters as $canister)
@@ -163,7 +163,7 @@
                 <tbody>
                     <tr style="border-bottom:2px solid black;">
                         <td colspan="1" style="text-align:center; border:1px solid black; "><i>CUSTOMER</i></td>
-                        <td colspan="1" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black"><i>REFERENCE ID</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <td style="text-align:center; border:1px solid black; "><strong>{{$canister->prd_name}}</strong></td>
@@ -178,7 +178,7 @@
                                 <td colspan="1" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
                                 <td colspan="1" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
                                 @for($index = 2; $index < count($received_array); $index++)
-                                    <td style="text-align:center; border-right:1px solid black"><strong>{{$received_array[$index]}}</strong></td>    
+                                    <td style="text-align:center; border-right:1px solid black"><strong>{{($received_array[$index] ?? 0)}}</strong></td>    
                                 @endfor
                                 
                             </tr>
@@ -216,7 +216,7 @@
                 <tbody>
                     <tr style="border-bottom:2px solid black">
                         <td colspan="1" style="text-align:center; border:1px solid black"><i>CUSTOMER</i></td>
-                        <td colspan="1" style="text-align:center; border:1px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black"><i>REFERENCE ID</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <td style="text-align:center; border:1px solid black"><strong>{{$canister->prd_name}}</strong></td>
@@ -364,7 +364,7 @@
                 <tbody>
                     <tr>
                         <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>DOCUMENT NO.</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>REFERENCE ID</i></td>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
                                 <td style="text-align:center; border-right:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>

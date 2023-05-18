@@ -73,7 +73,7 @@ class OppositionController extends Controller
         ]);
 
         session()->flash('successMessage','Opposite Product deactivated');
-        return redirect()->action('ProductController@opposite');
+        return redirect()->action('OppositionController@opposite');
     }
 
     public function opsreactivateProduct($ops_id)
@@ -85,7 +85,7 @@ class OppositionController extends Controller
         ]);
 
         session()->flash('successMessage','Opposite Product activated');
-        return redirect()->action('ProductController@opposite');
+        return redirect()->action('OppositionController@opposite');
     }
 
     public function addOpposition(Request $request)
@@ -104,7 +104,7 @@ class OppositionController extends Controller
         if($check_ops_name != null)
         {
             session()->flash('errorMessage','Opposition canister already created');
-            return redirect()->action('ProductController@opposite');
+            return redirect()->action('OppositionController@opposite');
         }
 
         DB::table('oppositions')
@@ -159,7 +159,7 @@ class OppositionController extends Controller
         }   
 
         session()->flash('successMessage','Opposition Product has been added');
-        return redirect()->action('ProductController@opposite');
+        return redirect()->action('OppositionController@opposite');
     }
 
     public function editOpposition(Request $request)
@@ -202,7 +202,7 @@ class OppositionController extends Controller
         if($sku_checker != null)
         {
             session()->flash('errorMessage','Opposition canister already created');
-            return redirect()->action('ProductController@opposite');
+            return redirect()->action('OppositionController@opposite');
         }
 
         DB::table('oppositions')
@@ -256,7 +256,7 @@ class OppositionController extends Controller
         }   
 
         session()->flash('successMessage','Opposition Product has been updated');
-        return redirect()->action('ProductController@opposite');
+        return redirect()->action('OppositionController@opposite');
     }
     public function searchOpposition(Request $request)
     {
@@ -309,7 +309,7 @@ class OppositionController extends Controller
         if($oppositions == null)
         {
             session()->flash('warningMessage','Opposition Canister empty!');
-            return redirect()->action('ProductController@opposite');
+            return redirect()->action('OppositionController@opposite');
         }
 
         $opposition_qty = ($oppositions->ops_quantity);
@@ -394,7 +394,7 @@ class OppositionController extends Controller
         ]);
 
         session()->flash('successMessage','Canister exchange saved!');
-        return redirect()->action('ProductController@opposite');
+        return redirect()->action('OppositionController@opposite');
     }
 
 
