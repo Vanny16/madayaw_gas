@@ -239,8 +239,16 @@ class SalesController extends Controller
             $pmnt_id += 1;
         }
 
-        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
+        //FOR DATA INPUT
+        $prod_date = DB::table('production_logs')
+        ->orderBy('pdn_id', 'DESC')
+        ->first()
+        ->pdn_date;
+        
+        // dd(date_format($prod_date, 'd'));
+
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date_format($prod_date, 'd') . "-" . $trx_id;
+        $pmt_ref_id = "PMT" . date('Y') . date('m') . date_format($prod_date, 'd') . "-" . $pmnt_id;
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";

@@ -13,8 +13,7 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        return $this->printProduction();
-            // return $view;
+        // return $this->printProduction();
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -49,9 +48,9 @@ class ProductionController extends Controller
         $pdn_flag = check_production_log();
 
         $production_times = DB::table('production_logs')
-        ->orderBy('pdn_id', 'desc')
+        ->orderBy('pdn_id', 'DESC')
         ->first();
-        
+
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
