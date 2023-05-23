@@ -266,7 +266,6 @@
                                             </tr>
                                         @endforeach
                                     @endif
-                                    @php(dd($tanks))
                                 </tbody>
                             </table>
                         </div>
