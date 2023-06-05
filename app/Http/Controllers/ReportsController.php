@@ -50,6 +50,8 @@ class ReportsController extends Controller
         session(['select_grp' => -1]);
         session(['select_set' => '0']);
 
+        // DD($sales);
+
         return view('admin.reports.sales', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
     }
 
