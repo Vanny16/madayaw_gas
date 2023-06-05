@@ -72,15 +72,13 @@
                 <td colspan="1"><strong>{{ $bo_qty }}</strong></td>
             </tr>
             <tr>
-                <td colspan="5"><br></td>
+                <td colspan="5"><br><br><br></td>
             </tr>
             <tr>
-                <td colspan="2">Issued by:</td>
-                <td colspan="3">{{session('usr_full_name')}}</td>
+                <td colspan="5"> <span class="">_______________________<span></td>
             </tr>
             <tr>
-                <td colspan="2">Received by:</td>
-                <td colspan="3 ">{{ $bad_order->cus_name }}</td>
+                <td colspan="5">Signature over printed name</td>
             </tr>
         </table>
     </div>
