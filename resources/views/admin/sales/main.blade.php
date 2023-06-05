@@ -233,7 +233,7 @@
                                                 <h5>Remaining Stocks: <strong class="text-danger">{{$product->prd_quantity}}</strong></h5>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="row">
+                                                <div class="row">   
 
                                                     <div class="col-md-5 col-12">
                                                         @if($product->prd_is_refillable == '0')
@@ -250,9 +250,9 @@
                                                             <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
                                                             <div class="form-group">
                                                                 <label for="cus_name">Product Name <span style="color:red">*</span></label>
-                                                                <div class="form-inline">
+                                                                <div class="form-inline"><!--MARKER-->
                                                                     <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
-                                                                        @foreach($products as $in_product)
+                                                                        @foreach($in_products as $in_product)
                                                                             @if($in_product->prd_is_refillable == '1')
                                                                                 @if($in_product->prd_id == $product->prd_id)
                                                                                     @php($select_prd_in = "selected")
@@ -505,7 +505,7 @@
                             <br>
                             <div class="form-group">
                                 <label for="cus_address">Transaction Date <span style="color:red">*</span></label>
-                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>

@@ -82,7 +82,7 @@
                                         
                                         <tr>
                                             <td><small><strong>Capacity:</strong></small></td>
-                                            <td><small>{{number_format($tank->tnk_capacity)}} kg</small></td>
+                                            <td><small>{{number_format($tank->tnk_capacity)}} g</small></td>
                                         </tr> 
 
                                         <tr>
@@ -92,7 +92,7 @@
                                         
                                         <tr>
                                             <td><small><strong>Volume:</strong></small></td>
-                                            <td><small>{{number_format($tank->tnk_remaining)}} kg</small></td>
+                                            <td><small>{{number_format($tank->tnk_remaining)}} g</small></td>
                                         </tr>
                                         <tr>
                                             <td> 

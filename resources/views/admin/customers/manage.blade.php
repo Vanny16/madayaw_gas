@@ -107,7 +107,7 @@
                                         <th>Name</th>
                                         <th>Address</th>
                                         <th>Contact #</th>
-                                        <th>Accessible Products</th>
+                                        {{-- <th>Accessible Products</th> --}}
                                         <th width="100px">Status</th>
                                         <th></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
@@ -146,9 +146,9 @@
                                                     <td>-</td>
                                                 @endif
 
-                                                @if($customer->cus_accessibles)
+                                                {{-- @if($customer->cus_accessibles)
                                                 <td>
-                                                    {{-- <a href="javascript:void(0)" data-toggle="modal" data-target="#accessibles-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a> --}}
+                                                    
                                                     <?php
                                                         $accessibles = explode(",",$customer->cus_accessibles);
                                                         if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
@@ -194,12 +194,12 @@
                                                             @endforeach
                                                         @endif
                                                     </div>
-                                                </td>
-                                                @else
+                                                </td> --}}
+                                                {{--@else
                                                     <td>
                                                     -    
                                                     </td>
-                                                @endif
+                                                @endif --}}
                                                 {{-- 
                                                 @if($customer->cus_notes)
                                                     <td>

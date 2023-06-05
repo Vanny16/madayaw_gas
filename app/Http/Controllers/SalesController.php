@@ -19,11 +19,11 @@ class SalesController extends Controller
         ->where('prd_quantity', '>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
-
+// dd($products    );
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->orderBy('cus_id')
+        ->orderBy('cus_name', 'ASC')
         ->get();
 
         $transactions = DB::table('transactions')
@@ -41,10 +41,18 @@ class SalesController extends Controller
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
+        
+        $in_products = DB::table('products')
+                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                ->where('prd_for_POS', '=' ,'1')
+                // ->where('prd_id', '=' ,$cus_accessibles[$i])
+                ->where('prd_quantity', '>' ,'0.0')
+                ->where('prd_active', '=' ,'1')
+                ->get();
 
         session()->forget('selected_customer');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
 
     public function payments()
@@ -82,10 +90,10 @@ class SalesController extends Controller
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
         ->where('cus_id', '=', $client_id )
-        ->orderBy('cus_id')
+        ->orderBy('cus_name', 'ASC')
         ->first();
 
-        $products = array();
+        
             
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
@@ -98,6 +106,8 @@ class SalesController extends Controller
         if($cus_price_change == null){
             $cus_price_change = 0;
         }
+
+        $products = array();
 
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
             $product = DB::table('products')
@@ -119,10 +129,18 @@ class SalesController extends Controller
 
         // dd($products);
 
+        $in_products = DB::table('products')
+                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                ->where('prd_for_POS', '=' ,'1')
+                // ->where('prd_id', '=' ,$cus_accessibles[$i])
+                ->where('prd_quantity', '>' ,'0.0')
+                ->where('prd_active', '=' ,'1')
+                ->get();
+
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->orderBy('cus_id')
+        ->orderBy('cus_name', 'ASC')
         ->get();
 
         $transactions = DB::table('transactions')
@@ -140,7 +158,7 @@ class SalesController extends Controller
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
 
     public function createCustomer(Request $request)
@@ -249,8 +267,8 @@ class SalesController extends Controller
         $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
         // $formattedDate = $prod_date->format('Y-m-d');
 
-        $trx_ref_id = "POS-" . date('Y') . date('m') . date_format($prod_date, 'd') . "-" . $trx_id;
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date_format($prod_date, 'd') . "-" . $pmnt_id;
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
+        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
