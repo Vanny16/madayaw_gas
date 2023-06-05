@@ -262,8 +262,10 @@ class SalesController extends Controller
         ->orderBy('pdn_id', 'DESC')
         ->first()
         ->pdn_date;
-        
-        // dd(date_format($prod_date, 'd'));
+
+        // $prod_date = DateTime($prod_date);
+        $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
+        // $formattedDate = $prod_date->format('Y-m-d');
 
         $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
         $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')

@@ -160,14 +160,13 @@
                                                 @else
                                                     @foreach($ops_ins as $ops_in)
                                                         @if($ops_in->ops_id == $transaction->prd_id_in)
-                                                            @php($prd_name = $ops_in->ops_name)
+                                                            @php($prd_name = $ops_in->ops_name)  
                                                         @endif
                                                     @endforeach
                                                     @if($pur_qty_in == 0)
                                                         @php($pur_qty_in = "-")
                                                     @endif
                                                 @endif
-
                                                 
                                                 @php($bo_count = 0)
                                                 @foreach($bad_orders as $bad_order)
@@ -193,10 +192,11 @@
                                                 @endif --}}
                                                 
                                                 @if(!empty($transaction->trx_opposition_name))
-                                                    <td>{{ $transaction->trx_opposition_name }}</td>
-                                                @else
+                                                    <td>{{ $transaction->ops_name }}</td>
+                                                @else 
                                                     <td>{{ $prd_name }}</td>
                                                 @endif
+                                                
                                                 <td>{{ $pur_qty_in }}</td>
                                                 <td>{{ $transaction->prd_name }}</td>
                                                 <td>{{ $transaction->pur_qty }}</td>
@@ -205,7 +205,7 @@
                                                 @if($transaction->trx_total <> 0)
                                                     <td>{{ $transaction->cus_name }}</td>
                                                 @else
-                                                    <td>{{ $transaction->ops_name }}</td>
+                                                    <td>{{ $transaction->trx_opposition_name }}</td>  {{-- <td>{{ $transaction->ops_name }}</td> --}}
                                                 @endif
                                             </tr>
                                            
