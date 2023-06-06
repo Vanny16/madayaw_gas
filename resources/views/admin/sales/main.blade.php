@@ -55,7 +55,7 @@
                                     <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
                                     {{ csrf_field() }} 
                                         <label>Customer Name</label>
-                                        <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
+                                        <!-- <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
                                             <option value="0"></option>
                                             @if(isset($customers))
                                                 @foreach($customers as $customer)
@@ -67,7 +67,23 @@
                                                     <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
                                                 @endforeach
                                             @endif
-                                        </select>
+                                        </select> -->
+                                        
+                                        <input list="cus_select" id="client_id" name="client_id[]" class="form-control col-md-5 col-12" autocomplete="off" onclick="select()" value="{{ session('client_id') }}"/>
+                                        <datalist id="cus_select">
+                                            <option></option>
+                                            @if(isset($customers))
+                                                @foreach($customers as $customer)
+                                                    @if(session('new_client') == $customer->cus_name || session('selected_customer') == $customer->cus_id)
+                                                        @php($selected = "selected")
+                                                    @else
+                                                        @php($selected = "")
+                                                    @endif
+                                                    <option data-value="{{ $customer->cus_name }}">{{ $customer->cus_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </datalist>
+
                                     </form>
                                 </div>
                             </div>
@@ -119,9 +135,15 @@
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
-                                            <td class="text-info"><strong>Total</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
+                                            <td class="text-secondary"><strong>Per Item Total</strong></td>
+                                            <td class="text-secondary"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
+                                            <td class="text-secondary"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="1"></td>
+                                            <td class="text-info"><strong>Obtained Total</strong></td>
+                                            <td class="text-info"><strong id="lbl_obtain_crates" class="fa fa-2x">0</strong></td>
+                                            <td class="text-info"><strong id="lbl_obtain_loose" class="fa fa-2x">0</strong></td> 
                                         </tr>
                                     </tbody>
                                 </table>
@@ -857,6 +879,8 @@
             var in_loose = parseInt(document.getElementById(in_loose_id).value);
             var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
             var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
+            var obtained_total_crates = parseInt(document.getElementById("lbl_obtain_crates").innerHTML) + total_crates;
+            var obtained_total_loose = parseInt(document.getElementById("lbl_obtain_loose").innerHTML) + total_loose;
             var sub_total = 0;
             var product_id = select_id.replace(/\D+/g, '');
             var out_crate = parseInt(document.getElementById("crates_amount"+product_id).value);
@@ -880,9 +904,20 @@
                 }
                 
                 //Calculations
+ 
+                var conversion_rate = 12; 
+
+                var obtained_total = (total_crates * conversion_rate) + total_loose;
+                var obtained_total_loose = obtained_total % conversion_rate;
+                var obtained_total_crates = Math.floor(obtained_total / conversion_rate);
+                
+                // var total = Math.floor(display_crates / conversion_rate);
+                // var display_loose = display_crates % conversion_rate;
+                // var display_crates = (in_crate * conversion_rate) + in_loose;
+
                 var total = (in_crate * 12) + in_loose;
-                var display_crates = in_crate;
                 var display_loose = in_loose;
+                var display_crates = in_crate;
 
                 //Setter For Canister in Name
             
@@ -934,7 +969,7 @@
                     var row_id = document.getElementById("movement_id").value;
                     var row = table.insertRow(0);
 
-                    row.id = "row_in"+row_id;
+                    // row.id = "row_in"+row_id;
                     row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
                     row.insertCell(1).innerHTML = "<span hidden>"+row.id+"</span";
                     row.insertCell(2).innerHTML = display_crates;
@@ -944,6 +979,8 @@
                 }
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
+                document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
+                document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
             }
             else{
                 alert("No canisters were in for this item");

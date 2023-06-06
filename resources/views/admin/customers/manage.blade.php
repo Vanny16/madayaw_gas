@@ -105,9 +105,9 @@
                                             <input type="checkbox" id="customer-select-all"></th>
                                         <th width="50px"></th>
                                         <th>Name</th>
-                                        <th>Address</th>
+                                        <th width="20%">Address</th>
                                         <th>Contact #</th>
-                                        {{-- <th>Accessible Products</th> --}}
+                                        <th width="30%">Accessible Products</th>
                                         <th width="100px">Status</th>
                                         <th></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
@@ -146,10 +146,36 @@
                                                     <td>-</td>
                                                 @endif
 
-                                                {{-- @if($customer->cus_accessibles)
+                                                @if($customer->cus_accessibles)
                                                 <td>
-                                                    
                                                     <?php
+                                                        $accessibles = explode(",", $customer->cus_accessibles);
+                                                        if (end($accessibles) == " " || end($accessibles) == "") {
+                                                            array_pop($accessibles);
+                                                        }
+
+                                                        $accessibles_prices = explode(",", $customer->cus_accessibles_prices);
+                                                        if (end($accessibles_prices) == " " || end($accessibles_prices) == "") {
+                                                            array_pop($accessibles_prices);
+                                                        }
+                                                    ?>
+                                                    <div class="col-md-12">
+                                                        @foreach($products as $product)
+                                                            @if($product->prd_is_refillable == 1 && in_array($product->prd_id, $accessibles))
+                                                                <?php
+                                                                    $key = array_search($product->prd_id, $accessibles);
+                                                                    $displayed_price = isset($accessibles_prices[$key]) ? $accessibles_prices[$key] : $product->prd_price;
+                                                                ?>
+                                                                <div class="col-6 required-checkbox">
+                                                                    <small>{{ $product->prd_name }}</small>
+                                                                    <small>-</small>
+                                                                    <small>{{ $displayed_price }}</small>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+
+                                                    {{-- <?php
                                                         $accessibles = explode(",",$customer->cus_accessibles);
                                                         if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
 
@@ -193,13 +219,13 @@
                                                                 @endif
                                                             @endforeach
                                                         @endif
-                                                    </div>
-                                                </td> --}}
-                                                {{--@else
+                                                    </div> --}}
+                                                </td>
+                                                @else
                                                     <td>
                                                     -    
                                                     </td>
-                                                @endif --}}
+                                                @endif
                                                 {{-- 
                                                 @if($customer->cus_notes)
                                                     <td>

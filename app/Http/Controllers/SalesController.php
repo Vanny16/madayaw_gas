@@ -80,20 +80,25 @@ class SalesController extends Controller
 
     public function selectCustomer(Request $request)
     {
-        $client_id = $request->client_id;
+        $client_id = $request->input('client_id');
 
-        if($client_id == 0){
+        if($client_id[0] == ""){
             return redirect()->action('SalesController@main');
         }
+
+        // if($client_id == 0){
+        //     return redirect()->action('SalesController@main');
+        // }
+
+        // dd( $client_id); 
 
         $selected_customer = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->where('cus_id', '=', $client_id )
+        ->where('cus_name', '=', $client_id[0] )
+        // ->where('cus_id', '=', $client_id )
         ->orderBy('cus_name', 'ASC')
         ->first();
-
-        
             
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
@@ -157,6 +162,8 @@ class SalesController extends Controller
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
+
+        session(['client_id' => $client_id[0] ]);
 
         return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
