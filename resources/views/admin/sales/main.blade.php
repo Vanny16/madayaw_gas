@@ -1129,6 +1129,11 @@
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
+            document.getElementById("in_crates" + <?php $prd_id_in ?>).value = 0;
+            document.getElementById("in_loose" + <?php $prd_id_in ?>).value = 0;
+            document.getElementById("crates_amount" + <?php $prd_id ?>).value = 0;
+            document.getElementById("loose_amount" + <?php $prd_id ?>).value = 0;
+
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
         }
