@@ -1150,7 +1150,6 @@
                                 <tbody>
                                    @if(isset($tanks[0]))
                                         @foreach($tanks as $tank)
-
                                             {{-- @if($tank->tnk_active == 1)
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
@@ -1519,6 +1518,7 @@
                                                                 @endif
                                                             @endforeach
                                                         @else
+                                                            @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
                                                             <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         @endif
