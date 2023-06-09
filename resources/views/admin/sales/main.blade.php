@@ -1024,7 +1024,6 @@
                 var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
                 var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
                 var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
-
                 var total = document.getElementById("lbl_total").innerHTML;
                 var gross_total = (prd_price * prd_quantity);
                 var sub_total = gross_total - temp_discount;
@@ -1039,7 +1038,13 @@
             else{
                 prd_price = parseFloat(prd_price).toFixed(2);
             }
-            
+
+            var prd_deposit = ""
+
+            if(!prd_deposit){
+                prd_deposit = 60;
+            }
+
             // Setter For Discount
             if(temp_discount == ""){
                 temp_discount = 0.00;
@@ -1157,6 +1162,8 @@
 
             document.getElementById("lbl_total_crates").innerHTML = total_crate;
             document.getElementById("lbl_total_loose").innerHTML = total_loose;
+            document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
+            document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
 
             var parentElement1 = document.getElementById("tbl-prd-in");
             parentElement1.removeChild(deleteRowIn);
