@@ -53,8 +53,9 @@ class ProductionController extends Controller
 
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
+        ->where('tnk_active', '=', 1)
         ->get();
-
+        // dd($tanks);
         $tank_logs = DB::table('tank_logs')
         ->where('acc_id', '=', session('acc_id'))
         ->get(); 
