@@ -1124,6 +1124,12 @@ class ProductionController extends Controller
                     ->where('tnk_id', '=', $tnk_id)
                     ->first();
 
+                    //IF TANK QUANTITY IS LESS THAN 0
+                    if($tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity) < 0)
+                    {
+
+                    }
+
                     $tank_quantity = $tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity);
 
                     DB::table('tanks')
@@ -1876,6 +1882,58 @@ class ProductionController extends Controller
             return true;
         }
     }
+    private function check_tank_remaining_quantities($tank_array, $tnk_id, $amount_to_subtract)
+    {
+        $tank = DB::table('tanks')
+        ->whereIn('tnk_id', $tank_array)
+        ->get();
+
+        $next_tank = DB::table('tanks')
+        ->whereNotIn('tnk_id', $tank_array)
+        ->where('tnk_active', '=', 1)
+        ->orderBy('tnk_id', 'ASC')
+        ->select('tnk_id')
+        ->first();
+
+        if($next_tank == null)
+        {
+            return false;
+        }
+
+        $count_tanks_remaining = 0;
+
+        foreach($tanks as $tank)
+        {
+            $count_tanks_remaining = $count_tanks_remaining + $tank->tnk_remaining;
+        }
+
+        if($count_tanks_remaining < $amount_to_subtract)
+        {
+            $this->check_tank_remaining_quantities($tank_array, $next_tank, $amount_to_subtract);
+        }
+
+        return true;
+    }
+
+    private function subtract_tank_amount($tank_array, $amount_to_subtract)
+    {
+        $tanks = DB::table('tanks')
+        ->whereIn('tnk_id', $tank_array)
+        ->get();
+
+        $amount_remaining = $amount_to_subtract + 0;
+
+        foreach($tanks as $tank)
+        {
+            $amount_remaining = $amount_remaining - $tank->tnk_remaining;
+
+            $tank_remaining = abs($amount_remaining);
+            if($amount_remaining < 0)
+            {
+
+            }
+        }
+    }
 
     private function check_has_valve($prd_id)
     {
@@ -2624,7 +2682,6 @@ class ProductionController extends Controller
     
         return view('admin.print.productiontoggle', compact('canisters', 'customers', 'closing_stocks_array', 'received_customers_array', 'issued_customers_array', 'opening_stocks_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
     }
-
 
     public function tank()
     {
