@@ -135,15 +135,15 @@
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
-                                            <td class="text-secondary"><strong>Per Item Total</strong></td>
-                                            <td class="text-secondary"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
-                                            <td class="text-secondary"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
+                                            <td class="text-secondary"><strong>Per Item Declaration</strong></td>
+                                            <td class="text-light"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
+                                            <td class="text-light"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
-                                            <td class="text-info"><strong>Obtained Total</strong></td>
-                                            <td class="text-info"><strong id="lbl_obtain_crates" class="fa fa-2x">0</strong></td>
-                                            <td class="text-info"><strong id="lbl_obtain_loose" class="fa fa-2x">0</strong></td> 
+                                            <td class="text-info"><strong>Total Declaration</strong></td>
+                                            <td class="text-info"><strong id="total_crates_declared" class="fa fa-2x">0</strong></td>
+                                            <td class="text-info"><strong id="total_loose_declared" class="fa fa-2x">0</strong></td> 
                                         </tr>
                                     </tbody>
                                 </table>
@@ -236,7 +236,7 @@
                                 @else
                                     @php($prd_price = $product->prd_price)
                                 @endif
-                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="setMovementId()">
+                                <div class="col-3 bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="setMovementId()">
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
@@ -879,8 +879,8 @@
             var in_loose = parseInt(document.getElementById(in_loose_id).value);
             var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
             var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
-            var obtained_total_crates = parseInt(document.getElementById("lbl_obtain_crates").innerHTML) + total_crates;
-            var obtained_total_loose = parseInt(document.getElementById("lbl_obtain_loose").innerHTML) + total_loose;
+            // var obtained_total_crates = parseInt(document.getElementById("lbl_obtain_crates").innerHTML) + total_crates;
+            // var obtained_total_loose = parseInt(document.getElementById("lbl_obtain_loose").innerHTML) + total_loose;
             var sub_total = 0;
             var product_id = select_id.replace(/\D+/g, '');
             var out_crate = parseInt(document.getElementById("crates_amount"+product_id).value);
@@ -890,7 +890,7 @@
             
             if(in_crate + in_loose > 0 && out_crate + out_loose == 0)
             {
-               return;
+            return;
             }            
 
             if((in_crate + in_loose) != "" || (in_crate + in_loose) > 0){
@@ -904,21 +904,14 @@
                 }
                 
                 //Calculations
- 
-                var conversion_rate = 12; 
-
-                var obtained_total = (total_crates * conversion_rate) + total_loose;
-                var obtained_total_loose = obtained_total % conversion_rate;
-                var obtained_total_crates = Math.floor(obtained_total / conversion_rate);
-                
-                // var total = Math.floor(display_crates / conversion_rate);
-                // var display_loose = display_crates % conversion_rate;
-                // var display_crates = (in_crate * conversion_rate) + in_loose;
+                // var obtained_total = (total_crates * conversion_rate) + total_loose;
+                // var obtained_total_loose = obtained_total % conversion_rate;
+                // var obtained_total_crates = Math.floor(obtained_total / conversion_rate);
 
                 var total = (in_crate * 12) + in_loose;
-                var display_loose = in_loose;
                 var display_crates = in_crate;
-
+                var display_loose = in_loose;
+                
                 //Setter For Canister in Name
             
                 var holder = canister_id.split("#");
@@ -969,7 +962,7 @@
                     var row_id = document.getElementById("movement_id").value;
                     var row = table.insertRow(0);
 
-                    // row.id = "row_in"+row_id;
+                    row.id = "row_in"+row_id;
                     row.insertCell(0).innerHTML = "<span class='lead'> <span class='badge badge-pill "+badge_type+"'>"+item_name+"</span></span>";
                     row.insertCell(1).innerHTML = "<span hidden>"+row.id+"</span";
                     row.insertCell(2).innerHTML = display_crates;
@@ -979,8 +972,8 @@
                 }
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
-                document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
-                document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
+                // document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
+                // document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
             }
             else{
                 alert("No canisters were in for this item");
@@ -989,7 +982,31 @@
         catch(e){
             alert("Item has been added");
         }
+
+        calculateTotalDeclaration();
     }
+
+
+    function calculateTotalDeclaration() {
+
+        var conversion_rate = 12;
+        var total_crates_declared = parseInt(document.getElementById("lbl_total_crates").innerHTML);
+        var total_loose_declared = parseInt(document.getElementById("lbl_total_loose").innerHTML);
+        var obtained_total = (total_crates_declared * conversion_rate) + total_loose_declared;
+
+        total_loose_declared = obtained_total % conversion_rate;
+        total_crates_declared = Math.floor(obtained_total / conversion_rate);
+
+        // Add 1 to crates if loose is greater than or equal to 12
+        if (total_loose_declared >= 12) {
+            total_crates_declared++;
+            total_loose_declared -= conversion_rate;
+        }
+
+        document.getElementById("total_crates_declared").innerHTML = total_crates_declared;
+        document.getElementById("total_loose_declared").innerHTML = total_loose_declared;
+    }
+
 
     //Initialize Array for Sales Report in Add to Cart Function
     var total_discount = 0;
@@ -1037,12 +1054,6 @@
             }
             else{
                 prd_price = parseFloat(prd_price).toFixed(2);
-            }
-
-            var prd_deposit = ""
-
-            if(!prd_deposit){
-                prd_deposit = 60;
             }
 
             // Setter For Discount
@@ -1134,10 +1145,13 @@
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
-            document.getElementById("in_crates" + <?php $prd_id_in ?>).value = 0;
-            document.getElementById("in_loose" + <?php $prd_id_in ?>).value = 0;
-            document.getElementById("crates_amount" + <?php $prd_id ?>).value = 0;
-            document.getElementById("loose_amount" + <?php $prd_id ?>).value = 0;
+            
+            document.getElementById("in_crates" + prd_id_in).value = 0;
+            document.getElementById("in_loose" + prd_id_in).value = 0;
+            document.getElementById("crates_amount" + prd_id).value = 0;
+            document.getElementById("loose_amount" + prd_id).value = 0;
+            document.getElementById("sub_total" + prd_id ).value = 0;
+
 
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
@@ -1153,17 +1167,16 @@
         var deleteRow = document.getElementById("row" + row);
 
         if (deleteRow && deleteRowIn) { // add error handling to check for null or undefined variables
-            
+
             //IN
             var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
             var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+            
             total_crate = parseFloat(total_crate) - crate;
             total_loose = parseFloat(total_loose) - loose;
 
             document.getElementById("lbl_total_crates").innerHTML = total_crate;
             document.getElementById("lbl_total_loose").innerHTML = total_loose;
-            document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
-            document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
 
             var parentElement1 = document.getElementById("tbl-prd-in");
             parentElement1.removeChild(deleteRowIn);
@@ -1195,6 +1208,8 @@
             parentElement2.removeChild(deleteRow);
             
         }
+
+        calculateTotalDeclaration();
     }
 
    function receivePayment(){
