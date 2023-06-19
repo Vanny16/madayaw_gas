@@ -345,6 +345,12 @@ class SalesController extends Controller
 
             for($j = 0 ; $j < count($purchase_data) ; $j++)
             {
+                //to search customer id based from name
+                $customer_id = DB::table('customers')
+                ->where('cus_name', 'LIKE', $purchase_data[12])
+                ->select('cus_id')
+                ->first();
+
                 $prd_id =  $purchase_data[0];
                 $prd_price = $purchase_data[2];
                 $pur_crate = $purchase_data[3];
@@ -357,7 +363,8 @@ class SalesController extends Controller
                 $pur_loose_in = $purchase_data[9];
                 $prd_id_in = $purchase_data[10];
                 $can_type_in = $purchase_data[11];
-                $cus_id = $purchase_data[12];
+                // $cus_id = $purchase_data[12];
+                $cus_id = $customer_id;
             }
             
             DB::table('purchases')
@@ -441,7 +448,7 @@ class SalesController extends Controller
                 'prd_quantity' => $deduct_qty
             ]);
         }
-
+        // dd($cus_id);
         DB::table('transactions')
         ->insert([
             'acc_id' => session('acc_id'),
