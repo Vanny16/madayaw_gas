@@ -55,7 +55,7 @@
                                     <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
                                     {{ csrf_field() }} 
                                         <label>Customer Name</label>
-                                        <!-- <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
+                                        {{-- <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
                                             <option value="0"></option>
                                             @if(isset($customers))
                                                 @foreach($customers as $customer)
@@ -67,7 +67,7 @@
                                                     <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
                                                 @endforeach
                                             @endif
-                                        </select> -->
+                                        </select> --}}
                                         
                                         <input list="cus_select" id="client_id" name="client_id[]" class="form-control col-md-5 col-12" autocomplete="off" onclick="select()" value="{{ session('client_id') }}"/>
                                         <datalist id="cus_select">
@@ -79,7 +79,7 @@
                                                     @else
                                                         @php($selected = "")
                                                     @endif
-                                                    <option data-value="{{ $customer->cus_name }}">{{ $customer->cus_name }}</option>
+                                                    <option data-value="{{ $customer->cus_id }}">{{ $customer->cus_name }}</option>
                                                 @endforeach
                                             @endif
                                         </datalist>
@@ -1180,7 +1180,7 @@
 
             var parentElement1 = document.getElementById("tbl-prd-in");
             parentElement1.removeChild(deleteRowIn);
-            
+         
             //CART
             var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
             var total_deposit = parseFloat(get_total_deposit) - sub_total_deposit;
