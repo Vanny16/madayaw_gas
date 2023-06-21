@@ -1416,7 +1416,7 @@
                 item_des = row_item[1];
                 item_bnew_price = row_item[2];
                 item_price = row_item[3];
-                item_tot = row_item[];
+                item_tot = row_item[8];
             }
 
             try{
