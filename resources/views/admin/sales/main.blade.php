@@ -1209,7 +1209,7 @@
                     var prd_deposit_display = prd_price;
                 }
 
-                //error here
+                //error here possible fix add brdnew_subtotal to discount column
                 var sub_total = (gross_total - temp_discount) + sub_total_deposit;
                 total = parseFloat(total) + sub_total;
 
