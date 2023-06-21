@@ -465,7 +465,7 @@
                                 <table class="table table-striped table-hover ml-2 table-borderless text-left">
                                     <thead>
                                         <th>Qty</th>
-                                        <th>Description</th>
+                                        <th><div class="row"><div class="col-6">Description</div><div class="col-6">Brand-new Price</div></div></th>
                                         <th>Price</th>
                                         <th>Subtotal</th>
                                         <th></th>
@@ -1277,7 +1277,7 @@
 
                 row.id = "row"+row_id;
                 row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-                row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span></div><div class='col-6'>"+prd_deposit.toFixed(2)+"</div></div>";
+                row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+",</span></span></div><div class='col-6'>"+prd_deposit.toFixed(2)+"</div></div>";
                 row.insertCell(2).innerHTML = prd_price;
                 row.insertCell(3).innerHTML = parseFloat(crates_amount);
                 row.insertCell(4).innerHTML = parseFloat(loose_amount);
@@ -1396,6 +1396,7 @@
         
         var item_qty = "";
         var item_des = "";
+        var item_bnew_price = "";
         var item_price = "";
         var item_tot = "";
         var gross_total = 0;
@@ -1410,10 +1411,12 @@
                 //For Populating Receipt Table 
                 var prd_quantity = parseInt((row_item[3] * 12) + parseInt(row_item[4]));
                 
+                //CONTINUE HERE
                 item_qty = prd_quantity;
                 item_des = row_item[1];
-                item_price = row_item[2];
-                item_tot = row_item[7];
+                item_bnew_price = row_item[2];
+                item_price = row_item[3];
+                item_tot = row_item[];
             }
 
             try{
