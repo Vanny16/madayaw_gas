@@ -278,7 +278,7 @@ class SalesController extends Controller
         // $formattedDate = $prod_date->format('Y-m-d');
 
         $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
+        $pmt_ref_id = "PMT-" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
