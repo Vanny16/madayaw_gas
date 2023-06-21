@@ -373,7 +373,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Payment Modal -->
+                                            <!-- Payment Confirmation Modal -->
                                             <div class="modal fade show" id="trx_confirm_modal{{ $transaction->trx_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-sm show" role="document">
                                                     <div class="modal-content">
