@@ -99,14 +99,16 @@ class SalesController extends Controller
         // ->where('cus_id', '=', $client_id )
         ->orderBy('cus_name', 'ASC')
         ->first();
-            
+        
+    
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
                 
         $cus_accessibles_prices_list = $selected_customer->cus_accessibles_prices;
         $cus_accessibles_prices = explode(",", $cus_accessibles_prices_list);
-                
+            
         $cus_price_change = $selected_customer->cus_price_change;
+     
 
         if($cus_price_change == null){
             $cus_price_change = 0;
@@ -162,6 +164,7 @@ class SalesController extends Controller
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
+
 
         session(['client_id' => $client_id[0] ]);
 
