@@ -454,7 +454,7 @@ class SalesController extends Controller
             'acc_id' => session('acc_id'),
             'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
-            'cus_id' => $cus_id,
+            'cus_id' => $cus_id,//BUG
             'trx_datetime' => $trx_date . " " . date('H:i:s'),
             'trx_date' => $trx_date,
             'trx_time' => date('H:i:s'),
