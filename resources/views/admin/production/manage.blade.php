@@ -466,12 +466,16 @@
                                                                                                 @php($status = "disabled")
                                                                                             @endif
                                                                                             <div class="form-group">
-                                                                                                <label for="set_prd_price">Price <span style="color:red">*</span></label>
+                                                                                                <label for="set_prd_price">Refill Price <span style="color:red">*</span></label>
                                                                                                 <input type="text" class="form-control" id="set_prd_price" name="prd_price" value="{{$raw_material->prd_price}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" {{$status}}/>
                                                                                             </div>
-                                                                                            <div class="form-group">
+                                                                                            {{-- <div class="form-group">
                                                                                                 <label for="set_prd_deposit">Deposit Price <span style="color:red">*</span></label>
                                                                                                 <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);" {{$status}}/>
+                                                                                            </div> --}}
+                                                                                             <div class="form-group">
+                                                                                                <label for="set_prd_deposit">Brand New Price <span style="color:red">*</span></label>
+                                                                                                <input type="text" class="form-control" id="set_prd_deposit" name="prd_deposit" placeholder="Enter Brand New Price" value="{{ $raw_material->prd_deposit }}" onkeypress="return isNumberKey(this, event);" {{$status}}/>
                                                                                             </div>
                                                                                             <div class="form-group">
                                                                                                 <label for="set_prd_weight">Net Weight (g) <span style="color:red">*</span></label>
@@ -792,7 +796,7 @@
                                         <td><b>Total Stocks</b></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
+                                                <strong><th>{!! get_product_total_stock_no_scrap($canister->prd_id) !!}</th></strong>
                                             @endforeach
                                         @endif
                                     </tr>
@@ -829,7 +833,7 @@
                                     <div class="row">
 
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
                                                     <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
                                                     <p>Madayaw Canister Population</p>
@@ -837,17 +841,17 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{!! get_total_opposition_report() !!}</h2>
                                                     <p>Opposition Canister Population</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-12 mb-3">
-                                            <div class="card border">
+                                            <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{!! get_total_stock_report() !!}</h2>
                                                     <p>Total Canister Population</p>
                                                 </div>
                                             </div>
@@ -1050,9 +1054,13 @@
                                 <input type="text" class="form-control" name="prd_price" placeholder="Enter Price" value="{{ $prd_price }}" onkeypress="return isNumberKey(this, event);"/>
                             </div>
                             <div class="form-group"  id="prd_deposit">
+                                <label for="prd_deposit">Brand New Price <span style="color:red">*</span></label>
+                                <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Brand New Price" value="{{ $prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
+                            </div>
+                            {{-- <div class="form-group"  id="prd_deposit">
                                 <label for="prd_deposit">Deposit Price <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_deposit" placeholder="Enter Deposit Price" value="{{ $prd_deposit }}" onkeypress="return isNumberKey(this, event);"/>
-                            </div>
+                            </div> --}}
                             <div class="form-group" id="prd_weight">
                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_weight" placeholder="Enter Net Weight" value="{{ $prd_weight }}" onkeypress="return isNumberKey(this, event);"/>
@@ -1142,7 +1150,6 @@
                                 <tbody>
                                    @if(isset($tanks[0]))
                                         @foreach($tanks as $tank)
-
                                             {{-- @if($tank->tnk_active == 1)
                                                 @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                 <td><em>{{$tank->tnk_name}} <strong>(kg)</strong></em></td>
@@ -1272,6 +1279,11 @@
                                         @if(isset($canisters))
                                             <tr>
                                                 <td></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
+                                                <td class="text-center"><em>Plant Manager</em></td>
+                                                <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
@@ -1279,11 +1291,6 @@
                                                 <td class="text-center"><em>Plant Manager</em></td>
                                                 <td class="text-center"><em>Supervisor</em></td>
                                                 <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>    
-                                                <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>
-                                                <td class="text-center"><em>Plant Manager</em></td>
-                                                <td class="text-center"><em>Supervisor</em></td>
                                             </tr>
                                             @foreach($canisters as $canister)
                                                 <tr>
@@ -1511,6 +1518,7 @@
                                                                 @endif
                                                             @endforeach
                                                         @else
+                                                            @php($tank_remaining = ($tank->tnk_remaining) / 1000)
                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
                                                             <td><input type="text" class="form-control" name="verify_tank_remaining{{$tank->tnk_id}}" placeholder="Enter Stocks Quantity" value="{{ $tank_remaining }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         @endif
@@ -1624,7 +1632,6 @@
                                             <tr>
                                                 @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                     <td></td>
-                                                    <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
                                                     <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
@@ -1636,6 +1643,7 @@
                                                     <td class="text-center"><em>Supervisor</em></td>
                                                     <td class="text-center"><em>Plant Manager</em></td>
                                                     <td class="text-center"><em>Supervisor</em></td>
+                                                    <td class="text-center"><em>Plant Manager</em></td>
                                                 @else
                                                 @endif
                                             </tr>
@@ -1643,11 +1651,11 @@
                                                 <tr>
                                                     @if(session('typ_id') == 1 || session('typ_id') == 4 )
                                                         <td><i>{{$canister->prd_name}}</i></td>
-                                                    
                                                         @if(count($product_verifications) <> 0)
+                                                            <?php $counter = 0; ?><!--for debugging -->
                                                             @foreach($product_verifications as $verification)
                                                                 @if($verification->verify_prd_id == $canister->prd_id && $verification->verify_is_product == 1)
-                                                                    
+                                                                    @php($counter++) <!--for debugging -->
                                                                     @if($pdn_flag)
                                                                         @if(!is_null($verification->verify_opening) && ($verification->verify_user_type == 3 || $verification->verify_user_type == 5))
                                                                             <td><input type="text" class="form-control" value="{{$verification->verify_opening_filled}}" disabled></td>
@@ -1765,6 +1773,7 @@
                                                  </tr>
                                             @endforeach
                                         @endif
+                                                            {{-- @php(dd($counter))<!--for debugging --> --}}
                                     </tbody>
                                 </table>
                                 <hr>    
@@ -2428,6 +2437,7 @@
     }
 
     $(document).ready(function(){
+        
         //RAW MATS, EMPTY GOODS TAB
         @if($tab_1 == 0)
             $("#raw_tab").addClass("active");
@@ -2483,9 +2493,32 @@
             showRefillable();
         @endif
 
-        $("#product-modal").modal('{{$state}}');
+        //Set heights for "Total" cards in Canister Movement Summary
+        setTotalCardsHeight();
 
+        $("#product-modal").modal('{{$state}}');
     });
+
+    function setTotalCardsHeight(){
+        // Get the cards with the class 'card-stretch'
+        var cards = $('.card-stretch');
+     
+        // Set the initial max height to 0
+        var maxHeight = 0;
+        // Loop through each card
+        cards.each(function() {
+            // Get the height of the card
+            var cardHeight = $(this).outerHeight();
+
+            // If the height of the card is greater than the current max height, update the max height
+            if (cardHeight > maxHeight) {
+                maxHeight = cardHeight;
+            }
+        });
+
+        // Set the height of all cards to the max height
+        cards.css('height', maxHeight + 'px');
+    }
 
     function stockIn(prd_id, flag){
         document.getElementById('set_stockin_id').value = prd_id;

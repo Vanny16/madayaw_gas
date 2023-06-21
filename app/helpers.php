@@ -210,32 +210,32 @@ function get_last_production_id()
 
 function get_opening_stock($prd_id, $pdn_id)
 {
-    $opening_stocks = DB::table('stocks_logs')
-    ->where('prd_id', '=', $prd_id)
-    ->where('pdn_id', '=', $pdn_id)
+    $opening_stocks = DB::table('stock_verifications')
+    ->where('verify_prd_id', '=', $prd_id)
+    ->where('verify_pdn_id', '=', $pdn_id)
     ->first();
     
-    if($opening_stocks == null || $opening_stocks->opening_stocks == null)
+    if($opening_stocks == null || $opening_stocks->verify_opening_filled == null)
     { 
         return 0;
     }
 
-    return number_format($opening_stocks->opening_stocks, 0, '.', ',');
+    return number_format($opening_stocks->verify_opening_filled, 0, '.', ',');
 }
 
 function get_closing_stock($prd_id, $pdn_id)
 {
-    $closing_stocks = DB::table('stocks_logs')
-    ->where('prd_id', '=', $prd_id)
-    ->where('pdn_id', '=', $pdn_id)
+    $closing_stocks = DB::table('stock_verifications')
+    ->where('verify_prd_id', '=', $prd_id)
+    ->where('verify_pdn_id', '=', $pdn_id)
     ->first();
 
-    if($closing_stocks == null || $closing_stocks->closing_stocks == null)
+    if($closing_stocks == null || $closing_stocks->verify_closing_filled == null)
     { 
         return 0;
     }
 
-    return number_format($closing_stocks->closing_stocks, 0, '.', ',');
+    return number_format($closing_stocks->verify_closing_filled, 0, '.', ',');
 }
 
 function get_tank_quantity($tnk_id, $prd_id)
@@ -283,60 +283,13 @@ function get_closing_tank($tnk_id, $pdn_id)
 
 function get_quantity_of_canisters($prd_id, $pdn_id, $flag)
 { 
-    // dd($prd_id, $pdn_id, $flag);
-    //COMMENTED INCASE OF REVERTING
-//     $query = DB::table('movement_logs')
-//     ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
-//     ->where('movement_logs.acc_id', '=', session('acc_id'))
-//     ->where('prd_id','=', $prd_id)
-//     ->where('movement_logs.pdn_id','=', $pdn_id);
-//     //->get();
-// dd($query);
-    // //FLAGS
-    // // 1 = emptygoods
-    // // 2 = filled
-    // // 3 = leakers
-    // // 4 = for revalving
-    // // 5 = scrap
-
-    // if($flag == 1)
-    // {
-    //     $query = $query->sum('log_empty_goods');
-
-    //     return $query;
-    // }
-    // elseif($flag == 2)
-    // {
-    //     $query = $query->sum('log_filled');
-
-    //     return $query;
-    // }
-    // elseif($flag == 3)
-    // {
-    //     $query = $query->sum('log_leakers');
-
-    //     return $query;
-    // }
-    // elseif($flag == 4)
-    // {
-    //     $query = $query->sum('log_for_revalving');
-
-    //     return $query;
-    // }
-    // elseif($flag == 5)
-    // {
-    //     $query = $query->sum('log_scraps');
-         
-    //     return $query;
-    // }
-
     $query = DB::table('stocks_logs')
     // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
     ->where('acc_id', '=', session('acc_id'))
     ->where('prd_id','=', $prd_id)
     ->where('pdn_id','=', $pdn_id)
     ->first();
-// dd($pdn_id);
+    
     if($query == null)
     {
         return 0;
@@ -415,6 +368,23 @@ function get_total_canister_report()
     return number_format($total_stock, 0, '.', ',');
 }
 
+function get_total_opposition_report()
+{
+    
+    $oppositions = DB::table('oppositions')
+    ->where('acc_id', '=', session('acc_id'))
+    ->get();
+
+    $total_stock = 0;
+
+    foreach($oppositions as $opposition)
+    {
+        $total_stock = $total_stock + $opposition->ops_quantity;
+    }
+    
+    return number_format($total_stock, 0, '.', ',');
+}
+
 function get_total_stock_report()
 {
     //COMMENTED INCASE OF REVERTING
@@ -453,7 +423,6 @@ function get_total_stock_report()
         $total_stock = $total_stock + $product->prd_leakers;
         $total_stock = $total_stock + $product->prd_empty_goods;
         $total_stock = $total_stock + $product->prd_for_revalving;
-        $total_stock = $total_stock + $product->prd_scraps;
     }
     return number_format($total_stock, 0, '.', ',');
 }
@@ -521,6 +490,101 @@ function get_product_total_stock($prd_id)
     
     return $total_stock;
     // return number_format($total_stock, 0, '.', ',');
+}
+
+function get_product_total_stock_no_scrap($prd_id)
+{
+    //COMMENTED INCASE OF REVERTING
+    // $total_stock = DB::table('movement_logs')
+    // ->join('production_logs', 'production_logs.pdn_id', '=', 'movement_logs.pdn_id')
+    // ->where('movement_logs.acc_id', '=', session('acc_id'))
+    // ->where('movement_logs.prd_id', '=', $prd_id)
+    // ->where('movement_logs.pdn_id', '=', $pdn_id)
+    // ->sum(DB::raw('log_empty_goods + log_filled + log_leakers + log_for_revalving + log_scraps'));
+    
+    // return $total_stock;
+    // $total_stock = DB::table('stocks_logs')
+    // ->where('acc_id', '=', session('acc_id'))
+    // ->where('prd_id', '=', $prd_id)
+    // ->where('pdn_id', '=', $pdn_id)
+    // ->sum(DB::raw('stk_empty_goods + stk_filled + stk_leakers + stk_for_revalving + stk_scraps'));
+    
+    $product = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_id', '=', $prd_id)
+    ->first();
+
+    $total_stock = 0;
+
+    $total_stock = $total_stock + $product->prd_quantity + $product->prd_leakers + $product->prd_empty_goods + $product->prd_for_revalving;
+    
+    return $total_stock;
+    // return number_format($total_stock, 0, '.', ',');
+}
+
+function get_valve_population()
+{
+    $canisters = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_is_refillable', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->get();
+    
+    $valve_ids = [];
+
+    foreach($canisters as $canister)
+    {
+        if($canister->prd_components == null)
+        {
+            continue;
+        }
+        array_push($valve_ids, $canister->prd_components);
+    }
+
+    $valve_population = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->whereIn('prd_id', $valve_ids)
+    ->sum('prd_quantity');
+
+    return number_format($valve_population, 0, '.', ',');
+}
+
+function get_seal_population()
+{
+    $canisters = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_is_refillable', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->get();
+    
+    $seal_ids = [];
+
+    foreach($canisters as $canister)
+    {
+        if($canister->prd_components == null)
+        {
+            continue;
+        }
+        array_push($seal_ids, $canister->prd_seals);
+    }
+
+    $seal_population = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->whereIn('prd_id', $seal_ids)
+    ->sum('prd_quantity');
+
+    return number_format($seal_population, 0, '.', ',');
+}
+
+function get_crate_population()
+{
+    return 0;
 }
 
 function check_materials($flag, $qty, $prd_id)

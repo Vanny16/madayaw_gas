@@ -19,11 +19,11 @@ class SalesController extends Controller
         ->where('prd_quantity', '>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
-
+// dd($products    );
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->orderBy('cus_id')
+        ->orderBy('cus_name', 'ASC')
         ->get();
 
         $transactions = DB::table('transactions')
@@ -41,10 +41,18 @@ class SalesController extends Controller
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
+        
+        $in_products = DB::table('products')
+                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                ->where('prd_for_POS', '=' ,'1')
+                // ->where('prd_id', '=' ,$cus_accessibles[$i])
+                ->where('prd_quantity', '>' ,'0.0')
+                ->where('prd_active', '=' ,'1')
+                ->get();
 
         session()->forget('selected_customer');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
 
     public function payments()
@@ -72,32 +80,41 @@ class SalesController extends Controller
 
     public function selectCustomer(Request $request)
     {
-        $client_id = $request->client_id;
+        $client_id = $request->input('client_id');
 
-        if($client_id == 0){
+        if($client_id[0] == ""){
             return redirect()->action('SalesController@main');
         }
+
+        // if($client_id == 0){
+        //     return redirect()->action('SalesController@main');
+        // }
+
+        // dd( $client_id); 
 
         $selected_customer = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->where('cus_id', '=', $client_id )
-        ->orderBy('cus_id')
+        ->where('cus_name', '=', $client_id[0] )
+        // ->where('cus_id', '=', $client_id )
+        ->orderBy('cus_name', 'ASC')
         ->first();
-
-        $products = array();
-            
+        
+    
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
                 
         $cus_accessibles_prices_list = $selected_customer->cus_accessibles_prices;
         $cus_accessibles_prices = explode(",", $cus_accessibles_prices_list);
-                
+            
         $cus_price_change = $selected_customer->cus_price_change;
+     
 
         if($cus_price_change == null){
             $cus_price_change = 0;
         }
+
+        $products = array();
 
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
             $product = DB::table('products')
@@ -119,10 +136,18 @@ class SalesController extends Controller
 
         // dd($products);
 
+        $in_products = DB::table('products')
+                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                ->where('prd_for_POS', '=' ,'1')
+                // ->where('prd_id', '=' ,$cus_accessibles[$i])
+                ->where('prd_quantity', '>' ,'0.0')
+                ->where('prd_active', '=' ,'1')
+                ->get();
+
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
-        ->orderBy('cus_id')
+        ->orderBy('cus_name', 'ASC')
         ->get();
 
         $transactions = DB::table('transactions')
@@ -140,7 +165,10 @@ class SalesController extends Controller
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id'));
+
+        session(['client_id' => $client_id[0] ]);
+
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
 
     public function createCustomer(Request $request)
@@ -239,8 +267,18 @@ class SalesController extends Controller
             $pmnt_id += 1;
         }
 
-        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
+        //FOR DATA INPUT
+        $prod_date = DB::table('production_logs')
+        ->orderBy('pdn_id', 'DESC')
+        ->first()
+        ->pdn_date;
+
+        // $prod_date = DateTime($prod_date);
+        $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
+        // $formattedDate = $prod_date->format('Y-m-d');
+
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
+        $pmt_ref_id = "PMT-" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
@@ -307,6 +345,12 @@ class SalesController extends Controller
 
             for($j = 0 ; $j < count($purchase_data) ; $j++)
             {
+                //to search customer id based from name
+                $customer_id = DB::table('customers')
+                ->where('cus_name', 'LIKE', $purchase_data[12])
+                ->select('cus_id')
+                ->first();
+
                 $prd_id =  $purchase_data[0];
                 $prd_price = $purchase_data[2];
                 $pur_crate = $purchase_data[3];
@@ -319,7 +363,8 @@ class SalesController extends Controller
                 $pur_loose_in = $purchase_data[9];
                 $prd_id_in = $purchase_data[10];
                 $can_type_in = $purchase_data[11];
-                $cus_id = $purchase_data[12];
+                // $cus_id = $purchase_data[12];
+                $cus_id = $customer_id;
             }
             
             DB::table('purchases')
@@ -403,7 +448,7 @@ class SalesController extends Controller
                 'prd_quantity' => $deduct_qty
             ]);
         }
-
+        // dd($cus_id);
         DB::table('transactions')
         ->insert([
             'acc_id' => session('acc_id'),
@@ -418,28 +463,46 @@ class SalesController extends Controller
             'trx_amount_paid' => $trx_amount_paid,
             'trx_balance' => $trx_balance,
             'trx_can_dec' => $trx_can_dec,
-            'trx_del_rec' => $trx_del_rec
+            'trx_del_rec' => $trx_del_rec,
+            'pdn_id' => get_last_production_id()
         ]);
 
         //FOR PAYMENTS
         if($mode_of_payment != 5){
 
-            DB::table('payments')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_id' => session('usr_id'),
-                'trx_id' => $trx_id,
-                'pmnt_ref_id' => $pmt_ref_id,
-                'trx_mode_of_payment' => $mode_of_payment,
-                'pmnt_amount' => $trx_amount_paid,
-                'pmnt_received' => $pmnt_received,
-                'pmnt_change' => $pmnt_change,
-                'pmnt_date' => $trx_date,
-                'pmnt_time' => date('H:i:s'),
-                'pmnt_check_no' => $pmnt_check_no,
-                'pmnt_check_date' => $pmnt_check_date
-            ]);
-    
+            if($mode_of_payment == 4){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+            }
+            else{
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+
             //IMAGE UPLOAD FOR GCASH
             if($request->file('pmnt_attachment_gcash'))
             {
@@ -675,6 +738,8 @@ class SalesController extends Controller
     }
 
     public function payPending(Request $request){
+        
+        $trx_id = $request->trx_id;
 
         $pmnt_id = DB::table('payments')
         ->max('pmnt_id');
@@ -702,7 +767,7 @@ class SalesController extends Controller
             return redirect()->action('SalesController@payments');
         }
 
-        if($pmnt_amount > $new_trx_balance){
+        if($pmnt_amount > $trx_balance){
             $pmnt_amount = $trx_balance;
             $new_trx_balance  = 0;
         }
@@ -724,21 +789,38 @@ class SalesController extends Controller
         //FOR PAYMENTS
         if($mode_of_payment != 5){
 
-            DB::table('payments')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_id' => session('usr_id'),
-                'trx_id' => $request->trx_id,
-                'pmnt_ref_id' => $pmt_ref_id,
-                'trx_mode_of_payment' => $mode_of_payment,
-                'pmnt_amount' => $pmnt_amount,
-                'pmnt_received' => $pmnt_received,
-                'pmnt_change' => $pmnt_change,
-                'pmnt_date' => $pmnt_date,
-                'pmnt_time' => date('H:i:s'),
-                'pmnt_check_no' => $pmnt_check_no,
-                'pmnt_check_date' => $pmnt_check_date
-            ]);
+            if($mode_of_payment == 4){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $pmnt_amount,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $pmnt_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+            }
+            else{
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $pmnt_amount,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $pmnt_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
     
             //IMAGE UPLOAD FOR GCASH
             if($request->file('pmnt_attachment_gcash'))

@@ -118,11 +118,24 @@ Route::group(['prefix' => 'product'], function()
     Route::post('edit-product', 'ProductController@editProduct');
     Route::post('add-product', 'ProductController@createProduct');
     Route::post('add-quantity', 'ProductController@addQuantity');
-    Route::post('trade-canisters', 'ProductController@tradeCanisters');
 
     Route::post('add-opposition', 'ProductController@addOpposition');
     Route::post('edit-opposition', 'ProductController@editOpposition');
     Route::post('search-opposition', 'ProductController@searchOpposition');
+    
+});
+
+Route::group(['prefix' => 'opposition'], function()
+{
+    Route::get('opposite', 'OppositionController@opposite');
+    Route::get('opsdeactivate-product/{ops_id}', 'OppositionController@opsdeactivateProduct');
+    Route::get('opsreactivate-product/{ops_id}', 'OppositionController@opsreactivateProduct');
+
+    // Route::post('opposite', 'OppositionController@opposite');
+    Route::post('trade-canisters', 'OppositionController@tradeCanisters');
+    Route::post('add-opposition', 'OppositionController@addOpposition');
+    Route::post('edit-opposition', 'OppositionController@editOpposition');
+    Route::post('search-opposition', 'OppositionController@searchOpposition');
     
 });
 

@@ -55,7 +55,7 @@
                                     <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
                                     {{ csrf_field() }} 
                                         <label>Customer Name</label>
-                                        <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
+                                        {{-- <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
                                             <option value="0"></option>
                                             @if(isset($customers))
                                                 @foreach($customers as $customer)
@@ -67,7 +67,23 @@
                                                     <option value="{{ $customer->cus_id }}" {{ $selected }}>{{ $customer->cus_name }} </option>
                                                 @endforeach
                                             @endif
-                                        </select>
+                                        </select> --}}
+                                        
+                                        <input list="cus_select" id="client_id" name="client_id[]" class="form-control col-md-5 col-12" autocomplete="off" onclick="select()" value="{{ session('client_id') }}"/>
+                                        <datalist id="cus_select">
+                                            <option></option>
+                                            @if(isset($customers))
+                                                @foreach($customers as $customer)
+                                                    @if(session('new_client') == $customer->cus_name || session('selected_customer') == $customer->cus_id)
+                                                        @php($selected = "selected")
+                                                    @else
+                                                        @php($selected = "")
+                                                    @endif
+                                                    <option data-value="{{ $customer->cus_id }}">{{ $customer->cus_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </datalist>
+
                                     </form>
                                 </div>
                             </div>
@@ -115,13 +131,19 @@
                                     </tbody>
                                     <tbody>
                                         <tr class="bg-light" height="1px">
-                                            <td colspan="6"></td>
+                                            <td colspan="5"></td>
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="1"></td>
-                                            <td class="text-info"><strong>Total</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
-                                            <td class="text-info"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
+                                            <td class="text-secondary text-center"><strong>Per Item Declaration</strong></td>
+                                            <td class="text-secondary"><strong id="lbl_total_crates" class="fa fa-2x">0</strong></td>
+                                            <td class="text-secondary"><strong id="lbl_total_loose" class="fa fa-2x">0</strong></td>                           
+                                        </tr>
+                                        <tr class="text-success bg-white">
+                                            <td colspan="1"></td>
+                                            <td class="text-info text-center"><strong>Total Declaration</strong></td>
+                                            <td class="text-info"><strong id="total_crates_declared" class="fa fa-2x">0</strong></td>
+                                            <td class="text-info"><strong id="total_loose_declared" class="fa fa-2x">0</strong></td> 
                                         </tr>
                                     </tbody>
                                 </table>
@@ -139,7 +161,7 @@
                                     <thead>
                                         <tr>
                                             <th width="1"></th>
-                                            <th>Product Name</th>
+                                            <th><div class="row"><div class="col-6">Item</div><div class="col-6">Brand-new Price</div></div></th>
                                             <th>Price</th>
                                             <th>Crates</th>
                                             <th>Loose</th>
@@ -161,11 +183,11 @@
                                         </tr>
                                         <tr class="text-success bg-white">
                                             <td colspan="5"></td>
-                                            <td colspan="2" class="text-secondary">Deposit</td>
+                                            <td colspan="2" class="text-secondary">Brand-new Subtotal</td>
                                             <td class="text-secondary"><span id="lbl_total_deposit" class="fa fa-2x">0.00</span></td>
                                         </tr>
                                         <tr class="text-success bg-white">
-                                            <td colspan="5"></td>
+                                            <td colspan="5"><span class="text-danger">NOTE: Brand new canister has a different price.</span></td>
                                             <td colspan="2" class="text-success"><strong>Total</strong></td>
                                             <td class="text-success"><strong id="lbl_total" class="fa fa-2x">0.00</strong></td>
                                         </tr>
@@ -214,7 +236,7 @@
                                 @else
                                     @php($prd_price = $product->prd_price)
                                 @endif
-                                <div class="col bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="setMovementId()">
+                                <div class="col-3 bg-image hover-zoom" data-toggle="modal" data-target="#order_details_modal{{$product->prd_id}}" onclick="setMovementId()">
                                     <div class="card">
                                         <img class="img-fluid" src="{{ asset('img/products/default.png') }}" style="max-height:50px; max-width:180px; min-height:150px; min-width:150px;">
                                         <div class="container">
@@ -233,7 +255,7 @@
                                                 <h5>Remaining Stocks: <strong class="text-danger">{{$product->prd_quantity}}</strong></h5>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="row">
+                                                <div class="row">   
 
                                                     <div class="col-md-5 col-12">
                                                         @if($product->prd_is_refillable == '0')
@@ -250,9 +272,9 @@
                                                             <h3 class="text-info mb-5"><i class="fa fa-arrow-down"></i> IN</h3>
                                                             <div class="form-group">
                                                                 <label for="cus_name">Product Name <span style="color:red">*</span></label>
-                                                                <div class="form-inline">
+                                                                <div class="form-inline"><!--MARKER-->
                                                                     <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
-                                                                        @foreach($products as $in_product)
+                                                                        @foreach($in_products as $in_product)
                                                                             @if($in_product->prd_is_refillable == '1')
                                                                                 @if($in_product->prd_id == $product->prd_id)
                                                                                     @php($select_prd_in = "selected")
@@ -263,7 +285,7 @@
                                                                             @endif
                                                                         @endforeach 
                                                                         @foreach($oppositions as $opposition)
-                                                                            <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}">{{ $opposition->ops_name }} </option>
+                                                                            <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}" style="background-color: yellow">{{ $opposition->ops_name }} </option>
                                                                         @endforeach 
                                                                     </select>
                                                                     <button type="button" class="btn btn-info form-control col-md-4 col-12 ml-md-4 mt-md-0 mx-sm-0 mt-3" data-toggle="modal" data-target="#opposite-modal"><i class="fa fa-plus-circle"></i> Add Canister</button>
@@ -443,7 +465,7 @@
                                 <table class="table table-striped table-hover ml-2 table-borderless text-left">
                                     <thead>
                                         <th>Qty</th>
-                                        <th>Description</th>
+                                        <th><div class="row"><div class="col-6">Description</div><div class="col-6">Brand-new Price</div></div></th>
                                         <th>Price</th>
                                         <th>Subtotal</th>
                                         <th></th>
@@ -505,7 +527,7 @@
                             <br>
                             <div class="form-group">
                                 <label for="cus_address">Transaction Date <span style="color:red">*</span></label>
-                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                                <input type="date" id="trx_date" name="trx_date" class="form-control" value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="cus_address">Canister Declaration # <span style="color:red">*</span></label>
@@ -857,6 +879,8 @@
             var in_loose = parseInt(document.getElementById(in_loose_id).value);
             var total_crates = parseInt(document.getElementById("lbl_total_crates").innerHTML) + in_crate;
             var total_loose = parseInt(document.getElementById("lbl_total_loose").innerHTML) + in_loose;
+            // var obtained_total_crates = parseInt(document.getElementById("lbl_obtain_crates").innerHTML) + total_crates;
+            // var obtained_total_loose = parseInt(document.getElementById("lbl_obtain_loose").innerHTML) + total_loose;
             var sub_total = 0;
             var product_id = select_id.replace(/\D+/g, '');
             var out_crate = parseInt(document.getElementById("crates_amount"+product_id).value);
@@ -866,7 +890,7 @@
             
             if(in_crate + in_loose > 0 && out_crate + out_loose == 0)
             {
-               return;
+            return;
             }            
 
             if((in_crate + in_loose) != "" || (in_crate + in_loose) > 0){
@@ -880,10 +904,14 @@
                 }
                 
                 //Calculations
+                // var obtained_total = (total_crates * conversion_rate) + total_loose;
+                // var obtained_total_loose = obtained_total % conversion_rate;
+                // var obtained_total_crates = Math.floor(obtained_total / conversion_rate);
+
                 var total = (in_crate * 12) + in_loose;
                 var display_crates = in_crate;
                 var display_loose = in_loose;
-
+                
                 //Setter For Canister in Name
             
                 var holder = canister_id.split("#");
@@ -944,6 +972,8 @@
                 }
                 document.getElementById("lbl_total_crates").innerHTML = total_crates;
                 document.getElementById("lbl_total_loose").innerHTML = total_loose;
+                // document.getElementById("lbl_obtain_crates").innerHTML = obtained_total_crates;
+                // document.getElementById("lbl_obtain_loose").innerHTML = obtained_total_loose;
             }
             else{
                 alert("No canisters were in for this item");
@@ -952,11 +982,185 @@
         catch(e){
             alert("Item has been added");
         }
+
+        calculateTotalDeclaration();
     }
+
+
+    function calculateTotalDeclaration() {
+
+        var conversion_rate = 12;
+        var total_crates_declared = parseInt(document.getElementById("lbl_total_crates").innerHTML);
+        var total_loose_declared = parseInt(document.getElementById("lbl_total_loose").innerHTML);
+        var obtained_total = (total_crates_declared * conversion_rate) + total_loose_declared;
+
+        total_loose_declared = obtained_total % conversion_rate;
+        total_crates_declared = Math.floor(obtained_total / conversion_rate);
+
+        // Add 1 to crates if loose is greater than or equal to 12
+        if (total_loose_declared >= 12) {
+            total_crates_declared++;
+            total_loose_declared -= conversion_rate;
+        }
+
+        document.getElementById("total_crates_declared").innerHTML = total_crates_declared;
+        document.getElementById("total_loose_declared").innerHTML = total_loose_declared;
+    }
+
 
     //Initialize Array for Sales Report in Add to Cart Function
     var total_discount = 0;
     var details = new Array();
+
+    //OLD FUNCTION
+    // function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, select_in, in_crate_val, in_loose_val, modal) {
+
+    //     var crates_amount = parseInt(crates_amount);
+    //     var loose_amount = parseInt(loose_amount);
+    //     var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
+    //     var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
+    //     var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
+    //     var prd_id_in ="";
+    //     var can_type_in ="";
+
+    //     if(select_in != "0"){
+    //         var select_data = select_in.split("#");
+    //         can_type_in = select_data[0];
+    //         prd_id_in = select_data[1];
+    //     }
+    //     else{
+    //         can_type_in = "0";
+    //         prd_id_in = "0";
+    //     }
+
+    //     if(prd_quantity != "" || prd_quantity > 0){
+    //         // if(prd_in_quantity > prd_quantity){
+    //         //     alert("Canisters to be in must not be greater than quantity to be purchased");
+    //         // }
+    //         // else{
+    //             //Calculations
+    //             var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+    //             var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
+    //             var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
+    //             var total = document.getElementById("lbl_total").innerHTML;
+    //             var gross_total = (prd_price * prd_quantity);
+    //             var sub_total = gross_total - temp_discount;
+    //             total = parseFloat(total) + sub_total + sub_total_deposit;
+    //         // }
+
+            
+    //         // Setter For Price
+    //         if(prd_price == "" || prd_price < 1){
+    //             prd_price = "<small class='bg-warning badge'>Free</small>";
+    //         }
+    //         else{
+    //             prd_price = parseFloat(prd_price).toFixed(2);
+    //         }
+
+    //         // Setter For Discount
+    //         if(temp_discount == ""){
+    //             temp_discount = 0.00;
+    //         }
+    //         else{
+    //             total_discount = total_discount + parseFloat(temp_discount);
+    //         }
+
+    //         //Setter For Amount to be Paid
+    //         var client_id = document.getElementById("client_id").value;
+    //         var amount = document.getElementById("amount_payable");
+    //         amount.value = total.toFixed(2);
+
+            
+    //         //For Adding Quantity to Canisters Already in the Table
+
+    //         var isExisting = false;
+    //         var existing_item_row = "";
+    //         var new_crates_value = 0;
+    //         var new_loose_value = 0;
+    //         var new_in_crates_value = 0;
+    //         var new__in_loose_value = 0;
+    //         var new_sub_total = 0;
+
+    //         $("#tbl-cart tr").each(function() {
+    //             var getRow = $(this).attr('id');
+    //             var existing_item_name = $(this).find("td:eq(1)").text();
+    //             var getCrate = $(this).find("td:eq(3)").text();
+    //             var getLoose = $(this).find("td:eq(4)").text();
+    //             var getInCrate = $(this).find("td:eq(8)").text();
+    //             var getInLoose = $(this).find("td:eq(9)").text();
+    //             var getSubTotal = $(this).find("td:eq(7)").text();
+    //             var getPrdIdIn = $(this).find("td:eq(10)").text();
+    //             var getCanTypeIn = $(this).find("td:eq(11)").text();
+
+    //             if(existing_item_name == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
+    //                 isExisting = true;
+    //                 existing_item_row = getRow;
+    //                 new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
+    //                 new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
+    //                 new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+    //                 new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+    //                 new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+    //             }
+    //         });
+            
+            
+    //         //For Populating Selected Products Table
+    //         if(isExisting){
+    //             var existingRow = document.getElementById(existing_item_row);
+    //             existingRow.cells[3].innerHTML = new_crates_value;
+    //             existingRow.cells[4].innerHTML = new_loose_value;
+    //             existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
+    //             existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
+    //             existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
+    //         }
+    //         else{
+                
+    //             var row_id = document.getElementById("movement_id").value;
+    //             var table = document.getElementById("tbl-cart");
+    //             var row = table.insertRow(0);
+
+    //             row.id = "row"+row_id;
+    //             row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
+    //             row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
+    //             row.insertCell(2).innerHTML = prd_price;
+    //             row.insertCell(3).innerHTML = parseFloat(crates_amount);
+    //             row.insertCell(4).innerHTML = parseFloat(loose_amount);
+    //             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+    //             row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
+    //             row.insertCell(7).innerHTML = sub_total.toFixed(2);
+    //             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+    //             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+    //             row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
+    //             row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+    //             row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+
+    //         }
+
+    //         var received = document.getElementById("received_amount").value;
+
+    //         document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
+    //         document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
+    //         document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
+    //         document.getElementById("rct_amount_paid").innerHTML = received;
+    //         document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
+    //         document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+    //         modal.hidden = true;
+            
+            
+    //         document.getElementById("in_crates" + prd_id_in).value = 0;
+    //         document.getElementById("in_loose" + prd_id_in).value = 0;
+    //         document.getElementById("crates_amount" + prd_id).value = 0;
+    //         document.getElementById("loose_amount" + prd_id).value = 0;
+    //         document.getElementById("sub_total" + prd_id ).value = 0;
+
+
+    //         alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+    //         checkCart();
+    //     }
+    //     else{
+    //         alert("Please input quantity");
+    //     }
+    // }
 
     function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, select_in, in_crate_val, in_loose_val, modal) {
 
@@ -984,14 +1188,20 @@
             // }
             // else{
                 //Calculations
+                //NOTE: DEPOSIT IS BRAND NEW PRICE
+
+                if(brd_new_prd_quantity < 0){
+                    brd_new_prd_quantity = 0;
+                }
+
                 var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
                 var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
                 var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
-
+                
                 var total = document.getElementById("lbl_total").innerHTML;
-                var gross_total = (prd_price * prd_quantity);
-                var sub_total = gross_total - temp_discount;
-                total = parseFloat(total) + sub_total + sub_total_deposit;
+                var gross_total = (prd_price * (prd_quantity - brd_new_prd_quantity));
+                var sub_total = (gross_total - temp_discount) + sub_total_deposit;
+                total = parseFloat(total) + sub_total;
             // }
 
             
@@ -1002,7 +1212,7 @@
             else{
                 prd_price = parseFloat(prd_price).toFixed(2);
             }
-            
+
             // Setter For Discount
             if(temp_discount == ""){
                 temp_discount = 0.00;
@@ -1067,7 +1277,7 @@
 
                 row.id = "row"+row_id;
                 row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-                row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"</span></span>";
+                row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+",</span></span></div><div class='col-6'>"+prd_deposit.toFixed(2)+"</div></div>";
                 row.insertCell(2).innerHTML = prd_price;
                 row.insertCell(3).innerHTML = parseFloat(crates_amount);
                 row.insertCell(4).innerHTML = parseFloat(loose_amount);
@@ -1092,6 +1302,14 @@
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
             modal.hidden = true;
             
+            
+            document.getElementById("in_crates" + prd_id_in).value = 0;
+            document.getElementById("in_loose" + prd_id_in).value = 0;
+            document.getElementById("crates_amount" + prd_id).value = 0;
+            document.getElementById("loose_amount" + prd_id).value = 0;
+            document.getElementById("sub_total" + prd_id ).value = 0;
+
+
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
         }
@@ -1106,10 +1324,11 @@
         var deleteRow = document.getElementById("row" + row);
 
         if (deleteRow && deleteRowIn) { // add error handling to check for null or undefined variables
-            
+
             //IN
             var total_crate = document.getElementById("lbl_total_crates").innerHTML; 
             var total_loose = document.getElementById("lbl_total_loose").innerHTML; 
+            
             total_crate = parseFloat(total_crate) - crate;
             total_loose = parseFloat(total_loose) - loose;
 
@@ -1118,7 +1337,7 @@
 
             var parentElement1 = document.getElementById("tbl-prd-in");
             parentElement1.removeChild(deleteRowIn);
-            
+         
             //CART
             var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
             var total_deposit = parseFloat(get_total_deposit) - sub_total_deposit;
@@ -1146,6 +1365,8 @@
             parentElement2.removeChild(deleteRow);
             
         }
+
+        calculateTotalDeclaration();
     }
 
    function receivePayment(){
@@ -1175,6 +1396,7 @@
         
         var item_qty = "";
         var item_des = "";
+        var item_bnew_price = "";
         var item_price = "";
         var item_tot = "";
         var gross_total = 0;
@@ -1189,10 +1411,12 @@
                 //For Populating Receipt Table 
                 var prd_quantity = parseInt((row_item[3] * 12) + parseInt(row_item[4]));
                 
+                //CONTINUE HERE
                 item_qty = prd_quantity;
                 item_des = row_item[1];
-                item_price = row_item[2];
-                item_tot = row_item[7];
+                item_bnew_price = row_item[2];
+                item_price = row_item[3];
+                item_tot = row_item[];
             }
 
             try{

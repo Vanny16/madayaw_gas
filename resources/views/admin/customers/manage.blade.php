@@ -71,7 +71,9 @@
 
                 <div class="col-md-12 mb-3">
                 @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                    <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                    @if($products != null)
+                        <a class="btn btn-primary col-md-2 col-12 mb-1" href="javascript:void(0)" data-toggle="modal" data-target="#customer-modal"><i class="fa fa-user-plus"></i> New Customer</a>
+                    @endif
                 @endif
                     <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@allcustomerDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                 </div>
@@ -105,13 +107,12 @@
                                             <input type="checkbox" id="customer-select-all"></th>
                                         <th width="50px"></th>
                                         <th>Name</th>
-                                        <th>Address</th>
+                                        <th width="20%">Address</th>
                                         <th>Contact #</th>
-                                        <th>Accessible Products</th>
+                                        <th width="30%">Accessible Products</th>
                                         <th width="100px">Status</th>
                                         <th></th>
                                         @if(session('typ_id') == '1' || session('typ_id') == '2') 
-                                        <th></th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -149,8 +150,34 @@
 
                                                 @if($customer->cus_accessibles)
                                                 <td>
-                                                    {{-- <a href="javascript:void(0)" data-toggle="modal" data-target="#accessibles-modal-{{$customer->cus_id}}"><i class="fa fa-eye"></i></a> --}}
                                                     <?php
+                                                        $accessibles = explode(",", $customer->cus_accessibles);
+                                                        if (end($accessibles) == " " || end($accessibles) == "") {
+                                                            array_pop($accessibles);
+                                                        }
+
+                                                        $accessibles_prices = explode(",", $customer->cus_accessibles_prices);
+                                                        if (end($accessibles_prices) == " " || end($accessibles_prices) == "") {
+                                                            array_pop($accessibles_prices);
+                                                        }
+                                                    ?>
+                                                    <div class="col-md-12">
+                                                        @foreach($products as $product)
+                                                            @if($product->prd_is_refillable == 1 && in_array($product->prd_id, $accessibles))
+                                                                <?php
+                                                                    $key = array_search($product->prd_id, $accessibles);
+                                                                    $displayed_price = isset($accessibles_prices[$key]) ? $accessibles_prices[$key] : $product->prd_price;
+                                                                ?>
+                                                                <div class="col-6 required-checkbox">
+                                                                    <small>{{ $product->prd_name }}</small>
+                                                                    <small>-</small>
+                                                                    <small>{{ $displayed_price }}</small>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+
+                                                    {{-- <?php
                                                         $accessibles = explode(",",$customer->cus_accessibles);
                                                         if(end($accessibles) == " " || end($accessibles) == ""){array_pop($accessibles);}
 
@@ -194,7 +221,7 @@
                                                                 @endif
                                                             @endforeach
                                                         @endif
-                                                    </div>
+                                                    </div> --}}
                                                 </td>
                                                 @else
                                                     <td>
@@ -632,7 +659,7 @@
                 <div class="modal-body">
                     <div class="form-group"> 
                         <label for="cus_name">Enter Changed Price<span style="color:red">*</span></label>
-                        <input type="decimal"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" maxlength="3" max="100"/>
+                        <input type="decimal"class="form-control" placeholder="Enter New Price" id="price-change" name="price_change" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 46 && event.charCode <= 57))" minlength="1" max="100"/>
                         <input type="text" class="form-control" id="selected-customers" name="selected_customers" value="" hidden>
                     </div>
                 <div class="modal-footer">

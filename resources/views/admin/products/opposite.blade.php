@@ -32,35 +32,41 @@
                             <h3 class="card-title"><i class="fas fa-box-open"></i> Find Canister</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="{{ action('ProductController@searchProduct') }}">
+                            <form class="form-horizontal" method="POST" action="{{ action('OppositionController@opposite') }}">
                             {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
-                                            <label for="search_string">Find Product</label>
+                                            <label for="search_string">Find Opposition</label>
                                                 <input type="text" class="form-control" id="search_oppositions" name="search_string" placeholder="Opposition Name">
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="filter_status">Status</label>
-                                            <select class="form-control" id="filter_status" name="filter_status">
-                                                @foreach($statuses as $status)
-                                                    @if($status == $default_status) 
-                                                        <option value="{{ $status }}" selected>{{ $status }}</option>
-                                                    @else
-                                                        <option value="{{ $status }}">{{ $status }}</option>
-                                                    @endif
-                                                @endforeach   
-                                                {{--<option value="">All</option>
-                                                <option value="">Active</option>
-                                                <option value="">Inactive</option>--}}
-                                            </select> 
+                                        <div class="col-md-6 d-flex align-items-center">
+
+                                                <a class="btn btn-primary mr-2" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
+
+                                                <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button>
+                                            
+                                                                {{-- <label for="filter_status">Status</label>
+                                                                <select class="form-control" id="filter_status" name="filter_status">
+                                                                    @foreach($statuses as $key => $status)
+                                                                        @if($key == $default_status) 
+                                                                            <option value="{{ $key }}" selected>{{ $status }}</option>
+                                                                        @else
+                                                                            <option value="{{ $key }}">{{ $status }}</option>
+                                                                        @endif
+                                                                    @endforeach   
+                                                                    <option value="">All</option>
+                                                                    <option value="">Active</option>
+                                                                    <option value="">Inactive</option>
+                                                                </select> --}}
                                         </div>
+                                        <div class="col-2"></div>
                                     </div>
-                                    <div class="row">
+                                   {{-- <div class="row">
                                         <div class="col-md-6 col-12 mt-2">
                                             <button type="submit" class="btn btn-success"><span class="fa fa-search"></span> Find</button> 
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -69,8 +75,8 @@
 
                 @if($pdn_flag == 0)
                     <div class="col-md-12 mb-3"> 
-                        <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
-                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button>
+                        {{-- <a class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#product-modal"><i class="fa fa-dolly"></i> New Opposition Canister</a>
+                        <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#exchange-modal"><i class="fa fa-exchange"></i> Trade Canisters</button> --}}
                         <a class="btn btn-info col-md-1 col-12 float-right" href="{{ action('PrintController@alloppositeDetails') }}" target="_BLANK"><i class="fa fa-print"></i> Print</a>
                     </div>
 
@@ -151,25 +157,27 @@
                                                     <td>
                                                         @if($opposition->ops_active == 1) 
                                                             <span class="badge badge-success">Active</span>
-                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('OppositionController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @else
                                                             <span class="badge badge-danger">Inactive</span>
-                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('ProductController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('OppositionController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                    @if($opposition->ops_active == 0)
-                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
-                                                    @else   
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                            <ul class="dropdown-menu">
-                                                                @if(session('typ_id') == '1' || session('typ_id') == '2')
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                @endif
-                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li>
-                                                            </ul>
-                                                        </div>
+                                                    @if(session('typ_id') == 1)
+                                                        @if($opposition->ops_active == 0)
+                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" disabled><i class="fa fa-ellipsis-vertical"></i></button>
+                                                        @else   
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                <ul class="dropdown-menu">
+                                                                    @if(session('typ_id') == '1')
+                                                                    <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#edit-opposition-modal-{{$opposition->ops_id}}"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                    @endif
+                                                                    {{-- <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#print-product-modal-{{$opposition->ops_id}}"><i class="fa fa-print mr-2" aria-hidden="true"></i>Print Info</a></li> --}}
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                     </td>
                                                     <!-- Edit Products Modal -->
@@ -182,7 +190,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form method="POST" action="{{ action('ProductController@editOpposition') }}" enctype="multipart/form-data">
+                                                                <form method="POST" action="{{ action('OppositionController@editOpposition') }}" enctype="multipart/form-data">
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
@@ -263,30 +271,56 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form method="POST" action="{{ action('ProductController@tradeCanisters') }}" enctype="multipart/form-data">
+                                                                <form method="POST" action="{{ action('OppositionController@tradeCanisters') }}" enctype="multipart/form-data">
                                                                 {{ csrf_field() }} 
                                                                     <div class="modal-body">
                                                                         <div class="row">
                                                                             <div class="col-md-5">
-                                                                                <label for="filter_status">Opposite Canisters</label>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label for="ops_customer">OPPOSITION <span style="color:red">*</span></label>
+                                                                                </div>
+                                                                                <input type="text" id="trx_del_rec" name="opposition_name" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                            </div>
+                                                                            <div class="col-md-5">
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label>DELIVERY RECEIPT # <span style="color:red">*</span></label>
+                                                                                </div>
+                                                                                <input type="text" id="trx_del_rec" name="ops_del_rec" class="form-control" required/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="row">
+                                                                            <div class="col-md-5">
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label for="filter_status">Opposite Canisters</label>
+                                                                                </div>
                                                                                 <select class="form-control" id="filter_status" name="opposition_canister">
                                                                                     @foreach($oppositions as $opposition)
                                                                                         <option value="{{ $opposition->ops_id }}">{{ $opposition->ops_name }}</option>   
                                                                                     @endforeach 
                                                                                 </select> 
                                                                                 <div class="row">
-                                                                                    <div class="form-group col-md-12 mt-2">
-                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_amount" />
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_crates" />
+                                                                                        <div class="d-flex justify-content-center"><em>Crates</em></div>
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_opposition_loose" />
+                                                                                        <div class="d-flex justify-content-center"><em>Loose</em></div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-2">
-                                                                                <div class="mx-auto">
+                                                                                <div class="mx-auto d-flex justify-content-center">
                                                                                     <span class="fa fa-exchange"> </span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-5">
-                                                                                <label for="filter_status">Madayaw Canisters</label>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                    <label for="filter_status">Madayaw Canisters</label>
+                                                                                </div>
                                                                                 <select class="form-control" id="filter_status" name="madayaw_canister">
                                                                                     @foreach($products as $product)
                                                                                         <option value="{{ $product->prd_id }}">{{ $product->prd_name }}</option>   
@@ -294,8 +328,13 @@
                                                                                 </select>
 
                                                                                 <div class="row">
-                                                                                    <div class="form-group col-md-12 mt-2">
-                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_amount" />
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_crates" />
+                                                                                        <div class="d-flex justify-content-center"><em>Crates</em></div>
+                                                                                    </div>
+                                                                                    <div class="form-group col-md-6 mt-2">
+                                                                                        <input class="form-control" type="text" value="" placeholder="0" id="" name="trade_in_madayaw_loose" />
+                                                                                        <div class="d-flex justify-content-center"><em>Loose</em></div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -333,7 +372,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@addOpposition') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('OppositionController@addOpposition') }}" enctype="multipart/form-data">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -392,7 +431,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ action('ProductController@tradeCanisters') }}">
+            <form method="POST" action="{{ action('OppositionController@tradeCanisters') }}">
             {{ csrf_field() }} 
                 <div class="modal-body">
                     <div class="row">
@@ -458,23 +497,23 @@
     });
 </script>
 <script>
-    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
-    //     document.getElementById('sup_prd_name').value = prd_name;
-    //     document.getElementById('sup_prd_sku').value = prd_sku;
-    //     document.getElementById('sup_prd_description').value = prd_description;
-    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
-    //     document.getElementById('sup_prd_is_production').value = is_production;
-    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    // }
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+        document.getElementById('sup_prd_is_production').value = is_production;
+        document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    }
 
-    // function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
-    //     document.getElementById('sup_prd_name').value = prd_name;
-    //     document.getElementById('sup_prd_sku').value = prd_sku;
-    //     document.getElementById('sup_prd_description').value = prd_description;
-    //     document.getElementById('sup_prd_reorder').value = prd_reorder;
-    //     document.getElementById('sup_prd_is_production').value = is_production;
-    //     document.getElementById('sup_prd_is_refillable').value = is_refillable;
-    // }
+    function getNewProductValue(prd_name, prd_sku, prd_description, prd_reorder, is_production, is_refillable){
+        document.getElementById('sup_prd_name').value = prd_name;
+        document.getElementById('sup_prd_sku').value = prd_sku;
+        document.getElementById('sup_prd_description').value = prd_description;
+        document.getElementById('sup_prd_reorder').value = prd_reorder;
+        document.getElementById('sup_prd_is_production').value = is_production;
+        document.getElementById('sup_prd_is_refillable').value = is_refillable;
+    }
 </script>
 
 @endsection
