@@ -347,24 +347,22 @@ class SalesController extends Controller
             {
                 //to search customer id based from name
                 $customer_id = DB::table('customers')
-                ->where('cus_name', 'LIKE', $purchase_data[12])
-                ->select('cus_id')
-                ->first();
+                ->where('cus_name', 'LIKE', $purchase_data[13])
+                ->get();
 
                 $prd_id =  $purchase_data[0];
-                $prd_price = $purchase_data[2];
-                $pur_crate = $purchase_data[3];
-                $pur_loose = $purchase_data[4];
-                $pur_qty = (int)($purchase_data[3] * 12) + (int)($purchase_data[4]);
-                $pur_discount = $purchase_data[5];
-                $pur_deposit = $purchase_data[6];
-                $pur_total = $purchase_data[7];
-                $pur_crate_in = $purchase_data[8];
-                $pur_loose_in = $purchase_data[9];
-                $prd_id_in = $purchase_data[10];
-                $can_type_in = $purchase_data[11];
-                // $cus_id = $purchase_data[12];
-                $cus_id = $customer_id;
+                $prd_price = $purchase_data[3];
+                $pur_crate = $purchase_data[4];
+                $pur_loose = $purchase_data[5];
+                $pur_qty = (int)($purchase_data[4] * 12) + (int)($purchase_data[5]);
+                $pur_discount = $purchase_data[6];
+                $pur_deposit = $purchase_data[7];
+                $pur_total = $purchase_data[8];
+                $pur_crate_in = $purchase_data[9];
+                $pur_loose_in = $purchase_data[10];
+                $prd_id_in = $purchase_data[11];
+                $can_type_in = $purchase_data[12];
+                $cus_id = $customer_id[0]->cus_id;
             }
             
             DB::table('purchases')
@@ -448,13 +446,13 @@ class SalesController extends Controller
                 'prd_quantity' => $deduct_qty
             ]);
         }
-        // dd($cus_id);
+        
         DB::table('transactions')
         ->insert([
             'acc_id' => session('acc_id'),
             'usr_id' => session('usr_id'),
             'trx_ref_id' => $trx_ref_id,
-            'cus_id' => $cus_id,//BUG
+            'cus_id' => $cus_id,
             'trx_datetime' => $trx_date . " " . date('H:i:s'),
             'trx_date' => $trx_date,
             'trx_time' => date('H:i:s'),

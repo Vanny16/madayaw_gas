@@ -1260,7 +1260,7 @@
                 var getPrdIdIn = $(this).find("td:eq(10)").text();
                 var getCanTypeIn = $(this).find("td:eq(11)").text();
 
-                if(getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
+                if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
                     isExisting = true;
                     existing_item_row = getRow;
                     new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
@@ -1425,7 +1425,7 @@
 
             for(let j=0; j < row_item.length; j++){
                 //For Populating Receipt Table 
-                var prd_quantity = parseInt((row_item[3] * 12) + parseInt(row_item[4]));
+                var prd_quantity = parseInt((row_item[4] * 12) + parseInt(row_item[5]));
                 
                 item_qty = prd_quantity;
                 item_des = row_item[1];
@@ -1440,7 +1440,7 @@
                 rct_row.insertCell(2).innerHTML = item_price;
                 rct_row.insertCell(3).innerHTML = item_tot;
                 
-                gross_total = gross_total + (parseFloat(row_item[2]) * prd_quantity);
+                gross_total = gross_total + (parseFloat(row_item[3]) * prd_quantity);
 
                 document.getElementById("trx_gross").value = gross_total;
                 document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);

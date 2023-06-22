@@ -53,7 +53,7 @@
                 <td width="20%"><strong>Item</strong></td>
                 <td width="20%"><strong>Price</strong></td>
                 <td width="20%"><strong>Qty</strong></td>
-                <td width="20%"><strong>Deposit</strong></td>
+                <td width="20%"><strong>Bnew</strong></td>
                 <td width="20%"><strong>Sub</strong></td>
             </tr>
             @php($total_deposit=0)
@@ -80,7 +80,7 @@
                 <td colspan="1"><strong>{{ number_format($transactions->trx_gross, 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
-                <td colspan="1">Deposit</td>
+                <td colspan="1">Brd-New</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1"><strong>{{ number_format($total_deposit, 2, '.', ',') }}</strong></td>
             </tr>
