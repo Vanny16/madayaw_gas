@@ -2,10 +2,6 @@
 @section('content')
 <div class="row">
     <div class="col-md-12"> 
-        <h3 style="text-align:center;"></h3>
-        <p style="text-align:center;"></p>
-    </div>
-    <div class="col-md-12"> 
         <div class="card">
             <div class="row">
                 <div class="col-md-12">
@@ -30,7 +26,7 @@
             <hr><br>
             <div class="row">
                 <div class="col-md-6"><h3 class="ml-2">
-                    <i class="fa fa-file-text-o"></i> <strong>CANISTER DAILY ACTIVITY REPORT </strong></h3>
+                    <i class="fa fa-file-text-o"></i> <strong style="font-size:20px;">CANISTER DAILY ACTIVITY REPORT </strong></h3>
                 </div>
                 <div class="col-md-6 align-items-center">
                     <div class="col-md-12 d-flex justify-content-end">
@@ -40,11 +36,11 @@
             </div>
             <br>
             <div class="d-flex align-items-center">
-                <h4><strong>PART 1: FILLING PLANT PRODUCTION</strong></h4>
+                <h4><strong style="font-size:15px;">PART 1: FILLING PLANT PRODUCTION</strong></h4>
             </div>
             <!-- Canisters -->
             
-                <table class="table table-hover table-condensed" id="part1Table">
+                <table id="part1Table">
                     <thead>
                         <tr>
                             <th colspan = "2" style="text-align:center; border:1px solid black;"></th>
@@ -66,14 +62,15 @@
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-hover table-condensed">
+                <br>
+                <table>
                     <thead>
                         <tr>
-                            <th colspan="2" style="text-align:center; border:1px solid black; border-right:1px solid black;"><i>CUSTOMER</i></td>
-                            <th colspan="2" style="text-align:center; border:1px solid black;"><i>REFERENCE ID</i></th>
+                            <th colspan="2" style="text-align:center; border:1px solid;"><i>CUSTOMER</i></td>
+                            <th colspan="2" style="text-align:center; border:1px solid;"><i>REFERENCE ID</i></th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
-                                    <th style="text-align:center; border:1px solid black;"><strong>{{$canister->prd_name}}</strong></th>
+                                    <th style="text-align:center; border:1px solid;"><strong>{{$canister->prd_name}}</strong></th>
                                 @endforeach
                             @endif
                         </tr>
@@ -83,10 +80,10 @@
                         @foreach($purchases_array as $purchase_array)
                         
                             <tr>
-                                <td colspan="2" style="text-align:center; border-left:1px solid black; border-right:1px solid black;"><i>{{ $purchase_array[0] }}</i></td>
-                                <td colspan="2" style="text-align:center; border-right:1px solid black;"><i>{{ $purchase_array[1] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[1] }}</i></td>
                                 @for($index = 2; $index < count($purchase_array); $index++)
-                                    <td style="text-align:center; border-right:1px solid black;"><strong>{{$purchase_array[$index]}}</strong></td>    
+                                    <td style="text-align:center; border:1px solid;"><strong>{{$purchase_array[$index]}}</strong></td>    
                                 @endfor
                             </tr>
                             @php($row_count--)
@@ -96,8 +93,8 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black;">0</td>
-                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black;">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black;">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black;">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black;">0</td>
                                     @endfor
@@ -120,7 +117,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-hover table-condensed">
+                <br>
+                <table>
                     <thead>
                         <tr>
                             <th colspan = "2" style="text-align:center; border:1px solid black;"></th>
@@ -146,10 +144,10 @@
 
             <br>
             <div class="d-flex align-items-center">
-                <h4><strong>PART 2: EMPTY CANISTER MOVEMENT</strong></h4>
+                <h4><strong style="font-size:15px;">PART 2: EMPTY CANISTER MOVEMENT</strong></h4>
             </div>
         
-            <table class="table table-hover table-condensed"  style="page-break-inside:avoid">
+            <table>
                 <thead>
                     <tr style="border-bottom:1px solid black;">
                         <th colspan="2" style="text-align:center; border:1px solid black">RECEIVED</th>
@@ -162,8 +160,8 @@
                 </thead>
                 <tbody>
                     <tr style="border-bottom:2px solid black;">
-                        <td colspan="1" style="text-align:center; border:1px solid black; "><i>CUSTOMER</i></td>
-                        <td colspan="1" style="text-align:center; border:1px solid black"><i>REFERENCE ID</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black;"><i>CUSTOMER</i></td>
+                        <td colspan="1" style="text-align:center; border:1px solid black;"><i>REFERENCE ID</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
                                 <td style="text-align:center; border:1px solid black; "><strong>{{$canister->prd_name}}</strong></td>
@@ -175,8 +173,8 @@
                         @php($row_count = $p2r_table_rows)
                         @foreach($received_customers_array as $received_array)
                             <tr>
-                                <td colspan="1" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
-                                <td colspan="1" style="text-align:center; border-right:1px solid black"><i>{{ $received_array[1] }}</i></td>
+                                <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
+                                <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array[1] }}</i></td>
                                 @for($index = 2; $index < count($received_array); $index++)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{($received_array[$index] ?? 0)}}</strong></td>    
                                 @endfor
@@ -189,10 +187,10 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="1" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="1" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border:1px solid black">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
-                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                        <td style="text-indent:-9999px; border:1px solid black">0</td>
                                     @endfor
                                 </tr>
                                 @php($row_count--)
@@ -202,7 +200,7 @@
                     <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>
-            <table class="table table-hover table-condensed" style="page-break-inside:avoid">
+            <table>
                 <thead>
                     <tr>
                         <th colspan="2" style="text-align:center; border:1px solid black">ISSUED</th>
@@ -228,10 +226,10 @@
                         @php($row_count = $p2i_table_rows)
                         @foreach($issued_customers_array as $customers_array)
                             <tr>
-                                <td colspan="1" style="text-align:center; border-left:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
-                                <td colspan="1" style="text-align:center; border-right:1px solid black"><i>{{ $customers_array[1] }}</i></td>
+                                <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
+                                <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $customers_array[1] }}</i></td>
                                 @for($index = 2; $index < count($customers_array); $index++)
-                                    <td style="text-align:center; border-right:1px solid black"><strong>{{$customers_array[$index]}}</strong></td>    
+                                    <td style="text-align:center; border:1px solid black"><strong>{{$customers_array[$index]}}</strong></td>    
                                 @endfor
                             </tr>
                             @php($row_count--)
@@ -241,10 +239,10 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="1" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="1" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="1" style="text-indent:-9999px; border:1px solid black">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
-                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                        <td style="text-indent:-9999px; border:1px solid black">0</td>
                                     @endfor
                                 </tr>
                                 @php($row_count--)
@@ -256,9 +254,9 @@
             </table>
             <br>
             <div class="d-flex align-items-center">
-                <h4><strong>PART 3: CANISTER MOVEMENT</strong></h4>
+                <h4><strong style="font-size:15px;">PART 3: CANISTER MOVEMENT</strong></h4>
             </div>
-            <table class="table table-hover table-condensed">
+            <table>
                 <thead>
                     <tr>
                         <th  style="text-align:center; border:1px solid black">Canister</th>
@@ -274,7 +272,7 @@
                         <td style="text-align:center; border:1px solid black"><i>Filled</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border:1px solid black">{{ number_format($canister->prd_quantity, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
@@ -282,7 +280,7 @@
                         <td style="text-align:center; border:1px solid black"><i>Leakers</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border:1px solid black">{{ number_format($canister->prd_leakers, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
@@ -290,7 +288,7 @@
                         <td style="text-align:center; border:1px solid black"><i>Empty</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border:1px solid black">{{ number_format($canister->prd_empty_goods, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
@@ -298,7 +296,7 @@
                         <td style="text-align:center; border:1px solid black"><i>For Revalving</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border:1px solid black">{{ number_format($canister->prd_for_revalving, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
@@ -306,7 +304,7 @@
                         <td style="text-align:center; border:1px solid black"><i>Scrap</i></td>
                         @if(isset($canisters))
                             @foreach($canisters as $canister)
-                                <td style="text-align:center; border-right:1px solid black">{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
+                                <td style="text-align:center; border:1px solid black">{{ number_format($canister->prd_scraps, 0, '.', ',') }}</td>
                             @endforeach
                         @endif
                     </tr>
@@ -347,10 +345,10 @@
             </div>
             <hr><br>
             <div class="d-flex align-items-center">
-                <h4><strong>PART 4: OPPOSITION CANISTERS</strong></h4>
+                <h4><strong style="font-size:15px;">PART 4: OPPOSITION CANISTERS</strong></h4>
             </div>
 
-            <table class="table table-hover table-condensed">
+            <table>
                 <thead>
                     <tr>
                         <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
@@ -367,7 +365,7 @@
                         <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>REFERENCE ID</i></td>
                         @if(isset($oppositions))
                             @foreach($oppositions as $opposition)
-                                <td style="text-align:center; border-right:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>
+                                <td style="text-align:center; border:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>
                             @endforeach
                         @endif
                     </tr>
@@ -376,10 +374,10 @@
                         @php($row_count = $p2i_table_rows)
                         @foreach($oppositions_array as $opposition_array)
                         <tr>
-                            <td colspan="2" style="text-align:center; border-right:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center; border-right:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
+                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
+                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
                             @for($index = 2; $index < count($opposition_array); $index++)
-                                <td style="text-align:center; border-right:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
+                                <td style="text-align:center; border:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
                             @endfor
                         </tr>
                         @php($row_count--)
@@ -389,10 +387,10 @@
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
-                                    <td colspan="2" style="text-indent:-9999px; border-left:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="2" style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
-                                        <td style="text-indent:-9999px; border-right:1px solid black">0</td>
+                                        <td style="text-indent:-9999px; border:1px solid black">0</td>
                                     @endfor
                                 </tr>
                                 @php($row_count--)
@@ -428,10 +426,10 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="text-center" style="page-break-inside:avoid">
+            <div class="text-center">
                 <p><strong>Total Opposition Population: </strong><h4>{!! get_total_opposition_report($canister->prd_id) !!}</h4></p>
             </div>
-            <div style="page-break-inside:avoid">
+            <div >
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-flex justify-content-center">
@@ -508,10 +506,10 @@
             <br><br><br>
             <div class="row">
                 <div class="col-md-6" >
-                    <h5><strong>Prepared by: </strong></h5>
+                    <h5><strong style="font-size:15px;">Prepared by: </strong></h5>
                 </div>
                 <div class="col-md-6">
-                    <h5><strong>Checked by: </strong></h5>
+                    <h5><strong style="font-size:15px;">Checked by: </strong></h5>
                 </div>
             </div>
         </div>
@@ -519,32 +517,32 @@
 </div>
 <script type="text/javascript">
     // Define a function to handle the beforeprint event
-    function handleBeforePrint() {
+    // function handleBeforePrint() {
         // Remove the event listener to prevent an infinite loop
-        window.removeEventListener("beforeprint", handleBeforePrint);
+        // window.removeEventListener("beforeprint", handleBeforePrint);
 
         // Display a confirmation dialog to allow the user to select print settings
-        if (confirm("Click 'OK' to show preview")) {
+        // if (confirm("Click 'OK' to show preview")) {
             // Open the print dialog
-            setTimeout(function() {
-                window.print();
-            }, 500);
-        }
-        else{
-            window.location.href = "{{ action('ProductionController@manage') }}";
-        }
-    }
+            // setTimeout(function() {
+                // window.print();
+            // }, 500);
+        // }
+        // else{
+            // window.location.href = "{{ action('ProductionController@manage') }}";
+        // }
+    // }
 
     // Add an event listener for the beforeprint event
-    window.addEventListener("beforeprint", handleBeforePrint);
+    // window.addEventListener("beforeprint", handleBeforePrint);
 
     // Call the print method when the page finishes loading
-    window.addEventListener("load", function() {
-        setTimeout(function() {
-            window.print();
-            window.location.href = "{{ action('ProductionController@manage') }}";
-        }, 500);
-    });
+    // window.addEventListener("load", function() {
+        // setTimeout(function() {
+            // window.print();
+            // window.location.href = "{{ action('ProductionController@manage') }}";
+        // }, 500);
+    // });
 
 </script>
 @endsection
