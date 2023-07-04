@@ -1271,8 +1271,6 @@
                     new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
                 }
             });
-
-            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             
             //For Populating Selected Products Table
             if(isExisting){
@@ -1307,6 +1305,14 @@
                 row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
                 // row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
             }
+            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+            checkCart();
+                  
+            document.getElementById("in_crates" + prd_id).value = 0;
+            document.getElementById("in_loose" + prd_id).value = 0;
+            document.getElementById("crates_amount" + prd_id).value = 0;
+            document.getElementById("loose_amount" + prd_id).value = 0;
+            document.getElementById("sub_total" + prd_id ).value = 0;
 
             var received = document.getElementById("received_amount").value;
 
@@ -1319,22 +1325,14 @@
             modal.hidden = true;
             
             
-            if(can_type_in != 0){
-                document.getElementById("in_crates" + prd_id_in).value = 0;
-                document.getElementById("in_loose" + prd_id_in).value = 0;
-            }
-            document.getElementById("crates_amount" + prd_id).value = 0;
-            document.getElementById("loose_amount" + prd_id).value = 0;
-            document.getElementById("sub_total" + prd_id ).value = 0;
-
-            document.getElementById("in_crates" + prd_id_in).value = 0;
-            document.getElementById("in_loose" + prd_id_in).value = 0;
-            document.getElementById("crates_amount" + prd_id).value = 0;
-            document.getElementById("loose_amount" + prd_id).value = 0;
-            document.getElementById("sub_total" + prd_id ).value = 0;
+            // document.getElementById("in_crates" + prd_id_in).value = 0;
+            // document.getElementById("in_loose" + prd_id_in).value = 0;
+            // document.getElementById("crates_amount" + prd_id).value = 0;
+            // document.getElementById("loose_amount" + prd_id).value = 0;
+            // document.getElementById("sub_total" + prd_id ).value = 0;
             
-            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            checkCart();
+            // alert(prd_quantity+ " " +prd_name+ " has been added to cart");
+            // checkCart();
         }
         else{
             alert("Please input quantity");

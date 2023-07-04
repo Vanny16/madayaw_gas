@@ -383,7 +383,7 @@ class ReportsController extends Controller
                         ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                        ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
+                        ->leftjoin('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
                         ->where('trx_active','=','1')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
