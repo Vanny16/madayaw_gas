@@ -427,13 +427,13 @@
                 </tbody>
             </table>
             <div class="text-center">
-                <p><strong>Total Opposition Population: </strong><h4>{!! get_total_opposition_report($canister->prd_id) !!}</h4></p>
+                <p><strong style="font-size:15px;">Total Opposition Population: </strong><h4>{!! get_total_opposition_report($canister->prd_id) !!}</h4></p>
             </div>
             <div >
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-flex justify-content-center">
-                            <h5><strong>Time Start Ops</strong></h5>
+                            <h5><strong style="font-size:15px;">Time Start Ops</strong></h5>
                         </div>
                         <div class="col-md-12 d-flex justify-content-center">
                             <strong class="text-success">{{$production_start}}</strong> <br> 
@@ -441,7 +441,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex justify-content-center">
-                            <h5><strong>Time End Ops</strong></h5>
+                            <h5><strong style="font-size:15px;">Time End Ops</strong></h5>
                         </div>
                         <div class="col-md-12 d-flex justify-content-center">
                             <strong class="text-danger">{{$production_end}}</strong> <br> 
