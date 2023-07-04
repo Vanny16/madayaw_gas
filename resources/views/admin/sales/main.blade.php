@@ -1271,6 +1271,8 @@
                     new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
                 }
             });
+
+            alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             
             //For Populating Selected Products Table
             if(isExisting){
@@ -1325,7 +1327,12 @@
             document.getElementById("loose_amount" + prd_id).value = 0;
             document.getElementById("sub_total" + prd_id ).value = 0;
 
-
+            document.getElementById("in_crates" + prd_id_in).value = 0;
+            document.getElementById("in_loose" + prd_id_in).value = 0;
+            document.getElementById("crates_amount" + prd_id).value = 0;
+            document.getElementById("loose_amount" + prd_id).value = 0;
+            document.getElementById("sub_total" + prd_id ).value = 0;
+            
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
         }
