@@ -731,7 +731,7 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $selected_valve = $request->valve;
-        $selected_seal = $request->seals;
+        $selected_seal = $request->seal;
         $prd_components = "";
         $prd_seals = "";
         
