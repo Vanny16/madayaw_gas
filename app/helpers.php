@@ -587,6 +587,66 @@ function get_crate_population()
     return 0;
 }
 
+function get_gasStove_population()
+{   
+    $gasStoves = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_for_POS', '=', 1)
+    ->where('prd_for_production', '=', 0)
+    ->get();
+
+    $gasStove_ids = [];
+
+    foreach($gasStoves as $gasStove)
+    {
+        if($gasStove->prd_components == null)
+        {
+            continue;
+        }
+        array_push($gasStove_ids, $gasStove->prd_components);
+    }
+
+    $gasStove_population = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_for_production', '=', 0)
+    ->whereIn('prd_id', $gasStove_ids)
+    ->sum('prd_quantity');
+    
+    return number_format($gasStove_population, 0, '.', ',');
+}
+
+function get_tankSeal_population()
+{   
+    $tank_seals = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_is_refillable', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->get();
+
+    $tankSeals_ids = [];
+
+    foreach($tank_seals as $tank_seal)
+    {
+        if($tank_seal->prd_components == null)
+        {
+            continue;
+        }
+        array_push($tankSeals_ids, $tank_seal->prd_components);
+    }
+
+    $tankSeals_population = DB::table('products')
+    ->where('acc_id', '=', session('acc_id'))
+    ->where('prd_active', '=', 1)
+    ->where('prd_for_production', '=', 1)
+    ->whereIn('prd_id', $tankSeals_ids) 
+    ->sum('prd_quantity');
+
+    return number_format($tankSeals_population, 0, '.', ',');
+}
+
 function check_materials($flag, $qty, $prd_id)
 {
    //FOR EMPTYGOODS

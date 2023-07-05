@@ -386,14 +386,20 @@
                     <h5 style="text-align:center"><strong>|</strong></h5>
                 </div>
                 <div class="col-md-9 d-flex justify-content-center">
-                    <div class="col-md-4" style="text-align:center">
+                    <div class="col-md-3" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Valve: </strong>{!! get_valve_population() !!}</p>
                     </div>
-                    <div class="col-md-4" style="text-align:center">
+                    <div class="col-md-3" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Seal: </strong>{!! get_seal_population() !!}</p>
                     </div>
-                    <div class="col-md-4" style="text-align:center">
+                    {{-- <div class="col-md-2" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Crates: </strong>{!! get_crate_population() !!}</p>
+                    </div> --}}
+                    <div class="col-md-3" style="text-align:center">
+                        <p style="text-decoration:underline"><strong>Gas stove: </strong>{!! get_gasStove_population() !!}</p>
+                    </div>
+                    <div class="col-md-3" style="text-align:center">
+                        <p style="text-decoration:underline"><strong>Tank seal: </strong>{!! get_tankSeal_population() !!}</p>
                     </div>
                 </div>
             </div>
