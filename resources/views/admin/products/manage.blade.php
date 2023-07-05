@@ -87,16 +87,17 @@
                                     <thead>
                                         <tr>
                                             <th width="100px"></th>
-                                            <th>Product Name</th>
-                                            <th>SKU</th>
-                                            <th>Price</th>
-                                            <th style="text-align: center">Quantity</th>
-                                            <th>Description</th>
-                                            <th>Weight</th>
-                                            <th>Supplier</th>
-                                            <th width="150px"></th>
-                                            <th width="120px"></th>
+                                            <th width="300px">Product Name</th>
+                                            <th width="200px">SKU</th>
+                                            <th width="200px">Price</th>
+                                            <th width="200px">Brand New</th>
+                                            <th width="200px" style="text-align: center">Quantity</th>
+                                            <th width="200px">Description</th>
+                                            <th width="200px">Weight</th>
+                                            <th width="200px">Supplier</th>
                                             <th width="100px"></th>
+                                            <th width="100px"></th>
+                                            <th width="50px"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-products">
@@ -138,8 +139,11 @@
                                                         {{$product->prd_price}}
                                                     </td>
                                                 @endif
+                                                    <td>
+                                                        {{number_format($product->prd_deposit, 2, '.', ',')}}
+                                                    </td>
                                                 <td style="text-align: center">   
-                                                    {{$product->prd_quantity}}
+                                                    {{number_format($product->prd_quantity, 0, ',', ',')}}
                                                     <br>
                                                     @if($reorder_indicator != "") 
                                                         @if($product->prd_quantity == 0)
@@ -258,6 +262,7 @@
                                                                                 <label for="prd_price">Price <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_price" value="{{ $product->prd_price }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" {{ $status }}/>
                                                                             </div>
+                                    
                                                                             <!-- <div class="form-group">
                                                                                 <label for="prd_deposit">Deposit Price<span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_deposit" placeholder="Enter deposit price" value="{{ $product->prd_deposit}}" onkeypress="return isNumberKey(this, event);" required/>
