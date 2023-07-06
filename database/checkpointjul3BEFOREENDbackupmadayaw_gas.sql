@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50742
  Source Host           : localhost:3306
- Source Schema         : backup_madayaw_gas
+ Source Schema         : madayaw_gas
 
  Target Server Type    : MySQL
  Target Server Version : 50742
  File Encoding         : 65001
 
- Date: 21/06/2023 22:35:36
+ Date: 05/07/2023 16:47:13
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `accounts`  (
   `acc_website` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `acc_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of accounts
@@ -52,26 +52,12 @@ CREATE TABLE `bad_orders`  (
   `bo_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `bo_datetime` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`bo_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of bad_orders
 -- ----------------------------
 INSERT INTO `bad_orders` VALUES (1, 'BO-20230601-1', 1, 3, 3, NULL, 3, '2023-06-01', '09:41:41', '2023-06-01 09:41:41');
-
--- ----------------------------
--- Table structure for brands
--- ----------------------------
-DROP TABLE IF EXISTS `brands`;
-CREATE TABLE `brands`  (
-  `brd_id` int(11) NOT NULL,
-  `brd_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`brd_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of brands
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for customers
@@ -91,27 +77,27 @@ CREATE TABLE `customers`  (
   `cus_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `cus_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`cus_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
-INSERT INTO `customers` VALUES (1, 1, '75z80q62059nbvtkvjc67v5znfz7fuvt', 'ADON', 'TORIL', '09566873302', 5, '3,5,6,', '17.97,17.97,440.00,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (2, 1, '3voy1ywbhwp2nec9162sl9pghs1u3u4p', 'ALONA', 'TAGUM', '09916527682', 0, '5,', '17.36,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (3, 1, '3wgy3d8gytzgvcwuz1nethf848d4v7p1', 'ALFRED SANTOS', 'SAMAL', '09982384646', 0, '3,', '17.97,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (4, 1, 'wreed94l2izxkq2q2m1x1r9xco49xcm7', 'APEIRON', 'TIGATTO, DAVAO CITY', '09279986820', 0, '3,4,', '17.97,17.97,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (5, 1, 'lf1xvkjqqgow8rmahpgpf45ixdyq16je', 'BRGY. SAN ISIDRO', 'BRGY. SAN ISIDRO', '09678252501', 0, '3,4,', '19.70,19.70,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (6, 1, '4q5yustf03fecoquqvn4r26c8aio7e76', 'CHECHE RTW', 'BRGY ILANG', '09307702777', 0, '3,', '18,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (7, 1, 'g4q185nsmlsqc3kx5pvgrmwl1tkkz3wx', 'DENNIS DAGONDON', 'COMMUNAL BUHANGIN', '09171881973', 0, '3,', '17.97,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (8, 1, 'er8bbhagbov9e76mopltlst4tzhxy3f1', 'DUDZ', 'SASA', '09959025762', 0, '3,', '18,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (9, 1, 'u88tb8godfwncx2ypec0gf9rhm513u19', 'FUELSOURCE', 'DIGOS', '09111111111', 0, '3,4,', '16.72,16.72,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (10, 1, '0kupfw5owjebk1u357da19ki9doea7ps', 'DJV LPG CENTER', 'DIGOS CITY', '09066780227', 0, '3,', '15.35,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (11, 1, '09h5jxjsamxmotb23v370txthh3pzuvo', 'JOSIE CUYOS', 'BRGY SAN ISIDRO', '09486617966', 0, '3,', '18,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (12, 1, 't0opbcngljhleibjcaw7kz7txk4cnzwu', 'KENZOVAN', 'BUHANGIN', '09111111111', 0, '3,', '19,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (13, 1, '8xvfpbkg4gtxejrxws2qimzk4xb6aegm', 'REY CANTILLAS', 'PANACAN', '09067656906', 0, '3,', '18,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (14, 1, 'u44xooxs3yppj9ml8l9x6l8u9ye649n2', 'ROBERT MANDANAO', 'SASA', '09813635475', 0, '3,', '18,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (15, 1, 'w8k1k7cb22aef0wklmfvz09nmebj7vj4', 'ROMY FERNANDEZ', 'CATEEL', '09171921402', 0, '3,4,', '17.97,17.97,', NULL, NULL, 1);
-INSERT INTO `customers` VALUES (16, 1, 'mfvbtelasbqw2eatpfn20wik9ydrx4kt', 'WILSON', 'PANACAN', '09926956912', 0, '3,', '18.00,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (1, 1, '75z80q62059nbvtkvjc67v5znfz7fuvt', 'ADON', 'TORIL', '09566873302', 5, '3,5,6,', '16.50,16.50,440.00,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (2, 1, '3voy1ywbhwp2nec9162sl9pghs1u3u4p', 'ALONA', 'TAGUM', '09916527682', 0, '5,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (3, 1, '3wgy3d8gytzgvcwuz1nethf848d4v7p1', 'ALFRED SANTOS', 'SAMAL', '09982384646', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (4, 1, 'wreed94l2izxkq2q2m1x1r9xco49xcm7', 'APEIRON', 'TIGATTO, DAVAO CITY', '09279986820', 0, '3,4,', '16.50,16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (5, 1, 'lf1xvkjqqgow8rmahpgpf45ixdyq16je', 'BRGY. SAN ISIDRO', 'BRGY. SAN ISIDRO', '09678252501', 0, '3,4,', '16.50,16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (6, 1, '4q5yustf03fecoquqvn4r26c8aio7e76', 'CHECHE RTW', 'BRGY ILANG', '09307702777', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (7, 1, 'g4q185nsmlsqc3kx5pvgrmwl1tkkz3wx', 'DENNIS DAGONDON', 'COMMUNAL BUHANGIN', '09171881973', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (8, 1, 'er8bbhagbov9e76mopltlst4tzhxy3f1', 'DUDZ', 'SASA', '09959025762', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (9, 1, 'u88tb8godfwncx2ypec0gf9rhm513u19', 'FUELSOURCE', 'DIGOS', '09111111111', 0, '3,4,', '16.50,16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (10, 1, '0kupfw5owjebk1u357da19ki9doea7ps', 'DJV LPG CENTER', 'DIGOS CITY', '09066780227', 0, '3,', '14,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (11, 1, '09h5jxjsamxmotb23v370txthh3pzuvo', 'JOSIE CUYOS', 'BRGY SAN ISIDRO', '09486617966', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (12, 1, 't0opbcngljhleibjcaw7kz7txk4cnzwu', 'KENZOVAN', 'BUHANGIN', '09111111111', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (13, 1, '8xvfpbkg4gtxejrxws2qimzk4xb6aegm', 'REY CANTILLAS', 'PANACAN', '09067656906', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (14, 1, 'u44xooxs3yppj9ml8l9x6l8u9ye649n2', 'ROBERT MANDANAO', 'SASA', '09813635475', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (15, 1, 'w8k1k7cb22aef0wklmfvz09nmebj7vj4', 'ROMY FERNANDEZ', 'CATEEL', '09171921402', 0, '3,4,', '16.50,16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (16, 1, 'mfvbtelasbqw2eatpfn20wik9ydrx4kt', 'WILSON', 'PANACAN', '09926956912', 0, '3,', '16.50,', NULL, NULL, 1);
 INSERT INTO `customers` VALUES (17, 1, '3i43ayg3o8cufmuh5oc5faxhk847djh4', '(WALK-IN)', 'XXXXXXXX', '11111111111', 0, '3,4,5,', '20,20,20,', NULL, NULL, 1);
 INSERT INTO `customers` VALUES (18, 1, '2b7sqnhl95rvi0svrhp054d0cdd5y9da', '(HOUSE)', 'LANANG', '11111111111', 0, '3,4,', '17.97,17.97,', NULL, NULL, 1);
 INSERT INTO `customers` VALUES (19, 1, 'i8wmzlus8jpv5148t624iiq1o6nhsi9u', 'ALFREDO ALCE', 'PRK. 13 TIBUNGCO', '09094702448', 0, '3,', '18,', NULL, NULL, 1);
@@ -120,36 +106,9 @@ INSERT INTO `customers` VALUES (21, 1, '9wej1cucm5riy86owos4syfac346oaiu', 'HLI'
 INSERT INTO `customers` VALUES (22, 1, 'o4ez3wtwvp62rvp9i1prjnn7axzx5e52', 'GEORGE/ROLAN', 'CRYSTAL MEADOWS,SASA', '09292979703', 0, '3,4,', '19.60,19.60,', NULL, NULL, 1);
 INSERT INTO `customers` VALUES (23, 1, '21a25heqso3nplynndeac3mb0qm7690r', 'ROMY TARZO', 'SASA STORE/ PANACAN MALAGAMOT DROP', '09467432991', 0, '3,', '18,', NULL, NULL, 1);
 INSERT INTO `customers` VALUES (24, 1, 'vp85xzmn3u8cks357wlnti62xhtjzhpt', 'OROGATES', 'KM 10 SASA DAVAO CITY', '09177775909', 0, '7,8,9,', '601.87,601.87,2631.00,', NULL, NULL, 1);
-
--- ----------------------------
--- Table structure for fuel_prices
--- ----------------------------
-DROP TABLE IF EXISTS `fuel_prices`;
-CREATE TABLE `fuel_prices`  (
-  `prc_id` int(11) NOT NULL AUTO_INCREMENT,
-  `prc_date` date NULL DEFAULT NULL,
-  `prc_price` decimal(10, 0) NULL DEFAULT NULL,
-  PRIMARY KEY (`prc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of fuel_prices
--- ----------------------------
-
--- ----------------------------
--- Table structure for migrations
--- ----------------------------
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE `migrations`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of migrations
--- ----------------------------
+INSERT INTO `customers` VALUES (25, 1, 'e39sb1lfeo6cnrshejrwm5eghc4vbm9t', 'JUNE COSTILLAS', 'DAVAO', '09111111111', 0, '3,4,', '17,17,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (26, 1, 'emuirv7xqpn1lx4zi2cvnrlent1xcauf', 'HENRY ANG', 'DAVAO', '09111111111', 0, '3,', '16.50,', NULL, NULL, 1);
+INSERT INTO `customers` VALUES (27, 1, '2frf15i9uogksbgih2qkvjvt35juv87b', 'FREDDIE ALCE', 'DAVAO', '09111111111', 0, '3,', '16.50,', NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for movement_logs
@@ -168,7 +127,7 @@ CREATE TABLE `movement_logs`  (
   `log_date` date NULL DEFAULT NULL,
   `pdn_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of movement_logs
@@ -193,6 +152,36 @@ INSERT INTO `movement_logs` VALUES (17, 1, '8', 0, 0, 116, 0, 0, 1, '2023-06-01'
 INSERT INTO `movement_logs` VALUES (18, 1, '7', 0, 0, 500, 0, 0, 1, '2023-06-01', 1);
 INSERT INTO `movement_logs` VALUES (19, 1, '9', 0, 0, 150, 0, 0, 1, '2023-06-01', 1);
 INSERT INTO `movement_logs` VALUES (20, 1, '9', 4, 0, 0, 0, 0, 1, '2023-06-01', 1);
+INSERT INTO `movement_logs` VALUES (21, 1, '5', 0, 0, 4629, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (22, 1, '4', 0, 0, 2084, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (23, 1, '4', 0, 0, 12451, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (24, 1, '5', 4532, 0, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (25, 1, '5', 0, 3356, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (26, 1, '5', 0, 0, 0, 1080, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (27, 1, '5', 0, 0, 0, 0, 2010, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (28, 1, '4', 1716, 0, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (29, 1, '4', 0, 670, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (30, 1, '4', 0, 0, 0, 207, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (31, 1, '4', 0, 0, 0, 0, 408, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (32, 1, '4', 368, 0, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (33, 1, '3', 0, 0, 9855, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (34, 1, '3', 9849, 0, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (35, 1, '3', 0, 5591, 0, 0, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (36, 1, '3', 0, 0, 0, 1091, 0, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (37, 1, '3', 0, 0, 0, 0, 4300, 1, '2023-07-05', 1);
+INSERT INTO `movement_logs` VALUES (38, 1, '3', 0, 0, 0, 168, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (39, 1, '3', 0, 0, 368, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (40, 1, '3', 0, 0, 10869, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (41, 1, '3', 0, 0, 5250, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (42, 1, '4', 0, 0, 32, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (43, 1, '5', 0, 0, 26, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (44, 1, '9', 0, 0, 101, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (45, 1, '7', 0, 0, 464, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (46, 1, '8', 0, 0, 73, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (47, 1, '7', 149, 0, 0, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (48, 1, '8', 27, 0, 0, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (49, 1, '3', 10869, 0, 0, 0, 0, 1, '2023-07-05', 2);
+INSERT INTO `movement_logs` VALUES (50, 1, '4', 32, 0, 0, 0, 0, 1, '2023-07-05', 2);
 
 -- ----------------------------
 -- Table structure for news
@@ -208,7 +197,7 @@ CREATE TABLE `news`  (
   `news_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `news_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`news_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of news
@@ -230,17 +219,17 @@ CREATE TABLE `oppositions`  (
   `acc_id` int(11) NULL DEFAULT NULL,
   `ops_active` int(11) NULL DEFAULT 1,
   PRIMARY KEY (`ops_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oppositions
 -- ----------------------------
-INSERT INTO `oppositions` VALUES (1, 'ypd1oerm2xfg3jxaq1zz9ejemjjce0sv', 'TRIPLER', 'TRIPLER', 'TRIPLER', 5000, NULL, NULL, 1, 1);
-INSERT INTO `oppositions` VALUES (2, 'brvyrfw8t0teazmcspcivzz91sjkzwn5', 'BUDGET GAS', 'BUDGET GAS', 'BUDGET GAS', 45, NULL, NULL, 1, 1);
-INSERT INTO `oppositions` VALUES (3, '88o8gnjcvxfafiwm57jmhuohyv4ww0k4', 'RUFRANCE', 'RUFRANCE', 'RUFRANCE', 12000, NULL, NULL, 1, 1);
+INSERT INTO `oppositions` VALUES (1, 'ypd1oerm2xfg3jxaq1zz9ejemjjce0sv', 'TRIPLER', 'TRIPLER', 'TRIPLER', 5129, NULL, NULL, 1, 1);
+INSERT INTO `oppositions` VALUES (2, 'brvyrfw8t0teazmcspcivzz91sjkzwn5', 'BUDGET GAS', 'BUDGET GAS', 'BUDGET GAS', 0, NULL, NULL, 1, 1);
+INSERT INTO `oppositions` VALUES (3, '88o8gnjcvxfafiwm57jmhuohyv4ww0k4', 'RUFRANCE', 'RUFRANCE', 'RUFRANCE', 14192, NULL, NULL, 1, 1);
 INSERT INTO `oppositions` VALUES (4, 'qbvqih6liz0rmk5pbbjmizxar5ifzc8n', 'PEPC', 'PEPC', 'PEPC', 1819, NULL, NULL, 1, 1);
 INSERT INTO `oppositions` VALUES (5, 'fjk1a403z8xeh16qhniub5cl1fpyj7pe', 'AGILA', 'AGILA', 'AGILA', 610, NULL, NULL, 1, 1);
-INSERT INTO `oppositions` VALUES (6, '01debiko2t4ederqbbvm41aq09h9ddtu', 'JEAM GAS', 'JEAM GAS', 'JEAM GAS', 65, NULL, NULL, 1, 1);
+INSERT INTO `oppositions` VALUES (6, '01debiko2t4ederqbbvm41aq09h9ddtu', 'JEAM GAS', 'JEAM GAS', 'JEAM GAS', 0, NULL, NULL, 1, 1);
 
 -- ----------------------------
 -- Table structure for payment_types
@@ -250,7 +239,7 @@ CREATE TABLE `payment_types`  (
   `mode_of_payment` int(11) NOT NULL,
   `payment_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`mode_of_payment`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment_types
@@ -281,7 +270,7 @@ CREATE TABLE `payments`  (
   `pmnt_check_no` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `pmnt_check_date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`pmnt_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payments
@@ -292,6 +281,25 @@ INSERT INTO `payments` VALUES (1, 3, 'PMT20230601-3', 3, 0, NULL, 1, '2023-06-01
 INSERT INTO `payments` VALUES (1, 4, 'PMT20230601-4', 3, 10000, NULL, 1, '2023-06-01', '10:30:22', 1, 10000, 0, NULL, NULL);
 INSERT INTO `payments` VALUES (1, 5, 'PMT20230601-5', 3, 3714, NULL, 1, '2023-06-01', '10:30:55', 1, 3714, 0, NULL, NULL);
 INSERT INTO `payments` VALUES (1, 6, 'PMT20230601-6', 4, 0, NULL, 1, '2023-06-01', '10:42:16', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 7, 'PMT-20230622-7', 6, 0, NULL, 1, '2023-06-22', '14:42:10', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 8, 'PMT-20230622-8', 1, 0, NULL, 1, '2023-06-22', '14:47:35', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 9, 'PMT-20230622-9', 2, 0, NULL, 1, '2023-06-22', '14:52:55', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 10, 'PMT20230622-10', 2, 12, NULL, 1, '2023-06-22', '14:58:25', 1, 12, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 11, 'PMT-20230705-11', 3, 0, NULL, 1, '2023-07-05', '13:39:06', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 12, 'PMT-20230705-12', 4, 0, NULL, 1, '2023-07-05', '13:39:54', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 13, 'PMT-20230705-13', 1, 0, NULL, 1, '2023-07-05', '15:04:12', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 14, 'PMT-20230705-14', 2, 0, NULL, 1, '2023-07-05', '15:06:51', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 15, 'PMT-20230705-15', 3, 0, NULL, 1, '2023-07-05', '15:08:24', 2, 0, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 16, 'PMT-20230705-16', 4, 27324, NULL, 1, '2023-07-05', '15:11:32', 1, 27324, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 17, 'PMT-20230705-17', 5, 100, NULL, 1, '2023-07-05', '15:17:18', 1, 100, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 18, 'PMT-20230705-18', 6, 11484, NULL, 1, '2023-07-05', '15:18:54', 1, 11484, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 19, 'PMT-20230705-19', 7, 1980, NULL, 1, '2023-07-05', '15:19:22', 1, 1980, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 20, 'PMT-20230705-20', 8, 1584, NULL, 1, '2023-07-05', '15:21:22', 1, 1584, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 21, 'PMT-20230705-21', 9, 100, NULL, 1, '2023-07-05', '15:22:14', 1, 100, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 22, 'PMT-20230705-22', 10, 2376, NULL, 1, '2023-07-05', '15:22:55', 1, 2376, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 23, 'PMT-20230705-23', 11, 3033, NULL, 1, '2023-07-05', '15:27:51', 1, 3033, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 24, 'PMT-20230705-24', 12, 2800, NULL, 1, '2023-07-05', '15:30:04', 1, 2800, 0, NULL, NULL);
+INSERT INTO `payments` VALUES (1, 25, 'PMT-20230705-25', 13, 4554, NULL, 1, '2023-07-05', '15:31:38', 1, 4554, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for product_types
@@ -301,23 +309,10 @@ CREATE TABLE `product_types`  (
   `typ_id` int(11) NOT NULL AUTO_INCREMENT,
   `typ_name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`typ_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product_types
--- ----------------------------
-
--- ----------------------------
--- Table structure for product_units
--- ----------------------------
-DROP TABLE IF EXISTS `product_units`;
-CREATE TABLE `product_units`  (
-  `Can` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `Case` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of product_units
 -- ----------------------------
 
 -- ----------------------------
@@ -330,12 +325,13 @@ CREATE TABLE `production_logs`  (
   `pdn_start_time` time NULL DEFAULT NULL,
   `pdn_end_time` time NULL DEFAULT NULL,
   PRIMARY KEY (`pdn_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of production_logs
 -- ----------------------------
-INSERT INTO `production_logs` VALUES (1, '2023-06-01', '09:12:52', NULL);
+INSERT INTO `production_logs` VALUES (1, '2023-06-01', '09:12:52', '14:54:48');
+INSERT INTO `production_logs` VALUES (2, '2023-07-05', '14:55:00', NULL);
 
 -- ----------------------------
 -- Table structure for products
@@ -368,20 +364,21 @@ CREATE TABLE `products`  (
   `prd_components` int(11) NULL DEFAULT NULL,
   `prd_seals` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`prd_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES (1, 1, '0eqfa2whjhx90s8nrw83q987g9kl1stj', 'Seal', 'seal', 'seal', NULL, NULL, 0, 14371, 0, 0, 0, 0, 360000, NULL, 1, 1, 0, 1, 0, NULL, 0, NULL, NULL);
-INSERT INTO `products` VALUES (2, 1, '316xf5bh9z85yj265ssfxhlyrhsmxh0n', 'Valve', 'valve', 'valve', NULL, NULL, 0, 9234, 0, 0, 0, 0, 500000, NULL, 2, 1, 0, 1, 0, NULL, 0, NULL, NULL);
-INSERT INTO `products` VALUES (3, 1, '6f0lokdgcxp3xjp6pi62qnjy7ibugrna', 'Round', 'Madayaw Round Canister', 'MR170', NULL, 38.00, 40, 5459, 404, 4132, 463, 0, 10000, NULL, 1, 1, 1, 1, 1, 170, 0, 2, 1);
-INSERT INTO `products` VALUES (4, 1, '03z7lbrja07ypsfva0f91y7i3h9bv73m', 'Square', 'Madayaw Square Canister', 'MS170', NULL, 38.00, 40, 1539, 36, 11262, 173, 0, 10000, NULL, 2, 1, 1, 1, 1, 170, 0, 2, 1);
-INSERT INTO `products` VALUES (5, 1, 'lm4p6zbx0dcjc6ixwnk36pea2ax12byi', 'Botin', 'Botin Canister', 'Botin170', NULL, 38.00, 40, 128, 137, 69, 858, 0, 10000, NULL, 2, 1, 1, 1, 1, 170, 0, 2, 1);
-INSERT INTO `products` VALUES (6, 1, 'f1g86czlex1cyk4z3k1s0k7uuiwhdfce', 'PORTABLE STOVE', 'PORTABLE STOVE', 'PORTABLE STOVE', NULL, 440.00, 0, 3604, 0, 0, 0, 0, 1500, NULL, 3, 1, 0, 0, 1, NULL, 0, NULL, NULL);
-INSERT INTO `products` VALUES (7, 1, 'pjq863zmt5nf4fh8ixtihap1jpe79ll0', 'A/S TYPE TANK', '11KG. A/S TYPE', '11KG. A/S TYPE', NULL, 601.87, 0, 0, 0, 500, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 11000, 0, 2, 1);
-INSERT INTO `products` VALUES (8, 1, 'ohizg8boensypacr64haelqhrhsmoi8g', 'POL TYPE TANK', '11KG POL TYPE', '11KG POL TYPE', NULL, 601.87, 602, 0, 0, 116, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 11000, 0, 2, 1);
-INSERT INTO `products` VALUES (9, 1, '3ny79p9wo9mzoc13wtehuhh66zkysof0', '50KG POL TYPE', '5OKG POL TYPE', '50KG POL TYPE', NULL, 2631.00, 2631, 0, 0, 150, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 50000, 0, 2, 1);
+INSERT INTO `products` VALUES (1, 1, '0eqfa2whjhx90s8nrw83q987g9kl1stj', 'Seal', 'seal', 'seal', NULL, NULL, 0, 96004, 0, 0, 0, 0, 360000, NULL, 1, 1, 0, 1, 0, NULL, 0, NULL, NULL);
+INSERT INTO `products` VALUES (2, 1, '316xf5bh9z85yj265ssfxhlyrhsmxh0n', 'Valve', 'valve', 'valve', NULL, NULL, 0, 83398, 0, 0, 0, 0, 500000, NULL, 2, 1, 0, 1, 0, NULL, 0, NULL, NULL);
+INSERT INTO `products` VALUES (3, 1, '6f0lokdgcxp3xjp6pi62qnjy7ibugrna', 'Round', 'Madayaw Round Canister', 'MR170', NULL, 0.00, 60, 11123, 32, 8521, 891, 4300, 10000, NULL, 1, 1, 1, 1, 1, 170, 93723, 2, 1);
+INSERT INTO `products` VALUES (4, 1, '03z7lbrja07ypsfva0f91y7i3h9bv73m', 'Square', 'Madayaw Square Canister', 'MS170', NULL, 0.00, 60, 1381, 55, 12516, 207, 408, 10000, NULL, 2, 1, 1, 1, 1, 170, 0, 2, 1);
+INSERT INTO `products` VALUES (5, 1, 'lm4p6zbx0dcjc6ixwnk36pea2ax12byi', 'Botin', 'Botin Canister', 'Botin170', NULL, 0.00, 70, 1176, 266, 140, 1080, 2010, 10000, NULL, 2, 1, 1, 1, 1, 170, 0, 2, 1);
+INSERT INTO `products` VALUES (6, 1, 'f1g86czlex1cyk4z3k1s0k7uuiwhdfce', 'PORTABLE STOVE', 'PORTABLE STOVE', 'PORTABLE STOVE', NULL, 440.00, 0, 0, 0, 0, 0, 0, 1500, NULL, 3, 1, 0, 0, 1, NULL, 0, NULL, NULL);
+INSERT INTO `products` VALUES (7, 1, 'pjq863zmt5nf4fh8ixtihap1jpe79ll0', 'A/S TYPE TANK', '11KG. A/S TYPE', '11KG. A/S TYPE', NULL, 601.87, 0, 149, 0, 315, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 11000, 0, 2, 10);
+INSERT INTO `products` VALUES (8, 1, 'ohizg8boensypacr64haelqhrhsmoi8g', 'POL TYPE TANK', '11KG POL TYPE', '11KG POL TYPE', NULL, 601.87, 602, 27, 0, 46, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 11000, 0, 2, 10);
+INSERT INTO `products` VALUES (9, 1, '3ny79p9wo9mzoc13wtehuhh66zkysof0', '50KG POL TYPE', '5OKG POL TYPE', '50KG POL TYPE', NULL, 2631.00, 2631, 0, 0, 101, 0, 0, 500, NULL, 4, 1, 1, 1, 1, 50000, 0, 2, 10);
+INSERT INTO `products` VALUES (10, 1, 'xthe4184cjs15zaoqfcanahn4bzpekpe', 'Tank Seal', 'tank seal', 'TANKSEAL', NULL, NULL, 0, 4824, 0, 0, 0, 0, 10000, NULL, 1, 1, 0, 1, 0, NULL, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for purchases
@@ -403,23 +400,45 @@ CREATE TABLE `purchases`  (
   `pur_loose_in` int(11) NULL DEFAULT NULL,
   `can_type_in` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`pur_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of purchases
 -- ----------------------------
-INSERT INTO `purchases` VALUES (1, 1, 3, 4, 9, 0.00, 0.00, 1122.90, 57, 19.70, 3, 4, 9, 1);
-INSERT INTO `purchases` VALUES (2, 1, 4, 0, 3, 0.00, 0.00, 59.10, 3, 19.70, 4, 0, 3, 1);
-INSERT INTO `purchases` VALUES (3, 2, 5, 79, 0, 0.00, 0.00, 17035.56, 948, 17.97, 3, 79, 0, 2);
-INSERT INTO `purchases` VALUES (4, 2, 5, 5, 0, 0.00, 0.00, 1078.20, 60, 17.97, 5, 5, 0, 1);
-INSERT INTO `purchases` VALUES (5, 2, 3, 15, 10, 0.00, 0.00, 3414.30, 190, 17.97, 3, 15, 10, 1);
-INSERT INTO `purchases` VALUES (6, 2, 3, 0, 2, 0.00, 0.00, 35.94, 2, 17.97, 4, 0, 2, 1);
-INSERT INTO `purchases` VALUES (7, 3, 3, 3, 11, 0.00, 1440.00, 844.59, 47, 17.97, 3, 0, 11, 2);
-INSERT INTO `purchases` VALUES (8, 3, 3, 3, 1, 0.00, 0.00, 664.89, 37, 17.97, 1, 3, 1, 2);
-INSERT INTO `purchases` VALUES (9, 3, 3, 45, 11, 0.00, 0.00, 9901.47, 551, 17.97, 3, 45, 11, 1);
-INSERT INTO `purchases` VALUES (10, 3, 4, 4, 0, 0.00, 0.00, 862.56, 48, 17.97, 4, 4, 0, 1);
-INSERT INTO `purchases` VALUES (11, 4, 9, 0, 4, 0.00, 0.00, 10524.00, 4, 2631.00, 9, 0, 4, 1);
-INSERT INTO `purchases` VALUES (12, 5, 3, 0, 177, 0.00, 0.00, 0.00, 177, 0.00, 3, 0, 177, 1);
+INSERT INTO `purchases` VALUES (1, 1, 3, 0, 10, 0.00, 0.00, 165.00, 10, 16.50, 1, 0, 10, 2);
+INSERT INTO `purchases` VALUES (2, 1, 3, 15, 9, 0.00, 0.00, 3118.50, 189, 16.50, 3, 15, 9, 1);
+INSERT INTO `purchases` VALUES (3, 1, 4, 3, 8, 0.00, 0.00, 726.00, 44, 16.50, 4, 3, 8, 1);
+INSERT INTO `purchases` VALUES (4, 2, 3, 0, 6, 0.00, 0.00, 102.00, 6, 17.00, 1, 0, 6, 2);
+INSERT INTO `purchases` VALUES (5, 2, 3, 0, 1, 0.00, 0.00, 17.00, 1, 17.00, 5, 0, 1, 1);
+INSERT INTO `purchases` VALUES (6, 2, 3, 1, 5, 0.00, 0.00, 289.00, 17, 17.00, 3, 1, 5, 1);
+INSERT INTO `purchases` VALUES (7, 3, 3, 0, 3, 0.00, 0.00, 49.50, 3, 16.50, 3, 0, 3, 2);
+INSERT INTO `purchases` VALUES (8, 3, 3, 5, 4, 0.00, 0.00, 1056.00, 64, 16.50, 1, 5, 4, 2);
+INSERT INTO `purchases` VALUES (9, 3, 3, 40, 8, 0.00, 0.00, 8052.00, 488, 16.50, 3, 40, 8, 1);
+INSERT INTO `purchases` VALUES (10, 3, 4, 1, 9, 0.00, 0.00, 346.50, 21, 16.50, 4, 1, 9, 1);
+INSERT INTO `purchases` VALUES (11, 4, 3, 17, 10, 0.00, 0.00, 3531.00, 214, 16.50, 3, 17, 10, 2);
+INSERT INTO `purchases` VALUES (12, 4, 3, 23, 10, 0.00, 0.00, 4719.00, 286, 16.50, 1, 23, 10, 2);
+INSERT INTO `purchases` VALUES (13, 4, 3, 0, 4, 0.00, 0.00, 66.00, 4, 16.50, 5, 0, 4, 1);
+INSERT INTO `purchases` VALUES (14, 4, 3, 96, 0, 0.00, 0.00, 19008.00, 1152, 16.50, 3, 96, 0, 1);
+INSERT INTO `purchases` VALUES (15, 5, 3, 0, 2, 0.00, 0.00, 40.00, 2, 20.00, 1, 0, 2, 2);
+INSERT INTO `purchases` VALUES (16, 5, 3, 0, 3, 0.00, 0.00, 60.00, 3, 20.00, 3, 0, 3, 1);
+INSERT INTO `purchases` VALUES (17, 6, 3, 6, 0, 0.00, 0.00, 1188.00, 72, 16.50, 3, 6, 0, 2);
+INSERT INTO `purchases` VALUES (18, 6, 3, 12, 0, 0.00, 0.00, 2376.00, 144, 16.50, 1, 12, 0, 2);
+INSERT INTO `purchases` VALUES (19, 6, 3, 40, 0, 0.00, 0.00, 7920.00, 480, 16.50, 3, 40, 0, 1);
+INSERT INTO `purchases` VALUES (20, 7, 3, 10, 0, 0.00, 0.00, 1980.00, 120, 16.50, 3, 10, 0, 1);
+INSERT INTO `purchases` VALUES (21, 8, 3, 0, 4, 0.00, 0.00, 66.00, 4, 16.50, 3, 0, 4, 2);
+INSERT INTO `purchases` VALUES (22, 8, 3, 2, 0, 0.00, 0.00, 396.00, 24, 16.50, 1, 2, 0, 2);
+INSERT INTO `purchases` VALUES (23, 8, 3, 5, 8, 0.00, 0.00, 1122.00, 68, 16.50, 3, 5, 8, 1);
+INSERT INTO `purchases` VALUES (24, 9, 3, 0, 5, 0.00, 0.00, 100.00, 5, 20.00, 3, 0, 5, 1);
+INSERT INTO `purchases` VALUES (25, 10, 3, 1, 0, 0.00, 0.00, 198.00, 12, 16.50, 5, 1, 0, 1);
+INSERT INTO `purchases` VALUES (26, 10, 3, 11, 0, 0.00, 0.00, 2178.00, 132, 16.50, 3, 11, 0, 1);
+INSERT INTO `purchases` VALUES (27, 11, 3, 9, 11, 0.00, 360.00, 2224.50, 119, 16.50, 3, 9, 5, 2);
+INSERT INTO `purchases` VALUES (28, 11, 3, 2, 0, 0.00, 0.00, 396.00, 24, 16.50, 1, 2, 0, 2);
+INSERT INTO `purchases` VALUES (29, 11, 3, 2, 1, 0.00, 0.00, 412.50, 25, 16.50, 3, 2, 1, 1);
+INSERT INTO `purchases` VALUES (30, 12, 3, 0, 7, 0.00, 0.00, 140.00, 7, 20.00, 3, 0, 7, 2);
+INSERT INTO `purchases` VALUES (31, 12, 3, 0, 5, 0.00, 0.00, 100.00, 5, 20.00, 1, 0, 5, 2);
+INSERT INTO `purchases` VALUES (32, 12, 3, 0, 48, 0.00, 2400.00, 2560.00, 48, 20.00, 3, 0, 8, 1);
+INSERT INTO `purchases` VALUES (33, 13, 3, 5, 0, 0.00, 0.00, 990.00, 60, 16.50, 1, 5, 0, 2);
+INSERT INTO `purchases` VALUES (34, 13, 3, 18, 0, 0.00, 0.00, 3564.00, 216, 16.50, 3, 18, 0, 1);
 
 -- ----------------------------
 -- Table structure for quantity_logs
@@ -434,7 +453,7 @@ CREATE TABLE `quantity_logs`  (
   `log_datetime` datetime NULL DEFAULT NULL,
   `pdn_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of quantity_logs
@@ -475,6 +494,58 @@ INSERT INTO `quantity_logs` VALUES (33, 1, 7, 1, 500, '2023-06-01 10:39:26', 1);
 INSERT INTO `quantity_logs` VALUES (34, 1, 9, 1, 150, '2023-06-01 10:39:30', 1);
 INSERT INTO `quantity_logs` VALUES (35, 1, 9, 1, 4, '2023-06-01 10:40:11', 1);
 INSERT INTO `quantity_logs` VALUES (36, 1, 9, 1, 4, '2023-06-01 10:40:47', 1);
+INSERT INTO `quantity_logs` VALUES (37, 1, 3, 1, 9849, '2023-07-05 13:47:28', 1);
+INSERT INTO `quantity_logs` VALUES (38, 1, 4, 1, 14535, '2023-07-05 13:47:37', 1);
+INSERT INTO `quantity_logs` VALUES (39, 1, 5, 1, 4629, '2023-07-05 13:47:43', 1);
+INSERT INTO `quantity_logs` VALUES (40, 1, 3, 1, 9849, '2023-07-05 13:48:09', 1);
+INSERT INTO `quantity_logs` VALUES (41, 1, 3, 1, 9849, '2023-07-05 13:48:24', 1);
+INSERT INTO `quantity_logs` VALUES (42, 1, 4, 1, 14535, '2023-07-05 13:48:30', 1);
+INSERT INTO `quantity_logs` VALUES (43, 1, 5, 1, 4629, '2023-07-05 13:48:36', 1);
+INSERT INTO `quantity_logs` VALUES (44, 1, 4, 1, 2084, '2023-07-05 13:52:13', 1);
+INSERT INTO `quantity_logs` VALUES (45, 1, 4, 1, 12451, '2023-07-05 13:52:54', 1);
+INSERT INTO `quantity_logs` VALUES (46, 1, 2, 1, 20000, '2023-07-05 13:53:06', 1);
+INSERT INTO `quantity_logs` VALUES (47, 1, 4, 1, 12451, '2023-07-05 13:53:17', 1);
+INSERT INTO `quantity_logs` VALUES (48, 1, 5, 1, 4532, '2023-07-05 13:56:15', 1);
+INSERT INTO `quantity_logs` VALUES (49, 1, 5, 1, 3356, '2023-07-05 13:56:57', 1);
+INSERT INTO `quantity_logs` VALUES (50, 1, 5, 1, 1080, '2023-07-05 13:57:19', 1);
+INSERT INTO `quantity_logs` VALUES (51, 1, 5, 1, 1080, '2023-07-05 13:57:26', 1);
+INSERT INTO `quantity_logs` VALUES (52, 1, 5, 1, 2010, '2023-07-05 13:57:33', 1);
+INSERT INTO `quantity_logs` VALUES (53, 1, 4, 1, 1716, '2023-07-05 13:58:17', 1);
+INSERT INTO `quantity_logs` VALUES (54, 1, 4, 1, 670, '2023-07-05 13:58:35', 1);
+INSERT INTO `quantity_logs` VALUES (55, 1, 4, 1, 207, '2023-07-05 13:58:40', 1);
+INSERT INTO `quantity_logs` VALUES (56, 1, 4, 1, 408, '2023-07-05 13:58:45', 1);
+INSERT INTO `quantity_logs` VALUES (57, 1, 4, 1, 368, '2023-07-05 13:59:30', 1);
+INSERT INTO `quantity_logs` VALUES (58, 1, 3, 1, 9855, '2023-07-05 14:04:26', 1);
+INSERT INTO `quantity_logs` VALUES (59, 1, 3, 1, 9849, '2023-07-05 14:09:52', 1);
+INSERT INTO `quantity_logs` VALUES (60, 1, 1, 1, 9000, '2023-07-05 14:09:58', 1);
+INSERT INTO `quantity_logs` VALUES (61, 1, 3, 1, 9849, '2023-07-05 14:10:04', 1);
+INSERT INTO `quantity_logs` VALUES (62, 1, 3, 1, 5591, '2023-07-05 14:10:22', 1);
+INSERT INTO `quantity_logs` VALUES (63, 1, 3, 1, 1091, '2023-07-05 14:10:31', 1);
+INSERT INTO `quantity_logs` VALUES (64, 1, 3, 1, 4300, '2023-07-05 14:10:40', 1);
+INSERT INTO `quantity_logs` VALUES (65, 1, 3, 1, 168, '2023-07-05 16:03:20', 2);
+INSERT INTO `quantity_logs` VALUES (66, 1, 3, 1, 368, '2023-07-05 16:04:02', 2);
+INSERT INTO `quantity_logs` VALUES (67, 1, 3, 1, 99999, '2023-07-05 16:05:28', 2);
+INSERT INTO `quantity_logs` VALUES (68, 1, 3, 1, 10869, '2023-07-05 16:05:37', 2);
+INSERT INTO `quantity_logs` VALUES (69, 1, 2, 1, 99999, '2023-07-05 16:05:50', 2);
+INSERT INTO `quantity_logs` VALUES (70, 1, 3, 1, 10869, '2023-07-05 16:05:59', 2);
+INSERT INTO `quantity_logs` VALUES (71, 1, 3, 1, 5250, '2023-07-05 16:07:48', 2);
+INSERT INTO `quantity_logs` VALUES (72, 1, 4, 1, 32, '2023-07-05 16:09:25', 2);
+INSERT INTO `quantity_logs` VALUES (73, 1, 4, 1, 32, '2023-07-05 16:09:42', 2);
+INSERT INTO `quantity_logs` VALUES (74, 1, 5, 1, 26, '2023-07-05 16:10:54', 2);
+INSERT INTO `quantity_logs` VALUES (75, 1, 5, 1, 26, '2023-07-05 16:10:59', 2);
+INSERT INTO `quantity_logs` VALUES (76, 1, 10, 1, 5000, '2023-07-05 16:26:42', 2);
+INSERT INTO `quantity_logs` VALUES (77, 1, 9, 1, 101, '2023-07-05 16:26:50', 2);
+INSERT INTO `quantity_logs` VALUES (78, 1, 7, 1, 464, '2023-07-05 16:26:57', 2);
+INSERT INTO `quantity_logs` VALUES (79, 1, 8, 1, 73, '2023-07-05 16:27:03', 2);
+INSERT INTO `quantity_logs` VALUES (80, 1, 9, 1, 101, '2023-07-05 16:27:08', 2);
+INSERT INTO `quantity_logs` VALUES (81, 1, 7, 1, 464, '2023-07-05 16:27:22', 2);
+INSERT INTO `quantity_logs` VALUES (82, 1, 8, 1, 73, '2023-07-05 16:27:36', 2);
+INSERT INTO `quantity_logs` VALUES (83, 1, 7, 1, 149, '2023-07-05 16:27:46', 2);
+INSERT INTO `quantity_logs` VALUES (84, 1, 8, 1, 27, '2023-07-05 16:28:13', 2);
+INSERT INTO `quantity_logs` VALUES (85, 1, 3, 1, 10869, '2023-07-05 16:31:01', 2);
+INSERT INTO `quantity_logs` VALUES (86, 1, 1, 1, 99999, '2023-07-05 16:31:15', 2);
+INSERT INTO `quantity_logs` VALUES (87, 1, 3, 1, 10869, '2023-07-05 16:31:21', 2);
+INSERT INTO `quantity_logs` VALUES (88, 1, 4, 1, 32, '2023-07-05 16:32:04', 2);
 
 -- ----------------------------
 -- Table structure for reset_password
@@ -485,7 +556,7 @@ CREATE TABLE `reset_password`  (
   `usr_id` int(11) NULL DEFAULT NULL,
   `rst_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`rst_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reset_password
@@ -505,7 +576,7 @@ CREATE TABLE `sales_reports`  (
   `sls_time` time NULL DEFAULT NULL,
   `pdn_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`sls_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sales_reports
@@ -519,7 +590,7 @@ CREATE TABLE `status`  (
   `sts_id` int(11) NOT NULL AUTO_INCREMENT,
   `sts_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`sts_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of status
@@ -535,7 +606,7 @@ CREATE TABLE `stock_statuses`  (
   `stk_closing` double NULL DEFAULT NULL,
   `pdn_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`stk_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of stock_statuses
@@ -566,13 +637,27 @@ CREATE TABLE `stock_verifications`  (
   `verify_user_type` int(11) NULL DEFAULT NULL,
   `verify_user_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`verify_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of stock_verifications
 -- ----------------------------
-INSERT INTO `stock_verifications` VALUES (1, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 1, 1);
-INSERT INTO `stock_verifications` VALUES (2, 2, 2698000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (1, 1, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (2, 2, 2698000, NULL, NULL, NULL, NULL, NULL, 2698000, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (4, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (5, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (6, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (7, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (8, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (9, 3, 9849, 4258, 0, 200, 1091, 4300, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (10, 4, 14535, 1414, 12451, 55, 207, 408, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (11, 5, 4629, 1176, 97, 266, 1080, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (12, 7, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (13, 8, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (14, 9, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (15, 1, 1354950, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 1, 1, 1);
+INSERT INTO `stock_verifications` VALUES (16, 2, 4154000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for stockin_logs
@@ -589,7 +674,7 @@ CREATE TABLE `stockin_logs`  (
   `log_scraps` int(10) NULL DEFAULT 0,
   `log_date` date NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of stockin_logs
@@ -613,17 +698,23 @@ CREATE TABLE `stocks_logs`  (
   `stk_for_revalving` int(11) NULL DEFAULT 0,
   `stk_scraps` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`stk_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of stocks_logs
 -- ----------------------------
-INSERT INTO `stocks_logs` VALUES (1, 1, 3, NULL, NULL, 1, 0, 10573, 0, 3, 463, 0);
-INSERT INTO `stocks_logs` VALUES (2, 1, 4, NULL, NULL, 1, 0, 33688, 0, 0, 173, 0);
-INSERT INTO `stocks_logs` VALUES (3, 1, 5, NULL, NULL, 1, 0, 69, 0, 0, 858, 0);
-INSERT INTO `stocks_logs` VALUES (4, 1, 7, NULL, NULL, 1, 0, 500, 0, 0, 0, 0);
-INSERT INTO `stocks_logs` VALUES (5, 1, 8, NULL, NULL, 1, 0, 116, 0, 0, 0, 0);
-INSERT INTO `stocks_logs` VALUES (6, 1, 9, NULL, NULL, 1, 0, 150, 4, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (1, 1, 3, NULL, 9849, 1, 0, 25524, 0, 0, 1554, 4300);
+INSERT INTO `stocks_logs` VALUES (2, 1, 4, NULL, 14535, 1, 0, 25011, 368, 0, 380, 408);
+INSERT INTO `stocks_logs` VALUES (3, 1, 5, NULL, 4629, 1, 0, 314, 0, 0, 1938, 2010);
+INSERT INTO `stocks_logs` VALUES (4, 1, 7, NULL, 0, 1, 0, 500, 0, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (5, 1, 8, NULL, 0, 1, 0, 116, 0, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (6, 1, 9, NULL, 0, 1, 0, 150, 4, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (7, 1, 3, 9849, NULL, 2, 0, 0, 10869, 0, 168, 0);
+INSERT INTO `stocks_logs` VALUES (8, 1, 4, 14535, NULL, 2, 0, 0, 32, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (9, 1, 5, 4629, NULL, 2, 0, 340, 0, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (10, 1, 7, 0, NULL, 2, 0, 0, 149, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (11, 1, 8, 0, NULL, 2, 0, 0, 27, 0, 0, 0);
+INSERT INTO `stocks_logs` VALUES (12, 1, 9, 0, NULL, 2, 0, 101, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for suppliers
@@ -640,7 +731,7 @@ CREATE TABLE `suppliers`  (
   `sup_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `sup_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`sup_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of suppliers
@@ -662,13 +753,15 @@ CREATE TABLE `tank_logs`  (
   `log_tnk_closing` decimal(10, 0) NULL DEFAULT NULL,
   `pdn_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tank_logs
 -- ----------------------------
-INSERT INTO `tank_logs` VALUES (1, 1, 1, 0, NULL, 1);
-INSERT INTO `tank_logs` VALUES (2, 1, 2, 2698000, NULL, 1);
+INSERT INTO `tank_logs` VALUES (1, 1, 1, 0, 0, 1);
+INSERT INTO `tank_logs` VALUES (2, 1, 2, 2698000, 2698000, 1);
+INSERT INTO `tank_logs` VALUES (3, 1, 1, 1354950, NULL, 2);
+INSERT INTO `tank_logs` VALUES (4, 1, 2, 4154000, NULL, 2);
 
 -- ----------------------------
 -- Table structure for tanks
@@ -684,13 +777,13 @@ CREATE TABLE `tanks`  (
   `tnk_uuid` int(11) NULL DEFAULT NULL,
   `tnk_active` tinyint(4) NULL DEFAULT 1,
   PRIMARY KEY (`tnk_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tanks
 -- ----------------------------
-INSERT INTO `tanks` VALUES (1, 1, 'Bullet Tank 1', 4154000, 3154000, NULL, NULL, 1);
-INSERT INTO `tanks` VALUES (2, 1, 'Bullet Tank 2', 4154000, 604200, NULL, NULL, 1);
+INSERT INTO `tanks` VALUES (1, 1, 'Bullet Tank 1', 4154000, 291000, NULL, NULL, 1);
+INSERT INTO `tanks` VALUES (2, 1, 'Bullet Tank 2', 4154000, 3475000, NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for transactions
@@ -716,16 +809,24 @@ CREATE TABLE `transactions`  (
   `trx_opposition_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `pdn_id` int(30) NULL DEFAULT NULL,
   PRIMARY KEY (`trx_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
-INSERT INTO `transactions` VALUES (1, 'POS-20230601-1', 1, 1, 5, '2023-06-01 09:32:04', '2023-06-01', '09:32:04', 0, 1182, 1182, 1182, 1, '7690', '1965', 0, NULL, 1);
-INSERT INTO `transactions` VALUES (2, 'POS-20230601-2', 1, 1, 1, '2023-06-01 09:34:38', '2023-06-01', '09:34:38', 0, 21564, 21564, 21564, 1, '7692', '1970', 0, NULL, 1);
-INSERT INTO `transactions` VALUES (3, 'POS-20230601-3', 1, 1, 4, '2023-06-01 09:38:36', '2023-06-01', '09:38:36', 13714, 0, 12274, 13714, 1, '7691', '1969', 1, NULL, 1);
-INSERT INTO `transactions` VALUES (4, 'POS-20230601-4', 1, 1, 24, '2023-06-01 10:42:16', '2023-06-01', '10:42:16', 0, 10524, 10524, 10524, 1, 'xxxx', 'xxxx', 0, NULL, 1);
-INSERT INTO `transactions` VALUES (5, 'OPS-20230601-5', 1, 1, 3, '2023-06-01 10:58:02', '2023-06-01', '10:58:02', 0, 0, 0, 0, 1, 'N/A', '123', 0, 'Rufrance', 1);
+INSERT INTO `transactions` VALUES (1, 'POS-20230705-1', 1, 1, 5, '2023-07-05 15:04:12', '2023-07-05', '15:04:12', 0, 4010, 4010, 4010, 1, '7881', '3435', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (2, 'POS-20230705-2', 1, 1, 25, '2023-07-05 15:06:51', '2023-07-05', '15:06:51', 0, 408, 408, 408, 1, '7882', '3436', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (3, 'POS-20230705-3', 1, 1, 4, '2023-07-05 15:08:24', '2023-07-05', '15:08:24', 0, 9504, 9504, 9504, 1, '7883', '3437', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (4, 'POS-20230705-4', 1, 1, 16, '2023-07-05 15:11:32', '2023-07-05', '15:11:32', 27324, 0, 27324, 27324, 1, '7658', '1-1191', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (5, 'POS-20230705-5', 1, 1, 17, '2023-07-05 15:17:18', '2023-07-05', '15:17:18', 100, 0, 100, 100, 1, '7659', '1-1192', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (6, 'POS-20230705-6', 1, 1, 14, '2023-07-05 15:18:54', '2023-07-05', '15:18:54', 11484, 0, 11484, 11484, 1, '7669', '1-1193', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (7, 'POS-20230705-7', 1, 1, 8, '2023-07-05 15:19:22', '2023-07-05', '15:19:22', 1980, 0, 1980, 1980, 1, '7661', '1-1194', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (8, 'POS-20230705-8', 1, 1, 26, '2023-07-05 15:21:22', '2023-07-05', '15:21:22', 1584, 0, 1584, 1584, 1, '7662', '1-1195', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (9, 'POS-20230705-9', 1, 1, 17, '2023-07-05 15:22:14', '2023-07-05', '15:22:14', 100, 0, 100, 100, 1, '7663', '1-1196', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (10, 'POS-20230705-10', 1, 1, 6, '2023-07-05 15:22:55', '2023-07-05', '15:22:55', 2376, 0, 2376, 2376, 1, '7664', '1-1197', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (11, 'POS-20230705-11', 1, 1, 13, '2023-07-05 15:27:51', '2023-07-05', '15:27:51', 3033, 0, 2772, 3033, 1, '7665', '1-1198', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (12, 'POS-20230705-12', 1, 1, 17, '2023-07-05 15:30:04', '2023-07-05', '15:30:04', 2800, 0, 1200, 2800, 1, '7666', '1-1199', 0, NULL, 2);
+INSERT INTO `transactions` VALUES (13, 'POS-20230705-13', 1, 1, 27, '2023-07-05 15:31:38', '2023-07-05', '15:31:38', 4554, 0, 4554, 4554, 1, '7667', '1-1200', 0, NULL, 2);
 
 -- ----------------------------
 -- Table structure for user_types
@@ -735,7 +836,7 @@ CREATE TABLE `user_types`  (
   `typ_id` int(11) NOT NULL AUTO_INCREMENT,
   `typ_name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`typ_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_types
@@ -762,7 +863,7 @@ CREATE TABLE `users`  (
   `usr_active` tinyint(4) NULL DEFAULT 1,
   `typ_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`usr_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
