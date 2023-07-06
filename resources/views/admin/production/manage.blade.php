@@ -796,7 +796,7 @@
                                         <td><b>Total Stocks</b></td>
                                         @if(isset($canisters))
                                             @foreach($canisters as $canister)
-                                                <strong><th>{!! get_product_total_stock_no_scrap($canister->prd_id) !!}</th></strong>
+                                                <strong><th>{!! get_product_total_stock($canister->prd_id) !!}</th></strong>
                                             @endforeach
                                         @endif
                                     </tr>

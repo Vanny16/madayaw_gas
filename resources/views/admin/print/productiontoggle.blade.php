@@ -199,7 +199,61 @@
                     </tr>
                     <tr style="border-top:1px solid black"></tr>
                 </tbody>
+            </table>    
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
+                        @if(isset($canisters))
+                            @foreach($oppositions as $opposition)
+                                <th style="border-bottom:1px solid black"></th>
+                            @endforeach
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>CUSTOMER</i></td>
+                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>REFERENCE ID</i></td>
+                        @if(isset($oppositions))
+                            @foreach($oppositions as $opposition)
+                                <td style="text-align:center; border:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>
+                            @endforeach
+                        @endif
+                    </tr>
+                    <tr>
+                        <!-- add forloop here for how many customers ordered  -->
+                        @php($row_count = $p2i_table_rows)
+                        @foreach($oppositions_array as $opposition_array)
+                        <tr>
+                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
+                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
+                            @for($index = 2; $index < count($opposition_array); $index++)
+                                <td style="text-align:center; border:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
+                            @endfor
+                        </tr>
+                        @php($row_count--)
+                        @endforeach
+
+                        @php(($td_count = count($oppositions)))
+                        @if($row_count <> 0)
+                            @while($row_count > 0)
+                                <tr>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
+                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black">0</td>
+                                    @for($count = 0; $count < $td_count; $count++)
+                                        <td style="text-indent:-9999px; border:1px solid black">0</td>
+                                    @endfor
+                                </tr>
+                                @php($row_count--)
+                            @endwhile
+                        @endif
+                    </tr>
+                    <tr style="border-top:1px solid black"></tr>
+                </tbody>
             </table>
+            <br>
             <table>
                 <thead>
                     <tr>
@@ -348,7 +402,7 @@
                 <h4><strong style="font-size:15px;">PART 4: OPPOSITION CANISTERS</strong></h4>
             </div>
 
-            <table>
+            {{--<table>
                 <thead>
                     <tr>
                         <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
@@ -399,7 +453,7 @@
                     </tr>
                     <tr style="border-top:1px solid black"></tr>
                 </tbody>
-            </table>
+            </table>--}}
             <hr><br>
             <div class="row">
                 <div class="col-md-12 text-center">
@@ -516,14 +570,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    Define a function to handle the beforeprint event
+    // Define a function to handle the beforeprint event
     function handleBeforePrint() {
-        Remove the event listener to prevent an infinite loop
+        // Remove the event listener to prevent an infinite loop
         window.removeEventListener("beforeprint", handleBeforePrint);
 
-        Display a confirmation dialog to allow the user to select print settings
+        // Display a confirmation dialog to allow the user to select print settings
         if (confirm("Click 'OK' to show preview")) {
-            Open the print dialog
+            // Open the print dialog
             setTimeout(function() {
                 window.print();
             }, 500);
@@ -533,10 +587,10 @@
         }
     }
 
-    Add an event listener for the beforeprint event
+    // Add an event listener for the beforeprint event
     window.addEventListener("beforeprint", handleBeforePrint);
 
-    Call the print method when the page finishes loading
+    // Call the print method when the page finishes loading
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
