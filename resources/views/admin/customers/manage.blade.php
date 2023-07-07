@@ -105,6 +105,7 @@
                                     <tr>
                                         <th width="20px">
                                             <input type="checkbox" id="customer-select-all"></th>
+                                            <label><small>Select all</small></label>
                                         <th width="50px"></th>
                                         <th>Name</th>
                                         <th width="20%">Address</th>

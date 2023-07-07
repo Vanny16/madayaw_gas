@@ -99,8 +99,12 @@ class SalesController extends Controller
         // ->where('cus_id', '=', $client_id )
         ->orderBy('cus_name', 'ASC')
         ->first();
+        //  dd($selected_customer);
+
+        if($selected_customer == null){
+        return response()->$this->main();
+        }
         
-    
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
                 
