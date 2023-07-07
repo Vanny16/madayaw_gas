@@ -102,7 +102,9 @@ class SalesController extends Controller
         //  dd($selected_customer);
 
         if($selected_customer == null){
-        return response()->$this->main();
+
+            session()->flash('errorMessage',  "Customer name not found!");
+            return $this->main();
         }
         
         $cus_accessibles_list = $selected_customer->cus_accessibles;
