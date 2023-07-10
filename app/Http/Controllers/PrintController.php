@@ -148,8 +148,6 @@ class PrintController extends Controller
     ->where('purchases.trx_id', '=', $latest_trx_id)
     ->get();
 
-
-
         // dd($purchases);
 
         session()->flash('successMessage','Transaction complete!');
