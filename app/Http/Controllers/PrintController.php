@@ -143,10 +143,14 @@ class PrintController extends Controller
         ->first();
 
         $purchases = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->where('trx_id', '=' ,$latest_trx_id)
-        ->get();
-        dd($transactions);
+    ->select('purchases.*', 'purchases.prd_price as pur_prd_price', 'products.*')
+    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+    ->where('purchases.trx_id', '=', $latest_trx_id)
+    ->get();
+
+
+
+        // dd($purchases);
 
         session()->flash('successMessage','Transaction complete!');
         return view('admin.print.salesreceipt', compact('transactions', 'purchases'));

@@ -64,7 +64,7 @@
                     @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
                     <tr>
                         <td width="20%">{{ $purchase->prd_name }}</td>
-                        <td width="20%">{{ $purchase->prd_price }}</td>
+                        <td width="20%">{{ $purchase->pur_prd_price }}</td>
                         <td width="20%">{{ $purchase->pur_qty }}</td>
                         <td width="20%">{{ number_format($purchase->pur_deposit, 2, '.', ',') }}</td>
                         <td width="20%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
@@ -132,7 +132,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     // Define a function to handle the beforeprint event
     function handleBeforePrint() {
         // Remove the event listener to prevent an infinite loop
@@ -160,7 +160,7 @@
             window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }, 500);
     });
-</script>
+</script> --}}
 
 
 @endsection
