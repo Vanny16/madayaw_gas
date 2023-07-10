@@ -132,7 +132,7 @@
     </div>
 </div>
 
-{{-- <script type="text/javascript">
+<script type="text/javascript">
     // Define a function to handle the beforeprint event
     function handleBeforePrint() {
         // Remove the event listener to prevent an infinite loop
@@ -160,7 +160,7 @@
             window.location.href = "{{ action('PrintController@deliveryReceipt') }}";
         }, 500);
     });
-</script> --}}
+</script>
 
 
 @endsection
