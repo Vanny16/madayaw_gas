@@ -340,6 +340,8 @@ class SalesController extends Controller
         $list = $request->purchases;
         $selected_item_list  = $list;
         $purchase_row = explode(",#,", $selected_item_list);
+        
+        // dd($list);
 
         //for products variable
         $deduct_qty = 0;
