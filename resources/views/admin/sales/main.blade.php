@@ -69,16 +69,11 @@
                                             @endif
                                         </select> --}}
                                         
-                                        <input list="cus_select" id="client_id" name="client_id[]" class="form-control col-md-5 col-12" autocomplete="off" onclick="select()" value="{{ session('client_id') }}"/>
+                                        <input list="cus_select" id="client_id" name="client_id[]" class="form-control col-md-5 col-12" autocomplete="off" onclick="select()" value="{{ session('selected_customer') ?? '' }}"/>
                                         <datalist id="cus_select">
                                             <option></option>
                                             @if(isset($customers))
                                                 @foreach($customers as $customer)
-                                                    @if(session('new_client') == $customer->cus_name || session('selected_customer') == $customer->cus_id)
-                                                        @php($selected = "selected")
-                                                    @else
-                                                        @php($selected = "")
-                                                    @endif
                                                     <option data-value="{{ $customer->cus_id }}">{{ $customer->cus_name }}</option>
                                                 @endforeach
                                             @endif

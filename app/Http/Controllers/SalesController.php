@@ -138,7 +138,7 @@ class SalesController extends Controller
             }
         }
         
-        session()->flash('selected_customer',$selected_customer->cus_id);
+        session()->flash('selected_customer',$selected_customer->cus_name);
 
         // dd($products);
 
