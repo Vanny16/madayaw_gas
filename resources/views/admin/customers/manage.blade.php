@@ -463,7 +463,7 @@
                                                                                                             @endif
                                                                                                                 <input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}" <?php echo($check_indicator)?>>
                                                                                                                 <label for="">{{$product->prd_name}}</label>
-                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="<?php echo($displayed_price)?>" {{$status}}>
+                                                                                                                <input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="0" step="0.01" value="<?php echo($displayed_price)?>" {{$status}}>
                                                                                                             @endif
                                                                                                         </div>
                                                                                                     @endforeach
@@ -619,7 +619,7 @@
                                                             <div class="form-check">
                                                                 <td><input type="checkbox" id="product{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][prd_id]" value="{{$product->prd_id}}"></td>
                                                                 <td><label for="">{{$product->prd_name}}</label></td>
-                                                                <td><input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="1" step="0.01" value="{{$product->prd_price}}"></td>
+                                                                <td><input type="number" class="form-control" id="price{{$product->prd_id}}" name="cus_accessibles[{{ $product->prd_id }}][price]" min="0" step="0.01" value="{{$product->prd_price}}"></td>
                                                             </div>
                                                         </tr>
                                                         @endforeach
