@@ -67,54 +67,75 @@
                 @endif
 
                 @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')
-                <li class="nav-header">INVENTORY</li>
+                    <li class="nav-header">INVENTORY</li>
                 @endif
 
                 @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')
-                <li class="nav-item">
-                    <a href="{{ action('ProductController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-box-open"></i>
-                        <p>
-                            Products
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ action('ProductController@manage') }}" class="nav-link">
+                            <i class="nav-icon fas fa-box-open"></i>
+                            <p>
+                                Products
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    {{-- <form id="go_oppositions" method="POST" action="{{ action('OppositionController@opposite') }}">
-                        {{ csrf_field() }}
-                        <button href="" class="nav-link btn btn-transparent text-dark" style="background-color:transparent; color: #0d6efd;"onclick="go_oppositions.submit()">
+                    <li class="nav-item">
+                        {{-- <form id="go_oppositions" method="POST" action="{{ action('OppositionController@opposite') }}">
+                            {{ csrf_field() }}
+                            <button href="" class="nav-link btn btn-transparent text-dark" style="background-color:transparent; color: #0d6efd;"onclick="go_oppositions.submit()">
+                                <i class="nav-icon fa fa-bitbucket"></i>
+                                <p>
+                                Opposition Canisters
+                                </p>
+                            </button>
+                        </form> --}}
+                        <a href="{{ action('OppositionController@opposite') }}" class="nav-link">
                             <i class="nav-icon fa fa-bitbucket"></i>
                             <p>
-                            Opposition Canisters
+                                Opposition Canisters
                             </p>
-                        </button>
-                    </form> --}}
-                    <a href="{{ action('OppositionController@opposite') }}" class="nav-link">
-                        <i class="nav-icon fa fa-bitbucket"></i>
-                        <p>
-                            Opposition Canisters
-                        </p>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ action('SupplierController@manage') }}" class="nav-link">
-                        <i class="nav-icon fas fa-warehouse"></i>
-                        <p>
-                            Suppliers 
-                        </p>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ action('SupplierController@manage') }}" class="nav-link">
+                            <i class="nav-icon fas fa-warehouse"></i>
+                            <p>
+                                Suppliers 
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('ProductionController@tank') }}" class="nav-link">
-                        <i class="nav-icon fa fa-gas-pump"></i>
-                        <p>
-                            Tank
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ action('ProductionController@tank') }}" class="nav-link">
+                            <i class="nav-icon fa fa-gas-pump"></i>
+                            <p>
+                                Tank
+                            </p>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- for employee access on oppositions --}}
+                @if(session('typ_id') == '2')
+                    <li class="nav-item">
+                        {{-- <form id="go_oppositions" method="POST" action="{{ action('OppositionController@opposite') }}">
+                            {{ csrf_field() }}
+                            <button href="" class="nav-link btn btn-transparent text-dark" style="background-color:transparent; color: #0d6efd;"onclick="go_oppositions.submit()">
+                                <i class="nav-icon fa fa-bitbucket"></i>
+                                <p>
+                                Opposition Canisters
+                                </p>
+                            </button>
+                        </form> --}}
+                        <a href="{{ action('OppositionController@opposite') }}" class="nav-link">
+                            <i class="nav-icon fa fa-bitbucket"></i>
+                            <p>
+                                Opposition Canisters
+                            </p>
+                        </a>
+                    </li>
                 @endif
 
                 @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')

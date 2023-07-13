@@ -25,16 +25,16 @@
             </div>
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    @if(session('typ_id') == 1 || session('typ_id') == '4')
+                    @if(session('typ_id') == 1 || session('typ_id') == 5)
                         @if($pdn_flag)
                             <a class="btn btn-success col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-play mr-1"></i> Start Production</a>
                         @else
                             <a class="btn btn-danger col-lg-2 col-md-3 col-12" href= "javascript:void(0)" data-toggle="modal" data-target="#production-prompt-modal"><i class="fa fa-stop mr-1"></i> End Production</a>
                         @endif
                     @endif
-                    @if(session('typ_id') == 5)
+                    @if(session('typ_id') == 4)
                         <a class="btn btn-primary col-lg-2 col-md-3 col-12" style="float:right;" href= "javascript:void(0)" data-toggle="modal" data-target="#production-verify-modal"><i class="fa fa-edit mr-1"></i> Verify Production</a>
-                    @elseif(session('typ_id') == 1 || session('typ_id') == '4')
+                    @elseif(session('typ_id') == 1 || session('typ_id') == 5)
                         <div class="dropdown dropleft" style="float:right;">
                             <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="dropdown-menu">
@@ -1413,7 +1413,7 @@
                 <div class="modal-footer">
                     @if($pdn_flag)
                         @if($verify_opening_visibility == "disabled")
-                            <strong>Supervisor / Admin must verify first!</strong>
+                            <strong>Plant Manager / Admin must verify first!</strong>
                             @php($opening_visibility = "disabled")
                         @elseif($opening_visibility == "discrepancy")
                             <strong>Please resolve Production discrepancy!</strong>

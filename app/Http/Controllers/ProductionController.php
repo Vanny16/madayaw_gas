@@ -74,7 +74,7 @@ class ProductionController extends Controller
         $product_verifications = DB::table('stock_verifications')
         ->where('verify_pdn_id', '=', $pdn_for_verifications)
         ->where('verify_acc_id', '=', session('acc_id'))
-        ->whereIn('verify_user_type', [1, 3, 5])
+        ->whereIn('verify_user_type', [1, 3, 4])
         ->get(); 
 
         $opening_visibility = "";
@@ -83,7 +83,7 @@ class ProductionController extends Controller
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
 
-        if((count($verifications->get()) == 0) && session('typ_id') <> 5)
+        if((count($verifications->get()) == 0) && session('typ_id') <> 4)
         {
             $opening_visibility = "disabled";
             $verify_opening_visibility = "disabled";
@@ -113,7 +113,7 @@ class ProductionController extends Controller
                 ->first();
                 // dd($admin_verifications);
                 
-                if(is_null($admin_verifications) || (is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 5 || $admin_verifications->verify_user_type == 1)))
+                if(is_null($admin_verifications) || (is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 4 || $admin_verifications->verify_user_type == 1)))
                 {   
                     $verify_opening_visibility = "";
                     $verify_closing_visibility = "disabled";
@@ -139,7 +139,7 @@ class ProductionController extends Controller
                 // }
             }
 
-            if(session('typ_id') == 4)
+            if(session('typ_id') == 5)
             {
                 $pm_verifications  = DB::table('stock_verifications')
                 ->where('verify_acc_id', '=', session('acc_id'))
@@ -152,8 +152,16 @@ class ProductionController extends Controller
                     $verify_opening_visibility = "disabled";
                 }
                 // dd($pm_verifications );
-                if(is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 5 || $pm_verifications->verify_user_type == 1))
-                {   
+                if($pm_verifications != null)
+                {
+                    if(is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 4 || $pm_verifications->verify_user_type == 1))
+                    {   
+                        $verify_opening_visibility = "";
+                        $verify_closing_visibility = "disabled";
+                    }
+                }
+                else
+                {
                     $verify_opening_visibility = "";
                     $verify_closing_visibility = "disabled";
                 }
@@ -167,7 +175,7 @@ class ProductionController extends Controller
                 // }
             }
 
-            if(session('typ_id') == 5)
+            if(session('typ_id') == 4)
             {
                 $supervisor_verifications  = DB::table('stock_verifications')
                 ->where('verify_acc_id', '=', session('acc_id'))
@@ -177,12 +185,12 @@ class ProductionController extends Controller
 
                 if(!is_null($supervisor_verifications))
                 {
-                    if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                    if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1))
                     {
                         $verify_opening_visibility = "verified";
                     }
 
-                    if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 4 || $supervisor_verifications->verify_user_type == 1))
+                    if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1))
                     {
                         $verify_closing_visibility = "verified";
                     }
@@ -213,7 +221,7 @@ class ProductionController extends Controller
         }
         
         $input_text_display = "";
-        if(session('typ_id') == 1 || session('typ_id') == 4 )
+        if(session('typ_id') == 1 || session('typ_id') == 5 )
         {
             $input_text_display = "disabled";
         }
