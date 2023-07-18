@@ -29,11 +29,12 @@ class CustomerController extends Controller
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_id','<>', 0)
         ->where('cus_id','<>', -1)
+        ->orderBy('cus_name', 'ASC')
         ->get();
 
         $cus_id = DB::table('customers')
         ->select('cus_id')
-        ->orderBy('cus_id', 'desc')
+        ->orderBy('cus_id', 'DESC')
         ->first();
 
         $products = DB::table('products')
