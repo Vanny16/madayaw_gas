@@ -54,18 +54,20 @@
                                     <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#tank-refill-modal-{{$tank->tnk_id}}"><i class="fa fa-sm fa-plus mr-1 ml-3" aria-hidden="true"></i><i class="fa fa-gas-pump mr-1" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="col-md-6 mt-1">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default bg-transparent btn-outline-trasparent float-right" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical mr-2"></i></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit" aria-hidden="true"></i>Edit Info</a></li>
+                                    @if(session('typ_id') == 1)
+                                        <div class="dropdown">
+                                            <button class="btn btn-default bg-transparent btn-outline-trasparent float-right" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical mr-2"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target="#tank-edit-modal-{{$tank->tnk_id}}"><i class="fa fa-edit" aria-hidden="true"></i>Edit Info</a></li>
 
-                                            @if($tank->tnk_active == 1) 
-                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
-                                            @else
-                                            <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-check mr-2" aria-hidden="true"></i>Activate</a></li>
-                                            @endif
-                                        </ul>
-                                    </div>
+                                                @if($tank->tnk_active == 1) 
+                                                <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                @else
+                                                <li><a class="ml-3" href="{{ action('ProductionController@tankActivation', ['tnk_id' => $tank->tnk_id, 'tnk_active' => $tank->tnk_active]) }}"><i class="fa fa-check mr-2" aria-hidden="true"></i>Activate</a></li>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">

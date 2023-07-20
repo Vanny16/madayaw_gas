@@ -628,10 +628,20 @@ class ReportsController extends Controller
                 ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
                 ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 ->join('users', 'users.usr_id', '=', 'payments.usr_id')
-                ->where('trx_ref_id', 'LIKE', '%'.$search_payments.'%')
-                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+                ->where(function ($query) use ($search_payments) {
+                    $query->where('trx_ref_id', 'LIKE', '%' . $search_payments . '%')
+                        ->orWhere('payment_name', 'LIKE', '%' . $search_payments . '%')
+                        ->orWhere('customers.cus_name', 'LIKE', '%' . $search_payments . '%');
+                })
+                ->whereBetween('transactions.trx_date', [
+                    date("Y-m-d", strtotime($payments_date_from)),
+                    date("Y-m-d", strtotime($payments_date_to))
+                ])
                 ->orderBy('payments.pmnt_id', 'DESC')
                 ->paginate($paginate_row);
+
+                // dd($transactions);
+
                 
                 if($transactions->isEmpty()) {
                     $transactions = DB::table('payments')
@@ -645,6 +655,29 @@ class ReportsController extends Controller
                     ->paginate($paginate_row);
                 }
             }
+            // if($search_payments != null){
+            //     $transactions = DB::table('payments')
+            //     ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+            //     ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+            //     ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            //     ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+            //     ->where('trx_ref_id', 'LIKE', '%'.$search_payments.'%')
+            //     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+            //     ->orderBy('payments.pmnt_id', 'DESC')
+            //     ->paginate($paginate_row);
+                
+            //     if($transactions->isEmpty()) {
+            //         $transactions = DB::table('payments')
+            //         ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+            //         ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+            //         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            //         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+            //         ->where('customers.cus_name', 'LIKE', '%'.$search_payments.'%')
+            //         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+            //         ->orderBy('payments.pmnt_id', 'DESC')
+            //         ->paginate($paginate_row);
+            //     }
+            // }
             else{
                 $transactions = DB::table('payments')
                 ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
