@@ -849,11 +849,11 @@
         var total_quantity = ((crates_amount * 12));
         total_quantity = parseInt(total_quantity) + parseInt(loose_amount);
 
-        if(total_quantity > remaining_stocks){
-            document.getElementById(crates_id).value = Math.floor(remaining_stocks / 12);
-            document.getElementById(loose_id).value = 0;
-            alert("Order quantity must not exceed to the remaining stocks, " + remaining_stocks + " left.");
-        }
+        // if(total_quantity > remaining_stocks){
+        //     document.getElementById(crates_id).value = Math.floor(remaining_stocks / 12);
+        //     document.getElementById(loose_id).value = 0;
+        //     alert("Order quantity must not exceed to the remaining stocks, " + remaining_stocks + " left.");
+        // }
         
         var temp_discount = document.getElementById(temp_discount_id).value;
         var temp_discount = document.getElementById(temp_discount_id).value;

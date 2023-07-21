@@ -98,14 +98,16 @@
                         </a>
                     </li>
                     
-                    <li class="nav-item">
-                        <a href="{{ action('SupplierController@manage') }}" class="nav-link">
-                            <i class="nav-icon fas fa-warehouse"></i>
-                            <p>
-                                Suppliers 
-                            </p>
-                        </a>
-                    </li>
+                    @if (session('typ_id') == 1)
+                        <li class="nav-item">
+                            <a href="{{ action('SupplierController@manage') }}" class="nav-link">
+                                <i class="nav-icon fas fa-warehouse"></i>
+                                <p>
+                                    Suppliers 
+                                </p>
+                            </a>
+                        </li>
+                    @endif
 
                     <li class="nav-item">
                         <a href="{{ action('ProductionController@tank') }}" class="nav-link">
@@ -149,11 +151,11 @@
                 </li>
                 @endif
                  
-                @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')
+                @if(session('typ_id') == '1' || session('typ_id') == '5'){{-- || session('typ_id') == '4'--}}
                 <li class="nav-header">REPORTS</li>
                 @endif
 
-                @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')
+                @if(session('typ_id') == '1' || session('typ_id') == '5'){{-- || session('typ_id') == '4'--}}
                 <li class="nav-item">
                     <a href="{{ action('ReportsController@salesToday') }}" class="nav-link">
                         <i class="nav-icon fa fa-bar-chart"></i>
@@ -173,7 +175,7 @@
                 </li>
                 @endif
 
-                @if(session('typ_id') == '1' || session('typ_id') == '5' || session('typ_id') == '4')
+                @if(session('typ_id') == '1' || session('typ_id') == '5') {{-- || session('typ_id') == '4'--}}
                 <li class="nav-item">
                     <form id="go_productions" method="POST" action="{{ action('ReportsController@production') }}">
                     {{ csrf_field() }}

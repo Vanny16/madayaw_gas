@@ -87,7 +87,7 @@
                     @if(session('paginate_row'))
                         @php($paginate_row = session('paginate_row'))
                     @else
-                        @php($paginate_row = "10")
+                        @php($paginate_row = "100")
                     @endif
 
                     <div class="card">

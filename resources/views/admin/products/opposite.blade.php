@@ -99,7 +99,9 @@
                                             <th>Quantity</th>
                                             <th width="100px"></th>
                                             <th>Notes</th>
-                                            <th>Active</th>
+                                            @if(session('typ_id') == 1)
+                                                <th>Active</th>
+                                            @endif
                                             <th width="100px"></th>
                                         </tr>
                                     </thead>
@@ -154,15 +156,17 @@
                                                             <a href="javascript:void(0)" class="text-gray" style="cursor: not-allowed;" disabled><i class="fa fa-eye"></i></a>
                                                         </td>
                                                     @endif
-                                                    <td>
-                                                        @if($opposition->ops_active == 1) 
-                                                            <span class="badge badge-success">Active</span>
-                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('OppositionController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
-                                                        @else
-                                                            <span class="badge badge-danger">Inactive</span>
-                                                            <a class="fa fa-toggle-off" type="button" href="{{ action('OppositionController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
-                                                        @endif
-                                                    </td>
+                                                    @if(session('typ_id') == 1)
+                                                        <td>
+                                                            @if($opposition->ops_active == 1) 
+                                                                <span class="badge badge-success">Active</span>
+                                                                <a class="fa fa-toggle-on" type="button" href="{{ action('OppositionController@opsdeactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            @else
+                                                                <span class="badge badge-danger">Inactive</span>
+                                                                <a class="fa fa-toggle-off" type="button" href="{{ action('OppositionController@opsreactivateProduct',[$opposition->ops_id])}}" aria-hidden="true"></a>
+                                                            @endif
+                                                        </td>
+                                                    @endif
                                                     <td>
                                                     @if(session('typ_id') == 1)
                                                         @if($opposition->ops_active == 0)

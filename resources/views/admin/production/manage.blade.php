@@ -345,7 +345,7 @@
                                                                 </td>   
                                                                 <td>{{$canister->prd_name}}</td>
                                                                 <!-- <td>{{$canister->prd_scraps}}</td> -->
-                                                                @if(session('typ_id') == 1  || session('typ_id') == '4')
+                                                                    @if(session('typ_id') == 1) {{-- || session('typ_id') == '4' --}}
                                                                     <td>
                                                                         <a class="btn btn-transparent btn-sm text-info" href="javascript:void(0)" data-toggle="modal" data-target="#disposal-modal-{{$canister->prd_id}}" ><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Dispose </a>
                                                                     </td>
@@ -502,19 +502,19 @@
                                                                         @endif
                                                                     @else
                                                                         <span class="badge badge-success">Active</span>
-                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
-                                                                        <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
+                                                                        @if(session('typ_id') == '1'){{--  || session('typ_id') == '4' --}}
+                                                                            <a class="fa fa-toggle-on" type="button" href="{{ action('ProductionController@activateProduct',[$raw_material->prd_uuid])}}" aria-hidden="true"></a>
                                                                         @endif
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the quantity of empty good won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-raw-modal-{{$raw_material->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                        </ul>
-                                                                    </div>
+                                                                    @if(session('typ_id') == '1') {{-- || session('typ_id') == '4' --}}
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product price won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-raw-modal-{{$raw_material->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            </ul>
+                                                                        </div>
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -672,10 +672,10 @@
                                                                                             <input type="text" class="form-control" id="set_prd_description" name="prd_description" value="{{$raw_material->prd_description}}" />
                                                                                         </div>                   
 
-                                                                                        <!-- <div class="form-group">
+                                                                                        <div class="form-group">
                                                                                             <label for="prd_price">Quantity <span style="color:red">*</span></label>
                                                                                             <input type="text" class="form-control" id="set_prd_quantity" name="prd_quantity" value="{{$quantity}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                                        </div> -->
+                                                                                        </div>
 
                                                                                         <div class="form-group">
                                                                                             <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
