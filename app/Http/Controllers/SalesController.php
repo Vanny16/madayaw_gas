@@ -43,12 +43,12 @@ class SalesController extends Controller
         ->max('trx_id');
         
         $in_products = DB::table('products')
-                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-                ->where('prd_for_POS', '=' ,'1')
-                // ->where('prd_id', '=' ,$cus_accessibles[$i])
-                ->where('prd_quantity', '>' ,'0.0')
-                ->where('prd_active', '=' ,'1')
-                ->get();
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('prd_for_POS', '=' ,'1')
+        // ->where('prd_id', '=' ,$cus_accessibles[$i])
+        ->where('prd_quantity', '>' ,'0.0')
+        ->where('prd_active', '=' ,'1')
+        ->get();
 
         session()->forget('selected_customer');
 
@@ -132,7 +132,7 @@ class SalesController extends Controller
                 ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
                 ->where('prd_for_POS', '=' ,'1')
                 ->where('prd_id', '=' ,$cus_accessibles[$i])
-                ->where('prd_quantity', '>' ,'0.0')
+                // ->where('prd_quantity', '>' ,'0.0')
                 ->where('prd_active', '=' ,'1')
                 ->first();
                 
