@@ -82,6 +82,7 @@ Route::group(['prefix' => 'print'], function()
     Route::get('payment-receipt', 'PrintController@paymentReceipt');
     Route::get('delivery-receipt', 'PrintController@deliveryReceipt');
     Route::get('bad-order-receipt', 'PrintController@badorderReceipt');
+
 });
 
 Route::group(['prefix' => 'production'], function()
@@ -100,6 +101,12 @@ Route::group(['prefix' => 'production'], function()
     Route::post('add-tank', 'ProductionController@createTank');
     Route::post('edit-tank/{tnk_id}', 'ProductionController@editTank');
     Route::post('refill-tank/{tnk_id}', 'ProductionController@refillTank');
+    Route::post('edit-empty', 'ProductionController@editEmptygoods');
+    Route::post('edit-filled', 'ProductionController@editFilled');
+    Route::post('edit-leakers', 'ProductionController@editLeakers');
+    Route::post('edit-revalving', 'ProductionController@editRevalving');
+    Route::post('edit-scrap', 'ProductionController@editScraps');
+    
 
 });
 

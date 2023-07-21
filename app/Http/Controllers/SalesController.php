@@ -63,6 +63,7 @@ class SalesController extends Controller
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'transactions.mode_of_payment')
         ->where('trx_active','=','1')
         ->orderBy('transactions.trx_ref_id', 'DESC')
         ->paginate($paginate_row);
@@ -71,8 +72,12 @@ class SalesController extends Controller
         ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
         ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+        ->select('trx_mode_pf_payment As pmnt_amount_cash FROM transactions where mode_of_payment')
+        ->wherebetween('transactions.trx_amount_paid', [$date_from, $date_to])
         ->get();
-        
+        // 'trx_mode_of_payment' => $mode_of_payment,
+        // 'pmnt_amount' => $trx_amount_cash,
+
         session(['select_show' => 'Transactions']);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
@@ -143,12 +148,12 @@ class SalesController extends Controller
         // dd($products);
 
         $in_products = DB::table('products')
-                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-                ->where('prd_for_POS', '=' ,'1')
-                // ->where('prd_id', '=' ,$cus_accessibles[$i])
-                ->where('prd_quantity', '>' ,'0.0')
-                ->where('prd_active', '=' ,'1')
-                ->get();
+        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        ->where('prd_for_POS', '=' ,'1')
+        // ->where('prd_id', '=' ,$cus_accessibles[$i])
+        ->where('prd_quantity', '>' ,'0.0')
+        ->where('prd_active', '=' ,'1')
+        ->get();
 
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))

@@ -1627,7 +1627,92 @@ class ProductionController extends Controller
         }
 
         session()->flash('getProdValues', array( $prodValues));
-    }  
+    } 
+    
+    //EDIT EMPTY GOOD
+    public function editEmptygoods(Request $request)
+    {
+        $prd_id = $request->prd_id;
+        $prd_empty_goods = $request->prd_empty_goods;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->update([
+            'prd_empty_goods' => $prd_empty_goods
+        ]);
+        // dd($quantity);
+        session()->flash('successMessage','Empty quantity has been updated.');
+        return redirect()->action('ProductionController@manage');
+    }
+     
+    //EDIT FILLED GOOD
+    public function editFilled(Request $request)
+    {
+        $prd_id = $request->prd_id;
+        $prd_quantity = $request->prd_quantity;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->update([
+            'prd_quantity' => $prd_quantity
+        ]);
+        // dd($quantity);
+        session()->flash('successMessage','Filled quantity has been updated.');
+        return redirect()->action('ProductionController@manage');
+    }
+     
+    //EDIT EMPTY GOOD
+    public function editLeakers(Request $request)
+    {
+        $prd_id = $request->prd_id;
+        $prd_leakers = $request->prd_leakers;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->update([
+            'prd_leakers' => $prd_leakers
+        ]);
+        // dd($quantity);
+        session()->flash('successMessage','Leakers quantity has been updated.');
+        return redirect()->action('ProductionController@manage');
+    }
+
+    //EDIT FOR REVALVING
+    public function editRevalving(Request $request)
+    {
+        $prd_id = $request->prd_id;
+        $prd_for_revalving = $request->prd_for_revalving;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->update([
+            'prd_for_revalving' => $prd_for_revalving
+        ]);
+        // dd($quantity);
+        session()->flash('successMessage','Revalving quantity has been updated.');
+        return redirect()->action('ProductionController@manage');
+    }
+
+    //EDIT FOR SCRAP
+    public function editScraps(Request $request)
+    {
+        $prd_id = $request->prd_id;
+        $prd_scraps = $request->prd_scraps;
+        
+        DB::table('products')
+        ->where('prd_id', '=', $prd_id)
+        ->where('acc_id','=', session('acc_id'))
+        ->update([
+            'prd_scraps' => $prd_scraps
+        ]);
+        // dd($quantity);
+        session()->flash('successMessage','Scaps quantity has been updated.');
+        return redirect()->action('ProductionController@manage');
+    }
 
     //EDIT PRODUCTION ITEMS
     public function editItem(Request $request)

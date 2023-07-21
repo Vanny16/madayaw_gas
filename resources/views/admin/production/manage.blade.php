@@ -86,32 +86,73 @@
                                                     @if(isset($canisters))
                                                         @foreach($canisters as $canister)
                                                             @if($canister->prd_active == 1)
-                                                            <tr>
-                                                                <td>
-                                                                    @if($canister->prd_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @endif
-                                                                </td>   
-                                                                <td>{{$canister->prd_name}}</td>
-                                                                <!-- <td>{{$canister->prd_quantity}}</td> -->
-                                                                <td>
-                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
-                                                                    <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
-                                                                    @endif
-                                                                </td>
-                                                                {{--<td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>--}}
-                                                                {{--<td>
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
-                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
-                                                                        </ul>
+                                                                <tr>
+                                                                    <td>
+                                                                        @if($canister->prd_image <> '')
+                                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        @else
+                                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        @endif
+                                                                    </td>   
+                                                                    <td>{{$canister->prd_name}}</td>
+                                                                    <!-- <td>{{$canister->prd_quantity}}</td> -->
+                                                                    <td>
+                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                        <a class="btn btn-transparent btn-sm text-success" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 2)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Stock-in filled-cans</a>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product quantity won\'t be effective to the existing customers. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-filled-modal-{{$canister->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        @endif
+                                                                    </td>
+                                                                    {{--<td> <a class="btn btn-transparent btn-sm text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-arrow-down mr-1" aria-hidden="true"></i> Input Leakers</a></td>--}}
+                                                                    {{--<td>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" data-target=""><i class="fa fa-ban mr-2" aria-hidden="true"></i>Deactivate</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </td>--}}
+                                                                </tr>
+                                                                {{-- EDIT QUANTITY --}}
+                                                                <div class="modal fade" id="edit-filled-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-sm" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Quantity</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <form method="POST" action="{{ action('ProductionController@editFilled') }}" enctype="multipart/form-data">
+                                                                            {{ csrf_field() }} 
+                                                                                <div class="modal-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                <input type="text" class="form-control" id="prd_quantity" name="prd_quantity" value="{{$canister->prd_quantity}}"/>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
-                                                                </td>--}}
-                                                            </tr>
+                                                                </div>
                                                             @endif
                                                         @endforeach
                                                     @endif
@@ -137,24 +178,65 @@
                                                     @if(isset($canisters))
                                                         @foreach($canisters as $canister)
                                                             @if($canister->prd_active == 1)
-                                                            <tr>
-                                                                <td>
-                                                                    @if($canister->prd_image <> '')
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @else
-                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
-                                                                    @endif
-                                                                </td>   
-                                                                <td>{{$canister->prd_name}}</td>
-                                                                <!-- <td>{{$canister->prd_leakers}}</td> -->
+                                                                <tr>
+                                                                    <td>
+                                                                        @if($canister->prd_image <> '')
+                                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{$raw_material->prd_id}}"><img class="img-fluid img-circle elevation-2" src="{{ asset('img/products/' . $raw_material->prd_image) }}" alt="{{ $raw_material->prd_image }}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        @else
+                                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#img-product-modal-{{--$raw_material->prd_id--}}"><img class="profile-user-img img-fluid img-circle" src="{{ asset('img/products/default.png') }}" alt="{{-- $raw_material->prd_image --}}" style="max-height:50px; max-width:50px; min-height:50px; min-width:50px; object-fit:cover;"/></a>
+                                                                        @endif
+                                                                    </td>   
+                                                                    <td>{{$canister->prd_name}}</td>
+                                                                    <!-- <td>{{$canister->prd_leakers}}</td> -->
 
-                                                                @if(session('typ_id') == '1' || session('typ_id') == '4')
-                                                                <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
-                                                                <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
-                                                                @endif
-                                                            </tr>
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                    <td> <a class="btn btn-transparent btn-sm text-success" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 6)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Leakers</a></td>
+                                                                    <td> <a class="btn btn-transparent btn-sm text-danger" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 3)"><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> Input Bad Order</a></td>
+                                                                    <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 7)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> For Revalving</a></td>
+                                                                    <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 5)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Scrapped</a></td>
+                                                                    @endif
+                                                                    <td>
+                                                                        @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product quantity won\'t be effective to the existing customers. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-leakers-modal-{{$canister->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                 {{-- EDIT QUANTITY --}}
+                                                                 <div class="modal fade" id="edit-leakers-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-sm" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Quantity</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <form method="POST" action="{{ action('ProductionController@editLeakers') }}" enctype="multipart/form-data">
+                                                                            {{ csrf_field() }} 
+                                                                                <div class="modal-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                <input type="text" class="form-control" id="prd_leakers" name="prd_leakers" value="{{$canister->prd_leakers}}"/>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             @endif
                                                         @endforeach
                                                     @endif
@@ -191,7 +273,48 @@
                                                                 @if(session('typ_id') == '1' || session('typ_id') == '4')
                                                                 <td> <a class="btn btn-transparent btn-sm text-info" data-toggle="modal" data-target="#add-quantity-modal" onclick="stockIn({{$canister->prd_id}}, 4)"><i class="fa fa-arrow-right mr-1" aria-hidden="true"></i> Decant and Revalve</a></td>
                                                                 @endif
+                                                                <td>
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product quantity won\'t be effective to the existing customers. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-revalving-modal-{{$canister->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    @endif
+                                                                </td>
                                                             </tr>
+                                                             {{-- EDIT QUANTITY --}}
+                                                             <div class="modal fade" id="edit-revalving-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                <div class="modal-dialog modal-sm" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Quantity</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <form method="POST" action="{{ action('ProductionController@editRevalving') }}" enctype="multipart/form-data">
+                                                                        {{ csrf_field() }} 
+                                                                            <div class="modal-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control" id="prd_for_revalving" name="prd_for_revalving" value="{{$canister->prd_for_revalving}}"/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -230,7 +353,48 @@
                                                                     <td>
                                                                     </td>
                                                                 @endif
+                                                                <td>
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product quantity won\'t be effective to the existing customers. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-scrap-modal-{{$canister->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    @endif
+                                                                </td>
                                                             </tr>
+                                                             {{-- EDIT QUANTITY --}}
+                                                             <div class="modal fade" id="edit-scrap-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                <div class="modal-dialog modal-sm" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Quantity</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <form method="POST" action="{{ action('ProductionController@editScraps') }}" enctype="multipart/form-data">
+                                                                        {{ csrf_field() }} 
+                                                                            <div class="modal-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="form-control" id="prd_scraps" name="prd_scraps" value="{{$canister->prd_scraps}}"/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>
+                                                                                <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         @endforeach
                                                     @endif 
                                                 </tbody>
@@ -348,7 +512,7 @@
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
                                                                         <ul class="dropdown-menu">
-                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product price won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-raw-modal-{{$raw_material->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the quantity of empty good won\'t be effective to the existing customers since they have their own base price. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-raw-modal-{{$raw_material->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
                                                                         </ul>
                                                                     </div>
                                                                     @endif
@@ -621,6 +785,16 @@
                                                                     </a>
                                                                     @endif
                                                                 </td>
+                                                                <td>
+                                                                    @if(session('typ_id') == '1' || session('typ_id') == '4')
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-default bg-transparent btn-outline-trasparent" style="border: transparent;" data-toggle="dropdown"><i class="fa fa-ellipsis-vertical"></i></button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="ml-3" href="javascript:void(0)" data-toggle="modal" onclick="if(confirm('\nEditing the product quantity won\'t be effective to the existing customers. \n\nAre you sure you want to proceed?') && (this.dataset.target = '#edit-empty-modal-{{$canister->prd_id}}'));"><i class="fa fa-edit mr-2" aria-hidden="true"></i>Edit Info</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    @endif
+                                                                </td>
                                                                 <!-- <td>
                                                                     @if($canister->prd_active == 0)
                                                                         <span class="badge badge-danger">Inactive</span>
@@ -631,6 +805,37 @@
                                                                     @endif
                                                                 </td> -->
                                                             </tr>
+                                                                {{-- EDIT QUANTITY --}}
+                                                                <div class="modal fade" id="edit-empty-modal-{{$canister->prd_id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-sm" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Quantity</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <form method="POST" action="{{ action('ProductionController@editEmptygoods') }}" enctype="multipart/form-data">
+                                                                            {{ csrf_field() }} 
+                                                                                <div class="modal-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                <input type="text" class="form-control" id="prd_empty_goods" name="prd_empty_goods" value="{{$canister->prd_empty_goods}}"/>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_uuid" value="{{$canister->prd_uuid}}" hidden/>
+                                                                                    <input type="text" class="form-control" id="set_prd_id" name="prd_id" value="{{$canister->prd_id}}" hidden/>        
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             @endif
                                                         @endforeach
                                                     @endif
