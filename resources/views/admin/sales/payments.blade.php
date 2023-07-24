@@ -167,23 +167,26 @@
 
                                 @php($total_sales=0)
                                 @php($total_balance=0)
-                                @php($pmnt_cash=0)
-                                @php($pmnt_gcash=0)
-                                @php($pmnt_check=0)
 
                                 @foreach($transactions as $transaction)
                                     @php($total_sales += $transaction->trx_amount_paid)
                                     @php($total_balance += $transaction->trx_balance)
-                                    {{-- @php($total_cash += $transaction->trx_amount_paid) --}}
-                                    {{-- @php($total_gcash += $transaction->trx_amount_paid)
-                                    @php($total_check += $transaction->trx_amount_paid) --}}
                                 @endforeach
-
+                                
+                                @php($total_cash_payment=0)
+                                @php($total_gcash_payment=0)
+                                @php($total_check_payment=0)
+                                @php($total_split_payment=0)
+                                
                                 @foreach($payments as $payment)
-                                    @if($payment->mode_of_payment == 'cash' && $payment->pmnt_date == date('Y-m-d'))
-                                        @php($pmnt_cash += $payment->pmnt_amount)
-                                    {{-- @php($total_gcash += $payment->pmnt_amount)
-                                    @php($total_check += $payment->pmnt_amount) --}}
+                                    @if($payment->trx_mode_of_payment == '1')
+                                        @php($total_cash_payment += $payment->pmnt_amount)
+                                    @elseif($payment->trx_mode_of_payment == '3')
+                                        @php($total_gcash_payment += $payment->pmnt_amount)
+                                    @elseif($payment->trx_mode_of_payment == '4')
+                                        @php($total_check_payment += $payment->pmnt_amount)
+                                    @elseif($payment->trx_mode_of_payment == '5')
+                                        @php($total_split_payment += $payment->pmnt_amount)
                                     @endif
                                 @endforeach
 
@@ -222,7 +225,7 @@
                                                 <i class="fas fa-money-bill text-success fa-2x"></i>
                                             </div>
                                             <div class="col">
-                                                <h2 style="color:#238ab2;">₱ {{ number_format($pmnt_cash, 2, '.', ',') }}</h2>
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_cash_payment, 2, '.', ',') }}</h2>
                                                 <p>Total Cash Payments</p>
                                             </div>
                                         </div>
@@ -236,7 +239,7 @@
                                                 <img src="{{ asset('img/res/gcash.png') }}" width="40px"/>
                                             </div>
                                             <div class="col">
-                                                <h2 style="color:#238ab2;">₱ {{ number_format($pmnt_gcash, 2, '.', ',') }}</h2>
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_gcash_payment, 2, '.', ',') }}</h2>
                                                 <p>Total Gcash Payments</p>
                                             </div>
                                         </div>
@@ -250,8 +253,26 @@
                                                 <i class="fas fa-landmark text-secondary fa-2x"></i>
                                             </div>
                                             <div class="col">
-                                                <h2 style="color:#238ab2;">₱ {{ number_format($pmnt_check, 2, '.', ',') }}</h2>
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_check_payment, 2, '.', ',') }}</h2>
                                                 <p>Total Check Payments</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card col-md-3 col-12 ml-md-2 mr-md-2 border">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <i class="fas fa-money-bill text-success fa-1x"></i>
+                                            </div>
+                                            /
+                                            <div class="col-auto">
+                                                <img src="{{ asset('img/res/gcash.png') }}" width="20px"/>
+                                            </div>
+                                            <div class="col">
+                                                <h2 style="color:#238ab2;">₱ {{ number_format($total_split_payment, 2, '.', ',') }}</h2>
+                                                <p>Total Split Payments</p>
                                             </div>
                                         </div>
                                     </div>
