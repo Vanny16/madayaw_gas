@@ -77,7 +77,7 @@ class SalesController extends Controller
         ->get();
         // 'trx_mode_of_payment' => $mode_of_payment,
         // 'pmnt_amount' => $trx_amount_cash,
-
+        dd($transactions);
         session(['select_show' => 'Transactions']);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));

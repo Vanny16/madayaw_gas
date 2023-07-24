@@ -538,9 +538,34 @@ class ReportsController extends Controller
         ->join('users', 'users.usr_id', '=', 'payments.usr_id')
         ->get();
 
+        $cash_payments = DB::table('payments')
+        ->where('trx_mode_of_payment', '=', 1)
+        ->whereBetween('payments.pmnt_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->sum('payments.pmnt_amount');
+
+        $credit_payments = DB::table('payments')
+        ->where('trx_mode_of_payment', '=', 2)
+        ->whereBetween('payments.pmnt_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->sum('payments.pmnt_amount');
+
+        $gcash_payments = DB::table('payments')
+        ->where('trx_mode_of_payment', '=', 3)
+        ->whereBetween('payments.pmnt_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->sum('payments.pmnt_amount');
+
+        $check_payments = DB::table('payments')
+        ->where('trx_mode_of_payment', '=', 4)
+        ->whereBetween('payments.pmnt_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->sum('payments.pmnt_amount');
+
+        $split_payments = DB::table('payments')
+        ->where('trx_mode_of_payment', '=', 5)
+        ->whereBetween('payments.pmnt_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
+        ->sum('payments.pmnt_amount');
+
         session(['select_show' => 'Transactions']);
 
-        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to', 'cash_payments', 'credit_payments', 'gcash_payments', 'check_payments', 'split_payments'));
     }
 
     public function paymentsFilter(Request $request)
