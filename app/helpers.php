@@ -81,7 +81,7 @@ function record_stockin($prd_id, $quantity)
         'prd_id' => $prd_id,
         'usr_id' => session('usr_id'),
         'log_quantity' => $quantity,
-        'log_datetime' => DB::raw('CURRENT_TIMESTAMP') ,
+        'log_datetime' => Carbon\Carbon::now() ,
         'pdn_id' => get_last_production_id()
     ]); 
 }
@@ -104,12 +104,13 @@ function record_movement($prd_id, $quantity, $flag)
     {
         if($flag == 1)
         {
+            dd(Carbon\Carbon::now());
             DB::table('movement_logs')  
             ->insert([ 
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_empty_goods' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]);  
@@ -121,7 +122,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_filled' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 
@@ -133,7 +134,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_leakers' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 
@@ -145,7 +146,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_empty_goods' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 
@@ -157,7 +158,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_scraps' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 
@@ -169,7 +170,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_leakers' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 
@@ -181,7 +182,7 @@ function record_movement($prd_id, $quantity, $flag)
                 'acc_id' => session('acc_id'),
                 'prd_id' => $prd_id,
                 'log_for_revalving' => $quantity,
-                'log_date' => DB::raw('CURRENT_TIMESTAMP'),
+                'log_date' => Carbon\Carbon::now(),
                 'usr_id' => session('usr_id'),
                 'pdn_id' => $get_pdn_id->pdn_id
             ]); 

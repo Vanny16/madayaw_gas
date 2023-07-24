@@ -55,8 +55,8 @@ class MainController extends Controller
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
+                'pdn_date' => Carbon\Carbon::now(),
+                'pdn_start_time' => Carbon\Carbon::now()
             ]);
 
             session()->flash('successMessage','Production started!');
@@ -66,7 +66,7 @@ class MainController extends Controller
         {
             DB::table('production_logs')
             ->update([
-                'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
+                'pdn_end_time' => Carbon\Carbon::now()
             ]);
 
             session()->flash('successMessage','Production ended!');
@@ -152,7 +152,7 @@ class MainController extends Controller
     //     {
     //         DB::table('production_logs')
     //         ->insert([
-    //             'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_datetime' => Carbon\Carbon::now(),
     //             'pdn_action' => 1
     //         ]);
 
@@ -163,7 +163,7 @@ class MainController extends Controller
     //     {
     //         DB::table('production_logs')
     //         ->insert([
-    //             'pdn_datetime' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'pdn_datetime' => Carbon\Carbon::now(),
     //             'pdn_action' => 0 
     //         ]);
 
