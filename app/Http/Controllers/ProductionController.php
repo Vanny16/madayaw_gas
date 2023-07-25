@@ -293,8 +293,8 @@ class ProductionController extends Controller
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_date' => DB::raw('CURRENT_TIMESTAMP'),
-                'pdn_start_time' => DB::raw('CURRENT_TIMESTAMP')
+                'pdn_date' => Carbon\Carbon::now(),
+                'pdn_start_time' => Carbon\Carbon::now()
             ]);
 
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -352,7 +352,7 @@ class ProductionController extends Controller
         {
             DB::table('production_logs')
             ->update([
-                'pdn_end_time' => DB::raw('CURRENT_TIMESTAMP')
+                'pdn_end_time' => Carbon\Carbon::now()
             ]);
 
             if($temp_details <> "" && $temp_tank_details <> "")
