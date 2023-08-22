@@ -179,10 +179,14 @@ class SalesController extends Controller
         ->orderBy('cus_name', 'ASC')
         ->get();
 
+        $customers = Customer::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
         ->where('transactions.acc_id', '=', session('acc_id'))
         ->get();
+
+        $transactions = Transaction::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
         $purchased_products = DB::table('products')
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
@@ -191,10 +195,10 @@ class SalesController extends Controller
         $oppositions = DB::table('oppositions')
         ->get();
 
-        $transaction_id = DB::table('transactions')
-        ->max('trx_id');
+        $oppositions = Opposition::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-// dd($products);
+        $transaction_id =Transaction::max('trx_id');
+
         session(['client_id' => $client_id[0] ]);
 
         return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
