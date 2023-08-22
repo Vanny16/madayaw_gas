@@ -104,7 +104,6 @@ function record_movement($prd_id, $quantity, $flag)
     {
         if($flag == 1)
         {
-            dd(Carbon\Carbon::now());
             DB::table('movement_logs')  
             ->insert([ 
                 'acc_id' => session('acc_id'),

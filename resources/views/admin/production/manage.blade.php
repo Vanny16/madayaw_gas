@@ -568,7 +568,6 @@
                                                                                                 <option value="1" {{ $select_refillable }}>Refillable</option>
                                                                                             </select>
                                                                                         </div>
-
                                                                                         @php($quantity = "")
                                                                                         @if($raw_material->prd_is_refillable == 1)
                                                                                             @php($quantity = $raw_material->prd_raw_can_qty)
@@ -576,6 +575,14 @@
                                                                                             @php($quantity = $raw_material->prd_quantity)
                                                                                         @endif
 
+                                                                                        {{-- <div class="form-group" id="edit_prd_for_tank">
+                                                                                            <label for="edit_prd_for_tank">For Tank <span style="color:red">*</span></label>
+                                                                                            <select class="form-control" id="edit_prd_for_tank" name="edit_prd_for_tank">
+                                                                                                <option value="0" selected>No</option>
+                                                                                                <option value="1" >Yes</option>
+                                                                                            </select>
+                                                                                            <input type="radio" name="valve" value="{{$component->prd_id}}" {{ $checked }} @if($loop->first) @endif/> {{$component->prd_name}}
+                                                                                        </div> --}}
                                                                                         <div id="edit_refillables{{$raw_material->prd_id}}">
                                                                                             <div class="form-group">
                                                                                                 <label for="">Select Valve <span style="color:red">*</span></label>
@@ -1208,6 +1215,20 @@
                                 <label for="prd_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="prd_sku" placeholder="Enter SKU" value="{{ $prd_sku }}" required/>
                             </div>
+                            {{-- <div class="form-group" id="prd_for_tank">
+                                <label for="prd_for_tank">Refillable Type <span style="color:red">*</span></label>
+                                <select class="form-control" id="for_tank" name="for_tank">
+                                    @if($show_modal == 0)
+                                        @php($select_non_tank = "selected")
+                                        @php($select_tank = "")
+                                    @else
+                                        @php($select_non_tank = "")
+                                        @php($select_tank = "selected")
+                                    @endif
+                                    <option value="0" {{ $select_non_tank }}>Non-Tank</option>
+                                    <option value="1" {{ $select_tank }}>Tank</option>
+                                </select>
+                            </div> --}}
                             <div class="form-group" >
                                 <label for="prd_type">Material Type <span style="color:red">*</span></label>
                                 <select class="form-control" id="prd_type" name="prd_type">

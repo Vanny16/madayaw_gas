@@ -6,7 +6,13 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Customer;
+use App\Opposition;
+use App\Product;
+use App\Purchase;
+use App\Transaction;
 Use DB;
+
 
 class SalesController extends Controller
 {
@@ -19,12 +25,16 @@ class SalesController extends Controller
         ->where('prd_quantity', '>' ,'0.0')
         ->where('prd_active', '=' ,'1')
         ->get();
-// dd($products    );
+
+        $products = Product::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+
         $customers = DB::table('customers')
         ->where('acc_id', '=',session('acc_id'))
         ->where('cus_active', '=', '1')
         ->orderBy('cus_name', 'ASC')
         ->get();
+
+        $customers = Customer::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
         $transactions = DB::table('transactions')
         ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -32,15 +42,23 @@ class SalesController extends Controller
         ->where('trx_active','=','1')
         ->get();
 
+        $transactions = Transaction::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+
         $purchased_products = DB::table('products')
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
         ->get();
 
+        // $purchased_products = Purchase::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+
         $oppositions = DB::table('oppositions')
         ->get();
 
+        $oppositions = Opposition::all(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
+
+        $transaction_id = $transactions->max('trx_id'); //OVERWRITE PREVIOUS QUERY FOR TESTING
         
         $in_products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -77,7 +95,7 @@ class SalesController extends Controller
         ->get();
         // 'trx_mode_of_payment' => $mode_of_payment,
         // 'pmnt_amount' => $trx_amount_cash,
-        dd($transactions);
+        
         session(['select_show' => 'Transactions']);
 
         return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
@@ -106,6 +124,8 @@ class SalesController extends Controller
         ->first();
         //  dd($selected_customer);
 
+        $selected_customer = Customer::POSSelectCustomer($client_id[0]);//OVERWRITE PREVIOUS QUERY FOR TESTING
+
         if($selected_customer == null){
 
             session()->flash('errorMessage',  "Customer name not found!");
@@ -119,7 +139,6 @@ class SalesController extends Controller
         $cus_accessibles_prices = explode(",", $cus_accessibles_prices_list);
             
         $cus_price_change = $selected_customer->cus_price_change;
-     
 
         if($cus_price_change == null){
             $cus_price_change = 0;
@@ -138,14 +157,13 @@ class SalesController extends Controller
                 
             if ($product !== null) {
                 $product = json_decode(json_encode($product), true);
+                
                 $product['cus_accessibles_prices'] = $cus_accessibles_prices[$i] + $cus_price_change;
                 array_push($products, (object)$product);
             }
         }
         
         session()->flash('selected_customer',$selected_customer->cus_name);
-
-        // dd($products);
 
         $in_products = DB::table('products')
         ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -176,7 +194,7 @@ class SalesController extends Controller
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
-
+// dd($products);
         session(['client_id' => $client_id[0] ]);
 
         return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));

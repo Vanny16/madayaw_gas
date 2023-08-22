@@ -326,14 +326,52 @@ class CustomerController extends Controller
         $selected_array = explode(",",$selected_customers);
         if(end($selected_array) == " " || end($selected_array) == ""){array_pop($selected_array);}
 
-        // dd($selected_customers); 
-
         foreach($selected_array as $selected_customer)
         {
+            $cus_accessibles = explode(",",DB::table('customers')
+                                            ->where('cus_id', '=', $selected_customer)
+                                            ->select('cus_accessibles')
+                                            ->first()->cus_accessibles);
+            array_pop($cus_accessibles);
+
+            $cus_accessibles_prices = explode(",",DB::table('customers')
+                                                    ->where('cus_id', '=', $selected_customer)
+                                                    ->select('cus_accessibles_prices')
+                                                    ->first()->cus_accessibles_prices);
+            array_pop($cus_accessibles_prices);
+
+            // dd($cus_accessibles, $cus_accessibles_prices);
+
+            $products = DB::table('products')
+                            ->where('prd_active', '=', 1)
+                            ->where('prd_is_refillable', '=', 1)
+                            ->where('prd_weight', '<', 1000)
+                            ->get();
+
+            $prices = "";
+
+            for($index = 0; $index < count($cus_accessibles); $index++)
+            {
+                $product = DB::table('products')
+                ->where('prd_id', '=', $cus_accessibles[$index])
+                ->where('prd_active', '=', 1)
+                ->where('prd_is_refillable', '=', 1)
+                ->where('prd_weight', '<', 1000)
+                ->first();
+                
+                if(isset($product))
+                {
+                    $prices = $prices . ($cus_accessibles_prices[$index] + $price_change) . ","; 
+                    continue;
+                }
+                
+                $prices = $prices . $cus_accessibles_prices[$index] . ",";
+            }
+            
             DB::table('customers')
                 ->where('cus_id', '=', $selected_customer)
                 ->update([
-                'cus_price_change' => $price_change
+                'cus_accessibles_prices' => $prices
                 ]);
         }
         session()->flash('successMessage', 'Successfully updated customer pricing');

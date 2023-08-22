@@ -293,8 +293,8 @@ class ProductionController extends Controller
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_date' => Carbon\Carbon::now(),
-                'pdn_start_time' => Carbon\Carbon::now()
+                'pdn_date' => Carbon::now(),
+                'pdn_start_time' => Carbon::now()
             ]);
 
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -352,7 +352,7 @@ class ProductionController extends Controller
         {
             DB::table('production_logs')
             ->update([
-                'pdn_end_time' => Carbon\Carbon::now()
+                'pdn_end_time' => Carbon::now()
             ]);
 
             if($temp_details <> "" && $temp_tank_details <> "")
@@ -732,6 +732,7 @@ class ProductionController extends Controller
         $prd_name = $request->prd_name;
         $prd_description = $request->prd_description;
         $prd_sku = $request->prd_sku;
+        $prd_for_tank = $request->for_tank;
         $prd_type = $request->prd_type;
         $prd_price = $request->prd_price;
         $prd_deposit = $request->prd_deposit;
@@ -791,6 +792,7 @@ class ProductionController extends Controller
             'prd_for_production' => 1,
             'prd_for_POS' => 0,
             'prd_is_refillable' => 0,
+            'prd_for_tank' => $prd_for_tank,
             'sup_id' => $sup_id
             ]);
         }
@@ -834,6 +836,7 @@ class ProductionController extends Controller
             'prd_for_production' => 1,
             'prd_for_POS' => 1,
             'prd_is_refillable' => 1,
+            'prd_for_tank' => $prd_for_tank,
             'prd_components' => $selected_valve,
             'prd_seals' => $selected_seal,
             'sup_id' => $sup_id

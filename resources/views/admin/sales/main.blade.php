@@ -402,19 +402,19 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="prd_name">Opposition Canister Name <span style="color:red">*</span></label>
+                                <label for="ops_name">Opposition Canister Name <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="ops_name" placeholder="Enter Product Name" value="" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_sku">SKU <span style="color:red">*</span></label>
+                                <label for="ops_sku">SKU <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="ops_sku" placeholder="Enter SKU" value="" required/>
                             </div>
                             <div class="form-group">
-                                <label for="prd_description">Description <span style="color:red">*</span></label>
+                                <label for="ops_description">Description <span style="color:red">*</span></label>
                                 <input type="text" class="form-control" name="ops_description" placeholder="Enter Description" value="" required/>
                             </div>
                             <div class="form-group">
-                                <label for="notes">Notes</label>
+                                <label for="ops_notes">Notes</label>
                                 <textarea name="ops_notes" placeholder="Additional notes ..." class="form-control"></textarea>
                             </div>
                         </div>
@@ -1308,14 +1308,17 @@
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
                   
-            document.getElementById("in_crates" + prd_id).value = 0;
-            document.getElementById("in_loose" + prd_id).value = 0;
+            if(can_type_in != 0){
+                document.getElementById("in_crates" + prd_id).value = 0;
+                document.getElementById("in_loose" + prd_id).value = 0;
+            }
             document.getElementById("crates_amount" + prd_id).value = 0;
             document.getElementById("loose_amount" + prd_id).value = 0;
             document.getElementById("sub_total" + prd_id ).value = 0;
 
             var received = document.getElementById("received_amount").value;
 
+            alert(total_deposit);
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
             document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
