@@ -146,7 +146,6 @@ class SalesController extends Controller
 
         $products = array();
 
-        dd($selected_customer);
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
             $product = DB::table('products')
                 ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
