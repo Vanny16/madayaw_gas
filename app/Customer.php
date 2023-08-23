@@ -17,7 +17,7 @@ class Customer extends Model
     }
 
     public static function POSSelectCustomer($id){
-        return self::select('cus_id','cus_name','cus_accessibles','cus_price_change')
+        return self::select('cus_id','cus_name','cus_accessibles','cus_accessibles_prices','cus_price_change')
                     ->where('cus_name', '=', $id)
                     ->where('acc_id', '=',session('acc_id'))
                     ->where('cus_active', '=', '1')

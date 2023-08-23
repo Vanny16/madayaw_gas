@@ -146,6 +146,7 @@ class SalesController extends Controller
 
         $products = array();
 
+        dd($selected_customer);
         for ($i = 0; $i < count($cus_accessibles)-1; $i++) {
             $product = DB::table('products')
                 ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -157,7 +158,6 @@ class SalesController extends Controller
                 
             if ($product !== null) {
                 $product = json_decode(json_encode($product), true);
-                
                 $product['cus_accessibles_prices'] = $cus_accessibles_prices[$i] + $cus_price_change;
                 array_push($products, (object)$product);
             }
