@@ -1318,7 +1318,7 @@
 
             var received = document.getElementById("received_amount").value;
 
-            alert(total_deposit);
+            // alert(total_deposit);
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
             document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
             document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
