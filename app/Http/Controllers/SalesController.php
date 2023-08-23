@@ -134,7 +134,7 @@ class SalesController extends Controller
         
         $cus_accessibles_list = $selected_customer->cus_accessibles;
         $cus_accessibles = explode(",", $cus_accessibles_list);
-                
+        
         $cus_accessibles_prices_list = $selected_customer->cus_accessibles_prices;
         $cus_accessibles_prices = explode(",", $cus_accessibles_prices_list);
             
