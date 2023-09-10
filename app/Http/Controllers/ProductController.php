@@ -184,6 +184,7 @@ class ProductController extends Controller
             'prd_sku' => $prd_sku,
             'prd_price' => $prd_price,
             // 'prd_deposit' => $prd_deposit,
+            'prd_quantity' => $prd_quantity,
             'prd_reorder_point' => $prd_reorder, 
             'prd_weight' => $prd_weight,
             'sup_id' => $sup_id

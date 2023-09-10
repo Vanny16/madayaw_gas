@@ -13,7 +13,7 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        return $this->printProduction();
+        // return $this->printProduction();
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
