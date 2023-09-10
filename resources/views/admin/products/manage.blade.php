@@ -271,13 +271,13 @@
                                                                                 <label for="prd_weight">Net Weight (g) <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_weight" placeholder="Enter net weight" value="{{ $product->prd_weight }}" onkeypress="return isNumberKey(this, event);" required/>
                                                                             </div> -->
-                                                                            <!-- <div class="form-group">
-                                                                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
-                                                                                <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
-                                                                            </div> -->
                                                                             <div class="form-group">
                                                                                 <label for="prd_description">Description <span style="color:red">*</span></label>
                                                                                 <input type="text" class="form-control" name="prd_description" value="{{ $product->prd_description }}" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="prd_price">Quantity <span style="color:red">*</span></label>
+                                                                                <input type="text" class="form-control" name="prd_quantity" value="{{ $product->prd_quantity }}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="cus_contact">Reorder Point <span style="color:red">*</span></label>
