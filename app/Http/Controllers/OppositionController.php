@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Opposition;
+use App\Product;
 use DB;
 
 class OppositionController extends Controller
@@ -30,9 +32,13 @@ class OppositionController extends Controller
         ->where('prd_is_refillable', '=', '1')
         ->get();
 
+        $products = Product::index(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+        
         $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
         ->get();
+        
+        $oppositions = Opposition::index(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
         // if($search_string != null || $default_status != null)
         // {

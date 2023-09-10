@@ -44,16 +44,25 @@
                 <li class="nav-header">SALES</li>
                 <li class="nav-item">
                   
-                @if($state == "disabled")
-                    <a class="nav-link">
+                @if($state != "disabled")
+                    <a id="sales-link" class="nav-link bg-muted">
                 @else
-                    <a href="{{ action('SalesController@main') }}" class="nav-link">
+                    <a id="sales-link" href="{{ action('SalesController@main') }}" class="nav-link">
                 @endif
                         <i class="nav-icon fas fa-cash-register"></i>
-                        <p>
+                        <p class="text-muted">
                             Point of Sale
                         </p>
                     </a>
+                </li>
+
+                <li class="nav-item">
+                    <button href="{{ action('SalesController@main') }}" class="nav-link">
+                        <i class="nav-icon fas fa-coins"></i>
+                        <p>
+                            test
+                        </p>
+                    </button>
                 </li>
 
                 <li class="nav-item">
@@ -216,7 +225,36 @@
     </div>
     <div class="col-12 mb-5">&nbsp;</div>
 </aside>
+<script>
+    $(document).ready(function() {
+        $("#sales-link").on("click", function(event) {
+            // Prevent default navigation behavior
+            event.preventDefault();
 
+            // Disable the link to prevent double-clicking
+            // $(this).prop("disabled", true);
+
+            // Optionally, you can add a class to style the disabled link
+            // $(this).addClass("disabled");
+
+            // Perform any other actions you need here
+            // ...
+
+            // After some time, you can re-enable the link if needed
+            setTimeout(function() {
+                $("#sales-link").prop("disabled", false);
+                $("#sales-link").removeClass("disabled");
+            }, 5000); // Adjust the delay time as needed
+        });
+    });
+
+    document.getElementById('sales-link').addEventListener('click', function(event) {
+        document.getElementById('sales-link').prop("disabled", true);
+        event.preventDefault(); // Prevent the default navigation behavior
+    // You can add any additional logic or actions here
+});
+
+</script>
 {{--@else
     <script type="text/javascript">
         window.location = "{{ url('/') }}";

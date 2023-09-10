@@ -19,58 +19,58 @@ class SalesController extends Controller
     //
     public function main()
     {
-        $products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('prd_for_POS', '=' ,'1')
-        ->where('prd_quantity', '>' ,'0.0')
-        ->where('prd_active', '=' ,'1')
-        ->get();
+        // $products = DB::table('products')
+        // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        // ->where('prd_for_POS', '=' ,'1')
+        // ->where('prd_quantity', '>' ,'0.0')
+        // ->where('prd_active', '=' ,'1')
+        // ->get();
 
         $products = Product::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $customers = DB::table('customers')
-        ->where('acc_id', '=',session('acc_id'))
-        ->where('cus_active', '=', '1')
-        ->orderBy('cus_name', 'ASC')
-        ->get();
+        // $customers = DB::table('customers')
+        // ->where('acc_id', '=',session('acc_id'))
+        // ->where('cus_active', '=', '1')
+        // ->orderBy('cus_name', 'ASC')
+        // ->get();
 
         $customers = Customer::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('transactions.acc_id', '=', session('acc_id'))
-        ->where('trx_active','=','1')
-        ->get();
+        // $transactions = DB::table('transactions')
+        // ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        // ->where('transactions.acc_id', '=', session('acc_id'))
+        // ->where('trx_active','=','1')
+        // ->get();
 
-        $transactions = Transaction::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+        $transactions = Transaction::POSIndex(); //NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
 
-        $purchased_products = DB::table('products')
+        $purchased_products = DB::table('products') //NECESSARY FOR INDEX ; USED TO VERIFY THE BAD ORDER
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
         ->get();
 
         // $purchased_products = Purchase::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $oppositions = DB::table('oppositions')
-        ->get();
+        // $oppositions = DB::table('oppositions')
+        // ->get();
 
-        $oppositions = Opposition::all(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+        // $oppositions = Opposition::all(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
         $transaction_id = $transactions->max('trx_id'); //OVERWRITE PREVIOUS QUERY FOR TESTING
         
-        $in_products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('prd_for_POS', '=' ,'1')
-        // ->where('prd_id', '=' ,$cus_accessibles[$i])
-        ->where('prd_quantity', '>' ,'0.0')
-        ->where('prd_active', '=' ,'1')
-        ->get();
+        // $in_products = DB::table('products')
+        // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        // ->where('prd_for_POS', '=' ,'1')
+        // // ->where('prd_id', '=' ,$cus_accessibles[$i])
+        // ->where('prd_quantity', '>' ,'0.0')
+        // ->where('prd_active', '=' ,'1')
+        // ->get();
 
         session()->forget('selected_customer');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
+        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'transaction_id')); //'oppositions', 'in_products'
     }
 
     public function payments()
@@ -113,15 +113,13 @@ class SalesController extends Controller
         //     return redirect()->action('SalesController@main');
         // }
 
-        // dd( $client_id); 
-
-        $selected_customer = DB::table('customers')
-        ->where('acc_id', '=',session('acc_id'))
-        ->where('cus_active', '=', '1')
-        ->where('cus_name', '=', $client_id[0] )
-        // ->where('cus_id', '=', $client_id )
-        ->orderBy('cus_name', 'ASC')
-        ->first();
+        // $selected_customer = DB::table('customers')
+        // ->where('acc_id', '=',session('acc_id'))
+        // ->where('cus_active', '=', '1')
+        // ->where('cus_name', '=', $client_id[0] )
+        // // ->where('cus_id', '=', $client_id )
+        // ->orderBy('cus_name', 'ASC')
+        // ->first();
         //  dd($selected_customer);
 
         $selected_customer = Customer::POSSelectCustomer($client_id[0]);//OVERWRITE PREVIOUS QUERY FOR TESTING
@@ -198,7 +196,7 @@ class SalesController extends Controller
 
         $transaction_id =Transaction::max('trx_id');
 
-        session(['client_id' => $client_id[0] ]);
+        session(['client_id' => $client_id[0]]);
 
         return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
     }
@@ -366,8 +364,6 @@ class SalesController extends Controller
         $list = $request->purchases;
         $selected_item_list  = $list;
         $purchase_row = explode(",#,", $selected_item_list);
-        
-        // dd($list);
 
         //for products variable
         $deduct_qty = 0;
@@ -380,10 +376,14 @@ class SalesController extends Controller
             for($j = 0 ; $j < count($purchase_data) ; $j++)
             {
                 //to search customer id based from name
-                $customer_id = DB::table('customers')
-                ->where('cus_name', 'LIKE', $purchase_data[13])
-                ->get();
-
+                // $customer_id = DB::table('customers')
+                // ->where('cus_name', 'LIKE', $purchase_data[13])
+                // ->get();
+                
+                $customer_id = Customer::query()
+                                    ->where('cus_name', 'LIKE' , $purchase_data[13])
+                                    ->first();
+                                    
                 $prd_id =  $purchase_data[0];
                 $prd_price = $purchase_data[3];
                 $pur_crate = $purchase_data[4];
@@ -396,7 +396,7 @@ class SalesController extends Controller
                 $pur_loose_in = $purchase_data[10];
                 $prd_id_in = $purchase_data[11];
                 $can_type_in = $purchase_data[12];
-                $cus_id = $customer_id[0]->cus_id;
+                $cus_id = $customer_id->cus_id; //$customer_id[0]->cus_id;
             }
             
             DB::table('purchases')

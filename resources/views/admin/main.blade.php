@@ -256,7 +256,7 @@
 	</div>
 </div>
 
-<?php
+{{-- <?php
     $canister_details = "";
     $tank_details = "";
     foreach($canisters as $canister){$canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";}
@@ -388,7 +388,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> --}}
 
 <script>
     $(".custom-file-input").on("change", function() {

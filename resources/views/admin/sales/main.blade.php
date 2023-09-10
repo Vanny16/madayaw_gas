@@ -1,5 +1,8 @@
 @extends('layouts.themes.admin.main')
 @section('content')
+<?php
+// dd(memory_get_usage());
+?>
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -52,7 +55,7 @@
                                     <p class="text-danger fa-2x mr-2">POS-<?php echo date("Y").date("m").date("d"); ?>-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">
-                                    <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data">
+                                    <form id="cus_form" method="POST" action="{{ action('SalesController@selectCustomer')}}" enctype="multipart/form-data" onclick="">
                                     {{ csrf_field() }} 
                                         <label>Customer Name</label>
                                         {{-- <select class="form-control col-md-5 col-12" id="client_id" name="client_id" required="">
@@ -87,7 +90,7 @@
 
                     <div class="row">
                         <div class="col-md-2 col-12 mb-3">
-                            <button type="button" class="btn btn-default bg-danger form-control" onclick="selectUserFirst()"><i class="fa fa-plus-circle"></i> Select Products</button>
+                            <button id="select-product-btn" type="button" class="btn btn-default bg-danger form-control" onclick="selectUserFirst()"><i class="fa fa-plus-circle"></i> Select Products</button>
                         </div>
 
                         <div class="col-md-8 col-0"></div>
@@ -156,8 +159,9 @@
                                     <thead>
                                         <tr>
                                             <th width="1"></th>
-                                            <th><div class="row"><div class="col-6">Item</div><div class="col-6">Brand-new Price</div></div></th>
-                                            <th>Price</th>
+                                            <th><div class="row"><div class="col-6">Item</div></th>
+                                            {{-- <div class="col-6">Brand-new Price</div></div>--}}
+                                            <th></th> 
                                             <th>Crates</th>
                                             <th>Loose</th>
                                             <th>Discount</th>
@@ -269,6 +273,9 @@
                                                                 <label for="cus_name">Product Name <span style="color:red">*</span></label>
                                                                 <div class="form-inline"><!--MARKER-->
                                                                     <select class="form-control col-7" id="canister_in{{$product->prd_id}}" name="canister_in" required>
+                                                                        <?php
+                                                                            $in_products = $in_products ?? [];    
+                                                                        ?>
                                                                         @foreach($in_products as $in_product)
                                                                             @if($in_product->prd_is_refillable == '1')
                                                                                 @if($in_product->prd_id == $product->prd_id)
@@ -279,6 +286,9 @@
                                                                                 <option value="1#{{ $in_product->prd_id }}#{{ $in_product->prd_name }}" {{ $select_prd_in }}>{{ $in_product->prd_name }} </option>
                                                                             @endif
                                                                         @endforeach 
+                                                                        <?php 
+                                                                            $oppositions = $oppositions ?? []; //for initial loading
+                                                                        ?>
                                                                         @foreach($oppositions as $opposition)
                                                                             <option value="2#{{ $opposition->ops_id }}#{{ $opposition->ops_name }}" style="background-color: yellow">{{ $opposition->ops_name }} </option>
                                                                         @endforeach 
@@ -465,8 +475,9 @@
                                 <table class="table table-striped table-hover ml-2 table-borderless text-left">
                                     <thead>
                                         <th>Qty</th>
-                                        <th><div class="row"><div class="col-6">Description</div><div class="col-6">Brand-new Price</div></div></th>
-                                        <th>Price</th>
+                                        <th><div class="row"><div class="col-6">Description</div></th>
+                                            {{-- <div class="col-6">Brand-new Price</div></div></th> --}}
+                                        <th></th>
                                         <th>Subtotal</th>
                                         <th></th>
                                     </thead>
@@ -594,7 +605,7 @@
     </div>
 </div>
 
-<!-- Add Quantity Modal -->
+<!-- Bad Order Modal -->
 <div class="modal fade" id="bad-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -650,6 +661,29 @@
 </div>
 
 <script>
+    // document.getElementById"client_id").addEventListener("click", function() {
+    //     // Disable the other button
+    //     document.getElementById("select-product-btn").disabled = true;
+
+    //     // You can also perform other actions here when the main button is clicked
+    // });
+    $(document).ready(function() {
+            $("#client_id").click(function() {
+                $("#select-product-btn").prop("disabled", true);
+                $("#select-product-btn").html(`
+                    <i class="spinner-border spinner-border-sm text-primary"></i>Loading Products
+                `);
+                // using " ` " backticks because inside the html function uses backticks for a multiline 
+                
+                setTimeout(function() {
+                    $("#select-product-btn").prop("disabled", false);
+                    $("#select-product-btn").html(`
+                        <i class="fa fa-plus-circle"></i>Select Customer
+                    `);
+                }, 50000);
+            });
+        });
+
     $(document).ready(function() {
         $("#btn_cash").css("border-bottom", "4px solid green");
         $("#payment_check").hide();
@@ -1164,10 +1198,10 @@
 
     function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, select_in, in_crate_val, in_loose_val, modal) {
 
-        var crates_amount = parseInt(crates_amount);
-        var loose_amount = parseInt(loose_amount);
-        var prd_quantity = parseInt((crates_amount * 12) + parseInt(loose_amount));
-        var prd_in_quantity = parseInt((in_crate_val * 12) + parseInt(in_loose_val));
+        var crates_amount = parseFloat(crates_amount);
+        var loose_amount = parseFloat(loose_amount);
+        var prd_quantity = parseFloat((crates_amount * 12) + parseFloat(loose_amount));
+        var prd_in_quantity = parseFloat((in_crate_val * 12) + parseFloat(in_loose_val));
         var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
         var prd_id_in ="";
         var can_type_in ="";
@@ -1209,6 +1243,7 @@
                     var prd_deposit_display = prd_price;
                 }
 
+                console.log(gross_total);
                 //error here possible fix add brdnew_subtotal to discount column
                 var sub_total = (gross_total - temp_discount) + sub_total_deposit;
                 total = parseFloat(total) + sub_total;
@@ -1291,7 +1326,8 @@
 
                 row.id = "row"+row_id;
                 row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-                row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span></div><div class='col-6'>"+prd_deposit_display+"</div></div>";
+                row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span>";
+                // row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span></div><div class='col-6'>"+prd_deposit_display+"</div></div>";
                 row.insertCell(2).innerHTML = prd_price;
                 row.insertCell(3).innerHTML = parseFloat(crates_amount);
                 row.insertCell(4).innerHTML = parseFloat(loose_amount);
@@ -1407,6 +1443,7 @@
                 });
                 convertedIntoArray.push(rowDataArray+client_id+",#");
             }
+        console.log(convertedIntoArray);
         });
 
         document.getElementById("purchases").value = convertedIntoArray;
@@ -1414,7 +1451,7 @@
         //For Receipt
         let cart_text = convertedIntoArray.toString();
         const cart_item = cart_text.split(",#,");
-        
+
         var rct_table = document.getElementById("tbl-rct");
         $("#tbl-rct tr").remove(); 
         

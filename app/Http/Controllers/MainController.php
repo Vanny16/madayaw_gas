@@ -18,12 +18,12 @@ class MainController extends Controller
         ->orderByDesc('news_id')
         ->get();
 
-        $canisters = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+        // $canisters = DB::table('products')
+        // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        // ->where('products.acc_id', '=', session('acc_id'))
+        // ->where('prd_for_production','=','1')
+        // ->where('prd_is_refillable','=','1')
+        // ->get();
 
         $tanks = DB::table('tanks')
         ->where('acc_id', '=', session('acc_id'))
@@ -42,7 +42,7 @@ class MainController extends Controller
         }
         else{
             session(['reset_passwords_count' => $reset_passwords_count]);
-            return view('admin.main', compact('pdn_flag', 'news', 'canisters', 'tanks', 'verifications')); 
+            return view('admin.main', compact('pdn_flag', 'news', 'tanks', 'verifications')); //'canisters'
         }
     }
     

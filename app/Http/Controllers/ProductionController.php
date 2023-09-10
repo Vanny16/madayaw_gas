@@ -13,7 +13,7 @@ use DB;
 class ProductionController extends Controller
 {
     public function manage(){ 
-        // return $this->printProduction();
+        return $this->printProduction();
 
         if(session('typ_id') == 3){
             return redirect()->action('MainController@home');
@@ -2449,6 +2449,7 @@ class ProductionController extends Controller
         //     $product_verifications = $product_verifications->where('verify_user_type', '=', 4)->get();
         // }
         // dd($product_verifications);
+
         $opening_stocks_array = [];
         foreach($product_verifications as $opening)
         {
@@ -2502,6 +2503,8 @@ class ProductionController extends Controller
         $purchases_array = [];
         $received_customers_array = [];
         $issued_customers_array = [];
+
+        $count = 0;
         if(isset($transactions))
         {
             foreach($transactions as $transaction)
@@ -2587,7 +2590,12 @@ class ProductionController extends Controller
                         {
                             for($array_count = count($pur_internal_array) - 2; $array_count < count($canisters); $array_count--)
                             {
-                                array_push($pur_internal_array, 0);
+                                try{
+                                    array_push($pur_internal_array, 0);
+                                    $count++;
+                                }catch(Exception $e){
+                                    dd($e, $count);
+                                }
                             }
                         }
 

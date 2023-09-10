@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use App\Product;
+use App\Opposition;
 use DB;
 
 use Illuminate\Http\Request;

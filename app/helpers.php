@@ -13,7 +13,7 @@ function generateuuid()
 
 function check_production_log()
 {
-    $production_logs = DB::table('production_logs')
+    $production_logs = DB::table('production_logs')//->latest()->first();
     ->orderBy('pdn_id', 'desc')
     ->first();
     
