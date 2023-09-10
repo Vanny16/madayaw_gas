@@ -42,28 +42,34 @@
                 
                 @if(session('typ_id') != '3')
                 <li class="nav-header">SALES</li>
-                <li class="nav-item">
-                  
-                @if($state != "disabled")
-                    <a id="sales-link" class="nav-link bg-muted">
-                @else
-                    <a id="sales-link" href="{{ action('SalesController@main') }}" class="nav-link">
-                @endif
-                        <i class="nav-icon fas fa-cash-register"></i>
-                        <p class="text-muted">
-                            Point of Sale
-                        </p>
-                    </a>
-                </li>
 
                 <li class="nav-item">
+                    @if($state == "disabled")
+                        {{-- <a id="sales-link" class="nav-link bg-muted"></a> --}}
+                        <a id="sales-link" class="nav-link">
+                            <i class="nav-icon fas fa-cash-register"></i>
+                            <p class="text-muted">
+                                Point of Sale
+                            </p>
+                        </a>
+                    @else
+                        <a id="{{-- sales-link --}}" href="{{ action('SalesController@main') }}" class="nav-link">
+                            <i class="nav-icon fas fa-cash-register"></i>
+                            <p>
+                                Point of Sale
+                            </p>
+                        </a>
+                    @endif
+                </li>
+
+                {{-- <li class="nav-item">
                     <button href="{{ action('SalesController@main') }}" class="nav-link">
                         <i class="nav-icon fas fa-coins"></i>
                         <p>
                             test
                         </p>
                     </button>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a href="{{ action('ReportsController@paymentsToday') }}" class="nav-link">

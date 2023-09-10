@@ -2874,18 +2874,18 @@
         var trx_ref_id = document.getElementById("trx_ref_id").value;
         var verified = false;
 
-        @foreach($transactions as $transaction)
-            if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
-                verified = true;
-                $("#cus_name").val("{{ $transaction->cus_name }}");
+        // @foreach($transactions as $transaction)
+        //     if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
+        //         verified = true;
+        //         $("#cus_name").val("{{ $transaction->cus_name }}");
 
-                $("#add-quantity-modal").find("#customer").show();
-                $("#add-quantity-modal").find("#lbl-crate").show();
-                $("#add-quantity-modal").find("#lbl-loose").show();
-                $("#add-quantity-modal").find("#quantity").show();
-                $("#add-quantity-modal").find("#crate-quantity").show();
-            }
-        @endforeach
+        //         $("#add-quantity-modal").find("#customer").show();
+        //         $("#add-quantity-modal").find("#lbl-crate").show();
+        //         $("#add-quantity-modal").find("#lbl-loose").show();
+        //         $("#add-quantity-modal").find("#quantity").show();
+        //         $("#add-quantity-modal").find("#crate-quantity").show();
+        //     }
+        // @endforeach
 
         if(!verified){
             if(trx_ref_id == ""){
