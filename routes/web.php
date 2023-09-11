@@ -167,6 +167,7 @@ Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
     Route::get('payments', 'SalesController@payments');
+    Route::get('get-transaction/{trx_ref_id}', 'SalesController@getTransaction');
 
     Route::post('main', 'SalesController@selectCustomer'); //'select_customer'
     Route::post('create-customer', 'SalesController@createCustomer');

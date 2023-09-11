@@ -42,7 +42,9 @@ class SalesController extends Controller
         // ->where('trx_active','=','1')
         // ->get();
 
-        $transactions = Transaction::POSIndex(); //NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+        $transactions = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                                ->orderBy('trx_id', 'desc')
+                                ->first(); 
 
         $purchased_products = DB::table('products') //NECESSARY FOR INDEX ; USED TO VERIFY THE BAD ORDER
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
@@ -70,7 +72,7 @@ class SalesController extends Controller
 
         session()->forget('selected_customer');
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'transaction_id')); //'oppositions', 'in_products'
+        return view('admin.sales.main', compact('products', 'customers', 'transaction_id')); //'oppositions', 'in_products' 'transactions',  'purchased_products', 
     }
 
     public function payments()
@@ -178,12 +180,14 @@ class SalesController extends Controller
 
         $customers = Customer::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('transactions.acc_id', '=', session('acc_id'))
-        ->get();
+        // $transactions = DB::table('transactions')
+        // ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+        // ->where('transactions.acc_id', '=', session('acc_id'))
+        // ->get();
 
-        $transactions = Transaction::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
+        $transactions = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                                ->orderBy('trx_id', 'desc')
+                                ->first(); 
 
         $purchased_products = DB::table('products')
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
@@ -198,7 +202,31 @@ class SalesController extends Controller
 
         session(['client_id' => $client_id[0]]);
 
-        return view('admin.sales.main', compact('products', 'customers', 'transactions', 'purchased_products', 'oppositions', 'transaction_id', 'in_products'));
+        return view('admin.sales.main', compact('products', 'customers', 'oppositions', 'transaction_id', 'in_products'));//'transactions', 'purchased_products',
+    }
+
+    public function getTransaction($transaction)
+    {
+        $transaction = Transaction::query()
+                                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->where('trx_ref_id', $transaction)
+                                ->first();
+
+        $purchased_products = Product::query() //NECESSARY FOR INDEX ; USED TO VERIFY THE BAD ORDER
+                                    ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+                                    ->where('trx_id', $transaction->trx_id)
+                                    ->get();
+        // @foreach($purchased_products as $purchased_product)
+        //     @if($purchased_product->trx_id == $transaction->trx_id)
+        //         $("#pur_products").append("<option value='{{ $purchased_product->prd_id }}'>{{ $purchased_product->prd_name }}</option>");
+        //     @endif
+        // @endforeach
+        
+        // Assuming you want to return $transaction as JSON response
+        return response()->json([
+            'transaction' => $transaction,
+            'purchased_products' => $purchased_products
+        ]);
     }
 
     public function createCustomer(Request $request)

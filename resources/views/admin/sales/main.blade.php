@@ -610,7 +610,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Quantity </h5>
+                <h5 class="modal-title" id="exampleModalLabel">Return Bad Order </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -668,21 +668,21 @@
     //     // You can also perform other actions here when the main button is clicked
     // });
     $(document).ready(function() {
-            $("#client_id").click(function() {
-                $("#select-product-btn").prop("disabled", true);
+        $("#client_id").click(function() {
+            $("#select-product-btn").prop("disabled", true);
+            $("#select-product-btn").html(`
+                <i class="spinner-border spinner-border-sm text-primary"></i>Loading Products
+            `);
+            // using " ` " backticks because inside the html function uses backticks for a multiline 
+            
+            setTimeout(function() {
+                $("#select-product-btn").prop("disabled", false);
                 $("#select-product-btn").html(`
-                    <i class="spinner-border spinner-border-sm text-primary"></i>Loading Products
+                    <i class="fa fa-plus-circle"></i>Select Customer
                 `);
-                // using " ` " backticks because inside the html function uses backticks for a multiline 
-                
-                setTimeout(function() {
-                    $("#select-product-btn").prop("disabled", false);
-                    $("#select-product-btn").html(`
-                        <i class="fa fa-plus-circle"></i>Select Customer
-                    `);
-                }, 50000);
-            });
+            }, 50000);
         });
+    });
 
     $(document).ready(function() {
         $("#btn_cash").css("border-bottom", "4px solid green");
@@ -1397,7 +1397,7 @@
 
             var parentElement1 = document.getElementById("tbl-prd-in");
             parentElement1.removeChild(deleteRowIn);
-         
+            
             //CART
             var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
             var total_deposit = parseFloat(get_total_deposit) - sub_total_deposit;
@@ -1429,14 +1429,14 @@
         calculateTotalDeclaration();
     }
 
-   function receivePayment(){
+    function receivePayment(){
 
         var client_id = document.getElementById("client_id").value;
         var convertedIntoArray = [];
         $("#tbl-cart tr").each(function() {
             var rowDataArray = [];
             var actualData = $(this).find('td');
-             
+                
             if (actualData.length > 0) {
                 actualData.each(function() {
                     rowDataArray.push($(this).text());
@@ -1496,9 +1496,9 @@
             }
         }
 
-   }
+    }
 
-   function enterPayable(){
+    function enterPayable(){
         // alert("test");
         //Change AMOUNT PAID and CHANGE in Modal when KeyPressed on amount_payable input
         var amount = document.getElementById("amount_payable").value;
@@ -1530,7 +1530,7 @@
         document.getElementById("rct_balance").innerHTML = final_balance.toFixed(2);
     }
 
-   function noNegativeValue(id){
+    function noNegativeValue(id){
 
         $("#"+id).on("input", function() {
             if (/^0/.test(this.value)) {
@@ -1613,8 +1613,7 @@
         
     }
 
-    document.getElementById("client_id").addEventListener("change", function() 
-    {
+    document.getElementById("client_id").addEventListener("change", function() {
         document.getElementById("cus_form").submit(); 
     });
 
@@ -1628,48 +1627,103 @@
         $("#bad-order-modal").find("#crate-quantity").hide();
     });
 
-    function verifyTransaction(){
+    function verifyTransaction() {
         var trx_ref_id = document.getElementById("trx_ref_id").value;
-        var verified = false;
 
-        @foreach($transactions as $transaction)
-            if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
-                verified = true;
-                $("#cus_name").val("{{ $transaction->cus_name }}");
-
-                $("#bad-order-modal").find("#customer").show();
-                $("#bad-order-modal").find("#products").show();
-                $("#bad-order-modal").find("#lbl-crate").show();
-                $("#bad-order-modal").find("#lbl-loose").show();
-                $("#bad-order-modal").find("#quantity").show();
-                $("#bad-order-modal").find("#crate-quantity").show();
-
-                $("#pur_products").empty();
-                @foreach($purchased_products as $purchased_product)
-                    @if($purchased_product->trx_id == $transaction->trx_id)
-                        $("#pur_products").append("<option value='{{ $purchased_product->prd_id }}'>{{ $purchased_product->prd_name }}</option>");
-                    @endif
-                @endforeach
-            }
-        @endforeach
-
-        if(!verified){
-            if(trx_ref_id == ""){
-                alert("Input required field");
-            }
-            else{
-                alert("No transactions referenced to this code");
-            }
-            
-            $("#bad-order-modal").find("#customer").hide();
-            $("#bad-order-modal").find("#products").hide();
-            $("#bad-order-modal").find("#lbl-crate").hide();
-            $("#bad-order-modal").find("#lbl-loose").hide();
-            $("#bad-order-modal").find("#quantity").hide();
-            $("#bad-order-modal").find("#crate-quantity").hide();
+        if (trx_ref_id === "") {
+            alert("Input required field");
+            return;
         }
+
+        $.ajax({
+            type: 'GET',
+            url: 'get-transaction/' + trx_ref_id, // Replace with your actual route
+            dataType: 'json',
+            success: function (data) {
+                if (data.transaction !== null) {
+                    // Transaction found
+                    var transaction = data.transaction;
+                    var purchasedProducts = data.purchased_products;
+                    console.log(transaction);
+                    $("#cus_name").val(transaction.cus_name);
+
+                    // Show/hide elements as needed
+                    $("#bad-order-modal").find("#customer, #products, #lbl-crate, #lbl-loose, #quantity, #crate-quantity").show();
+
+                    // Populate dropdown options
+                    $("#pur_products").empty();
+
+                    purchasedProducts.forEach(function(purchasedProduct) {
+                        // Create a new option element and append it to the select element
+                        var option = $("<option>")
+                            .attr("value", purchasedProduct.prd_id)
+                            .text(purchasedProduct.prd_name);
+                        $("#pur_products").append(option);
+                    });
+                    
+                } else {
+                    // No transaction found
+                    alert("No transactions referenced to this code");
+
+                    // Show/hide elements as needed
+                    $("#bad-order-modal").find("#customer, #products, #lbl-crate, #lbl-loose, #quantity, #crate-quantity").hide();
+                }
+            },
+            error: function () {
+                console.log("XHR Status: " + status);
+                console.log("Error: " + error);
+
+                // You can also access the response text for more details
+                console.log("Response Text: " + xhr.responseText);
+
+                // Your error handling code here
+                alert("An error occurred while processing the request.");
+            }
+        });
     }
     
 </script>
+
+{{-- // function verifyTransaction(){
+    //     var trx_ref_id = document.getElementById("trx_ref_id").value;
+    //     var verified = false;
+
+    //     @foreach($transactions as $transaction)
+    //         if(trx_ref_id == "{{ $transaction->trx_ref_id }}"){
+    //             verified = true;
+    //             $("#cus_name").val("{{ $transaction->cus_name }}");
+
+    //             $("#bad-order-modal").find("#customer").show();
+    //             $("#bad-order-modal").find("#products").show();
+    //             $("#bad-order-modal").find("#lbl-crate").show();
+    //             $("#bad-order-modal").find("#lbl-loose").show();
+    //             $("#bad-order-modal").find("#quantity").show();
+    //             $("#bad-order-modal").find("#crate-quantity").show();
+
+    //             $("#pur_products").empty();
+    //             @foreach($purchased_products as $purchased_product)
+    //                 @if($purchased_product->trx_id == $transaction->trx_id)
+    //                     $("#pur_products").append("<option value='{{ $purchased_product->prd_id }}'>{{ $purchased_product->prd_name }}</option>");
+    //                 @endif
+    //             @endforeach
+    //         }
+    //     @endforeach
+
+    //     if(!verified){
+    //         if(trx_ref_id == ""){
+    //             alert("Input required field");
+    //         }
+    //         else{
+    //             alert("No transactions referenced to this code");
+    //         }
+            
+    //         $("#bad-order-modal").find("#customer").hide();
+    //         $("#bad-order-modal").find("#products").hide();
+    //         $("#bad-order-modal").find("#lbl-crate").hide();
+    //         $("#bad-order-modal").find("#lbl-loose").hide();
+    //         $("#bad-order-modal").find("#quantity").hide();
+    //         $("#bad-order-modal").find("#crate-quantity").hide();
+    //     }
+    // } --}}
 
 @endsection
