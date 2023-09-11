@@ -1114,6 +1114,8 @@
             else{
                 prd_price = parseFloat(prd_price).toFixed(2);
             }
+            
+            prd_deposit = parseFloat(prd_deposit).toFixed(2);
 
             // Setter For Discount
             if(temp_discount == ""){
@@ -1142,6 +1144,7 @@
             $("#tbl-cart tr").each(function() {
                 var getRow = $(this).attr('id');
                 var existing_item_name = $(this).find("td:eq(1)").text();
+                var getPrdPrice = $(this).find("td:eq(2)").text();
                 var getCrate = $(this).find("td:eq(3)").text();
                 var getLoose = $(this).find("td:eq(4)").text();
                 var getInCrate = $(this).find("td:eq(8)").text();
@@ -1151,15 +1154,31 @@
                 var getPrdIdIn = $(this).find("td:eq(10)").text();
                 var getCanTypeIn = $(this).find("td:eq(11)").text();
 
-                if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
-                    isExisting = true;
-                    existing_item_row = getRow;
-                    new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
-                    new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
-                    new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
-                    new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
-                    new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
-                    new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                
+                //FOR BRAND NEW ROW
+                if(brd_new_prd_quantity > 0){
+                    if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in && getPrdPrice == prd_deposit){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseFloat(brd_new_crates_amount);
+                        new_loose_value = parseInt(getLoose) + parseFloat(brd_new_loose_amount);
+                        new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                        new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                        new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
+                        new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                    }
+                }
+                else{
+                    if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in && getPrdPrice == prd_price){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseInt(total_crates_amount);
+                        new_loose_value = parseInt(getLoose) + parseInt(total_loose_amount);
+                        new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                        new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                        new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
+                        new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                    }
                 }
             });
             
