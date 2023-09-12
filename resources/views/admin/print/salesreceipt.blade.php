@@ -50,11 +50,10 @@
         <hr>
         <table>
             <tr>
-                <td width="20%"><strong>Item</strong></td>
-                <td width="20%"><strong>Bnew</strong></td>
-                <td width="20%"><strong>Price</strong></td>
-                <td width="20%"><strong>Qty</strong></td>
-                <td width="20%"><strong>Sub</strong></td>
+                <td width="25%"><strong>Item</strong></td>
+                <td width="25%"><strong>Price</strong></td>
+                <td width="25%"><strong>Qty</strong></td>
+                <td width="25%"><strong>Sub</strong></td>
             </tr>
             @php($total_deposit=0)
             @php($total_discount=0)
@@ -63,12 +62,10 @@
                 @php($total_discount += $purchase->pur_discount)
                     @php($new_can_qty = $purchase->pur_qty - (($purchase->pur_crate_in *  12) + $purchase->pur_loose_in))
                     <tr>
-                        <td width="20%">{{ $purchase->prd_name }}</td>
-                        <td width="20%">{{ number_format($purchase->prd_deposit, 2, '.', ',') }}</td>
-                        <td width="20%">{{ number_format($purchase->pur_prd_price, 2, '.', ',') }}</td>
-                        <td width="20%">{{ $purchase->pur_qty }}</td>
-                        {{-- <td width="20%">{{ number_format($purchase->prd_deposit, 2, '.', ',') }}</td> --}}
-                        <td width="20%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
+                        <td width="25%">{{ $purchase->prd_name }}</td>
+                        <td width="25%">{{ number_format($purchase->pur_prd_price, 2, '.', ',') }}</td>
+                        <td width="25%">{{ $purchase->pur_qty }}</td>
+                        <td width="25%">{{ number_format($purchase->pur_total, 2, '.', ',') }}</td>
                     </tr>
             @endforeach
             
@@ -83,7 +80,7 @@
             <tr>
                 <td colspan="1">Brd-New</td>
                 <td colspan="3"><hr></td>
-                <td colspan="1"><strong>{{ number_format($total_deposit, 2, '.', ',') }}</strong></td>
+                <td colspan="1"><strong>{{ number_format(session('brd_new_total'), 2, '.', ',') }}</strong></td>
             </tr>
             <tr>
                 <td colspan="1">Discount</td>
@@ -100,11 +97,13 @@
                 <td colspan="3"><hr></td>
                 <td colspan="1">{{ $transactions->payment_name }}</td>
             </tr>
+            @if(session('pmnt_check_no') != null)
             <tr>
                 <td colspan="1">Check #</td>
                 <td colspan="3"><hr></td>
                 <td colspan="1">{{ session('pmnt_check_no') }}</td>
             </tr>
+            @endif
             <tr>
                 <td colspan="1">Received</td>
                 <td colspan="3"><hr></td>

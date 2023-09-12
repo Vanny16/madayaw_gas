@@ -352,6 +352,7 @@ class SalesController extends Controller
         $trx_date = $request->trx_date;
         $trx_can_dec = $request->trx_can_dec;
         $trx_del_rec = $request->trx_del_rec;
+        $brd_new_total = $request->brd_new_total;
         
         $mode_of_payment = $request->mode_of_payment;
         $trx_gross = (float)$request->trx_gross;
@@ -792,6 +793,7 @@ class SalesController extends Controller
 
         session(['pmnt_check_no' => $pmnt_check_no]);
         session(['latest_trx_id' => $trx_id]);
+        session(['brd_new_total' => $brd_new_total]);
 
         session()->flash('successMessage','Transaction complete!');
         return redirect()->action('PrintController@salesReceipt');
