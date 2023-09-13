@@ -477,9 +477,8 @@
                                 <table class="table table-striped table-hover ml-2 table-borderless text-left">
                                     <thead>
                                         <th>Qty</th>
-                                        <th><div class="row"><div class="col-6">Description</div></th>
-                                            {{-- <div class="col-6">Brand-new Price</div></div></th> --}}
-                                        <th></th>
+                                        <th>Description</th>
+                                        <th>Price</th>
                                         <th>Subtotal</th>
                                         <th></th>
                                     </thead>
@@ -599,6 +598,9 @@
                     </div>
                 </div>  
                 <div class="modal-footer">
+                    {{-- include inputs --}}
+                    <input type="hidden" id="brd_new_total" name="brd_new_total" class="form-control" value="">
+
                     <button type="button" id="btn_pay" class="btn btn-success" onclick="noCredit()"><i class="fa fa-money-bill mr-1"></i>Pay</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
@@ -1059,6 +1061,15 @@
         var brd_new_loose_amount = parseInt(brd_new_prd_quantity) % 12;
         var total_crates_amount = parseFloat(crates_amount) - brd_new_crates_amount;
         var total_loose_amount = parseFloat(loose_amount) - brd_new_loose_amount;
+        var total_refill_prd_quantity = (total_crates_amount * 12) + total_loose_amount;
+        
+        var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
+        var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
+        var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
+
+        var sub_total = 0;
+        var total = 0;
+        
         var prd_id_in ="";
         var can_type_in ="";
 
@@ -1073,39 +1084,15 @@
         }
 
         if(prd_quantity != "" || prd_quantity > 0){
-            // if(prd_in_quantity > prd_quantity){
-            //     alert("Canisters to be in must not be greater than quantity to be purchased");
-            // }
-            // else{
-                //Calculations
-                //NOTE: DEPOSIT IS BRAND NEW PRICE
-
-                // if(brd_new_prd_quantity < 0){
-                //     brd_new_prd_quantity = 0;
-                // }
-
-                var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
-                var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
-                var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
-                
-                var total = document.getElementById("lbl_total").innerHTML;
-                
-                if(can_type_in != 0){
-                    var gross_total = (prd_price * (prd_quantity - brd_new_prd_quantity));
-                    var prd_deposit_display = prd_deposit.toFixed(2);
-                }
-                else{
-                    var gross_total = (prd_price * prd_quantity);
-                    var prd_deposit_display = prd_price;
-                }
-
-                console.log(gross_total);
-                //error here possible fix add brdnew_subtotal to discount column
-                var sub_total = (gross_total - temp_discount) + sub_total_deposit;
-                total = parseFloat(total) + sub_total;
-
-            // }
-
+            
+            if(can_type_in != 0){
+                var gross_total = (prd_price * (prd_quantity - brd_new_prd_quantity));
+                var prd_deposit_display = prd_deposit.toFixed(2);
+            }
+            else{
+                var gross_total = (prd_price * prd_quantity);
+                var prd_deposit_display = prd_price;
+            }
             
             // Setter For Price
             if(prd_price == "" || prd_price < 1){
@@ -1114,6 +1101,8 @@
             else{
                 prd_price = parseFloat(prd_price).toFixed(2);
             }
+            
+            prd_deposit = parseFloat(prd_deposit).toFixed(2);
 
             // Setter For Discount
             if(temp_discount == ""){
@@ -1142,6 +1131,7 @@
             $("#tbl-cart tr").each(function() {
                 var getRow = $(this).attr('id');
                 var existing_item_name = $(this).find("td:eq(1)").text();
+                var getPrdPrice = $(this).find("td:eq(2)").text();
                 var getCrate = $(this).find("td:eq(3)").text();
                 var getLoose = $(this).find("td:eq(4)").text();
                 var getInCrate = $(this).find("td:eq(8)").text();
@@ -1151,54 +1141,110 @@
                 var getPrdIdIn = $(this).find("td:eq(10)").text();
                 var getCanTypeIn = $(this).find("td:eq(11)").text();
 
-                if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
-                    isExisting = true;
-                    existing_item_row = getRow;
-                    new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
-                    new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
-                    new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
-                    new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
-                    new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
-                    new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                
+                //FOR REFILL ROW
+                if(total_crates_amount > 0 || total_loose_amount > 0){
+                    
+                    sub_total = total_refill_prd_quantity * prd_price;
+
+                    if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in && getPrdPrice == prd_price){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseInt(total_crates_amount);
+                        new_loose_value = parseInt(getLoose) + parseInt(total_loose_amount);
+                        new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                        new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                        new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
+                        new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                    }
+
+                    if(isExisting){
+                        var existingRow = document.getElementById(existing_item_row);
+                        existingRow.cells[3].innerHTML = new_crates_value;
+                        existingRow.cells[4].innerHTML = new_loose_value;
+                        existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
+                        existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
+                        existingRow.cells[6].innerHTML = "<label hidden>" +new_sub_total_deposit+ "</label>";
+                        existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
+                        existingRow.cells[12].innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +existingRow.id.substring(3)+ "," +new_sub_total_deposit+ "," +new_sub_total+ "," +new_in_crates_value+ "," +new__in_loose_value+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                    }
+                }
+                
+                //FOR BRAND NEW ROW
+                if(brd_new_prd_quantity > 0 || can_type_in == 0){
+                    
+                    if(can_type_in == 0){
+                        sub_total = prd_quantity * prd_price;
+                    }
+                    else{
+                        sub_total = brd_new_prd_quantity * prd_deposit;
+                    }
+
+                    if(existing_item_name.split(",")[0] == prd_name && (getCanTypeIn == can_type_in || can_type_in == 0) && getPrdIdIn == prd_id_in && (getPrdPrice == prd_deposit || getPrdPrice == prd_price)){
+                        isExisting = true;
+                        existing_item_row = getRow;
+                        new_crates_value = parseInt(getCrate) + parseFloat(brd_new_crates_amount);
+                        new_loose_value = parseInt(getLoose) + parseFloat(brd_new_loose_amount);
+                        new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
+                        new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
+                        new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
+                        new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
+                    }
+
+                    if(isExisting){
+                        var existingRow = document.getElementById(existing_item_row);
+                        existingRow.cells[3].innerHTML = new_crates_value;
+                        existingRow.cells[4].innerHTML = new_loose_value;
+                        existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
+                        existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
+                        existingRow.cells[6].innerHTML = "<label hidden>" +new_sub_total_deposit+ "</label>";
+                        existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
+                        existingRow.cells[12].innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +existingRow.id.substring(3)+ "," +new_sub_total_deposit+ "," +new_sub_total+ "," +new_in_crates_value+ "," +new__in_loose_value+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                    }
                 }
             });
             
-            //For Populating Selected Products Table
-            if(isExisting){
-                var existingRow = document.getElementById(existing_item_row);
-                existingRow.cells[3].innerHTML = new_crates_value;
-                existingRow.cells[4].innerHTML = new_loose_value;
-                existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
-                existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
-                existingRow.cells[6].innerHTML = "<label hidden>" +new_sub_total_deposit+ "</label>";
-                existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
-                existingRow.cells[12].innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +existingRow.id.substring(3)+ "," +new_sub_total_deposit+ "," +new_sub_total+ "," +new_in_crates_value+ "," +new__in_loose_value+ ")'><i class='fa fa-trash text-warning'></i></a>";
-            }
-            else{
-                
-                var row_id = document.getElementById("movement_id").value;
-                var table = document.getElementById("tbl-cart");
-                var row = table.insertRow(0);
 
-                row.id = "row"+row_id;
-                row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-                // row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span>";
-                row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span></div><div class='col-6' hidden>"+prd_deposit_display+"</div></div>";
-                row.insertCell(2).innerHTML = prd_price;
-                row.insertCell(3).innerHTML = parseFloat(total_crates_amount);
-                row.insertCell(4).innerHTML = parseFloat(total_loose_amount);
-                row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-                row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
-                row.insertCell(7).innerHTML = sub_total.toFixed(2);
-                row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-                row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-                row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-                row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
-                // row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
-                row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+            //For Populating Selected Products Table
+
+            if(!isExisting){
+                //FOR REFILL ROW
+                if(total_crates_amount > 0 || total_loose_amount > 0){
+
+                    sub_total = total_refill_prd_quantity * prd_price;
+
+                    var row_id = document.getElementById("movement_id").value;
+                    var table = document.getElementById("tbl-cart");
+                    var row = table.insertRow(0);
+
+                    row.id = "row"+row_id;
+                    row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
+                    // row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span>";
+                    row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span></div><div class='col-6' hidden>"+prd_deposit_display+"</div></div>";
+                    row.insertCell(2).innerHTML = prd_price;
+                    row.insertCell(3).innerHTML = parseFloat(total_crates_amount);
+                    row.insertCell(4).innerHTML = parseFloat(total_loose_amount);
+                    row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
+                    row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
+                    row.insertCell(7).innerHTML = sub_total.toFixed(2);
+                    row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
+                    row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
+                    row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
+                    row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
+                    row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                
+                }
 
                 //FOR BRAND NEW ROW
-                if(brd_new_prd_quantity > 0){
+                if(brd_new_prd_quantity > 0 || can_type_in == 0){
+
+                    if(can_type_in == 0){
+                        sub_total = prd_quantity * prd_price;
+                    }
+                    else{
+                        sub_total = brd_new_prd_quantity * prd_deposit;
+                    }
+
                     var table = document.getElementById("tbl-cart");
                     var row = table.insertRow(0);
                     var row_id = parseInt(document.getElementById("movement_id").value) + 1;
@@ -1217,9 +1263,18 @@
                     row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
                     row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
                     row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
-                    row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                    row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
+                
                 }
             }
+
+            
+            // FOR GETTING TOTALS
+
+            $("#tbl-cart tr").each(function() {
+                var getSubTotal = parseFloat($(this).find("td:eq(7)").text());
+                total += getSubTotal;
+            });
 
             alert(prd_quantity+ " " +prd_name+ " has been added to cart");
             checkCart();
@@ -1234,212 +1289,20 @@
 
             var received = document.getElementById("received_amount").value;
 
-            // alert(total_deposit);
             document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
             document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
-            document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
+            document.getElementById("rct_amount_payable").innerHTML = total.toFixed(2);
             document.getElementById("rct_amount_paid").innerHTML = received;
             document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
             document.getElementById("lbl_total").innerHTML = total.toFixed(2);
+            document.getElementById("amount_payable").value = total.toFixed(2);
             modal.hidden = true;
-            
-            
-            // document.getElementById("in_crates" + prd_id_in).value = 0;
-            // document.getElementById("in_loose" + prd_id_in).value = 0;
-            // document.getElementById("crates_amount" + prd_id).value = 0;
-            // document.getElementById("loose_amount" + prd_id).value = 0;
-            // document.getElementById("sub_total" + prd_id ).value = 0;
-            
-            // alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-            // checkCart();
         }
         else{
             alert("Please input quantity");
         }
     }
-
-    // function addToCart(prd_id, prd_name, prd_price, prd_deposit, crates_amount, loose_amount, temp_discount, select_in, in_crate_val, in_loose_val, modal) {
-
-    //     var crates_amount = parseFloat(crates_amount);
-    //     var loose_amount = parseFloat(loose_amount);
-    //     var prd_quantity = parseFloat((crates_amount * 12) + parseFloat(loose_amount));
-    //     var prd_in_quantity = parseFloat((in_crate_val * 12) + parseFloat(in_loose_val));
-    //     var brd_new_prd_quantity = prd_quantity - prd_in_quantity;
-    //     var prd_id_in ="";
-    //     var can_type_in ="";
-
-    //     if(select_in != "0"){
-    //         var select_data = select_in.split("#");
-    //         can_type_in = select_data[0];
-    //         prd_id_in = select_data[1];
-    //     }
-    //     else{
-    //         can_type_in = "0";
-    //         prd_id_in = "0";
-    //     }
-
-    //     if(prd_quantity != "" || prd_quantity > 0){
-    //         // if(prd_in_quantity > prd_quantity){
-    //         //     alert("Canisters to be in must not be greater than quantity to be purchased");
-    //         // }
-    //         // else{
-    //             //Calculations
-    //             //NOTE: DEPOSIT IS BRAND NEW PRICE
-
-    //             // if(brd_new_prd_quantity < 0){
-    //             //     brd_new_prd_quantity = 0;
-    //             // }
-
-    //             var get_total_deposit = document.getElementById("lbl_total_deposit").innerHTML;
-    //             var sub_total_deposit = prd_deposit * brd_new_prd_quantity;
-    //             var total_deposit = sub_total_deposit + parseFloat(get_total_deposit);
-                
-    //             var total = document.getElementById("lbl_total").innerHTML;
-                
-    //             if(can_type_in != 0){
-    //                 var gross_total = (prd_price * (prd_quantity - brd_new_prd_quantity));
-    //                 var prd_deposit_display = prd_deposit.toFixed(2);
-    //             }
-    //             else{
-    //                 var gross_total = (prd_price * prd_quantity);
-    //                 var prd_deposit_display = prd_price;
-    //             }
-
-    //             console.log(gross_total);
-    //             //error here possible fix add brdnew_subtotal to discount column
-    //             var sub_total = (gross_total - temp_discount) + sub_total_deposit;
-    //             total = parseFloat(total) + sub_total;
-
-    //         // }
-
-            
-    //         // Setter For Price
-    //         if(prd_price == "" || prd_price < 1){
-    //             prd_price = "<small class='bg-warning badge'>Free</small>";
-    //         }
-    //         else{
-    //             prd_price = parseFloat(prd_price).toFixed(2);
-    //         }
-
-    //         // Setter For Discount
-    //         if(temp_discount == ""){
-    //             temp_discount = 0.00;
-    //         }
-    //         else{
-    //             total_discount = total_discount + parseFloat(temp_discount);
-    //         }
-
-    //         //Setter For Amount to be Paid
-    //         var client_id = document.getElementById("client_id").value;
-    //         var amount = document.getElementById("amount_payable");
-    //         amount.value = total.toFixed(2);
-
-            
-    //         //For Adding Quantity to Canisters Already in the Table
-
-    //         var isExisting = false;
-    //         var existing_item_row = "";
-    //         var new_crates_value = 0;
-    //         var new_loose_value = 0;
-    //         var new_in_crates_value = 0;
-    //         var new__in_loose_value = 0;
-    //         var new_sub_total = 0;
-
-    //         $("#tbl-cart tr").each(function() {
-    //             var getRow = $(this).attr('id');
-    //             var existing_item_name = $(this).find("td:eq(1)").text();
-    //             var getCrate = $(this).find("td:eq(3)").text();
-    //             var getLoose = $(this).find("td:eq(4)").text();
-    //             var getInCrate = $(this).find("td:eq(8)").text();
-    //             var getInLoose = $(this).find("td:eq(9)").text();
-    //             var getSubTotalDeposit = $(this).find("td:eq(6)").text();
-    //             var getSubTotal = $(this).find("td:eq(7)").text();
-    //             var getPrdIdIn = $(this).find("td:eq(10)").text();
-    //             var getCanTypeIn = $(this).find("td:eq(11)").text();
-
-    //             if(existing_item_name.split(",")[0] == prd_name && getCanTypeIn == can_type_in && getPrdIdIn == prd_id_in){
-    //                 isExisting = true;
-    //                 existing_item_row = getRow;
-    //                 new_crates_value = parseInt(getCrate) + parseInt(crates_amount);
-    //                 new_loose_value = parseInt(getLoose) + parseInt(loose_amount);
-    //                 new_in_crates_value = parseInt(getInCrate) + parseInt(in_crate_val);
-    //                 new__in_loose_value = parseInt(getInLoose) + parseInt(in_loose_val);
-    //                 new_sub_total_deposit = parseFloat(getSubTotalDeposit) + parseFloat(sub_total_deposit);
-    //                 new_sub_total = parseFloat(getSubTotal) + parseFloat(sub_total);
-    //             }
-    //         });
-            
-    //         //For Populating Selected Products Table
-    //         if(isExisting){
-    //             var existingRow = document.getElementById(existing_item_row);
-    //             existingRow.cells[3].innerHTML = new_crates_value;
-    //             existingRow.cells[4].innerHTML = new_loose_value;
-    //             existingRow.cells[8].innerHTML = "<label hidden>" +new_in_crates_value+ "</label>";
-    //             existingRow.cells[9].innerHTML = "<label hidden>" +new__in_loose_value+ "</label>";
-    //             existingRow.cells[6].innerHTML = "<label hidden>" +new_sub_total_deposit+ "</label>";
-    //             existingRow.cells[7].innerHTML = new_sub_total.toFixed(2);
-    //             existingRow.cells[12].innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +existingRow.id.substring(3)+ "," +new_sub_total_deposit+ "," +new_sub_total+ "," +new_in_crates_value+ "," +new__in_loose_value+ ")'><i class='fa fa-trash text-warning'></i></a>";
-    //         }
-    //         else{
-                
-    //             var row_id = document.getElementById("movement_id").value;
-    //             var table = document.getElementById("tbl-cart");
-    //             var row = table.insertRow(0);
-
-    //             row.id = "row"+row_id;
-    //             row.insertCell(0).innerHTML = "<label hidden>" +prd_id+ "</label>";
-    //             // row.insertCell(1).innerHTML = "<span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span>";
-    //             row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'><span class='lead'><span class='badge badge-pill badge-primary'>"+prd_name+"<i hidden>,</i></span></span></div><div class='col-6'>"+prd_deposit_display+"</div></div>";
-    //             row.insertCell(2).innerHTML = prd_price;
-    //             row.insertCell(3).innerHTML = parseFloat(crates_amount);
-    //             row.insertCell(4).innerHTML = parseFloat(loose_amount);
-    //             row.insertCell(5).innerHTML = parseFloat(temp_discount).toFixed(2);
-    //             row.insertCell(6).innerHTML = "<label hidden>" +sub_total_deposit.toFixed(2)+ "</label>";
-    //             row.insertCell(7).innerHTML = sub_total.toFixed(2);
-    //             row.insertCell(8).innerHTML = "<label hidden>" +in_crate_val+ "</label>";
-    //             row.insertCell(9).innerHTML = "<label hidden>" +in_loose_val+ "</label>";
-    //             row.insertCell(10).innerHTML = "<label hidden>" +prd_id_in+ "</label>";
-    //             row.insertCell(11).innerHTML = "<label hidden>" +can_type_in+ "</label>";
-    //             // row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +sub_total+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
-    //             row.insertCell(12).innerHTML = "<a href='javascript:void()' onclick='removeFromCart(" +row_id+ "," +sub_total_deposit+ "," +(sub_total + sub_total_deposit)+ "," +in_crate_val+ "," +in_loose_val+ ")'><i class='fa fa-trash text-warning'></i></a>";
-    //         }
-    //         alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-    //         checkCart();
-                
-    //         if(can_type_in != 0){
-    //             document.getElementById("in_crates" + prd_id).value = 0;
-    //             document.getElementById("in_loose" + prd_id).value = 0;
-    //         }
-    //         document.getElementById("crates_amount" + prd_id).value = 0;
-    //         document.getElementById("loose_amount" + prd_id).value = 0;
-    //         document.getElementById("sub_total" + prd_id ).value = 0;
-
-    //         var received = document.getElementById("received_amount").value;
-
-    //         // alert(total_deposit);
-    //         document.getElementById("rct_gross_total").innerHTML = gross_total.toFixed(2);
-    //         document.getElementById("rct_discount").innerHTML = parseFloat(total_discount).toFixed(2);
-    //         document.getElementById("rct_amount_payable").innerHTML = document.getElementById("amount_payable").value;
-    //         document.getElementById("rct_amount_paid").innerHTML = received;
-    //         document.getElementById("lbl_total_deposit").innerHTML = total_deposit.toFixed(2);
-    //         document.getElementById("lbl_total").innerHTML = total.toFixed(2);
-    //         modal.hidden = true;
-            
-            
-    //         // document.getElementById("in_crates" + prd_id_in).value = 0;
-    //         // document.getElementById("in_loose" + prd_id_in).value = 0;
-    //         // document.getElementById("crates_amount" + prd_id).value = 0;
-    //         // document.getElementById("loose_amount" + prd_id).value = 0;
-    //         // document.getElementById("sub_total" + prd_id ).value = 0;
-            
-    //         // alert(prd_quantity+ " " +prd_name+ " has been added to cart");
-    //         // checkCart();
-    //     }
-    //     else{
-    //         alert("Please input quantity");
-    //     }
-    // }
-
+    
     function removeFromCart(row, sub_total_deposit, sub_total, crate, loose) {
 
         var deleteRowIn = document.getElementById("row_in" + row);
@@ -1519,7 +1382,6 @@
         
         var item_qty = "";
         var item_des = "";
-        var item_bnew_price = "";
         var item_price = "";
         var item_tot = "";
         var gross_total = 0;
@@ -1536,14 +1398,13 @@
                 
                 item_qty = prd_quantity;
                 item_des = row_item[1];
-                item_bnew_price = row_item[2];
                 item_price = row_item[3];
                 item_tot = row_item[8];
             }
 
             try{
                 rct_row.insertCell(0).innerHTML = item_qty;
-                rct_row.insertCell(1).innerHTML = "<div class='row'><div class='col-6'>"+item_des+"</div><div class='col-6'>"+item_bnew_price+"</div></div>";
+                rct_row.insertCell(1).innerHTML = item_des;
                 rct_row.insertCell(2).innerHTML = item_price;
                 rct_row.insertCell(3).innerHTML = item_tot;
                 
@@ -1636,6 +1497,7 @@
         var trx_can_dec = document.getElementById("trx_can_dec").value;
         var trx_del_rec = document.getElementById("trx_del_rec").value;
         var pmnt_check_no = document.getElementById("pmnt_check_no").value;
+        document.getElementById("brd_new_total").value = document.getElementById("lbl_total_deposit").innerHTML;
 
         if(mode_of_payment == 1){
             if(payment == "" || total > payment){
