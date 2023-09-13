@@ -43,6 +43,7 @@ class ProductionController extends Controller
 
         $oppositions = DB::table('oppositions')
         ->where('acc_id', '=', session('acc_id'))
+        ->where('ops_name', '!=', 'EMPTY')
         ->get();
 
         $pdn_flag = check_production_log();
