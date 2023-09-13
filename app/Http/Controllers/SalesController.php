@@ -43,8 +43,11 @@ class SalesController extends Controller
         // ->get();
 
         $transactions = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                                ->where('pdn_id', get_last_production_id())
                                 ->orderBy('trx_id', 'desc')
-                                ->first(); 
+                                ->count();
+                                
+                                // dd($transactions);
 
         $purchased_products = DB::table('products') //NECESSARY FOR INDEX ; USED TO VERIFY THE BAD ORDER
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
@@ -57,10 +60,13 @@ class SalesController extends Controller
 
         // $oppositions = Opposition::all(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $transaction_id = DB::table('transactions')
-        ->max('trx_id');
+        // $transaction_id = DB::table('transactions')
+        // ->max('trx_id');
 
-        $transaction_id = $transactions->max('trx_id'); //OVERWRITE PREVIOUS QUERY FOR TESTING
+        $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                                    ->where('pdn_id', get_last_production_id())
+                                    ->orderBy('trx_id', 'desc')
+                                    ->count();
         
         // $in_products = DB::table('products')
         // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -185,9 +191,9 @@ class SalesController extends Controller
         // ->where('transactions.acc_id', '=', session('acc_id'))
         // ->get();
 
-        $transactions = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
-                                ->orderBy('trx_id', 'desc')
-                                ->first(); 
+        // $transactions = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+        //                         ->orderBy('trx_id', 'desc')
+        //                         ->first(); 
 
         $purchased_products = DB::table('products')
         ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
@@ -198,7 +204,10 @@ class SalesController extends Controller
 
         $oppositions = Opposition::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $transaction_id =Transaction::max('trx_id');
+        $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                                    ->where('pdn_id', get_last_production_id())
+                                    ->orderBy('trx_id', 'desc')
+                                    ->count();
 
         session(['client_id' => $client_id[0]]);
 
