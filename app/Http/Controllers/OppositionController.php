@@ -26,17 +26,17 @@ class OppositionController extends Controller
         //     3 => 'Inactive'
         // );
 
-        $products = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_is_refillable', '=', '1')
-        ->get();
+        // $products = DB::table('products')
+        // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        // ->where('products.acc_id', '=', session('acc_id'))
+        // ->where('prd_is_refillable', '=', '1')
+        // ->get();
 
         $products = Product::index(); //OVERWRITE PREVIOUS QUERY FOR TESTING
         
-        $oppositions = DB::table('oppositions')
-        ->where('acc_id', '=', session('acc_id'))
-        ->get();
+        // $oppositions = DB::table('oppositions')
+        // ->where('acc_id', '=', session('acc_id'))
+        // ->get();
         
         $oppositions = Opposition::index(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 

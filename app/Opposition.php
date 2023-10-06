@@ -17,10 +17,9 @@ class Opposition extends Model
     }
 
     public static function index(){
-        return self::select('ops_id', 'ops_name')
+        return self::query()//select('ops_id', 'ops_name')
                     ->where('ops_name', 'NOT LIKE', '%EMPTY%')
                     ->where('acc_id', '=', session('acc_id'))
-                    ->where('ops_active','=','1')
                     ->get();
     }
 }

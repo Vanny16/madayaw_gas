@@ -60,13 +60,13 @@ class SalesController extends Controller
 
         // $oppositions = Opposition::all(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        // $transaction_id = DB::table('transactions')
-        // ->max('trx_id');
+        $transaction_id = DB::table('transactions')
+        ->max('trx_id');
 
-        $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
-                                    ->where('pdn_id', get_last_production_id())
-                                    ->orderBy('trx_id', 'desc')
-                                    ->count();
+        // $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+        //                             ->where('pdn_id', get_last_production_id())
+        //                             ->orderBy('trx_id', 'desc')
+        //                             ->count();
         
         // $in_products = DB::table('products')
         // ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
@@ -314,8 +314,13 @@ class SalesController extends Controller
     
     public function paymentSales(Request $request)
     {
-        $trx_id = DB::table('transactions')
+        $transaction_id = DB::table('transactions')
         ->max('trx_id');
+
+        // $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+        //                             ->where('pdn_id', get_last_production_id())
+        //                             ->orderBy('trx_id', 'desc')
+        //                             ->count();
 
         if($trx_id == null){
             $trx_id = 1;
@@ -325,7 +330,10 @@ class SalesController extends Controller
         }
 
         $pmnt_id = DB::table('payments')
-        ->max('pmnt_id');
+                    ->max('pmnt_id');
+
+        // $pmnt_id = DB::table('payments')
+        //             ->where('trx_id', '=', $transaction_id);
 
         if($pmnt_id == null){
             $pmnt_id = 1;
