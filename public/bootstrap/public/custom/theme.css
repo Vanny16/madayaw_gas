@@ -1,0 +1,72 @@
+/* HEADER CSS */
+.navbar {
+    background-color: #be0002;
+    border-bottom: 1px solid #814505;
+    min-height: 70px !important;
+    box-shadow: rgba(0,0,0,0.15) 0 1px 0;
+    -moz-box-shadow: rgba(0,0,0,0.15) 0 1px 0;
+    -webkit-box-shadow: rgba(0,0,0,0.15) 0 1px 0;
+}
+
+.navbar-top-links {
+    margin-top: 5px;
+}
+
+.navbar-top-links > li > a {
+    color: #fff;
+}
+
+.navbar-top-links > li > a:hover {
+    color: #fff;
+}
+
+.navbar-brand {
+    -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 1px 2px;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 0 1px 2px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 1px 2px;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 70px;
+    padding: 0 15px;
+    background: #fff;
+}
+
+.navbar-brand .logo {
+    position: relative;
+    top: 25%;
+    max-width: 225px;
+    z-index: 2;
+}
+
+.navbar-brand .logo-bottom-curve {
+    border-bottom: 1px solid #bfbfbf;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    -moz-box-shadow: rgba(0,0,0,0.1) 0 1px 0,rgba(0,0,0,0.05) 0 -1px 1px 0 inset;
+    -webkit-box-shadow: rgba(0,0,0,0.1) 0 1px 0,rgba(0,0,0,0.05) 0 -1px 1px 0 inset;
+    box-shadow: rgba(0,0,0,0.1) 0 1px 0,rgba(0,0,0,0.05) 0 -1px 1px 0 inset;
+    position: absolute;
+    right: 0;
+    bottom: -10px;
+    left: 0;
+    height: 15px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    background: #fff;
+    z-index: 2;
+}
+
+a.navbar-brand:hover {
+    background-color: #fff !important;
+}
+
+.navbar-fixed-top {
+    border: 0;
+}
+
+#page-wrapper {
+    padding: 15px 15px;
+    min-height: 568px;
+    background-color: white;
+}

@@ -1,0 +1,29 @@
+<script src="{{ asset('bootstrap/admin/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/sparklines/sparkline.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/dist/js/adminlte.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/dist/js/pages/dashboard.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/dist/js/demo.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('bootstrap/admin/plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/fullcalendar/main.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/fullcalendar-daygrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/fullcalendar-timegrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/fullcalendar-interaction/main.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/fullcalendar-bootstrap/main.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
+{!! $calendar->script() !!}
+
