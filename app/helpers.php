@@ -358,7 +358,6 @@ function get_total_canister_report()
     // {
     //     $total_stock = $total_stock + $opposition->ops_quantity;
     // }
-    $count = 0;
     foreach($products as $product)
     {
         $total_stock = $total_stock + $product->prd_quantity;
@@ -366,10 +365,6 @@ function get_total_canister_report()
         $total_stock = $total_stock + $product->prd_empty_goods;
         $total_stock = $total_stock + $product->prd_for_revalving;
         // $total_stock = $total_stock + $product->prd_scraps;
-        if($count == 2){
-            // dd($total_stock);
-        }
-        $count++;
     }
     return number_format($total_stock, 0, '.', ',');
 }
