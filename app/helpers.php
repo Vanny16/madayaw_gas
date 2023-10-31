@@ -342,14 +342,13 @@ function get_total_canister_report()
     // ->where('pdn_id', '=', $pdn_id)
     // ->sum(DB::raw('stk_empty_goods + stk_filled + stk_leakers + stk_for_revalving + stk_scraps'));
     
-    // $oppositions = DB::table('oppositions')
-    // ->where('acc_id', '=', session('acc_id'))
-    // ->get();
+    $oppositions = DB::table('oppositions')
+    ->where('acc_id', '=', session('acc_id'))
+    ->get();
 
     $products = DB::table('products')
     ->where('acc_id', '=', session('acc_id'))
     ->where('prd_is_refillable', '=', 1)
-    ->where('prd_weight', '=', 170.0)
     ->get();
 
     $total_stock = 0;
