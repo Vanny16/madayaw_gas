@@ -349,6 +349,7 @@ function get_total_canister_report()
     $products = DB::table('products')
     ->where('acc_id', '=', session('acc_id'))
     ->where('prd_is_refillable', '=', 1)
+    ->where('prd_weight', '=', 170) //count only the small canisters exclude the tanks
     ->get();
 
     $total_stock = 0;
