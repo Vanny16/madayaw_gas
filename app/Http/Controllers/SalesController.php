@@ -1157,6 +1157,7 @@ class SalesController extends Controller
         'ops_notes' => $ops_notes
         ]);
 
+        //UPLOADS 
         //IMAGE UPLOAD 
         if($request->file('ops_image'))
         {
