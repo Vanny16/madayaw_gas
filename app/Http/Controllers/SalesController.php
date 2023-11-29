@@ -317,10 +317,10 @@ class SalesController extends Controller
         $transaction_id = DB::table('transactions')
         ->max('trx_id');
 
-        // $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
-        //                             ->where('pdn_id', get_last_production_id())
-        //                             ->orderBy('trx_id', 'desc')
-        //                             ->count();
+        $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                            ->where('pdn_id', get_last_production_id())
+                            ->orderBy('trx_id', 'desc')
+                            ->count();
 
         if($trx_id == null){
             $trx_id = 1;
