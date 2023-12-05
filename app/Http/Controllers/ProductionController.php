@@ -2407,6 +2407,7 @@ class ProductionController extends Controller
         ->where('prd_for_production', '=', 1)
         ->where('prd_active', '=', 1)
         ->get();
+        // ->count();
 
         $customers = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -2440,17 +2441,6 @@ class ProductionController extends Controller
         ->orderBy('verify_id', 'DESC')
         ->get();
 
-        // if(!empty($product_verifications->where('verify_user_type', '=', 1)->first()))
-        // {
-        //     $did_admin_verify = true;
-        //     $product_verifications = $product_verifications->where('verify_user_type', '=', 1)->get();
-        // }
-        // else
-        // {
-        //     $product_verifications = $product_verifications->where('verify_user_type', '=', 4)->get();
-        // }
-        // dd($product_verifications);
-
         $opening_stocks_array = [];
         foreach($product_verifications as $opening)
         {
@@ -2469,8 +2459,6 @@ class ProductionController extends Controller
                 array_unshift($closing_stocks_array, $closing->verify_closing_filled);
             }
         }
-
-        // dd($opening_stocks_array, $closing_stocks_array);
 
         $supervisor_product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
@@ -2579,6 +2567,7 @@ class ProductionController extends Controller
                             }
                         }
                         
+                        // dd($pur_internal_array);
                         //TRIM PURCHASES ARRAY
                         if(count($pur_internal_array) - 2 > count($canisters))
                         {
@@ -2595,7 +2584,7 @@ class ProductionController extends Controller
                                     array_push($pur_internal_array, 0);
                                     $count++;
                                 }catch(Exception $e){
-                                    dd($e, $count);
+                                    // dd($e, $count);
                                 }
                             }
                         }
