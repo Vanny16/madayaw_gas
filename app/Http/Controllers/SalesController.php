@@ -1201,4 +1201,32 @@ class SalesController extends Controller
         session()->flash('successMessage','Opposition Canister added');
         return redirect()->action('SalesController@main');
     }
+
+    private function purchasesSaveForEodTables($flag, $array)
+    {
+        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
+
+        return true; //or false
+    }
+
+    private function issuedSaveForEodTables($flag, $array)
+    {
+        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
+
+        return true; //or false
+    }
+
+    private function receivedSaveForEodTables($flag, $array)
+    {
+        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
+
+        return true; //or false
+    }
+    
+    private function oppositionSaveForEodTables($flag, $array)
+    {
+        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
+
+        return true; //or false
+    }
 }
