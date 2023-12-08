@@ -2976,10 +2976,6 @@ class ProductionController extends Controller
         }
     }
 
-    private function getOpsTables($array){
-
-    }
-
     public function tank()
     {
         $tanks = DB::table('tanks')
