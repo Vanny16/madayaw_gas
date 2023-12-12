@@ -1202,31 +1202,8 @@ class SalesController extends Controller
         return redirect()->action('SalesController@main');
     }
 
-    private function purchasesSaveForEodTables($flag, $array)
+    private function saveForEodTables($flag, $array)
     {
-        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
 
-        return true; //or false
-    }
-
-    private function issuedSaveForEodTables($flag, $array)
-    {
-        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
-
-        return true; //or false
-    }
-
-    private function receivedSaveForEodTables($flag, $array)
-    {
-        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
-
-        return true; //or false
-    }
-    
-    private function oppositionSaveForEodTables($flag, $array)
-    {
-        //MAKE SQL TABLES FOR EACH ISSUED, RECEIVED, OPPOSITION
-
-        return true; //or false
     }
 }
