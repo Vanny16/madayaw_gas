@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Customer;
+use App\EodReport;
 use App\Opposition;
 use App\Product;
 use App\Purchase;
@@ -1202,8 +1203,17 @@ class SalesController extends Controller
         return redirect()->action('SalesController@main');
     }
 
-    private function saveForEodTables($flag, $array)
+    private function saveForEodTables($array)
     {
+        foreach($array as $value)
+        {
+            EodReport::insert([
+                    'ref_id' => $value['ref_id'],
+                    'prd_id' => $value['prd_id'],
+                    'quantity' => $value['quantity'],
+                    'pdn_id' => $value['pdn_id'],
+                ]);
+        }
 
     }
 }
