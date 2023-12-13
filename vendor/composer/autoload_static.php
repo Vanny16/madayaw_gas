@@ -513,6 +513,7 @@ class ComposerStaticInit65d91fbb3951ef59b753105dc6b4a9da
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Customer' => __DIR__ . '/../..' . '/app/Customer.php',
+        'App\\EodReport' => __DIR__ . '/../..' . '/app/EodReport.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Exports\\ExcelExport' => __DIR__ . '/../..' . '/app/Exports/ExcelExport.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
