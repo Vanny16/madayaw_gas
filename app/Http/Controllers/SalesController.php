@@ -411,10 +411,11 @@ class SalesController extends Controller
         $list = $request->purchases;
         $selected_item_list  = $list;
         $purchase_row = explode(",#,", $selected_item_list);
-
+        
         //for products variable
         $deduct_qty = 0;
         $add_empty_good_qty = 0;
+        $eodReportArray = [];
 
         for($i = 0 ; $i < count($purchase_row) ; $i++)
         {
@@ -526,7 +527,23 @@ class SalesController extends Controller
             ->update([
                 'prd_quantity' => $deduct_qty
             ]);
+
+            //Separated the query for readability
+            $customer = Customer::select('cus_id')
+                                ->where('cus_name', '=', $purchase_data[13])
+                                ->first();
+            
+            array_push($eodReportArray, [
+                'trx_id' => $trx_ref_id,
+                'prd_id' => $purchase_data[0],
+                'quantity' => (int)($purchase_data[4] * 12) + (int)($purchase_data[5]),
+                'pdn_id' => get_last_production_id(),
+                'cus_id' => $customer['cus_id']
+            ]);
         }
+
+        //Save the purchases for EOD Tables
+        $this->saveForEodTables($eodReportArray);
         
         DB::table('transactions')
         ->insert([
@@ -1205,14 +1222,51 @@ class SalesController extends Controller
 
     private function saveForEodTables($array)
     {
+        //Check for duplicates items
+        $filtered_array = [];
+
         foreach($array as $value)
         {
+            $prd = $value['prd_id'];
+            $qty = $value['quantity'];
+
+            //Push first $value to $filtered_array if latter is empty 
+            if(empty($filtered_array))
+            {
+                array_push($filtered_array, $value);
+                continue;
+            }
+
+            $counter = 0;
+            foreach($filtered_array as $f_value)
+            {
+                ///If $value['prd_id'] exists in $filtered_array, 
+                ///combine quantities and break out of loop
+                if($value['prd_id'] == $f_value['prd_id'])
+                {
+                    $f_value['quantity'] = $f_value['quantity'] + $value['quantity']; 
+                    break;
+                }
+                else
+                {
+                    $counter++;
+                    if($counter + 1 == count($filtered_array))
+                    {
+                        array_push($filtered_array, $value);
+                    }
+                }
+            }
+        }
+
+        //Store to table after filtering
+        foreach($filtered_array as $value)
+        {
             EodReport::insert([
-                    'ref_id' => $value['ref_id'],
-                    'prd_id' => $value['prd_id'],
-                    'quantity' => $value['quantity'],
-                    'pdn_id' => $value['pdn_id'],
-                ]);
+                        'ref_id' => $value['ref_id'],
+                        'prd_id' => $value['prd_id'],
+                        'quantity' => $value['quantity'],
+                        'pdn_id' => $value['pdn_id'],
+                    ]);
         }
 
     }
