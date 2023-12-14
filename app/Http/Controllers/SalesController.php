@@ -1224,12 +1224,9 @@ class SalesController extends Controller
     {
         //Check for duplicates items
         $filtered_array = [];
-
+        
         foreach($array as $value)
         {
-            $prd = $value['prd_id'];
-            $qty = $value['quantity'];
-
             //Push first $value to $filtered_array if latter is empty 
             if(empty($filtered_array))
             {
@@ -1249,23 +1246,27 @@ class SalesController extends Controller
                 }
                 else
                 {
+                    ///To check if the loop iterated throughout the array,
+                    ///increment $counter to match the length of $filtered_array,
+                    ///then push the last value 
                     $counter++;
-                    if($counter + 1 == count($filtered_array))
+                    if($counter == count($filtered_array))
                     {
                         array_push($filtered_array, $value);
                     }
                 }
             }
         }
-
+        
         //Store to table after filtering
         foreach($filtered_array as $value)
         {
             EodReport::insert([
-                        'ref_id' => $value['ref_id'],
+                        'ref_id' => $value['trx_id'],
                         'prd_id' => $value['prd_id'],
                         'quantity' => $value['quantity'],
                         'pdn_id' => $value['pdn_id'],
+                        'cus_id' => $value['cus_id'],
                     ]);
         }
 
