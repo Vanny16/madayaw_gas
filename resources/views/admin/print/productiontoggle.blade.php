@@ -78,7 +78,6 @@
                     <tbody>
                         @php($row_count = $p1_table_rows)
                         @foreach($purchases_array as $purchase_array)
-                        
                             <tr>
                                 <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[0] }}</i></td>
                                 <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[1] }}</i></td>

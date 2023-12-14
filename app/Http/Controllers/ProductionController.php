@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EodReport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -1956,11 +1957,6 @@ class ProductionController extends Controller
         return redirect()->action('ProductionController@manage');
     }
 
-    public function EODReport()
-    {
-        
-    }
-
     private function check_gas_quantity($tnk_id, $prd_id, $prd_quantity)
     {
         $tank = DB::table('tanks')
@@ -2407,7 +2403,6 @@ class ProductionController extends Controller
         ->where('prd_for_production', '=', 1)
         ->where('prd_active', '=', 1)
         ->get();
-        // ->count();
 
         $customers = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -2775,7 +2770,35 @@ class ProductionController extends Controller
             
         }
     
-        return view('admin.print.productiontoggle', compact('canisters', 'customers', 'closing_stocks_array', 'received_customers_array', 'issued_customers_array', 'opening_stocks_array', 'oppositions', 'oppositions_array', 'p1_table_rows', 'p2r_table_rows', 'p2i_table_rows', 'production_logs', 'production_date', 'production_start', 'production_end', 'product_verifications', 'pm_product_verifications', 'purchases', 'purchases_array', 'supervisor_product_verifications','tanks', 'total_array', 'transactions',));
+        //NEW CODE FOR EODREPORTS
+        dd($purchases);
+        // $new_purchase_array = EodReport::retrieve();
+
+        return view('admin.print.productiontoggle', compact(
+            'canisters', 
+            'customers', 
+            'closing_stocks_array', 
+            'received_customers_array', 
+            'issued_customers_array', 
+            'opening_stocks_array', 
+            'oppositions', 
+            'oppositions_array', 
+            'p1_table_rows', 
+            'p2r_table_rows', 
+            'p2i_table_rows', 
+            //'production_logs', 
+            'production_date', 
+            'production_start', 
+            'production_end', 
+            // 'product_verifications', 
+            // 'pm_product_verifications', 
+            'purchases', 
+            'purchases_array', 
+            // 'supervisor_product_verifications',
+            'tanks', 
+            'total_array', 
+            'transactions',
+        ));
     }
 
     public function tank()

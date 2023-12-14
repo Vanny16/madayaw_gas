@@ -1261,7 +1261,7 @@ class SalesController extends Controller
         //Store to table after filtering
         foreach($filtered_array as $value)
         {
-            EodReport::insert([
+            EodReport::create([
                         'ref_id' => $value['trx_id'],
                         'prd_id' => $value['prd_id'],
                         'quantity' => $value['quantity'],
