@@ -1,4 +1,6 @@
 <?php
+use App\EodReport;
+
 function generateuuid()
 { 
     $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -1129,5 +1131,65 @@ function subtract_qty($flag, $qty, $prd_id)
             'prd_leakers' => $new_quantity
         ]);
     } 
+}
+
+function saveForEodTables($array, $flag)
+{
+    // LEGENDS
+    // 1 - PURCHASE
+    // 2 - RECEIVED
+    // 3 - ISSUED
+    // 4 - OPPOSITION
+
+    //Check for duplicates items
+    $filtered_array = [];
+    
+    foreach($array as $value)
+    {
+        //Push first $value to $filtered_array if latter is empty 
+        if(empty($filtered_array))
+        {
+            array_push($filtered_array, $value);
+            continue;
+        }
+
+        $counter = 0;
+        foreach($filtered_array as $f_value)
+        {
+            ///If $value['prd_id'] exists in $filtered_array, 
+            ///combine quantities and break out of loop
+            if($value['prd_id'] == $f_value['prd_id'])
+            {
+                $f_value['quantity'] = $f_value['quantity'] + $value['quantity']; 
+                break;
+            }
+            else
+            {
+                ///To check if the loop iterated throughout the array,
+                ///increment $counter to match the length of $filtered_array,
+                ///then push the last value 
+                $counter++;
+                if($counter == count($filtered_array))
+                {
+                    array_push($filtered_array, $value);
+                }
+            }
+        }
+    }
+    
+    //Store to table after filtering
+    foreach($filtered_array as $value)
+    {
+        //Add values to eod_reports table
+        EodReport::create([
+            'ref_id' => $value['trx_id'],
+            'prd_id' => $value['prd_id'],
+            'quantity' => $value['quantity'],
+            'pdn_id' => $value['pdn_id'],
+            'cus_id' => $value['cus_id'],
+            'report_type' => $flag,
+        ]);
+    }
+
 }
 ?>
