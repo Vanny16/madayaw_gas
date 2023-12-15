@@ -2422,11 +2422,11 @@ class ProductionController extends Controller
         $production_start = date("h:i a", strtotime($production_logs->pdn_start_time));
         $production_end = date("h:i a", strtotime($production_logs->pdn_end_time));
 
-        $pm_product_verifications = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_pdn_id', '=', get_last_production_id())
-        ->whereIn('verify_user_type', [1, 5])
-        ->get();
+        // $pm_product_verifications = DB::table('stock_verifications')
+        // ->where('verify_acc_id', '=', session('acc_id'))
+        // ->where('verify_pdn_id', '=', get_last_production_id())
+        // ->whereIn('verify_user_type', [1, 5])
+        // ->get();
 
         $product_verifications = DB::table('stock_verifications')
         ->where('verify_acc_id', '=', session('acc_id'))
@@ -2455,11 +2455,11 @@ class ProductionController extends Controller
             }
         }
 
-        $supervisor_product_verifications = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_pdn_id', '=', get_last_production_id())
-        ->whereIn('verify_user_type', [1, 4])
-        ->get();
+        // $supervisor_product_verifications = DB::table('stock_verifications')
+        // ->where('verify_acc_id', '=', session('acc_id'))
+        // ->where('verify_pdn_id', '=', get_last_production_id())
+        // ->whereIn('verify_user_type', [1, 4])
+        // ->get();
         
         $customers = DB::table('customers')
         ->where('acc_id', '=', session('acc_id'))
@@ -2489,197 +2489,202 @@ class ProductionController extends Controller
         $issued_customers_array = [];
 
         $count = 0;
-        if(isset($transactions))
-        {
-            foreach($transactions as $transaction)
-            {
-                $pur_internal_array = [];
-                $rec_internal_array = [];
-                $internal_array = [];
+
+        //
+        //CODE THAT CONSUMES A TON OF RAM
+        //
+
+        // if(isset($transactions))
+        // {
+        //     foreach($transactions as $transaction)
+        //     {
+        //         $pur_internal_array = [];
+        //         $rec_internal_array = [];
+        //         $internal_array = [];
                 
-                if(!empty($transaction->trx_opposition_name))
-                {
-                    continue;
-                }
+        //         if(!empty($transaction->trx_opposition_name))
+        //         {
+        //             continue;
+        //         }
 
-                $is_not_canister = false;
-                foreach($customers as $customer)
-                {
-                    // $pur_internal_array = [];
-                    $pur_index = 2;
-                    $rec_index = 2;
-                    $iss_index = 2;
-                    if($is_not_canister)
-                    {
-                        break;
-                    }
+        //         $is_not_canister = false;
+        //         foreach($customers as $customer)
+        //         {
+        //             // $pur_internal_array = [];
+        //             $pur_index = 2;
+        //             $rec_index = 2;
+        //             $iss_index = 2;
+        //             if($is_not_canister)
+        //             {
+        //                 break;
+        //             }
 
-                    if($transaction->cus_id == $customer->cus_id)
-                    {
-                        if($is_not_canister)
-                        {
-                            break;
-                        }
+        //             if($transaction->cus_id == $customer->cus_id)
+        //             {
+        //                 if($is_not_canister)
+        //                 {
+        //                     break;
+        //                 }
 
-                        array_push($pur_internal_array, $customer->cus_name);
-                        array_push($pur_internal_array, $transaction->trx_ref_id);
+        //                 array_push($pur_internal_array, $customer->cus_name);
+        //                 array_push($pur_internal_array, $transaction->trx_ref_id);
 
-                        array_push($rec_internal_array, $customer->cus_name);
-                        array_push($rec_internal_array, $transaction->trx_ref_id);
+        //                 array_push($rec_internal_array, $customer->cus_name);
+        //                 array_push($rec_internal_array, $transaction->trx_ref_id);
 
-                        array_push($internal_array, $customer->cus_name);
-                        array_push($internal_array, $transaction->trx_ref_id);
+        //                 array_push($internal_array, $customer->cus_name);
+        //                 array_push($internal_array, $transaction->trx_ref_id);
 
-                        $purchase_products = DB::table('purchases')
-                        ->orderBy('prd_id', 'ASC')
-                        ->where('can_type_in', '=', 1)
-                        ->where('trx_id', '=', $transaction->trx_id)
-                        // ->where('trx_id', '=', 3)
-                        ->get();
-                        // dd($purchase_products);
-                        //--------------------------------------------
+        //                 $purchase_products = DB::table('purchases')
+        //                 ->orderBy('prd_id', 'ASC')
+        //                 ->where('can_type_in', '=', 1)
+        //                 ->where('trx_id', '=', $transaction->trx_id)
+        //                 // ->where('trx_id', '=', 3)
+        //                 ->get();
+        //                 // dd($purchase_products);
+        //                 //--------------------------------------------
 
-                        //PURCHASES ARRAY
-                        foreach($purchase_products as $products)
-                        {
-                             //FOR PURCHASED CANISTERS
-                            //  if($canister->prd_id == $products->prd_id)
-                            //  {
-                            if($transaction->trx_id == $products->trx_id)
-                            {
-                                $previous_prd_id = $products->prd_id;
-                                foreach($canisters as $canister)
-                                {
-                                    $amount  = DB::table('purchases')
-                                    ->where('trx_id', '=', $transaction->trx_id)
-                                    ->where('prd_id', '=', $canister->prd_id)
-                                    ->sum('pur_qty');
+        //                 //PURCHASES ARRAY
+        //                 foreach($purchase_products as $products)
+        //                 {
+        //                      //FOR PURCHASED CANISTERS
+        //                     //  if($canister->prd_id == $products->prd_id)
+        //                     //  {
+        //                     if($transaction->trx_id == $products->trx_id)
+        //                     {
+        //                         $previous_prd_id = $products->prd_id;
+        //                         foreach($canisters as $canister)
+        //                         {
+        //                             $amount  = DB::table('purchases')
+        //                             ->where('trx_id', '=', $transaction->trx_id)
+        //                             ->where('prd_id', '=', $canister->prd_id)
+        //                             ->sum('pur_qty');
 
-                                    $sum = $pur_internal_array[$pur_index] ?? 0;
-                                    $pur_internal_array[$pur_index] = $amount+$sum;
-                                    $pur_index++;
-                                }
-                            }
-                        }
+        //                             $sum = $pur_internal_array[$pur_index] ?? 0;
+        //                             $pur_internal_array[$pur_index] = $amount+$sum;
+        //                             $pur_index++;
+        //                         }
+        //                     }
+        //                 }
                         
-                        // dd($pur_internal_array);
-                        //TRIM PURCHASES ARRAY
-                        if(count($pur_internal_array) - 2 > count($canisters))
-                        {
-                            for($array_count = count($pur_internal_array) - 2; $array_count > count($canisters); $array_count--)
-                            {
-                                array_pop($pur_internal_array);
-                            }
-                        }
-                        elseif(count($pur_internal_array) - 2 < count($canisters))
-                        {
-                            for($array_count = count($pur_internal_array) - 2; $array_count < count($canisters); $array_count--)
-                            {
-                                try{
-                                    array_push($pur_internal_array, 0);
-                                    $count++;
-                                }catch(Exception $e){
-                                    // dd($e, $count);
-                                }
-                            }
-                        }
+        //                 // dd($pur_internal_array);
+        //                 //TRIM PURCHASES ARRAY
+        //                 if(count($pur_internal_array) - 2 > count($canisters))
+        //                 {
+        //                     for($array_count = count($pur_internal_array) - 2; $array_count > count($canisters); $array_count--)
+        //                     {
+        //                         array_pop($pur_internal_array);
+        //                     }
+        //                 }
+        //                 elseif(count($pur_internal_array) - 2 < count($canisters))
+        //                 {
+        //                     for($array_count = count($pur_internal_array) - 2; $array_count < count($canisters); $array_count--)
+        //                     {
+        //                         try{
+        //                             array_push($pur_internal_array, 0);
+        //                             $count++;
+        //                         }catch(Exception $e){
+        //                             // dd($e, $count);
+        //                         }
+        //                     }
+        //                 }
 
-                        foreach($canisters as $canister)
-                        {
-                            if($is_not_canister)
-                            {
+        //                 foreach($canisters as $canister)
+        //                 {
+        //                     if($is_not_canister)
+        //                     {
                                
-                                break;
-                            }
+        //                         break;
+        //                     }
 
-                            $previous_id = $canister->prd_id;
-                            foreach($purchase_products as $products)
-                            {
-                                //FOR RECEIVED CANISTERS
-                                if($canister->prd_id == $products->prd_id_in)
-                                {
-                                    // dd($products);
-                                    $count = $rec_internal_array[$rec_index] ?? 0;
-                                    $rec_internal_array[$rec_index] = $count + $products->pur_qty;
-                                    // $rec_index++;
-                                }
+        //                     $previous_id = $canister->prd_id;
+        //                     foreach($purchase_products as $products)
+        //                     {
+        //                         //FOR RECEIVED CANISTERS
+        //                         if($canister->prd_id == $products->prd_id_in)
+        //                         {
+        //                             // dd($products);
+        //                             $count = $rec_internal_array[$rec_index] ?? 0;
+        //                             $rec_internal_array[$rec_index] = $count + $products->pur_qty;
+        //                             // $rec_index++;
+        //                         }
 
-                                //FOR ISSUED CANISTERS
-                                if($canister->prd_id == $products->prd_id && ($products->pur_qty) > ($products->pur_crate_in * 12) + ($products->pur_loose_in))//($canister->prd_id == $products->prd_id )
-                                {
-                                    $count = $internal_array[$iss_index] ?? 0;
-                                    $internal_array[$iss_index] = $count + $products->pur_qty - (($products->pur_crate_in * 12) + ($products->pur_loose_in)); //where('trx_id', '=', $transaction->trx_id)->first()->
-                                    $iss_index++;
-                                }
-                                elseif($canister->prd_id == $products->prd_id && (($products->pur_crate_in * 12) + ($products->pur_loose_in) == 0))//($products->pur_qty) < ($products->pur_crate_in * 12) + ($products->pur_loose_in)
-                                {
-                                    // dd($products);
-                                    $internal_array[$iss_index] = $count + 0; //where('trx_id', '=', $transaction->trx_id)->first()->
-                                    // dd($internal_array);
-                                    $iss_index++;
-                                }
-                            }
-                            $rec_index++;
-                        }
+        //                         //FOR ISSUED CANISTERS
+        //                         if($canister->prd_id == $products->prd_id && ($products->pur_qty) > ($products->pur_crate_in * 12) + ($products->pur_loose_in))//($canister->prd_id == $products->prd_id )
+        //                         {
+        //                             $count = $internal_array[$iss_index] ?? 0;
+        //                             $internal_array[$iss_index] = $count + $products->pur_qty - (($products->pur_crate_in * 12) + ($products->pur_loose_in)); //where('trx_id', '=', $transaction->trx_id)->first()->
+        //                             $iss_index++;
+        //                         }
+        //                         elseif($canister->prd_id == $products->prd_id && (($products->pur_crate_in * 12) + ($products->pur_loose_in) == 0))//($products->pur_qty) < ($products->pur_crate_in * 12) + ($products->pur_loose_in)
+        //                         {
+        //                             // dd($products);
+        //                             $internal_array[$iss_index] = $count + 0; //where('trx_id', '=', $transaction->trx_id)->first()->
+        //                             // dd($internal_array);
+        //                             $iss_index++;
+        //                         }
+        //                     }
+        //                     $rec_index++;
+        //                 }
 
-                        // dd(($rec_index));
+        //                 // dd(($rec_index));
 
-                        $canister_count = count($canisters) - (count($rec_internal_array) - 2);
-                        $issued_canister_count = count($canisters) - (count($internal_array) - 2);
+        //                 $canister_count = count($canisters) - (count($rec_internal_array) - 2);
+        //                 $issued_canister_count = count($canisters) - (count($internal_array) - 2);
 
-                        if($canister_count > 0)
-                        {
-                            while($canister_count <> 0)
-                            {
-                                array_push($rec_internal_array, 0);
-                                $canister_count--;
-                            }
-                        }
+        //                 if($canister_count > 0)
+        //                 {
+        //                     while($canister_count <> 0)
+        //                     {
+        //                         array_push($rec_internal_array, 0);
+        //                         $canister_count--;
+        //                     }
+        //                 }
 
-                        if($issued_canister_count > 0)
-                        {
-                            // dd($internal_array);
-                            while($issued_canister_count <> 0)
-                            {
-                                array_push($internal_array, 0);
-                                $issued_canister_count--;
-                            }
-                        }
+        //                 if($issued_canister_count > 0)
+        //                 {
+        //                     // dd($internal_array);
+        //                     while($issued_canister_count <> 0)
+        //                     {
+        //                         array_push($internal_array, 0);
+        //                         $issued_canister_count--;
+        //                     }
+        //                 }
                         
-                        if(!$is_not_canister)
-                        {
-                            //ADD ISSUED / RECEIVED ARRAYS TO DISPLAY IF ISSUED CANISTERS IS NOT EQUAL TO 0
-                            $amount = 0;
+        //                 if(!$is_not_canister)
+        //                 {
+        //                     //ADD ISSUED / RECEIVED ARRAYS TO DISPLAY IF ISSUED CANISTERS IS NOT EQUAL TO 0
+        //                     $amount = 0;
 
-                            // dd($internal_array, $rec_internal_array);
-                            //START WITH INDEX 2 BECAUSE 0 AND 1 ARE "CUSTOMER NAME" AND "REFERENCE ID" RESPECTIVELY
-                            for($index = 2; $index < count($internal_array); $index++)
-                            {
-                                $amount = $amount + $internal_array[$index];
-                            }
-                            if($amount <> 0)
-                            {
-                                array_unshift($issued_customers_array, $internal_array);
-                            }
+        //                     // dd($internal_array, $rec_internal_array);
+        //                     //START WITH INDEX 2 BECAUSE 0 AND 1 ARE "CUSTOMER NAME" AND "REFERENCE ID" RESPECTIVELY
+        //                     for($index = 2; $index < count($internal_array); $index++)
+        //                     {
+        //                         $amount = $amount + $internal_array[$index];
+        //                     }
+        //                     if($amount <> 0)
+        //                     {
+        //                         array_unshift($issued_customers_array, $internal_array);
+        //                     }
 
-                            // dd($rec_internal_array[3]);
-                            $amount = 0;
-                            for($index = 2; $index < count($rec_internal_array); $index++)
-                            {
-                                // dd($rec_internal_array, $rec_internal_array[$index]);
-                                $amount = $amount + ($rec_internal_array[$index] ?? 0);
-                            }
-                            if($amount <> 0)
-                            {
-                                array_unshift($received_customers_array, $rec_internal_array);
-                            }
+        //                     // dd($rec_internal_array[3]);
+        //                     $amount = 0;
+        //                     for($index = 2; $index < count($rec_internal_array); $index++)
+        //                     {
+        //                         // dd($rec_internal_array, $rec_internal_array[$index]);
+        //                         $amount = $amount + ($rec_internal_array[$index] ?? 0);
+        //                     }
+        //                     if($amount <> 0)
+        //                     {
+        //                         array_unshift($received_customers_array, $rec_internal_array);
+        //                     }
                             
-                            array_unshift($purchases_array, $pur_internal_array);
-                        }
-                    }
-                }
-            }
-        }
+        //                     array_unshift($purchases_array, $pur_internal_array);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         
         // dd($purchases_array);
 
@@ -2689,72 +2694,77 @@ class ProductionController extends Controller
 
         $bool = false;
         $ops_internal = [];  
-        foreach($transactions as $transaction)
-        {
-            foreach($customers as $customer)
-            {
-                if($customer->cus_id == $transaction->cus_id)
-                {
-                    if($bool)
-                    {
-                        break;
-                    }
-                    array_push($ops_internal, $customer->cus_name);
-                    array_push($ops_internal, $transaction->trx_ref_id);
 
-                    foreach($oppositions as $opposition)
-                    {
-                        $purs = DB::table('purchases')
-                        ->where('trx_id', '=', $transaction->trx_id)
-                        ->where('can_type_in', '=', 2)
-                        ->where('prd_id_in', '=', $opposition->ops_id)
-                        ->get();
+        //
+        //CODE THAT CONSUMES A TON OF RAM
+        //
+
+        // foreach($transactions as $transaction)
+        // {
+        //     foreach($customers as $customer)
+        //     {
+        //         if($customer->cus_id == $transaction->cus_id)
+        //         {
+        //             if($bool)
+        //             {
+        //                 break;
+        //             }
+        //             array_push($ops_internal, $customer->cus_name);
+        //             array_push($ops_internal, $transaction->trx_ref_id);
+
+        //             foreach($oppositions as $opposition)
+        //             {
+        //                 $purs = DB::table('purchases')
+        //                 ->where('trx_id', '=', $transaction->trx_id)
+        //                 ->where('can_type_in', '=', 2)
+        //                 ->where('prd_id_in', '=', $opposition->ops_id)
+        //                 ->get();
                         
-                        if(count($purs) == 0)
-                        {
-                            array_push($ops_internal, 0);
-                            continue;
-                        }
+        //                 if(count($purs) == 0)
+        //                 {
+        //                     array_push($ops_internal, 0);
+        //                     continue;
+        //                 }
 
-                        foreach($purs as $pur)
-                        {
-                            if($pur->can_type_in == 2)
-                            {
-                                if($pur->prd_id_in == $opposition->ops_id)
-                                {
-                                    array_push($ops_internal, ($pur->pur_loose_in + ($pur->pur_crate_in * 12)));
-                                }
-                            }
-                        }
-                    }
-                }
+        //                 foreach($purs as $pur)
+        //                 {
+        //                     if($pur->can_type_in == 2)
+        //                     {
+        //                         if($pur->prd_id_in == $opposition->ops_id)
+        //                         {
+        //                             array_push($ops_internal, ($pur->pur_loose_in + ($pur->pur_crate_in * 12)));
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
                 
-            }
-        }
-        for($x = 0; $x < count($transactions); $x++)
-        {
-            $array = [];
-            for($index = 0; $index < count($oppositions) + 2; $index++)
-            {
-                array_push($array, array_shift($ops_internal));
-            }
+        //     }
+        // }
+        // for($x = 0; $x < count($transactions); $x++)
+        // {
+        //     $array = [];
+        //     for($index = 0; $index < count($oppositions) + 2; $index++)
+        //     {
+        //         array_push($array, array_shift($ops_internal));
+        //     }
 
-            $count = 0;
-            foreach($array as $index)
-            {
-                if(gettype($index) == "string")
-                {
-                    continue;
-                }
-                $count = $count + $index;
-            }
+        //     $count = 0;
+        //     foreach($array as $index)
+        //     {
+        //         if(gettype($index) == "string")
+        //         {
+        //             continue;
+        //         }
+        //         $count = $count + $index;
+        //     }
 
-            if($count == 0)
-            {
-                continue;
-            }
-            array_unshift($oppositions_array, $array);
-        }
+        //     if($count == 0)
+        //     {
+        //         continue;
+        //     }
+        //     array_unshift($oppositions_array, $array);
+        // }
         
         $p1_table_rows = 10;
         $p2r_table_rows = 3;
@@ -2771,7 +2781,6 @@ class ProductionController extends Controller
         }
     
         //NEW CODE FOR EODREPORTS
-        dd($purchases);
         // $new_purchase_array = EodReport::retrieve();
 
         return view('admin.print.productiontoggle', compact(

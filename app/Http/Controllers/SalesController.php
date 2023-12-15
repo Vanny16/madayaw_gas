@@ -415,8 +415,9 @@ class SalesController extends Controller
         //for products variable
         $deduct_qty = 0;
         $add_empty_good_qty = 0;
-        $eodReportArray = [];
-
+        $eodPurchaseReport = [];
+        $eodReceivedReport = [];
+        
         for($i = 0 ; $i < count($purchase_row) ; $i++)
         {
             $purchase_data = explode(",", $purchase_row[$i]);
@@ -533,18 +534,45 @@ class SalesController extends Controller
                                 ->where('cus_name', '=', $purchase_data[13])
                                 ->first();
             
-            array_push($eodReportArray, [
+            //FOR PURCHASED AND ISSUED 
+            array_push($eodPurchaseReport, [
                 'trx_id' => $trx_ref_id,
                 'prd_id' => $purchase_data[0],
                 'quantity' => (int)($purchase_data[4] * 12) + (int)($purchase_data[5]),
                 'pdn_id' => get_last_production_id(),
-                'cus_id' => $customer['cus_id']
+                'cus_id' => $customer['cus_id'],
+                'cus_name' => $customer['cus_name']
+            ]);
+
+            //FOR RECEIVED
+            array_push($eodReceivedReport, [
+                'trx_id' => $trx_ref_id,
+                'prd_id' => $purchase_data[11],
+                'quantity' => (int)($purchase_data[9] * 12) + (int)($purchase_data[10]),
+                'pdn_id' => get_last_production_id(),
+                'cus_id' => $customer['cus_id'],
+                'cus_name' => $customer['cus_name']
             ]);
         }
 
-        //Save the purchases for EOD Tables
-        $this->saveForEodTables($eodReportArray);
+        /////////////               ///////////////
+        ///                                     ///
+        /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
+        ///                                     ///
+        /////////////               ///////////////
+
+
+        for($flag = 1; $flag <= 3; $flag++)
+        {
+            saveForEodTables($flag <> 2 ? $eodPurchaseReport : $eodReceivedReport, $flag);
+        }
         
+        /////////////               ///////////////
+        ///                                     ///
+        /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
+        ///                                     ///
+        /////////////               ///////////////
+
         DB::table('transactions')
         ->insert([
             'acc_id' => session('acc_id'),
@@ -1218,57 +1246,5 @@ class SalesController extends Controller
 
         session()->flash('successMessage','Opposition Canister added');
         return redirect()->action('SalesController@main');
-    }
-
-    private function saveForEodTables($array)
-    {
-        //Check for duplicates items
-        $filtered_array = [];
-        
-        foreach($array as $value)
-        {
-            //Push first $value to $filtered_array if latter is empty 
-            if(empty($filtered_array))
-            {
-                array_push($filtered_array, $value);
-                continue;
-            }
-
-            $counter = 0;
-            foreach($filtered_array as $f_value)
-            {
-                ///If $value['prd_id'] exists in $filtered_array, 
-                ///combine quantities and break out of loop
-                if($value['prd_id'] == $f_value['prd_id'])
-                {
-                    $f_value['quantity'] = $f_value['quantity'] + $value['quantity']; 
-                    break;
-                }
-                else
-                {
-                    ///To check if the loop iterated throughout the array,
-                    ///increment $counter to match the length of $filtered_array,
-                    ///then push the last value 
-                    $counter++;
-                    if($counter == count($filtered_array))
-                    {
-                        array_push($filtered_array, $value);
-                    }
-                }
-            }
-        }
-        
-        //Store to table after filtering
-        foreach($filtered_array as $value)
-        {
-            EodReport::create([
-                        'ref_id' => $value['trx_id'],
-                        'prd_id' => $value['prd_id'],
-                        'quantity' => $value['quantity'],
-                        'pdn_id' => $value['pdn_id'],
-                        'cus_id' => $value['cus_id'],
-                    ]);
-        }
-
     }
 }
