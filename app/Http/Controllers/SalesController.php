@@ -562,6 +562,7 @@ class SalesController extends Controller
         /////////////               ///////////////
 
 
+        //Iterate 3 times for Purchase, Received, Issued
         for($flag = 1; $flag <= 3; $flag++)
         {
             saveForEodTables($flag <> 2 ? $eodPurchaseReport : $eodReceivedReport, $flag);
