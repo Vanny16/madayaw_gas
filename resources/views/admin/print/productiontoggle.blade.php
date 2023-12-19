@@ -76,13 +76,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php($row_count = $p1_table_rows)
-                        @foreach($purchases_array as $purchase_array)
+                        @php($row_count = $purchase_table_rows)
+                        @foreach($new_purchases_array as $purchase_array)
                             <tr>
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[0] }}</i></td>
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[1] }}</i></td>
-                                @for($index = 2; $index < count($purchase_array); $index++)
-                                    <td style="text-align:center; border:1px solid;"><strong>{{$purchase_array[$index]}}</strong></td>    
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['ref_id'] }}</i></td>
+                                @for($index = 2; $index < count($canisters); $index++)
+                                    <td style="text-align:center; border:1px solid;"><strong>{{$purchase_array[$prd_name]}}</strong></td>    
                                 @endfor
                             </tr>
                             @php($row_count--)
@@ -169,7 +169,7 @@
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
-                        @php($row_count = $p2r_table_rows)
+                        @php($row_count = $received_table_rows)
                         @foreach($received_customers_array as $received_array)
                             <tr>
                                 <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
@@ -223,7 +223,7 @@
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
-                        @php($row_count = $p2i_table_rows)
+                        @php($row_count = $opposition_table_rows)
                         @foreach($oppositions_array as $opposition_array)
                         <tr>
                             <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
@@ -276,7 +276,7 @@
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
-                        @php($row_count = $p2i_table_rows)
+                        @php($row_count = $issued_table_rows)
                         @foreach($issued_customers_array as $customers_array)
                             <tr>
                                 <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $customers_array[0] }}</i></td>
@@ -430,7 +430,7 @@
                     </tr>
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
-                        @php($row_count = $p2i_table_rows)
+                        @php($row_count = $issued_table_rows)
                         @foreach($oppositions_array as $opposition_array)
                         <tr>
                             <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
