@@ -1189,6 +1189,7 @@ function saveForEodTables($array, $flag)
             'quantity' => $value['quantity'],
             'pdn_id' => $value['pdn_id'],
             'cus_id' => $value['cus_id'],
+            'cus_name' => $value['cus_name'],
             'report_type' => $flag,
         ]);
     }
