@@ -19,6 +19,7 @@ function check_production_log()
     ->orderBy('pdn_id', 'desc')
     ->first();
     
+    //If $production_logs has value, it means the initial production has started 
     if(isset($production_logs))
     {
         if($production_logs->pdn_end_time <> null)
@@ -1140,6 +1141,7 @@ function saveForEodTables($array, $flag)
     // 2 - RECEIVED
     // 3 - ISSUED
     // 4 - OPPOSITION
+    // 5 - BAD ORDER
 
     //Check for duplicates items
     $filtered_array = [];
