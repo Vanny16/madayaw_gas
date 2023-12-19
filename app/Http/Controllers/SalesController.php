@@ -316,7 +316,7 @@ class SalesController extends Controller
     public function paymentSales(Request $request)
     {
         $transaction_id = DB::table('transactions')
-        ->max('trx_id');
+                            ->max('trx_id');
 
         $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
                             ->where('pdn_id', get_last_production_id())
@@ -450,7 +450,7 @@ class SalesController extends Controller
             
             DB::table('purchases')
             ->insert([
-                'trx_id' => $trx_id,
+                'trx_id' => $transaction_id,//$trx_id,
                 'prd_id' => $prd_id,
                 'prd_price' => $prd_price,
                 'pur_crate' => $pur_crate,
@@ -530,10 +530,10 @@ class SalesController extends Controller
             ]);
 
             //Separated the query for readability
-            $customer = Customer::select('cus_id')
+            $customer = Customer::select('cus_id', 'cus_name')
                                 ->where('cus_name', '=', $purchase_data[13])
                                 ->first();
-            
+                                
             //FOR PURCHASED AND ISSUED 
             array_push($eodPurchaseReport, [
                 'trx_id' => $trx_ref_id,
