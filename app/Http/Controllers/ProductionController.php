@@ -2771,10 +2771,11 @@ class ProductionController extends Controller
         //     array_unshift($oppositions_array, $array);
         // }
         
-        $p1_table_rows = 10;
-        $p2r_table_rows = 3;
-        $p2i_table_rows = 3;
-        
+        $purchase_table_rows = 10; //Minimum number of rows in the Purchases table
+        $received_table_rows = 3; //Minimum number of rows in the Received table
+        $issued_table_rows = 3; //Minimum number of rows in the Issued table
+        $opposition_table_rows = 3; //Minimum number of rows in the Opposition table
+
         $total_array = [];
         foreach($purchases_array as $purchase)
         {
@@ -2788,6 +2789,69 @@ class ProductionController extends Controller
         //NEW CODE FOR EODREPORTS
         // $new_purchase_array = EodReport::retrieve();
 
+        $eod_reports = EodReport::select('ref_id')
+                                ->where('pdn_id', '=', get_last_production_id())
+                                ->groupBy('ref_id')
+                                ->get();
+        
+        $new_purchases_array = [];
+        $new_received_array = [];
+        $new_issued_array = [];
+        $new_oppositions_array = [];
+
+        foreach($eod_reports as $report)
+        {
+            $new_purchases = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->where('ref_id', '=', $report['ref_id'])
+                                        ->where('pdn_id', '=', get_last_production_id())
+                                        ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
+                                        ->get();
+            if(!$new_purchases->isEmpty())
+            {
+                array_push($new_purchases_array, $new_purchases);
+            }
+
+            $new_received =  EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->where('ref_id', '=', $report['ref_id'])
+                                        ->where('pdn_id', '=', get_last_production_id())
+                                        ->where('report_type', '=', '2') //Report type '2' refers to 'Received'
+                                        ->get();
+            if(!$new_received->isEmpty())
+            {
+                array_push($new_received_array, $new_received);
+            }
+
+            $new_issued = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+                                    ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                    ->where('ref_id', '=', $report['ref_id'])
+                                    ->where('pdn_id', '=', get_last_production_id())
+                                    ->where('report_type', '=', '3') //Report type '3' refers to 'Issued'
+                                    ->get();
+            if(!$new_issued->isEmpty())
+            {
+                array_push($new_issued_array, $new_issued);
+            }
+
+            $new_opposition = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->where('ref_id', '=', $report['ref_id'])
+                                        ->where('pdn_id', '=', get_last_production_id())
+                                        ->where('report_type', '=', '4') //Report type '4' refers to 'Opposition'
+                                        ->get();
+            if(!$new_opposition->isEmpty())
+            {
+                array_push($new_opposition_array, $new_opposition);
+            }
+        }
+
+        dd($new_purchases_array);
+        foreach($canisters as $canister)
+        {
+
+        }
+
         return view('admin.print.productiontoggle', compact(
             'canisters', 
             'customers', 
@@ -2797,9 +2861,10 @@ class ProductionController extends Controller
             'opening_stocks_array', 
             'oppositions', 
             'oppositions_array', 
-            'p1_table_rows', 
-            'p2r_table_rows', 
-            'p2i_table_rows', 
+            'purchase_table_rows', 
+            'received_table_rows', 
+            'issued_table_rows', 
+            'opposition_table_rows', 
             //'production_logs', 
             'production_date', 
             'production_start', 
@@ -2812,6 +2877,13 @@ class ProductionController extends Controller
             'tanks', 
             'total_array', 
             'transactions',
+            //////////////////////
+            //Testing new arrays//
+            //////////////////////
+            'new_purchases_array',
+            'new_received_array',
+            'new_issued_array',
+            'new_opposition_array',
         ));
     }
 
