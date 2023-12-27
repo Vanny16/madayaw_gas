@@ -1193,6 +1193,6 @@ function saveForEodTables($array, $flag)
             'report_type' => $flag,
         ]);
     }
-
+    
 }
 ?>

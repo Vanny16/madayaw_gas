@@ -67,7 +67,8 @@
                     <thead>
                         <tr>
                             <th colspan="2" style="text-align:center; border:1px solid;"><i>CUSTOMER</i></td>
-                            <th colspan="2" style="text-align:center; border:1px solid;"><i>REFERENCE ID</i></th>
+                            <th colspan="2" style="text-align:center; border:1px solid;"><i>REFERENCE ID</i></
+                            th>
                             @if(isset($canisters))
                                 @foreach($canisters as $canister)
                                     <th style="text-align:center; border:1px solid;"><strong>{{$canister->prd_name}}</strong></th>
@@ -79,11 +80,18 @@
                         @php($row_count = $purchase_table_rows)
                         @foreach($new_purchases_array as $purchase_array)
                             <tr>
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
+                                <!-- <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
                                 <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['ref_id'] }}</i></td>
+
                                 @for($index = 2; $index < count($canisters); $index++)
                                     <td style="text-align:center; border:1px solid;"><strong>{{$purchase_array[$prd_name]}}</strong></td>    
-                                @endfor
+                                @endfor -->
+
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['ref_id'] }}</i></td>
+                                @foreach($new_purchases_array['quantities'] as $quantity)
+                                    <td style="text-align:center; border:1px solid;"><strong>{{$quantity}}</strong></td>  
+                                @endforeach
                             </tr>
                             @php($row_count--)
                         @endforeach
@@ -170,14 +178,20 @@
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
                         @php($row_count = $received_table_rows)
-                        @foreach($received_customers_array as $received_array)
+                        <!-- @foreach($received_customers_array as $received_array) -->
+                        @foreach($new_received_array as $received_array)
                             <tr>
-                                <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
+                                <!-- <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
                                 <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array[1] }}</i></td>
                                 @for($index = 2; $index < count($received_array); $index++)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{($received_array[$index] ?? 0)}}</strong></td>    
+                                @endfor -->
+                            
+                                <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array['cus_name'] }}</i></td>
+                                <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array['ref_id'] }}</i></td>
+                                @foreach($new_received_array['quantities'] as $quantity)
+                                    <td style="text-align:center; border-right:1px solid black"><strong>{{$quantity}}</strong></td>    
                                 @endfor
-                                
                             </tr>
                         @php($row_count--)
                         @endforeach
@@ -224,15 +238,22 @@
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
                         @php($row_count = $opposition_table_rows)
-                        @foreach($oppositions_array as $opposition_array)
-                        <tr>
-                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
-                            @for($index = 2; $index < count($opposition_array); $index++)
-                                <td style="text-align:center; border:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
-                            @endfor
-                        </tr>
-                        @php($row_count--)
+                            @foreach($oppositions_array as $opposition_array)
+                            <!-- <tr>
+                                <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
+                                @for($index = 2; $index < count($opposition_array); $index++)
+                                    <td style="text-align:center; border:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
+                                @endfor
+                            </tr> -->
+                            <tr>
+                                <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $newopposition_array['cus_id'] }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $newopposition_array['ref_id'] }}</i></td>
+                                @foreach($new_opposition_array['quantities'] as $quantity)
+                                    <td style="text-align:center; border:1px solid black;"><strong>{{$quantity}}</strong></td>    
+                                @endfor
+                            </tr>
+                            @php($row_count--)
                         @endforeach
 
                         @php(($td_count = count($oppositions)))

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\EodReport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Opposition;
 use App\Product;
+use App\Transaction;
 use DB;
 
 class OppositionController extends Controller
@@ -350,8 +352,10 @@ class OppositionController extends Controller
         ]);
 
         //ADD TO TRANSACTIONS AND PURCHASES
-        $trx_id = DB::table('transactions')
-        ->max('trx_id');
+        $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                            ->where('pdn_id', get_last_production_id())
+                            ->orderBy('trx_id', 'desc')
+                            ->count();
 
         if($trx_id == null){
             $trx_id = 1;
@@ -398,6 +402,20 @@ class OppositionController extends Controller
             'pur_loose_in' => $trade_in_products_loose + 0,
             'pur_total' => 0
         ]);
+
+        $opposition_canister_name = DB::table('oppositions')->select('prd_name')
+                        ->where('prd_id', '=', $opposition_canister_id)
+                        ->first();
+
+        saveForEodTables([
+            'ref_id' => $ops_ref_id,
+            'prd_id' => $madayaw_canister_id,
+            'quantity' => (($trade_in_opposition_crates * 12) + $trade_in_opposition_loose) + 0,
+            'pdn_id' => get_last_production_id(),
+            'cus_id' => $opposition_canister_id,
+            'cus_name' => $opposition_canister_name
+            ],'4'
+        );
 
         session()->flash('successMessage','Canister exchange saved!');
         return redirect()->action('OppositionController@opposite');

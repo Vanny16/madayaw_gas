@@ -2797,12 +2797,12 @@ class ProductionController extends Controller
         $new_purchases_array = [];
         $new_received_array = [];
         $new_issued_array = [];
-        $new_oppositions_array = [];
+        $new_opposition_array = [];
 
         foreach($eod_reports as $report)
         {
             $new_purchases = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
                                         ->where('ref_id', '=', $report['ref_id'])
                                         ->where('pdn_id', '=', get_last_production_id())
                                         ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
@@ -2813,7 +2813,7 @@ class ProductionController extends Controller
             }
 
             $new_received =  EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
                                         ->where('ref_id', '=', $report['ref_id'])
                                         ->where('pdn_id', '=', get_last_production_id())
                                         ->where('report_type', '=', '2') //Report type '2' refers to 'Received'
@@ -2824,7 +2824,7 @@ class ProductionController extends Controller
             }
 
             $new_issued = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                    ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                    ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
                                     ->where('ref_id', '=', $report['ref_id'])
                                     ->where('pdn_id', '=', get_last_production_id())
                                     ->where('report_type', '=', '3') //Report type '3' refers to 'Issued'
@@ -2835,7 +2835,7 @@ class ProductionController extends Controller
             }
 
             $new_opposition = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name', 'ref_id', 'prd_id', 'quantity')
+                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
                                         ->where('ref_id', '=', $report['ref_id'])
                                         ->where('pdn_id', '=', get_last_production_id())
                                         ->where('report_type', '=', '4') //Report type '4' refers to 'Opposition'
@@ -2846,11 +2846,89 @@ class ProductionController extends Controller
             }
         }
 
-        dd($new_purchases_array);
-        foreach($canisters as $canister)
-        {
+        //Iterate 4 times for the Purchases, Received,
+        //Issued, and Opposition tables
+        for($x = 0; $x <= 3; $x++)
+        {   
+            //$new_internal_array holds the quantities
+            //of the products in the transaction 
+            $new_internal_array= [];
 
+            //$holder_array holds the type of array 
+            //being worked on
+            $holder_array= [];
+
+            //Switch case to put table arrays on
+            //$holder_array
+            switch($x)
+            {
+                case 0: 
+                    $holder_array = $new_purchases_array; 
+                break;
+
+                case 1: 
+                    $holder_array = $new_received_array; 
+                break;
+
+                case 2: 
+                    $holder_array = $new_issued_array; 
+                break;
+
+                case 3: 
+                    $holder_array = $new_opposition_array; 
+                break;
+
+            }
+
+            //Do,While to add quantity that corresponds
+            //to its products or add '0' if it doesn't 
+            do
+            {
+                foreach($holder_array as $row)
+                {
+                    foreach($canisters as $canister)
+                    {
+                        dd($canister, $row);
+                        if($canister->prd_id == $row->prd_id)
+                        {
+                            array_push($new_internal_array, $row->quantity);
+                        }
+                        else
+                        {
+                            array_push($new_internal_array, 0);
+                        }
+                    }
+                }
+            }
+            while(!empty($holder_array));
+
+            //Switch case to add key='quantities', 
+            //value ='$new_internal_array' pair to
+            //table arrays 
+            switch($x)
+            {
+                case 0: 
+                    $new_purchases_array['quantities'] = $new_internal_array; 
+                break;
+
+                case 1: 
+                    $new_received_array['quantities'] = $new_internal_array; 
+                break;
+
+                case 2: 
+                    $new_issued_array['quantities'] = $new_internal_array; 
+                break;
+
+                case 3: 
+                    $new_opposition_array['quantities'] = $new_internal_array; 
+                break;
+
+            }
         }
+
+        dd($new_purchases_array, $new_received_array,
+        $new_issued_array,
+        $new_opposition_array);
 
         return view('admin.print.productiontoggle', compact(
             'canisters', 
