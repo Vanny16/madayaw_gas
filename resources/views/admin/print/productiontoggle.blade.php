@@ -104,8 +104,7 @@
                                     <td colspan="2" style="text-indent:-9999px; border:1px solid black;">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black;">0</td>
-                                    @endfor
-                                </tr>
+                                    @endfor                                </tr>
                                 
                                 @php($row_count--)
                             @endwhile

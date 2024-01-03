@@ -2888,7 +2888,7 @@ class ProductionController extends Controller
                 {
                     foreach($canisters as $canister)
                     {
-                        dd($canister, $row);
+                        // dd($canister, $canister->prd_id, $row);
                         if($canister->prd_id == $row->prd_id)
                         {
                             array_push($new_internal_array, $row->quantity);
@@ -2926,9 +2926,9 @@ class ProductionController extends Controller
             }
         }
 
-        dd($new_purchases_array, $new_received_array,
-        $new_issued_array,
-        $new_opposition_array);
+        // dd($new_purchases_array, $new_received_array,
+        // $new_issued_array,
+        // $new_opposition_array);
 
         return view('admin.print.productiontoggle', compact(
             'canisters', 
