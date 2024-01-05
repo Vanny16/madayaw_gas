@@ -66,6 +66,7 @@
                     </tbody>
                 </table>
                 <br>
+                <!-- PART 1 TABLE -->
                 <table>
                     <thead>
                         <tr>
