@@ -313,10 +313,17 @@ class SalesController extends Controller
         return redirect()->action('SalesController@main');
     }
 
+    
+    
     public function paymentSales(Request $request)
     {
-        $trx_id = DB::table('transactions')
-        ->max('trx_id');
+        $transaction_id = DB::table('transactions')
+                            ->max('trx_id');
+
+        $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+                            ->where('pdn_id', get_last_production_id())
+                            ->orderBy('trx_id', 'desc')
+                            ->count();
 
         if($trx_id == null){
             $trx_id = 1;
@@ -326,7 +333,10 @@ class SalesController extends Controller
         }
 
         $pmnt_id = DB::table('payments')
-        ->max('pmnt_id');
+                    ->max('pmnt_id');
+
+        // $pmnt_id = DB::table('payments')
+        //             ->where('trx_id', '=', $transaction_id);
 
         if($pmnt_id == null){
             $pmnt_id = 1;
@@ -335,8 +345,18 @@ class SalesController extends Controller
             $pmnt_id += 1;
         }
 
-        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id;
-        $pmt_ref_id = "PMT" . date('Y') . date('m') . date('d') . "-" . $pmnt_id;
+        //FOR DATA INPUT
+        $prod_date = DB::table('production_logs')
+        ->orderBy('pdn_id', 'DESC')
+        ->first()
+        ->pdn_date;
+
+        // $prod_date = DateTime($prod_date);
+        $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
+        // $formattedDate = $prod_date->format('Y-m-d');
+
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
+        $pmt_ref_id = "PMT-" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
         $prd_id = "";
         $prd_price = "";
         $pur_qty = "";
@@ -352,6 +372,7 @@ class SalesController extends Controller
         $trx_date = $request->trx_date;
         $trx_can_dec = $request->trx_can_dec;
         $trx_del_rec = $request->trx_del_rec;
+        $brd_new_total = $request->brd_new_total;
         
         $mode_of_payment = $request->mode_of_payment;
         $trx_gross = (float)$request->trx_gross;
@@ -392,35 +413,46 @@ class SalesController extends Controller
         $list = $request->purchases;
         $selected_item_list  = $list;
         $purchase_row = explode(",#,", $selected_item_list);
-
+        
         //for products variable
         $deduct_qty = 0;
         $add_empty_good_qty = 0;
-
+        $eodPurchaseReport = [];
+        $eodReceivedReport = [];
+        
         for($i = 0 ; $i < count($purchase_row) ; $i++)
         {
             $purchase_data = explode(",", $purchase_row[$i]);
 
             for($j = 0 ; $j < count($purchase_data) ; $j++)
             {
+                //to search customer id based from name
+                // $customer_id = DB::table('customers')
+                // ->where('cus_name', 'LIKE', $purchase_data[13])
+                // ->get();
+                
+                $customer_id = Customer::query()
+                                    ->where('cus_name', 'LIKE' , $purchase_data[13])
+                                    ->first();
+                                    
                 $prd_id =  $purchase_data[0];
-                $prd_price = $purchase_data[2];
-                $pur_crate = $purchase_data[3];
-                $pur_loose = $purchase_data[4];
-                $pur_qty = (int)($purchase_data[3] * 12) + (int)($purchase_data[4]);
-                $pur_discount = $purchase_data[5];
-                $pur_deposit = $purchase_data[6];
-                $pur_total = $purchase_data[7];
-                $pur_crate_in = $purchase_data[8];
-                $pur_loose_in = $purchase_data[9];
-                $prd_id_in = $purchase_data[10];
-                $can_type_in = $purchase_data[11];
-                $cus_id = $purchase_data[12];
+                $prd_price = $purchase_data[3];
+                $pur_crate = $purchase_data[4];
+                $pur_loose = $purchase_data[5];
+                $pur_qty = (int)($purchase_data[4] * 12) + (int)($purchase_data[5]);
+                $pur_discount = $purchase_data[6];
+                $pur_deposit = $purchase_data[7];
+                $pur_total = $purchase_data[8];
+                $pur_crate_in = $purchase_data[9];
+                $pur_loose_in = $purchase_data[10];
+                $prd_id_in = $purchase_data[11];
+                $can_type_in = $purchase_data[12];
+                $cus_id = $customer_id->cus_id; //$customer_id[0]->cus_id;
             }
             
             DB::table('purchases')
             ->insert([
-                'trx_id' => $trx_id,
+                'trx_id' => $transaction_id,//$trx_id,
                 'prd_id' => $prd_id,
                 'prd_price' => $prd_price,
                 'pur_crate' => $pur_crate,
@@ -498,7 +530,51 @@ class SalesController extends Controller
             ->update([
                 'prd_quantity' => $deduct_qty
             ]);
+
+            //Separated the query for readability
+            $customer = Customer::select('cus_id', 'cus_name')
+                                ->where('cus_name', '=', $purchase_data[13])
+                                ->first();
+                                
+            //FOR PURCHASED AND ISSUED 
+            array_push($eodPurchaseReport, [
+                'trx_id' => $trx_ref_id,
+                'prd_id' => $purchase_data[0],
+                'quantity' => (int)($purchase_data[4] * 12) + (int)($purchase_data[5]),
+                'pdn_id' => get_last_production_id(),
+                'cus_id' => $customer['cus_id'],
+                'cus_name' => $customer['cus_name']
+            ]);
+
+            //FOR RECEIVED
+            array_push($eodReceivedReport, [
+                'trx_id' => $trx_ref_id,
+                'prd_id' => $purchase_data[11],
+                'quantity' => (int)($purchase_data[9] * 12) + (int)($purchase_data[10]),
+                'pdn_id' => get_last_production_id(),
+                'cus_id' => $customer['cus_id'],
+                'cus_name' => $customer['cus_name']
+            ]);
         }
+
+        /////////////               ///////////////
+        ///                                     ///
+        /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
+        ///                                     ///
+        /////////////               ///////////////
+
+
+        //Iterate 3 times for Purchase, Received, Issued
+        for($flag = 1; $flag <= 3; $flag++)
+        {
+            saveForEodTables($flag <> 2 ? $eodPurchaseReport : $eodReceivedReport, $flag);
+        }
+        
+        /////////////               ///////////////
+        ///                                     ///
+        /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
+        ///                                     ///
+        /////////////               ///////////////
 
         DB::table('transactions')
         ->insert([
@@ -514,28 +590,46 @@ class SalesController extends Controller
             'trx_amount_paid' => $trx_amount_paid,
             'trx_balance' => $trx_balance,
             'trx_can_dec' => $trx_can_dec,
-            'trx_del_rec' => $trx_del_rec
+            'trx_del_rec' => $trx_del_rec,
+            'pdn_id' => get_last_production_id()
         ]);
 
         //FOR PAYMENTS
         if($mode_of_payment != 5){
 
-            DB::table('payments')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'usr_id' => session('usr_id'),
-                'trx_id' => $trx_id,
-                'pmnt_ref_id' => $pmt_ref_id,
-                'trx_mode_of_payment' => $mode_of_payment,
-                'pmnt_amount' => $trx_amount_paid,
-                'pmnt_received' => $pmnt_received,
-                'pmnt_change' => $pmnt_change,
-                'pmnt_date' => $trx_date,
-                'pmnt_time' => date('H:i:s'),
-                'pmnt_check_no' => $pmnt_check_no,
-                'pmnt_check_date' => $pmnt_check_date
-            ]);
-    
+            if($mode_of_payment == 4){
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $transaction_id, //$trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s'),
+                    'pmnt_check_no' => $pmnt_check_no,
+                    'pmnt_check_date' => $pmnt_check_date
+                ]);
+            }
+            else{
+                DB::table('payments')
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'usr_id' => session('usr_id'),
+                    'trx_id' => $transaction_id, //$trx_id,
+                    'pmnt_ref_id' => $pmt_ref_id,
+                    'trx_mode_of_payment' => $mode_of_payment,
+                    'pmnt_amount' => $trx_amount_paid,
+                    'pmnt_received' => $pmnt_received,
+                    'pmnt_change' => $pmnt_change,
+                    'pmnt_date' => $trx_date,
+                    'pmnt_time' => date('H:i:s')
+                ]);
+            }
+
             //IMAGE UPLOAD FOR GCASH
             if($request->file('pmnt_attachment_gcash'))
             {
@@ -626,7 +720,7 @@ class SalesController extends Controller
                 ->insert([
                     'acc_id' => session('acc_id'),
                     'usr_id' => session('usr_id'),
-                    'trx_id' => $trx_id,
+                    'trx_id' => $transaction_id, //$trx_id,
                     'pmnt_ref_id' => $pmt_ref_id,
                     'trx_mode_of_payment' => $mode_of_payment,
                     'pmnt_amount' => $trx_amount_cash,
@@ -641,7 +735,7 @@ class SalesController extends Controller
                 ->insert([
                     'acc_id' => session('acc_id'),
                     'usr_id' => session('usr_id'),
-                    'trx_id' => $trx_id,
+                    'trx_id' => $transaction_id, //$trx_id,
                     'pmnt_ref_id' => $pmt_ref_id,
                     'trx_mode_of_payment' => $mode_of_payment,
                     'pmnt_amount' => $trx_amount_credit,
@@ -656,7 +750,7 @@ class SalesController extends Controller
                 ->insert([
                     'acc_id' => session('acc_id'),
                     'usr_id' => session('usr_id'),
-                    'trx_id' => $trx_id,
+                    'trx_id' => $transaction_id, //$trx_id,
                     'pmnt_ref_id' => $pmt_ref_id,
                     'trx_mode_of_payment' => $mode_of_payment,
                     'pmnt_amount' => $trx_amount_gcash,
@@ -710,7 +804,7 @@ class SalesController extends Controller
                 ->insert([
                     'acc_id' => session('acc_id'),
                     'usr_id' => session('usr_id'),
-                    'trx_id' => $trx_id,
+                    'trx_id' => $transaction_id, //$trx_id,
                     'pmnt_ref_id' => $pmt_ref_id,
                     'trx_mode_of_payment' => $mode_of_payment,
                     'pmnt_amount' => $trx_amount_check,
@@ -764,561 +858,12 @@ class SalesController extends Controller
         }
 
         session(['pmnt_check_no' => $pmnt_check_no]);
-        session(['latest_trx_id' => $trx_id]);
+        session(['latest_trx_id' => $transaction_id]);
+        session(['brd_new_total' => $brd_new_total]);
 
         session()->flash('successMessage','Transaction complete!');
         return redirect()->action('PrintController@salesReceipt');
     }
-    
-    // public function paymentSales(Request $request)
-    // {
-    //     $transaction_id = DB::table('transactions')
-    //                         ->max('trx_id');
-
-    //     $trx_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
-    //                         ->where('pdn_id', get_last_production_id())
-    //                         ->orderBy('trx_id', 'desc')
-    //                         ->count();
-
-    //     if($trx_id == null){
-    //         $trx_id = 1;
-    //     }
-    //     else{
-    //         $trx_id += 1;
-    //     }
-
-    //     $pmnt_id = DB::table('payments')
-    //                 ->max('pmnt_id');
-
-    //     // $pmnt_id = DB::table('payments')
-    //     //             ->where('trx_id', '=', $transaction_id);
-
-    //     if($pmnt_id == null){
-    //         $pmnt_id = 1;
-    //     }
-    //     else{
-    //         $pmnt_id += 1;
-    //     }
-
-    //     //FOR DATA INPUT
-    //     $prod_date = DB::table('production_logs')
-    //     ->orderBy('pdn_id', 'DESC')
-    //     ->first()
-    //     ->pdn_date;
-
-    //     // $prod_date = DateTime($prod_date);
-    //     $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
-    //     // $formattedDate = $prod_date->format('Y-m-d');
-
-    //     $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
-    //     $pmt_ref_id = "PMT-" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
-    //     $prd_id = "";
-    //     $prd_price = "";
-    //     $pur_qty = "";
-    //     $pur_crate = "";
-    //     $pur_loose = "";
-    //     $pur_discount = "";
-    //     $pur_deposit = "";
-    //     $pur_total = "";
-    //     $pur_crate_in = "";
-    //     $pur_loose_in = "";
-    //     $cus_id = "";
-        
-    //     $trx_date = $request->trx_date;
-    //     $trx_can_dec = $request->trx_can_dec;
-    //     $trx_del_rec = $request->trx_del_rec;
-    //     $brd_new_total = $request->brd_new_total;
-        
-    //     $mode_of_payment = $request->mode_of_payment;
-    //     $trx_gross = (float)$request->trx_gross;
-    //     $trx_total = (float)$request->trx_total;
-    //     $trx_amount_paid = (float)$request->trx_amount_paid;
-    //     $trx_balance =  (double)$trx_total - (double)$trx_amount_paid;
-        
-    //     if($mode_of_payment == 1 || $mode_of_payment == 3){
-    //         if($trx_amount_paid <= 0){
-    //             session()->flash('errorMessage','Invalid input');
-    //             return redirect()->action('SalesController@main');
-    //         }
-    //     }
-
-    //     if($trx_amount_paid > $trx_total){
-    //         $trx_amount_paid = $trx_total;
-    //         $trx_balance  = 0;
-    //     }
-
-    //     $pmnt_received = (float)$request->trx_amount_paid;
-    //     $pmnt_change =  (double)$trx_total - (double)$pmnt_received;
-
-    //     $pmnt_check_no = $request->pmnt_check_no;
-    //     $pmnt_check_date = $request->pmnt_check_date;
-
-    //     if($pmnt_received > 0){
-    //         if($pmnt_change <= 0){
-    //             $pmnt_change = $pmnt_change * -1;
-    //         }
-    //         else{
-    //             $pmnt_change = 0;
-    //         }
-    //     }
-    //     else{
-    //         $pmnt_change = 0;
-    //     }
-
-    //     $list = $request->purchases;
-    //     $selected_item_list  = $list;
-    //     $purchase_row = explode(",#,", $selected_item_list);
-        
-    //     //for products variable
-    //     $deduct_qty = 0;
-    //     $add_empty_good_qty = 0;
-    //     $eodPurchaseReport = [];
-    //     $eodReceivedReport = [];
-        
-    //     for($i = 0 ; $i < count($purchase_row) ; $i++)
-    //     {
-    //         $purchase_data = explode(",", $purchase_row[$i]);
-
-    //         for($j = 0 ; $j < count($purchase_data) ; $j++)
-    //         {
-    //             //to search customer id based from name
-    //             // $customer_id = DB::table('customers')
-    //             // ->where('cus_name', 'LIKE', $purchase_data[13])
-    //             // ->get();
-                
-    //             $customer_id = Customer::query()
-    //                                 ->where('cus_name', 'LIKE' , $purchase_data[13])
-    //                                 ->first();
-                                    
-    //             $prd_id =  $purchase_data[0];
-    //             $prd_price = $purchase_data[3];
-    //             $pur_crate = $purchase_data[4];
-    //             $pur_loose = $purchase_data[5];
-    //             $pur_qty = (int)($purchase_data[4] * 12) + (int)($purchase_data[5]);
-    //             $pur_discount = $purchase_data[6];
-    //             $pur_deposit = $purchase_data[7];
-    //             $pur_total = $purchase_data[8];
-    //             $pur_crate_in = $purchase_data[9];
-    //             $pur_loose_in = $purchase_data[10];
-    //             $prd_id_in = $purchase_data[11];
-    //             $can_type_in = $purchase_data[12];
-    //             $cus_id = $customer_id->cus_id; //$customer_id[0]->cus_id;
-    //         }
-            
-    //         DB::table('purchases')
-    //         ->insert([
-    //             'trx_id' => $transaction_id,//$trx_id,
-    //             'prd_id' => $prd_id,
-    //             'prd_price' => $prd_price,
-    //             'pur_crate' => $pur_crate,
-    //             'pur_loose' => $pur_loose,
-    //             'pur_qty' => $pur_qty,
-    //             'pur_discount' => $pur_discount,
-    //             'pur_deposit' => $pur_deposit,
-    //             'prd_id_in' => $prd_id_in,
-    //             'can_type_in' => $can_type_in,
-    //             'pur_crate_in' => $pur_crate_in,
-    //             'pur_loose_in' => $pur_loose_in,
-    //             'pur_total' => $pur_total
-    //         ]);
-
-    //         $remaining_opposite = DB::table('oppositions')
-    //         ->where('ops_id', '=', $prd_id_in)
-    //         ->first();
-
-    //         $remaining_crimped = DB::table('products')
-    //         ->where('prd_id', '=', $prd_id_in)
-    //         ->first();
-
-    //         $products = DB::table('products')
-    //         ->where('prd_id', '=', $prd_id)
-    //         ->first();
-
-    //         if($can_type_in == 0 || $can_type_in == 1){
-    //             if($products->prd_is_refillable == 1){
-    //                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
-    //                 $add_empty_good_qty = (int)$remaining_crimped->prd_empty_goods + ((int)($pur_crate_in * 12) + $pur_loose_in);
-    //             }
-    //             else{
-    //                 $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
-    //             }
-    
-    //             //For Crimped
-    //             DB::table('products')
-    //             ->where('prd_id', '=', $prd_id_in)
-    //             ->update([
-    //                 'prd_empty_goods' => $add_empty_good_qty
-    //             ]);
-
-    //             if($products->prd_is_refillable == 1)
-    //             {
-    //                 //ADD QUANTITY TO STOCKS LOGS FOR CANISTER MOVEMENT TRACKING
-    //                 //get quantity of the product in the stocks_logs table
-    //                 $stocks_logs = DB::table('stocks_logs')
-    //                 ->where('prd_id', '=', $prd_id_in)
-    //                 ->first();
-    //                 $stocks_logs_quantity = $stocks_logs->stk_empty_goods;
-
-    //                 //add stocks_logs quantity to add_empty_good_qty
-    //                 DB::table('stocks_logs')
-    //                 ->where('prd_id', '=', $prd_id_in)
-    //                 ->update([
-    //                     'stk_empty_goods' => $stocks_logs_quantity + $add_empty_good_qty
-    //                 ]);
-    //             }
-    //         }
-    //         else{
-    //             $deduct_qty = (int)$products->prd_quantity - (int)$pur_qty;
-    //             $add_ops_qty = (int)$remaining_opposite->ops_quantity + ((int)($pur_crate_in * 12) + $pur_loose_in);
-                
-    //             //For Opposite
-    //             DB::table('oppositions')
-    //             ->where('ops_id', '=', $prd_id_in)
-    //             ->update([
-    //                 'ops_quantity' => $add_ops_qty
-    //             ]);
-    //         }
-            
-    //         //For Backflushed
-    //         DB::table('products')
-    //         ->where('prd_id', '=', $prd_id)
-    //         ->update([
-    //             'prd_quantity' => $deduct_qty
-    //         ]);
-
-    //         //Separated the query for readability
-    //         $customer = Customer::select('cus_id', 'cus_name')
-    //                             ->where('cus_name', '=', $purchase_data[13])
-    //                             ->first();
-                                
-    //         //FOR PURCHASED AND ISSUED 
-    //         array_push($eodPurchaseReport, [
-    //             'trx_id' => $trx_ref_id,
-    //             'prd_id' => $purchase_data[0],
-    //             'quantity' => (int)($purchase_data[4] * 12) + (int)($purchase_data[5]),
-    //             'pdn_id' => get_last_production_id(),
-    //             'cus_id' => $customer['cus_id'],
-    //             'cus_name' => $customer['cus_name']
-    //         ]);
-
-    //         //FOR RECEIVED
-    //         array_push($eodReceivedReport, [
-    //             'trx_id' => $trx_ref_id,
-    //             'prd_id' => $purchase_data[11],
-    //             'quantity' => (int)($purchase_data[9] * 12) + (int)($purchase_data[10]),
-    //             'pdn_id' => get_last_production_id(),
-    //             'cus_id' => $customer['cus_id'],
-    //             'cus_name' => $customer['cus_name']
-    //         ]);
-    //     }
-
-    //     /////////////               ///////////////
-    //     ///                                     ///
-    //     /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
-    //     ///                                     ///
-    //     /////////////               ///////////////
-
-
-    //     //Iterate 3 times for Purchase, Received, Issued
-    //     for($flag = 1; $flag <= 3; $flag++)
-    //     {
-    //         saveForEodTables($flag <> 2 ? $eodPurchaseReport : $eodReceivedReport, $flag);
-    //     }
-        
-    //     /////////////               ///////////////
-    //     ///                                     ///
-    //     /// FUNCTION TO ADD ROWS TO EOD_REPORTS///
-    //     ///                                     ///
-    //     /////////////               ///////////////
-
-    //     DB::table('transactions')
-    //     ->insert([
-    //         'acc_id' => session('acc_id'),
-    //         'usr_id' => session('usr_id'),
-    //         'trx_ref_id' => $trx_ref_id,
-    //         'cus_id' => $cus_id,
-    //         'trx_datetime' => $trx_date . " " . date('H:i:s'),
-    //         'trx_date' => $trx_date,
-    //         'trx_time' => date('H:i:s'),
-    //         'trx_gross' => $trx_gross,
-    //         'trx_total' => $trx_total,
-    //         'trx_amount_paid' => $trx_amount_paid,
-    //         'trx_balance' => $trx_balance,
-    //         'trx_can_dec' => $trx_can_dec,
-    //         'trx_del_rec' => $trx_del_rec,
-    //         'pdn_id' => get_last_production_id()
-    //     ]);
-
-    //     //FOR PAYMENTS
-    //     if($mode_of_payment != 5){
-
-    //         if($mode_of_payment == 4){
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_paid,
-    //                 'pmnt_received' => $pmnt_received,
-    //                 'pmnt_change' => $pmnt_change,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s'),
-    //                 'pmnt_check_no' => $pmnt_check_no,
-    //                 'pmnt_check_date' => $pmnt_check_date
-    //             ]);
-    //         }
-    //         else{
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_paid,
-    //                 'pmnt_received' => $pmnt_received,
-    //                 'pmnt_change' => $pmnt_change,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s')
-    //             ]);
-    //         }
-
-    //         //IMAGE UPLOAD FOR GCASH
-    //         if($request->file('pmnt_attachment_gcash'))
-    //         {
-    //             $pmnt_id = DB::table('payments')
-    //             ->select('pmnt_id')
-    //             ->orderBy('pmnt_id', 'desc')
-    //             ->first();
-        
-    //             $file = $request->file('pmnt_attachment_gcash');
-    
-    //             $validator = Validator::make( 
-    //                 [
-    //                     'file' => $file,
-    //                     'extension' => strtolower($file->getClientOriginalExtension()),
-    //                 ],
-    //                 [
-    //                     'file' => 'required',
-    //                     'file' => 'max:3072', //3MB
-    //                     'extension' => 'required|in:jpg,png,gif',
-    //                 ]
-    //             );
-        
-    //             if ($validator->fails()) 
-    //             {
-    //                 session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-    //                 return redirect()->back()->withErrors($validator)->withInput();
-    //             }
-        
-    //             $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-        
-    //             Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
-    
-    //             DB::table('payments')
-    //             ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-    //             ->update([
-    //                 'pmnt_attachment' => $fileName,
-    //             ]);  
-    //         }   
-            
-    //         //IMAGE UPLOAD FOR CHECK
-    //         if($request->file('pmnt_attachment_check'))
-    //         {
-    //             $pmnt_id = DB::table('payments')
-    //             ->select('pmnt_id')
-    //             ->orderBy('pmnt_id', 'desc')
-    //             ->first();
-        
-    //             $file = $request->file('pmnt_attachment_check');
-    
-    //             $validator = Validator::make( 
-    //                 [
-    //                     'file' => $file,
-    //                     'extension' => strtolower($file->getClientOriginalExtension()),
-    //                 ],
-    //                 [
-    //                     'file' => 'required',
-    //                     'file' => 'max:3072', //3MB
-    //                     'extension' => 'required|in:jpg,png,gif',
-    //                 ]
-    //             );
-        
-    //             if ($validator->fails()) 
-    //             {
-    //                 session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-    //                 return redirect()->back()->withErrors($validator)->withInput();
-    //             }
-        
-    //             $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-        
-    //             Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
-    
-    //             DB::table('payments')
-    //             ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-    //             ->update([
-    //                 'pmnt_attachment' => $fileName,
-    //             ]);  
-    //         }   
-
-    //     }
-    //     else{
-    //         $trx_amount_cash = (float)$request->trx_amount_cash;
-    //         $trx_amount_credit = (float)$request->trx_amount_credit;
-    //         $trx_amount_gcash = (float)$request->trx_amount_gcash;
-    //         $trx_amount_check = (float)$request->trx_amount_check;
-
-    //         if($trx_amount_cash > 0){
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_cash,
-    //                 'pmnt_received' => $trx_amount_paid,
-    //                 'pmnt_change' => 0,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s')
-    //             ]);
-    //         }
-    //         if($trx_amount_credit > 0){
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_credit,
-    //                 'pmnt_received' => $trx_amount_paid,
-    //                 'pmnt_change' => 0,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s')
-    //             ]);
-    //         }
-    //         if($trx_amount_gcash > 0){
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_gcash,
-    //                 'pmnt_received' => $trx_amount_paid,
-    //                 'pmnt_change' => 0,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s')
-    //             ]);
-
-    //             //IMAGE UPLOAD FOR GCASH
-    //             if($request->file('pmnt_attachment_gcash'))
-    //             {
-    //                 $pmnt_id = DB::table('payments')
-    //                 ->select('pmnt_id')
-    //                 ->orderBy('pmnt_id', 'desc')
-    //                 ->first();
-            
-    //                 $file = $request->file('pmnt_attachment_gcash');
-        
-    //                 $validator = Validator::make( 
-    //                     [
-    //                         'file' => $file,
-    //                         'extension' => strtolower($file->getClientOriginalExtension()),
-    //                     ],
-    //                     [
-    //                         'file' => 'required',
-    //                         'file' => 'max:3072', //3MB
-    //                         'extension' => 'required|in:jpg,png,gif',
-    //                     ]
-    //                 );
-            
-    //                 if ($validator->fails()) 
-    //                 {
-    //                     session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-    //                     return redirect()->back()->withErrors($validator)->withInput();
-    //                 }
-            
-    //                 $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-            
-    //                 Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
-        
-    //                 DB::table('payments')
-    //                 ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-    //                 ->update([
-    //                     'pmnt_attachment' => $fileName,
-    //                 ]);  
-    //             }   
-    //         }
-    //         if($trx_amount_check > 0){
-    //             DB::table('payments')
-    //             ->insert([
-    //                 'acc_id' => session('acc_id'),
-    //                 'usr_id' => session('usr_id'),
-    //                 'trx_id' => $trx_id,
-    //                 'pmnt_ref_id' => $pmt_ref_id,
-    //                 'trx_mode_of_payment' => $mode_of_payment,
-    //                 'pmnt_amount' => $trx_amount_check,
-    //                 'pmnt_received' => $trx_amount_paid,
-    //                 'pmnt_change' => 0,
-    //                 'pmnt_date' => $trx_date,
-    //                 'pmnt_time' => date('H:i:s'),
-    //                 'pmnt_check_no' => $pmnt_check_no,
-    //                 'pmnt_check_date' => $pmnt_check_date
-    //             ]);
-
-    //             //IMAGE UPLOAD FOR CHECK
-    //             if($request->file('pmnt_attachment_check'))
-    //             {
-    //                 $pmnt_id = DB::table('payments')
-    //                 ->select('pmnt_id')
-    //                 ->orderBy('pmnt_id', 'desc')
-    //                 ->first();
-            
-    //                 $file = $request->file('pmnt_attachment_check');
-        
-    //                 $validator = Validator::make( 
-    //                     [
-    //                         'file' => $file,
-    //                         'extension' => strtolower($file->getClientOriginalExtension()),
-    //                     ],
-    //                     [
-    //                         'file' => 'required',
-    //                         'file' => 'max:3072', //3MB
-    //                         'extension' => 'required|in:jpg,png,gif',
-    //                     ]
-    //                 );
-            
-    //                 if ($validator->fails()) 
-    //                 {
-    //                     session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
-    //                     return redirect()->back()->withErrors($validator)->withInput();
-    //                 }
-            
-    //                 $fileName = $pmnt_id->pmnt_id . '.' . $file->getClientOriginalExtension();
-            
-    //                 Storage::disk('local')->put('img/payments/' . $fileName, fopen($file, 'r+'));
-        
-    //                 DB::table('payments')
-    //                 ->where('pmnt_id','=',$pmnt_id->pmnt_id)
-    //                 ->update([
-    //                     'pmnt_attachment' => $fileName,
-    //                 ]);  
-    //             }   
-    //         }
-    //     }
-
-    //     session(['pmnt_check_no' => $pmnt_check_no]);
-    //     session(['latest_trx_id' => $trx_id]);
-    //     session(['brd_new_total' => $brd_new_total]);
-
-    //     session()->flash('successMessage','Transaction complete!');
-    //     return redirect()->action('PrintController@salesReceipt');
-    // }
 
     public function payPending(Request $request){
         
