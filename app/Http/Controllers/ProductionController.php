@@ -2848,6 +2848,7 @@ class ProductionController extends Controller
 
         //Iterate 4 times for the Purchases, Received,
         //Issued, and Opposition tables
+        dd($eod_reports);
         for($x = 0; $x <= 3; $x++)
         {   
             //$new_internal_array holds the quantities
@@ -2908,27 +2909,42 @@ class ProductionController extends Controller
             switch($x)
             {
                 case 0: 
-                    $new_purchases_array['quantities'] = $new_internal_array; 
+                    if(!empty($new_internal_array))
+                    {
+                        $new_purchases_array['quantities'] = $new_internal_array; 
+                    }
                 break;
 
                 case 1: 
-                    $new_received_array['quantities'] = $new_internal_array; 
+                    if(!empty($new_internal_array))
+                    {
+                        $new_received_array['quantities'] = $new_internal_array; 
+                    }
                 break;
 
                 case 2: 
-                    $new_issued_array['quantities'] = $new_internal_array; 
+                    if(!empty($new_internal_array))
+                    {
+                        $new_issued_array['quantities'] = $new_internal_array; 
+                    }
                 break;
 
-                case 3: 
-                    $new_opposition_array['quantities'] = $new_internal_array; 
+                case 3:
+                    if(!empty($new_internal_array))
+                    {
+                        $new_opposition_array['quantities'] = $new_internal_array; 
+                    } 
                 break;
 
             }
         }
 
-        // dd($new_purchases_array, $new_received_array,
-        // $new_issued_array,
-        // $new_opposition_array);
+        dd(
+            $new_purchases_array, 
+            $new_received_array,
+            $new_issued_array,
+            $new_opposition_array
+        );
 
         return view('admin.print.productiontoggle', compact(
             'canisters', 

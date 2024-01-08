@@ -5,7 +5,6 @@
         <div class="card">
             <div class="row">
                 <div class="col-md-12">
-                    
                     <table>
                         <tr>
                             <td><img src="{{ asset('img/accounts/logo-1.jpg' ) }}" style="width:70px;"></td>
@@ -15,7 +14,6 @@
                                     <strong>MADAYAW PETROLEUM AND GAS CORPORATION</strong><br>
                                 </h4>
                                 <p class="ml-2">
-                                    
                                     <small>Park Avenue Cor. Lakatan St., Brgy. Wilfredo Aquino, Agdao, Davao City</small>
                                 </p>
                             </td>
@@ -23,23 +21,28 @@
                     </table>
                 </div>
             </div>
-            <hr><br>
-            <div class="row">
-                <div class="col-md-6"><h3 class="ml-2">
-                    <i class="fa fa-file-text-o"></i> <strong style="font-size:20px;">CANISTER DAILY ACTIVITY REPORT </strong></h3>
-                </div>
-                <div class="col-md-6 align-items-center">
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <p>Date: </p>&nbsp<strong style="text-decoration:underline">{{$production_date}}</strong> <br> 
+
+            <hr>
+            
+            <br>
+                <div class="row">
+                    <div class="col-md-6"><h3 class="ml-2">
+                        <i class="fa fa-file-text-o"></i> <strong style="font-size:20px;">CANISTER DAILY ACTIVITY REPORT </strong></h3>
+                    </div>
+                    <div class="col-md-6 align-items-center">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <p>Date: </p>&nbsp<strong style="text-decoration:underline">{{$production_date}}</strong> <br> 
+                        </div>
                     </div>
                 </div>
-            </div>
             <br>
+
+            <!-- Part 1 -->
             <div class="d-flex align-items-center">
                 <h4><strong style="font-size:15px;">PART 1: FILLING PLANT PRODUCTION</strong></h4>
             </div>
-            <!-- Canisters -->
-            
+
+                <!-- Canisters -->      
                 <table id="part1Table">
                     <thead>
                         <tr>
@@ -63,6 +66,7 @@
                     </tbody>
                 </table>
                 <br>
+                <!-- PART 1 TABLE -->
                 <table>
                     <thead>
                         <tr>
@@ -80,12 +84,7 @@
                         @php($row_count = $purchase_table_rows)
                         @foreach($new_purchases_array as $purchase_array)
                             <tr>
-                                <!-- <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['ref_id'] }}</i></td>
-
-                                @for($index = 2; $index < count($canisters); $index++)
-                                    <td style="text-align:center; border:1px solid;"><strong>{{$purchase_array[$prd_name]}}</strong></td>    
-                                @endfor -->
+                                <!-- L84 -->
 
                                 <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['cus_name'] }}</i></td>
                                 <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array['ref_id'] }}</i></td>
@@ -104,8 +103,8 @@
                                     <td colspan="2" style="text-indent:-9999px; border:1px solid black;">0</td>
                                     @for($count = 0; $count < $td_count; $count++)
                                         <td style="text-indent:-9999px; border-right:1px solid black;">0</td>
-                                    @endfor                                </tr>
-                                
+                                    @endfor                                
+                                </tr>
                                 @php($row_count--)
                             @endwhile
                         @endif
@@ -149,6 +148,8 @@
             
 
             <br>
+
+            <!-- Part 2 -->
             <div class="d-flex align-items-center">
                 <h4><strong style="font-size:15px;">PART 2: EMPTY CANISTER MOVEMENT</strong></h4>
             </div>
@@ -174,28 +175,25 @@
                             @endforeach
                         @endif
                     </tr>
+                    <!-- ERROR HERE  -->
                     <tr>
                         <!-- add forloop here for how many customers ordered  -->
                         @php($row_count = $received_table_rows)
-                        <!-- @foreach($received_customers_array as $received_array) -->
+
                         @foreach($new_received_array as $received_array)
                             <tr>
-                                <!-- <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array[0] }}</i></td>
-                                <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array[1] }}</i></td>
-                                @for($index = 2; $index < count($received_array); $index++)
-                                    <td style="text-align:center; border-right:1px solid black"><strong>{{($received_array[$index] ?? 0)}}</strong></td>    
-                                @endfor -->
-                            
+                               
+                    
                                 <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array['cus_name'] }}</i></td>
                                 <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array['ref_id'] }}</i></td>
                                 @foreach($new_received_array['quantities'] as $quantity)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{$quantity}}</strong></td>    
-                                @endfor
+                                @endforeach
                             </tr>
-                        @php($row_count--)
-                        @endforeach
+                            @php($row_count--)
+                        @endforeach 
                         
-                        @php(($td_count = count($canisters)))
+                        @php($td_count = count($canisters))
                         @if($row_count <> 0)
                             @while($row_count > 0)
                                 <tr>
@@ -208,11 +206,13 @@
                                 @php($row_count--)
                             @endwhile
                         @endif
-                    </tr>
+                    </tr>  
                     <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>    
+
             <br>
+          
             <table>
                 <thead>
                     <tr>
@@ -250,7 +250,7 @@
                                 <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $newopposition_array['ref_id'] }}</i></td>
                                 @foreach($new_opposition_array['quantities'] as $quantity)
                                     <td style="text-align:center; border:1px solid black;"><strong>{{$quantity}}</strong></td>    
-                                @endfor
+                                @endforeach
                             </tr>
                             @php($row_count--)
                         @endforeach
@@ -326,6 +326,8 @@
                 </tbody>
             </table>
             <br>
+
+            <!-- Part 3 -->
             <div class="d-flex align-items-center">
                 <h4><strong style="font-size:15px;">PART 3: CANISTER MOVEMENT</strong></h4>
             </div>
@@ -411,9 +413,11 @@
                     <div class="col-md-3" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Seal: </strong>{!! get_seal_population() !!}</p>
                     </div>
-                    {{-- <div class="col-md-2" style="text-align:center">
+
+                    <!-- {{-- <div class="col-md-2" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Crates: </strong>{!! get_crate_population() !!}</p>
-                    </div> --}}
+                    </div> --}} -->
+                    
                     <div class="col-md-3" style="text-align:center">
                         <p style="text-decoration:underline"><strong>Gas stove: </strong>{!! get_gasStove_population() !!}</p>
                     </div>
@@ -423,62 +427,12 @@
                 </div>
             </div>
             <hr><br>
+
+            <!-- PART 4 -->
             <div class="d-flex align-items-center">
                 <h4><strong style="font-size:15px;">PART 4: OPPOSITION CANISTERS</strong></h4>
             </div>
-
-            {{--<table>
-                <thead>
-                    <tr>
-                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
-                        @if(isset($canisters))
-                            @foreach($oppositions as $opposition)
-                                <th style="border-bottom:1px solid black"></th>
-                            @endforeach
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black"><i>REFERENCE ID</i></td>
-                        @if(isset($oppositions))
-                            @foreach($oppositions as $opposition)
-                                <td style="text-align:center; border:1px solid black; border-bottom:2px solid black"><strong>{{$opposition->ops_name}}</strong></td>
-                            @endforeach
-                        @endif
-                    </tr>
-                    <tr>
-                        <!-- add forloop here for how many customers ordered  -->
-                        @php($row_count = $issued_table_rows)
-                        @foreach($oppositions_array as $opposition_array)
-                        <tr>
-                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[0] }}</i></td>
-                            <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{ $opposition_array[1] }}</i></td>
-                            @for($index = 2; $index < count($opposition_array); $index++)
-                                <td style="text-align:center; border:1px solid black;"><strong>{{$opposition_array[$index]}}</strong></td>    
-                            @endfor
-                        </tr>
-                        @php($row_count--)
-                        @endforeach
-
-                        @php(($td_count = count($oppositions)))
-                        @if($row_count <> 0)
-                            @while($row_count > 0)
-                                <tr>
-                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
-                                    <td colspan="2" style="text-indent:-9999px; border:1px solid black">0</td>
-                                    @for($count = 0; $count < $td_count; $count++)
-                                        <td style="text-indent:-9999px; border:1px solid black">0</td>
-                                    @endfor
-                                </tr>
-                                @php($row_count--)
-                            @endwhile
-                        @endif
-                    </tr>
-                    <tr style="border-top:1px solid black"></tr>
-                </tbody>
-            </table>--}}
+            
             <hr><br>
             <div class="row">
                 <div class="col-md-12 text-center">
@@ -549,7 +503,6 @@
                                             </tr>
                                         @endforeach
                                     @endif
-
                                 </tbody>
                             </table>
                         </div>
@@ -557,7 +510,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-5">
                         <div class="row">
-                        <table class="table table-hover table-condensed">
+                            <table class="table table-hover table-condensed">
                                 <thead>
                                     <th style="text-align:center">Tank Closing %</th>
                                     <th style="text-align:center">%</th>
@@ -575,7 +528,6 @@
                                             </tr>
                                         @endforeach
                                     @endif
-
                                 </tbody>
                             </table>
                         </div>
