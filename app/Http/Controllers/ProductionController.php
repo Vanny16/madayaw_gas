@@ -2528,21 +2528,15 @@ class ProductionController extends Controller
                                         ->get();
 
                                         // dd($new_purchases);
-            if(!$new_purchases->isEmpty())
-            {
                 array_push($new_purchases_array, $new_purchases);
-            }
-
+            
             $new_received =  EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
                                         ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
                                         ->where('ref_id', '=', $report['ref_id'])
                                         ->where('pdn_id', '=', get_last_production_id())
                                         ->where('report_type', '=', '2') //Report type '2' refers to 'Received'
                                         ->get();
-            if(!$new_received->isEmpty())
-            {
-                array_push($new_received_array, $new_received);
-            }
+            array_push($new_received_array, $new_received);
 
             $new_issued = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
                                     ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
@@ -2550,10 +2544,7 @@ class ProductionController extends Controller
                                     ->where('pdn_id', '=', get_last_production_id())
                                     ->where('report_type', '=', '3') //Report type '3' refers to 'Issued'
                                     ->get();
-            if(!$new_issued->isEmpty())
-            {
                 array_push($new_issued_array, $new_issued);
-            }
 
             $new_opposition = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
                                         ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
@@ -2561,12 +2552,9 @@ class ProductionController extends Controller
                                         ->where('pdn_id', '=', get_last_production_id())
                                         ->where('report_type', '=', '4') //Report type '4' refers to 'Opposition'
                                         ->get();
-            if(!$new_opposition->isEmpty())
-            {
                 array_push($new_opposition_array, $new_opposition);
-            }
         }
-
+        // dd($new_opposition_array, $new_issued_array, $new_received_array, $new_purchases_array);
         //Iterate 4 times for the Purchases, Received,
         //Issued, and Opposition tables
         // dd($eod_reports);
@@ -2582,26 +2570,54 @@ class ProductionController extends Controller
 
             //Switch case to put table arrays on
             //$holder_array
-            switch($x)
-
-            {
+            switch ($x) {
                 case 0:
-                    $holder_array = $new_purchases_array;
-                break;
+                    if (!empty($new_internal_array)) {
+                        $new_purchases_array['quantities'] = $new_internal_array;
+                    }
+                    break;
 
                 case 1:
-                    $holder_array = $new_received_array;
-                break;
+                    if (!empty($new_internal_array)) {
+                        $new_received_array['quantities'] = $new_internal_array;
+                    }
+                    break;
 
                 case 2:
-                    $holder_array = $new_issued_array;
-                break;
+                    if (!empty($new_internal_array)) {
+                        $new_issued_array['quantities'] = $new_internal_array;
+                    }
+                    break;
 
                 case 3:
-                    $holder_array = $new_opposition_array;
-                break;
+                    if (!empty($new_internal_array)) {
+                        $new_opposition_array['quantities'] = $new_internal_array;
+                    }
+                    break;
 
             }
+
+
+            // switch($x)
+
+            // {
+            //     case 0:
+            //         $holder_array = $new_purchases_array;
+            //     break;
+
+            //     case 1:
+            //         $holder_array = $new_received_array;
+            //     break;
+
+            //     case 2:
+            //         $holder_array = $new_issued_array;
+            //     break;
+
+            //     case 3:
+            //         $holder_array = $new_opposition_array;
+            //     break;
+
+            // }
             // dd($x);
 
             //Do,While to add quantity that corresponds
@@ -2629,37 +2645,7 @@ class ProductionController extends Controller
             //Switch case to add key='quantities',
             //value ='$new_internal_array' pair to
             //table arrays
-            switch($x)
-            {
-                case 0:
-                    if(!empty($new_internal_array))
-                    {
-                        $new_purchases_array['quantities'] = $new_internal_array;
-                    }
-                break;
-
-                case 1:
-                    if(!empty($new_internal_array))
-                    {
-                        $new_received_array['quantities'] = $new_internal_array;
-                    }
-                break;
-
-                case 2:
-                    if(!empty($new_internal_array))
-                    {
-                        $new_issued_array['quantities'] = $new_internal_array;
-                    }
-                break;
-
-                case 3:
-                    if(!empty($new_internal_array))
-                    {
-                        $new_opposition_array['quantities'] = $new_internal_array;
-                    }
-                break;
-
-            }
+            
         }
 
         // dd(
