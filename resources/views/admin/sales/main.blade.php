@@ -49,9 +49,9 @@
                                     @if($transaction_id == null)
                                         @php($transaction_id = 1)
                                     @else
-                                        @php($transaction_id += 1)
+                                        @php($transaction_id + 1)
                                     @endif
-                                    <label>Transaction</label>
+                                    <label>Transaction</label>select()
                                     <p class="text-danger fa-2x mr-2">POS-<?php echo date("Y").date("m").date("d"); ?>-{{ $transaction_id }}</p>
                                 </div>
                                 <div class="col-md-9 order-lg-1 order-2">

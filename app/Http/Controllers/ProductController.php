@@ -305,7 +305,8 @@ class ProductController extends Controller
         $suppliers = DB::table('suppliers')
         ->get();
 
-        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers'));
+        $pdn_flag = check_production_log();
+        return view('admin.products.manage', compact( 'statuses', 'default_status', 'products','prd_active','suppliers', 'pdn_flag'));
     }
 
     public function createSupplier(Request $request)
