@@ -81,22 +81,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php($row_count = $purchase_table_rows)
-                        @foreach($new_purchases_array[0] as $purchase_array)
+                        @foreach($new_purchases_array as $purchase_array)
                             <tr>
                                 <!-- L84 -->
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[0]->cus_name }}</i></td>
+                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array[0]->ref_id }}</i></td>
 
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array->cus_name }}</i></td>
-                                <td colspan="2" style="text-align:center; border:1px solid;"><i>{{ $purchase_array->ref_id }}</i></td>
-                                @foreach($new_purchases_array[0] as $quantity)
-                                    <td style="text-align:center; border:1px solid;">
-                                        <strong>{{$quantity->quantity}}</strong>
-                                    </td>  
-                                @endforeach
+                                @if(isset($canisters))
+                                    @foreach($canisters as $canister)
+                                        @php
+                                            $quantity = $purchase_array->firstWhere('prd_id', $canister->prd_id)->quantity ?? 0;
+                                        @endphp
+                                        <td style="text-align:center; border:1px solid;"><strong>{{ $quantity }}</strong></td>
+                                    @endforeach
+                                @endif
                             </tr>
-                            @php($row_count--)
                         @endforeach
                         
+                        @php($row_count = $purchase_table_rows)
                         @php(($td_count = count($canisters)))
                         @if($row_count <> 0)
                             @while($row_count > 0)
@@ -185,15 +187,15 @@
                         @foreach($new_received_array[0] as $received_array)
                             <tr>
                                
-                    
+
                                 <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $received_array->cus_name }}</i></td>
                                 <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $received_array->ref_id }}</i></td>
                                 @foreach($new_received_array[0] as $quantity)
                                     <td style="text-align:center; border-right:1px solid black"><strong>{{$quantity->quantity}}</strong></td>    
-                                @endforeach
+                                    @endforeach
                             </tr>
                             @php($row_count--)
-                        @endforeach 
+                        @endforeach
                         
                         @php($td_count = count($canisters))
                         @if($row_count <> 0)

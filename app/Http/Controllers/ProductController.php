@@ -88,8 +88,7 @@ class ProductController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );
@@ -200,8 +199,7 @@ class ProductController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );

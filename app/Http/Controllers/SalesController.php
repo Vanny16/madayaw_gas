@@ -82,34 +82,36 @@ class SalesController extends Controller
         return view('admin.sales.main', compact('products', 'customers', 'transaction_id')); //'oppositions', 'in_products' 'transactions',  'purchased_products', 
     }
 
-    public function payments()
-    {
-        $payments_date_from = "";
-        $payments_date_to = "";
-        $paginate_row = session('paginate_row') ?? '50';
+    // ! FOR DEBUGGING **********************************************************
+    // public function payments()
+    // {
+    //     $payments_date_from = "";
+    //     $payments_date_to = "";
+    //     $paginate_row = session('paginate_row') ?? '50';
 
-        $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'transactions.mode_of_payment')
-        ->where('trx_active','=','1')
-        ->orderBy('transactions.trx_ref_id', 'DESC')
-        ->paginate($paginate_row);
+    //     $transactions = DB::table('transactions')
+    //     ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+    //     ->join('payment_types', 'payment_types.mode_of_payment', '=', 'transactions.mode_of_payment')
+    //     ->where('trx_active','=','1')
+    //     ->orderBy('transactions.trx_ref_id', 'DESC')
+    //     ->paginate($paginate_row);
 
-        $payments = DB::table('payments')
-        ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
-        ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
-        ->join('users', 'users.usr_id', '=', 'payments.usr_id')
-        ->select('trx_mode_pf_payment As pmnt_amount_cash FROM transactions where mode_of_payment')
-        ->wherebetween('transactions.trx_amount_paid', [$date_from, $date_to])
-        ->get();
-        // 'trx_mode_of_payment' => $mode_of_payment,
-        // 'pmnt_amount' => $trx_amount_cash,
+    //     $payments = DB::table('payments')
+    //     ->join('transactions', 'transactions.trx_id', '=', 'payments.trx_id')
+    //     ->join('payment_types', 'payment_types.mode_of_payment', '=', 'payments.trx_mode_of_payment')
+    //     ->join('users', 'users.usr_id', '=', 'payments.usr_id')
+    //     ->select('trx_mode_pf_payment As pmnt_amount_cash FROM transactions where mode_of_payment')
+    //     ->wherebetween('transactions.trx_amount_paid', [$date_from, $date_to])
+    //     ->get();
+    //     // 'trx_mode_of_payment' => $mode_of_payment,
+    //     // 'pmnt_amount' => $trx_amount_cash,
         
-        session(['select_show' => 'Transactions']);
+    //     session(['select_show' => 'Transactions']);
 
-        return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
-    }
-
+    //     return view('admin.sales.payments', compact('payments', 'transactions', 'payments_date_from', 'payments_date_to'));
+    // }
+    // ! FOR DEBUGGING **********************************************************
+    
     public function selectCustomer(Request $request)
     {
         $client_id = $request->input('client_id');
@@ -205,10 +207,13 @@ class SalesController extends Controller
 
         $oppositions = Opposition::POSIndex(); //OVERWRITE PREVIOUS QUERY FOR TESTING
 
-        $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
-                                    ->where('pdn_id', get_last_production_id())
-                                    ->orderBy('trx_id', 'desc')
-                                    ->count();
+        // $transaction_id = Transaction::query()//NECESSARY FOR INDEX ; OVERWRITE PREVIOUS QUERY FOR TESTING ; USED TO VERIFY THE BAD ORDER
+        //                             ->where('pdn_id', get_last_production_id())
+        //                             ->orderBy('trx_id', 'desc')
+        //                             ->count();
+
+        $transaction_id = DB::table('transactions')
+            ->max('trx_id');
 
         session(['client_id' => $client_id[0]]);
 
@@ -283,8 +288,7 @@ class SalesController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );
@@ -357,7 +361,7 @@ class SalesController extends Controller
         $prod_date = \Carbon\Carbon::createFromFormat('Y-m-d', $prod_date);
         // $formattedDate = $prod_date->format('Y-m-d');
 
-        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $trx_id; //date_format($prod_date, 'd')
+        $trx_ref_id = "POS-" . date('Y') . date('m') . date('d') . "-" . $transaction_id; //date_format($prod_date, 'd')
         $pmt_ref_id = "PMT-" . date('Y') . date('m') . date('d') . "-" . $pmnt_id; //date_format($prod_date, 'd')
         $prd_id = "";
         $prd_price = "";
@@ -567,6 +571,7 @@ class SalesController extends Controller
 
 
         //Iterate 3 times for Purchase, Received, Issued
+        // ! WHHHYYYYYYY??????
         for($flag = 1; $flag <= 3; $flag++)
         {
             saveForEodTables($flag <> 2 ? $eodPurchaseReport : $eodReceivedReport, $flag);
@@ -648,8 +653,7 @@ class SalesController extends Controller
                         'extension' => strtolower($file->getClientOriginalExtension()),
                     ],
                     [
-                        'file' => 'required',
-                        'file' => 'max:3072', //3MB
+                        'file' => 'required|max:3072',
                         'extension' => 'required|in:jpg,png,gif',
                     ]
                 );
@@ -687,8 +691,7 @@ class SalesController extends Controller
                         'extension' => strtolower($file->getClientOriginalExtension()),
                     ],
                     [
-                        'file' => 'required',
-                        'file' => 'max:3072', //3MB
+                        'file' => 'required|max:3072',
                         'extension' => 'required|in:jpg,png,gif',
                     ]
                 );
@@ -778,8 +781,7 @@ class SalesController extends Controller
                             'extension' => strtolower($file->getClientOriginalExtension()),
                         ],
                         [
-                            'file' => 'required',
-                            'file' => 'max:3072', //3MB
+                            'file' => 'required|max:3072',
                             'extension' => 'required|in:jpg,png,gif',
                         ]
                     );
@@ -834,8 +836,7 @@ class SalesController extends Controller
                             'extension' => strtolower($file->getClientOriginalExtension()),
                         ],
                         [
-                            'file' => 'required',
-                            'file' => 'max:3072', //3MB
+                            'file' => 'required|max:3072',
                             'extension' => 'required|in:jpg,png,gif',
                         ]
                     );
@@ -968,8 +969,7 @@ class SalesController extends Controller
                         'extension' => strtolower($file->getClientOriginalExtension()),
                     ],
                     [
-                        'file' => 'required',
-                        'file' => 'max:3072', //3MB
+                        'file' => 'required|max:3072',
                         'extension' => 'required|in:jpg,png,gif',
                     ]
                 );
@@ -1007,8 +1007,7 @@ class SalesController extends Controller
                         'extension' => strtolower($file->getClientOriginalExtension()),
                     ],
                     [
-                        'file' => 'required',
-                        'file' => 'max:3072', //3MB
+                        'file' => 'required|max:3072',
                         'extension' => 'required|in:jpg,png,gif',
                     ]
                 );
@@ -1083,8 +1082,7 @@ class SalesController extends Controller
                             'extension' => strtolower($file->getClientOriginalExtension()),
                         ],
                         [
-                            'file' => 'required',
-                            'file' => 'max:3072', //3MB
+                            'file' => 'required|max:3072',
                             'extension' => 'required|in:jpg,png,gif',
                         ]
                     );
@@ -1137,8 +1135,7 @@ class SalesController extends Controller
                             'extension' => strtolower($file->getClientOriginalExtension()),
                         ],
                         [
-                            'file' => 'required',
-                            'file' => 'max:3072', //3MB
+                            'file' => 'required|max:3072',
                             'extension' => 'required|in:jpg,png,gif',
                         ]
                     );
@@ -1225,8 +1222,7 @@ class SalesController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );

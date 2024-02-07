@@ -36,11 +36,11 @@
                         @foreach($all_purchases_reports as $all_purchases_report)
                         <tr>
                             <td>{{$all_purchases_report->prd_name}}</td>
-                            <td>₱ {{$all_purchases_report->prd_price, 2, '.', ','}}</td>
+                            <td>₱ {{ number_format($all_purchases_report->prd_price, 2, '.', ',') }}</td>
                             <td>{{$all_purchases_report->pur_crate}}</td>
                             <td>{{$all_purchases_report->pur_loose}}</td>
-                            <td>₱ {{$all_purchases_report->pur_deposit, 2, '.', ','}}</td>
-                            <td>₱ {{$all_purchases_report->pur_total, 2, '.', ','}}</td>
+                            <td>₱ {{ number_format($all_purchases_report->pur_deposit, 2, '.', ',') }}</td>
+                            <td>₱ {{ number_format($all_purchases_report->pur_total, 2, '.', ',') }}</td>
                         </tr> 
                         @endforeach
                     </tbody>
@@ -64,11 +64,11 @@
                         @foreach($purchases_reports as $purchases_report)
                         <tr>
                             <td>{{$purchases_reports->prd_name}}</td>
-                            <td>₱ {{$purchases_reports->prd_price, 2, '.', ','}}</td>
+                            <td>₱ {{ number_format($purchases_reports->prd_price, 2, '.', ',') }}</td>
                             <td>{{$purchases_reports->pur_crate}}</td>
                             <td>{{$purchases_reports->pur_loose}}</td>
-                            <td>₱ {{$purchases_reports->pur_deposit, 2, '.', ','}}</td>
-                            <td>₱ {{$purchases_reports->pur_total, 2, '.', ','}}</td>
+                            <td>₱ {{ number_format($purchases_reports->pur_deposit, 2, '.', ',') }}</td>
+                            <td>₱ {{ number_format($purchases_reports->pur_total, 2, '.', ',') }}</td>
                         </tr> 
                         @endforeach
                     </tbody>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Session;
 use DB;
 
@@ -55,8 +56,8 @@ class MainController extends Controller
         {
             DB::table('production_logs')
             ->insert([
-                'pdn_date' => Carbon\Carbon::now(),
-                'pdn_start_time' => Carbon\Carbon::now()
+                'pdn_date' => Carbon::now(),
+                'pdn_start_time' => Carbon::now()
             ]);
 
             session()->flash('successMessage','Production started!');
@@ -66,7 +67,7 @@ class MainController extends Controller
         {
             DB::table('production_logs')
             ->update([
-                'pdn_end_time' => Carbon\Carbon::now()
+                'pdn_end_time' => Carbon::now()
             ]);
 
             session()->flash('successMessage','Production ended!');
@@ -101,8 +102,7 @@ class MainController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );

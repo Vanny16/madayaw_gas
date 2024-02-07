@@ -26,6 +26,5 @@ class EodReport extends Model
         
         return $values;
     }
-    
 
 }

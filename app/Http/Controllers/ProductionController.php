@@ -13,71 +13,71 @@ use DB;
 
 class ProductionController extends Controller
 {
-    public function manage(){
+    public function manage()
+    {
         // return $this->printProduction();
 
-        if(session('typ_id') == 3){
+        if (session('typ_id') == 3) {
             return redirect()->action('MainController@home');
         }
 
         $raw_materials = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->get();
+            ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_for_production', '=', '1')
+            ->get();
 
         $canisters = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->get();
+            ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '1')
+            ->get();
 
         $suppliers = DB::table('suppliers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->get();
 
         $transactions = DB::table('transactions')
-        ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('transactions.acc_id', '=', session('acc_id'))
-        ->get();
+            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            ->where('transactions.acc_id', '=', session('acc_id'))
+            ->get();
 
         $oppositions = DB::table('oppositions')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('ops_name', '!=', 'EMPTY')
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('ops_name', '!=', 'EMPTY')
+            ->get();
 
         $pdn_flag = check_production_log();
 
         $production_times = DB::table('production_logs')
-        ->orderBy('pdn_id', 'DESC')
-        ->first();
+            ->orderBy('pdn_id', 'DESC')
+            ->first();
 
         $tanks = DB::table('tanks')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('tnk_active', '=', 1)
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('tnk_active', '=', 1)
+            ->get();
         // dd($tanks);
         $tank_logs = DB::table('tank_logs')
-        ->where('acc_id', '=', session('acc_id'))
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->get();
 
         $pdn_for_verifications = get_last_production_id();
-        if(check_production_log())
-        {
+        if (check_production_log()) {
             $pdn_for_verifications = $pdn_for_verifications + 1;
         }
 
         $verifications = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_pdn_id', '=', $pdn_for_verifications);
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_pdn_id', '=', $pdn_for_verifications);
         // ->get();
 
         $product_verifications = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_for_verifications)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->whereIn('verify_user_type', [1, 3, 4])
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_for_verifications)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->whereIn('verify_user_type', [1, 3, 4])
+            ->get();
 
         $opening_visibility = "";
         $closing_visibility = "";
@@ -85,38 +85,31 @@ class ProductionController extends Controller
         $verify_opening_visibility = "";
         $verify_closing_visibility = "";
 
-        if((count($verifications->get()) == 0) && session('typ_id') <> 4)
-        {
+        if ((count($verifications->get()) == 0) && session('typ_id') <> 4) {
             $opening_visibility = "disabled";
             $verify_opening_visibility = "disabled";
-        }
-        else
-        {
+        } else {
             // $verifications = $verifications->get();
-            if(session('typ_id') <> 1)
-            {
+            if (session('typ_id') <> 1) {
                 $opening_visibility = "disabled";
 
                 $visibility_verifications = $verifications->where('verify_user_type', '!=', 1)->first();
                 // dd($visibility_verifications);
-                if(is_null($visibility_verifications) || is_null($visibility_verifications->verify_closing))
-                {
+                if (is_null($visibility_verifications) || is_null($visibility_verifications->verify_closing)) {
                     $opening_visibility = "";
                     $closing_visibility = "disabled";
                 }
             }
 
-            if(session('typ_id') == 1)
-            {
-                $admin_verifications  = DB::table('stock_verifications')
-                ->where('verify_acc_id', '=', session('acc_id'))
-                ->where('verify_pdn_id', '=', $pdn_for_verifications)
-                ->where('verify_user_type', '=', 1)
-                ->first();
+            if (session('typ_id') == 1) {
+                $admin_verifications = DB::table('stock_verifications')
+                    ->where('verify_acc_id', '=', session('acc_id'))
+                    ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                    ->where('verify_user_type', '=', 1)
+                    ->first();
                 // dd($admin_verifications);
 
-                if(is_null($admin_verifications) || (is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 4 || $admin_verifications->verify_user_type == 1)))
-                {
+                if (is_null($admin_verifications) || (is_null($admin_verifications->verify_closing) && ($admin_verifications->verify_user_type == 4 || $admin_verifications->verify_user_type == 1))) {
                     $verify_opening_visibility = "";
                     $verify_closing_visibility = "disabled";
                 }
@@ -141,29 +134,23 @@ class ProductionController extends Controller
                 // }
             }
 
-            if(session('typ_id') == 5)
-            {
-                $pm_verifications  = DB::table('stock_verifications')
-                ->where('verify_acc_id', '=', session('acc_id'))
-                ->where('verify_pdn_id', '=', $pdn_for_verifications)
-                ->where('verify_user_type', '=', 5)
-                ->first();
+            if (session('typ_id') == 5) {
+                $pm_verifications = DB::table('stock_verifications')
+                    ->where('verify_acc_id', '=', session('acc_id'))
+                    ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                    ->where('verify_user_type', '=', 5)
+                    ->first();
 
-                if($pdn_flag)
-                {
+                if ($pdn_flag) {
                     $verify_opening_visibility = "disabled";
                 }
                 // dd($pm_verifications );
-                if($pm_verifications != null)
-                {
-                    if(is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 4 || $pm_verifications->verify_user_type == 1))
-                    {
+                if ($pm_verifications != null) {
+                    if (is_null($pm_verifications->verify_closing) && ($pm_verifications->verify_user_type == 4 || $pm_verifications->verify_user_type == 1)) {
                         $verify_opening_visibility = "";
                         $verify_closing_visibility = "disabled";
                     }
-                }
-                else
-                {
+                } else {
                     $verify_opening_visibility = "";
                     $verify_closing_visibility = "disabled";
                 }
@@ -177,23 +164,19 @@ class ProductionController extends Controller
                 // }
             }
 
-            if(session('typ_id') == 4)
-            {
-                $supervisor_verifications  = DB::table('stock_verifications')
-                ->where('verify_acc_id', '=', session('acc_id'))
-                ->where('verify_pdn_id', '=', $pdn_for_verifications)
-                ->where('verify_user_type', '=', 4)
-                ->first();
+            if (session('typ_id') == 4) {
+                $supervisor_verifications = DB::table('stock_verifications')
+                    ->where('verify_acc_id', '=', session('acc_id'))
+                    ->where('verify_pdn_id', '=', $pdn_for_verifications)
+                    ->where('verify_user_type', '=', 4)
+                    ->first();
 
-                if(!is_null($supervisor_verifications))
-                {
-                    if(!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1))
-                    {
+                if (!is_null($supervisor_verifications)) {
+                    if (!is_null($supervisor_verifications->verify_opening) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1)) {
                         $verify_opening_visibility = "verified";
                     }
 
-                    if(!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1))
-                    {
+                    if (!is_null($supervisor_verifications->verify_closing) && ($supervisor_verifications->verify_user_type == 5 || $supervisor_verifications->verify_user_type == 1)) {
                         $verify_closing_visibility = "verified";
                     }
                 }
@@ -202,29 +185,25 @@ class ProductionController extends Controller
         // dd(session('typ_id'));
 
         //CHECK IF PLANT MANAGER AND SUPERVISOR INPUT ARE BALANCED
-        if(!$this->verification_comparison())
-        {
+        if (!$this->verification_comparison()) {
             $opening_visibility = "discrepancy";
             $closing_visibility = "discrepancy";
-            session()->flash('errorMessage','Production Verification Discrepancy!');
+            session()->flash('errorMessage', 'Production Verification Discrepancy!');
         }
         // dd($opening_visibility, $closing_visibility);
 
         $canister_details = "";
         $tank_details = "";
-        foreach($canisters as $canister)
-        {
+        foreach ($canisters as $canister) {
             $canister_details = $canister_details . $canister->prd_id . "|" . $canister->prd_name . ",";
         }
 
-        foreach($tanks as $tank)
-        {
+        foreach ($tanks as $tank) {
             $tank_details = $tank_details . $tank->tnk_id . "|" . $tank->tnk_name . ",";
         }
 
         $input_text_display = "";
-        if(session('typ_id') == 1 || session('typ_id') == 5 )
-        {
+        if (session('typ_id') == 1 || session('typ_id') == 5) {
             $input_text_display = "disabled";
         }
 
@@ -232,33 +211,26 @@ class ProductionController extends Controller
         $pdn_start_time = '-- : -- --';
         $pdn_end_time = '-- : -- --';
 
-        if(isset($production_times))
-        {
-            if(date('Y-m-d',strtotime($production_times->pdn_date)) == date("Y-m-d"))
-            {
-                if($production_times->pdn_end_time <> 0)
-                {
+        if (isset($production_times)) {
+            if (date('Y-m-d', strtotime($production_times->pdn_date)) == date("Y-m-d")) {
+                if ($production_times->pdn_end_time <> 0) {
                     $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
                     $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
                     $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
-                }
-                else
-                {
+                } else {
                     $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
                     $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
                     $pdn_end_time = '-- : -- --';
                     // $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
                 }
-            }
-            else
-            {
+            } else {
                 $pdn_date = date("F j, Y", strtotime($production_times->pdn_date));
                 $pdn_start_time = date("h:i:s a", strtotime($production_times->pdn_start_time));
                 $pdn_end_time = date("h:i:s a", strtotime($production_times->pdn_end_time));
             }
         }
 
-        return view('admin.production.manage',compact('raw_materials', 'canisters', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
+        return view('admin.production.manage', compact('raw_materials', 'canisters', 'suppliers', 'transactions', 'oppositions', 'pdn_flag', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'product_verifications', 'opening_visibility', 'closing_visibility', 'canister_details', 'tank_details', 'input_text_display', 'verify_opening_visibility', 'verify_closing_visibility'));
     }
 
     //PRODUCTION
@@ -273,36 +245,30 @@ class ProductionController extends Controller
         $canister_details = [];
         $tank_details = [];
 
-        foreach($temp_details as $details)
-        {
+        foreach ($temp_details as $details) {
             $detail = explode("|", $details);
             array_push($canister_details, $detail[0]);
         }
 
-        foreach($temp_tank_details as $details)
-        {
+        foreach ($temp_tank_details as $details) {
             $detail = explode("|", $details);
             array_push($tank_details, $detail[0]);
         }
 
-        if(empty($temp_tank_details))
-        {
-            session()->flash('errorMessage','Must add tanks before starting production!');
+        if (empty($temp_tank_details)) {
+            session()->flash('errorMessage', 'Must add tanks before starting production!');
             return redirect()->action('ProductionController@manage');
         }
 
-        if($pdn_flag)
-        {
+        if ($pdn_flag) {
             DB::table('production_logs')
-            ->insert([
-                'pdn_date' => Carbon::now(),
-                'pdn_start_time' => Carbon::now()
-            ]);
+                ->insert([
+                    'pdn_date' => Carbon::now(),
+                    'pdn_start_time' => Carbon::now()
+                ]);
 
-            if($temp_details <> "" && $temp_tank_details <> "")
-            {
-                foreach($canister_details as $prd_id)
-                {
+            if ($temp_details <> "" && $temp_tank_details <> "") {
+                foreach ($canister_details as $prd_id) {
                     $total_input = 'total_stock_quantity' . $prd_id;
                     $filled_input = 'filled_stock_quantity' . $prd_id;
                     $empty_input = 'empty_stock_quantity' . $prd_id;
@@ -317,16 +283,15 @@ class ProductionController extends Controller
                     // ]);
 
                     DB::table('stocks_logs')
-                    ->insert([
-                        'acc_id' => session('acc_id'),
-                        'prd_id' => $prd_id,
-                        'opening_stocks' => $request->$total_input,
-                        'pdn_id' => get_last_production_id()
-                    ]);
+                        ->insert([
+                            'acc_id' => session('acc_id'),
+                            'prd_id' => $prd_id,
+                            'opening_stocks' => $request->$total_input,
+                            'pdn_id' => get_last_production_id()
+                        ]);
                 }
 
-                foreach($tank_details as $tnk_id)
-                {
+                foreach ($tank_details as $tnk_id) {
                     $total_input = "tank_remaining" . $tnk_id;
 
                     // DB::table('tanks')
@@ -336,31 +301,28 @@ class ProductionController extends Controller
                     // ]);
 
                     DB::table('tank_logs')
-                    ->insert([
-                        'acc_id' => session('acc_id'),
-                        'tnk_id' => $tnk_id,
-                        'log_tnk_opening' => ($request->$total_input) * 1000,
-                        'pdn_id' => get_last_production_id()
-                    ]);
+                        ->insert([
+                            'acc_id' => session('acc_id'),
+                            'tnk_id' => $tnk_id,
+                            'log_tnk_opening' => ($request->$total_input) * 1000,
+                            'pdn_id' => get_last_production_id()
+                        ]);
                 }
             }
 
-            session()->flash('successMessage','Production started!');
+            session()->flash('successMessage', 'Production started!');
             return redirect()->action('ProductionController@manage');
             // $view = $this->printProduction();
             // return $view;
-        }
-        else
-        {
+        } else {
             DB::table('production_logs')
-            ->update([
-                'pdn_end_time' => Carbon::now()
-            ]);
+                ->where('pdn_id', get_last_production_id())
+                ->update([
+                    'pdn_end_time' => Carbon::now()
+                ]);
 
-            if($temp_details <> "" && $temp_tank_details <> "")
-            {
-                foreach($canister_details as $prd_id)
-                {
+            if ($temp_details <> "" && $temp_tank_details <> "") {
+                foreach ($canister_details as $prd_id) {
                     $total_input = 'total_stock_quantity' . $prd_id;
                     $filled_input = 'filled_stock_quantity' . $prd_id;
                     $empty_input = 'empty_stock_quantity' . $prd_id;
@@ -375,15 +337,14 @@ class ProductionController extends Controller
                     // ]);
 
                     DB::table('stocks_logs')
-                    ->where('prd_id', '=', $prd_id)
-                    ->where('pdn_id', '=', get_last_production_id())
-                    ->update([
-                        'closing_stocks' => $request->$total_input,
-                    ]);
+                        ->where('prd_id', '=', $prd_id)
+                        ->where('pdn_id', '=', get_last_production_id())
+                        ->update([
+                            'closing_stocks' => $request->$total_input,
+                        ]);
                 }
 
-                foreach($tank_details as $tnk_id)
-                {
+                foreach ($tank_details as $tnk_id) {
                     $total_input = "tank_remaining" . $tnk_id;
 
                     // DB::table('tanks')
@@ -393,18 +354,18 @@ class ProductionController extends Controller
                     // ]);
 
                     DB::table('tank_logs')
-                    ->where('pdn_id', '=', get_last_production_id())
-                    ->where('tnk_id', '=', $tnk_id)
-                    ->update([
-                        'log_tnk_closing' => ($request->$total_input) * 1000,
-                    ]);
+                        ->where('pdn_id', '=', get_last_production_id())
+                        ->where('tnk_id', '=', $tnk_id)
+                        ->update([
+                            'log_tnk_closing' => ($request->$total_input) * 1000,
+                        ]);
                 }
             }
 
             //DATA NEEDED FOR PRODUCTION PRINT
             //ENTER HERE THE FUNCTION FOR PRINTING
 
-            session()->flash('successMessage','Production ended!');
+            session()->flash('successMessage', 'Production ended!');
             // return redirect()->action('ProductionController@manage');
             $view = $this->printProduction();
             return $view;
@@ -422,33 +383,27 @@ class ProductionController extends Controller
         $canister_details = [];
         $tank_details = [];
 
-        foreach($temp_details as $details)
-        {
+        foreach ($temp_details as $details) {
             $detail = explode("|", $details);
             array_push($canister_details, $detail[0]);
         }
 
-        foreach($temp_tank_details as $details)
-        {
+        foreach ($temp_tank_details as $details) {
             $detail = explode("|", $details);
             array_push($tank_details, $detail[0]);
         }
 
-        if(empty($temp_tank_details))
-        {
-            session()->flash('errorMessage','Must add tanks before starting production!');
+        if (empty($temp_tank_details)) {
+            session()->flash('errorMessage', 'Must add tanks before starting production!');
             return redirect()->action('ProductionController@manage');
         }
 
         $is_updated = false;
         $is_added = false;
 
-        if($pdn_flag)
-        {
-            if($temp_details <> "" && $temp_tank_details <> "")
-            {
-                foreach($canister_details as $prd_id)
-                {
+        if ($pdn_flag) {
+            if ($temp_details <> "" && $temp_tank_details <> "") {
+                foreach ($canister_details as $prd_id) {
                     $total_input = 'verify_total_stock_quantity' . $prd_id;
                     $filled_input = 'verify_filled_stock_quantity' . $prd_id;
                     $empty_input = 'verify_empty_stock_quantity' . $prd_id;
@@ -457,17 +412,15 @@ class ProductionController extends Controller
                     $scrap_input = 'verify_scraps_stock_quantity' . $prd_id;
 
                     $verify_checker = DB::table('stock_verifications')
-                    ->where('verify_prd_id', '=', $prd_id)
-                    ->where('verify_is_product', '=', 1)
-                    ->where('verify_pdn_id', '=', get_last_production_id() + 1)
-                    ->where('verify_user_type', '=', session('typ_id'))
-                    ->first();
+                        ->where('verify_prd_id', '=', $prd_id)
+                        ->where('verify_is_product', '=', 1)
+                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->first();
 
-                    if(session('typ_id') == 4)
-                    {
-                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
-                        {
-                            session()->flash('errorMessage','Supervisor / Admin must verify first!');
+                    if (session('typ_id') == 4) {
+                        if (!$this->check_supervisor_verification($prd_id, get_last_production_id())) {
+                            session()->flash('errorMessage', 'Supervisor / Admin must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
@@ -477,92 +430,83 @@ class ProductionController extends Controller
                     // $request->$leakers_input,
                     // $request->$for_revalving_input,
                     // $request->$scrap_input);
-                    if($verify_checker <> '' || !is_null($verify_checker))
-                    {
+                    if ($verify_checker <> '' || !is_null($verify_checker)) {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
-                        ->where('verify_prd_id', '=', $prd_id)
-                        ->where('verify_is_product', '=', 1)
-                        ->where('verify_user_type', '=', session('typ_id'))
-                        ->update([
-                            'verify_opening' => $request->$total_input,
-                            'verify_opening_filled' => $request->$filled_input,
-                            'verify_opening_empty' => $request->$empty_input,
-                            'verify_opening_leakers' => $request->$leakers_input,
-                            'verify_opening_for_revalving' => $request->$for_revalving_input,
-                            'verify_opening_scraps' => $request->$scrap_input,
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                            ->where('verify_prd_id', '=', $prd_id)
+                            ->where('verify_is_product', '=', 1)
+                            ->where('verify_user_type', '=', session('typ_id'))
+                            ->update([
+                                'verify_opening' => $request->$total_input,
+                                'verify_opening_filled' => $request->$filled_input,
+                                'verify_opening_empty' => $request->$empty_input,
+                                'verify_opening_leakers' => $request->$leakers_input,
+                                'verify_opening_for_revalving' => $request->$for_revalving_input,
+                                'verify_opening_scraps' => $request->$scrap_input,
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_updated = true;
-                    }
-                    else
-                    {
+                    } else {
                         DB::table('stock_verifications')
-                        ->insert([
-                            'verify_prd_id' => $prd_id,
-                            'verify_opening' => $request->$total_input,
-                            'verify_opening_filled' => $request->$filled_input,
-                            'verify_opening_empty' => $request->$empty_input,
-                            'verify_opening_leakers' => $request->$leakers_input,
-                            'verify_opening_for_revalving' => $request->$for_revalving_input,
-                            'verify_opening_scraps' => $request->$scrap_input,
-                            'verify_is_product' => 1,
-                            'verify_pdn_id' => get_last_production_id() + 1,
-                            'verify_acc_id' => session('acc_id'),
-                            'verify_user_type' => session('typ_id'),
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->insert([
+                                'verify_prd_id' => $prd_id,
+                                'verify_opening' => $request->$total_input,
+                                'verify_opening_filled' => $request->$filled_input,
+                                'verify_opening_empty' => $request->$empty_input,
+                                'verify_opening_leakers' => $request->$leakers_input,
+                                'verify_opening_for_revalving' => $request->$for_revalving_input,
+                                'verify_opening_scraps' => $request->$scrap_input,
+                                'verify_is_product' => 1,
+                                'verify_pdn_id' => get_last_production_id() + 1,
+                                'verify_acc_id' => session('acc_id'),
+                                'verify_user_type' => session('typ_id'),
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_added = true;
                     }
                 }
 
-                foreach($tank_details as $tnk_id)
-                {
+                foreach ($tank_details as $tnk_id) {
                     $input_field = "verify_tank_remaining" . $tnk_id;
 
                     $verify_checker = DB::table('stock_verifications')
-                    ->where('verify_prd_id', '=', $tnk_id)
-                    ->where('verify_is_product', '=', 0)
-                    ->where('verify_pdn_id', '=', get_last_production_id() + 1)
-                    ->where('verify_user_type', '=', session('typ_id'))
-                    ->first();
+                        ->where('verify_prd_id', '=', $tnk_id)
+                        ->where('verify_is_product', '=', 0)
+                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->first();
 
-                    if(session('typ_id') == 4)
-                    {
-                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
-                        {
-                            session()->flash('errorMessage','Supervisors must verify first!');
+                    if (session('typ_id') == 4) {
+                        if (!$this->check_supervisor_verification($prd_id, get_last_production_id())) {
+                            session()->flash('errorMessage', 'Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
 
-                    if($verify_checker <> '' || !is_null($verify_checker))
-                    {
+                    if ($verify_checker <> '' || !is_null($verify_checker)) {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id() + 1)
-                        ->where('verify_prd_id', '=', $tnk_id)
-                        ->where('verify_is_product', '=', 0)
-                        ->update([
-                            'verify_opening' => ($request->$input_field) * 1000,
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->where('verify_pdn_id', '=', get_last_production_id() + 1)
+                            ->where('verify_prd_id', '=', $tnk_id)
+                            ->where('verify_is_product', '=', 0)
+                            ->update([
+                                'verify_opening' => ($request->$input_field) * 1000,
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_updated = true;
-                    }
-                    else
-                    {
+                    } else {
                         DB::table('stock_verifications')
-                        ->insert([
-                            'verify_prd_id' => $tnk_id,
-                            'verify_opening' => ($request->$input_field) * 1000,
-                            'verify_is_product' => 0,
-                            'verify_pdn_id' => get_last_production_id() + 1,
-                            'verify_acc_id' => session('acc_id'),
-                            'verify_user_type' => session('typ_id'),
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->insert([
+                                'verify_prd_id' => $tnk_id,
+                                'verify_opening' => ($request->$input_field) * 1000,
+                                'verify_is_product' => 0,
+                                'verify_pdn_id' => get_last_production_id() + 1,
+                                'verify_acc_id' => session('acc_id'),
+                                'verify_user_type' => session('typ_id'),
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_added = true;
                     }
@@ -571,29 +515,22 @@ class ProductionController extends Controller
                 }
             }
 
-            if($is_added == true && $is_updated == false)
-            {
-                session()->flash('successMessage','Verification added!');
+            if ($is_added == true && $is_updated == false) {
+                session()->flash('successMessage', 'Verification added!');
             }
 
-            if($is_added == false && $is_updated == true)
-            {
-                session()->flash('successMessage','Verification updated!');
+            if ($is_added == false && $is_updated == true) {
+                session()->flash('successMessage', 'Verification updated!');
             }
 
-            if($is_added == true && $is_updated == true)
-            {
-                session()->flash('successMessage','Verification added and updated!');
+            if ($is_added == true && $is_updated == true) {
+                session()->flash('successMessage', 'Verification added and updated!');
             }
 
             return redirect()->action('ProductionController@manage');
-        }
-        else
-        {
-            if($temp_details <> "" && $temp_tank_details <> "")
-            {
-                foreach($canister_details as $prd_id)
-                {
+        } else {
+            if ($temp_details <> "" && $temp_tank_details <> "") {
+                foreach ($canister_details as $prd_id) {
                     $total_input = 'verify_total_stock_quantity' . $prd_id;
                     $filled_input = 'verify_filled_stock_quantity' . $prd_id;
                     $empty_input = 'verify_empty_stock_quantity' . $prd_id;
@@ -602,127 +539,113 @@ class ProductionController extends Controller
                     $scrap_input = 'verify_scraps_stock_quantity' . $prd_id;
 
                     $verification_check = DB::table('stock_verifications')
-                    ->where('verify_acc_id', '=', session('acc_id'))
-                    ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_prd_id', '=', $prd_id)
-                    ->where('verify_user_type', '=', session('typ_id'))
-                    ->first();
+                        ->where('verify_acc_id', '=', session('acc_id'))
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_prd_id', '=', $prd_id)
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->first();
 
-                    if(session('typ_id') == 4)
-                    {
-                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
-                        {
-                            session()->flash('errorMessage','Supervisors must verify first!');
+                    if (session('typ_id') == 4) {
+                        if (!$this->check_supervisor_verification($prd_id, get_last_production_id())) {
+                            session()->flash('errorMessage', 'Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
 
-                    if($verification_check == '' || $verification_check == null)
-                    {
+                    if ($verification_check == '' || $verification_check == null) {
 
                         DB::table('stock_verifications')
-                        ->insert([
-                            'verify_prd_id' => $prd_id,
-                            'verify_closing' => $request->$total_input,
-                            'verify_closing_filled' => $request->$filled_input,
-                            'verify_closing_empty' => $request->$empty_input,
-                            'verify_closing_leakers' => $request->$leakers_input,
-                            'verify_closing_for_revalving' => $request->$for_revalving_input,
-                            'verify_closing_scraps' => $request->$scrap_input,
-                            'verify_is_product' => 1,
-                            'verify_pdn_id' => get_last_production_id(),
-                            'verify_acc_id' => session('acc_id'),
-                            'verify_user_type' => session('typ_id'),
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->insert([
+                                'verify_prd_id' => $prd_id,
+                                'verify_closing' => $request->$total_input,
+                                'verify_closing_filled' => $request->$filled_input,
+                                'verify_closing_empty' => $request->$empty_input,
+                                'verify_closing_leakers' => $request->$leakers_input,
+                                'verify_closing_for_revalving' => $request->$for_revalving_input,
+                                'verify_closing_scraps' => $request->$scrap_input,
+                                'verify_is_product' => 1,
+                                'verify_pdn_id' => get_last_production_id(),
+                                'verify_acc_id' => session('acc_id'),
+                                'verify_user_type' => session('typ_id'),
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_added = true;
-                    }
-                    else
-                    {
+                    } else {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id())
-                        ->where('verify_prd_id', '=', $prd_id)
-                        ->where('verify_is_product', '=', 1)
-                        ->where('verify_user_type', '=', session('typ_id'))
-                        ->update([
-                            'verify_closing' => $request->$total_input,
-                            'verify_closing_filled' => $request->$filled_input,
-                            'verify_closing_empty' => $request->$empty_input,
-                            'verify_closing_leakers' => $request->$leakers_input,
-                            'verify_closing_for_revalving' => $request->$for_revalving_input,
-                            'verify_closing_scraps' => $request->$scrap_input,
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->where('verify_pdn_id', '=', get_last_production_id())
+                            ->where('verify_prd_id', '=', $prd_id)
+                            ->where('verify_is_product', '=', 1)
+                            ->where('verify_user_type', '=', session('typ_id'))
+                            ->update([
+                                'verify_closing' => $request->$total_input,
+                                'verify_closing_filled' => $request->$filled_input,
+                                'verify_closing_empty' => $request->$empty_input,
+                                'verify_closing_leakers' => $request->$leakers_input,
+                                'verify_closing_for_revalving' => $request->$for_revalving_input,
+                                'verify_closing_scraps' => $request->$scrap_input,
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_updated = true;
                     }
                 }
 
-                foreach($tank_details as $tnk_id)
-                {
+                foreach ($tank_details as $tnk_id) {
                     $input_field = "verify_tank_remaining" . $tnk_id;
 
                     $verification_check = DB::table('stock_verifications')
-                    ->where('verify_acc_id', '=', session('acc_id'))
-                    ->where('verify_prd_id', '=', $tnk_id)
-                    ->where('verify_pdn_id', '=', get_last_production_id())
-                    ->where('verify_user_type', '=', session('typ_id'))
-                    ->first();
+                        ->where('verify_acc_id', '=', session('acc_id'))
+                        ->where('verify_prd_id', '=', $tnk_id)
+                        ->where('verify_pdn_id', '=', get_last_production_id())
+                        ->where('verify_user_type', '=', session('typ_id'))
+                        ->first();
 
-                    if(session('typ_id') == 4)
-                    {
-                        if(!$this->check_supervisor_verification($prd_id, get_last_production_id()))
-                        {
-                            session()->flash('errorMessage','Supervisors must verify first!');
+                    if (session('typ_id') == 4) {
+                        if (!$this->check_supervisor_verification($prd_id, get_last_production_id())) {
+                            session()->flash('errorMessage', 'Supervisors must verify first!');
                             return redirect()->action('ProductionController@manage');
                         }
                     }
 
-                    if($verification_check == '' || $verification_check == null)
-                    {
+                    if ($verification_check == '' || $verification_check == null) {
                         DB::table('stock_verifications')
-                        ->insert([
-                            'verify_prd_id' => $tnk_id,
-                            'verify_closing' => ($request->$input_field) * 1000,
-                            'verify_is_product' => 0,
-                            'verify_pdn_id' => get_last_production_id(),
-                            'verify_acc_id' => session('acc_id'),
-                            'verify_user_type' => session('typ_id'),
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->insert([
+                                'verify_prd_id' => $tnk_id,
+                                'verify_closing' => ($request->$input_field) * 1000,
+                                'verify_is_product' => 0,
+                                'verify_pdn_id' => get_last_production_id(),
+                                'verify_acc_id' => session('acc_id'),
+                                'verify_user_type' => session('typ_id'),
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_added = true;
-                    }
-                    else
-                    {
+                    } else {
                         DB::table('stock_verifications')
-                        ->where('verify_pdn_id', '=', get_last_production_id())
-                        ->where('verify_prd_id', '=', $tnk_id)
-                        ->where('verify_is_product', '=', 0)
-                        ->update([
-                            'verify_closing' => ($request->$input_field) * 1000,
-                            'verify_user_id' => session('usr_id')
-                        ]);
+                            ->where('verify_pdn_id', '=', get_last_production_id())
+                            ->where('verify_prd_id', '=', $tnk_id)
+                            ->where('verify_is_product', '=', 0)
+                            ->update([
+                                'verify_closing' => ($request->$input_field) * 1000,
+                                'verify_user_id' => session('usr_id')
+                            ]);
 
                         $is_updated = true;
                     }
                 }
             }
 
-            if($is_added == true && $is_updated == false)
-            {
-                session()->flash('successMessage','Verification added!');
+            if ($is_added == true && $is_updated == false) {
+                session()->flash('successMessage', 'Verification added!');
             }
 
-            if($is_added == false && $is_updated == true)
-            {
-                session()->flash('successMessage','Verification updated!');
+            if ($is_added == false && $is_updated == true) {
+                session()->flash('successMessage', 'Verification updated!');
             }
 
-            if($is_added == true && $is_updated == true)
-            {
-                session()->flash('successMessage','Verification added and updated!');
+            if ($is_added == true && $is_updated == true) {
+                session()->flash('successMessage', 'Verification added and updated!');
             }
 
             return redirect()->action('ProductionController@manage');
@@ -767,13 +690,12 @@ class ProductionController extends Controller
         // dd($prd_type);
 
         $sku_checker = DB::table('products')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_sku','=',$prd_sku)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_sku', '=', $prd_sku)
+            ->first();
 
-        if($sku_checker != null)
-        {
-            session()->flash('errorMessage','Product with this SKU already exists');
+        if ($sku_checker != null) {
+            session()->flash('errorMessage', 'Product with this SKU already exists');
             return redirect()->action('ProductionController@manage');
         }
 
@@ -781,25 +703,22 @@ class ProductionController extends Controller
         // 0 = quantity raw materials
         // 1 = empty goods
 
-        if($prd_type == 0)
-        {
+        if ($prd_type == 0) {
             DB::table('products')
-            ->insert([
-            'prd_name'=> $prd_name,
-            'acc_id' => session('acc_id'),
-            'prd_uuid' => generateuuid(),
-            'prd_sku' => $prd_sku,
-            'prd_description' => $prd_description,
-            'prd_reorder_point' => $prd_reorder,
-            'prd_for_production' => 1,
-            'prd_for_POS' => 0,
-            'prd_is_refillable' => 0,
-            'prd_for_tank' => $prd_for_tank,
-            'sup_id' => $sup_id
-            ]);
-        }
-        elseif($prd_type == 1)
-        {
+                ->insert([
+                    'prd_name' => $prd_name,
+                    'acc_id' => session('acc_id'),
+                    'prd_uuid' => generateuuid(),
+                    'prd_sku' => $prd_sku,
+                    'prd_description' => $prd_description,
+                    'prd_reorder_point' => $prd_reorder,
+                    'prd_for_production' => 1,
+                    'prd_for_POS' => 0,
+                    'prd_is_refillable' => 0,
+                    'prd_for_tank' => $prd_for_tank,
+                    'sup_id' => $sup_id
+                ]);
+        } elseif ($prd_type == 1) {
             // $get_components = "";
 
             // if(!is_null($components)){
@@ -825,44 +744,43 @@ class ProductionController extends Controller
             // }
 
             DB::table('products')
-            ->insert([
-            'prd_name'=> $prd_name,
-            'acc_id' => session('acc_id'),
-            'prd_uuid' => generateuuid(),
-            'prd_description' => $prd_description,
-            'prd_sku' => $prd_sku,
-            'prd_price' => $prd_price,
-            'prd_deposit' => $prd_deposit,
-            'prd_weight' => $prd_weight,
-            'prd_reorder_point' => $prd_reorder,
-            'prd_for_production' => 1,
-            'prd_for_POS' => 1,
-            'prd_is_refillable' => 1,
-            'prd_for_tank' => $prd_for_tank,
-            'prd_components' => $selected_valve,
-            'prd_seals' => $selected_seal,
-            'sup_id' => $sup_id
-            ]);
+                ->insert([
+                    'prd_name' => $prd_name,
+                    'acc_id' => session('acc_id'),
+                    'prd_uuid' => generateuuid(),
+                    'prd_description' => $prd_description,
+                    'prd_sku' => $prd_sku,
+                    'prd_price' => $prd_price,
+                    'prd_deposit' => $prd_deposit,
+                    'prd_weight' => $prd_weight,
+                    'prd_reorder_point' => $prd_reorder,
+                    'prd_for_production' => 1,
+                    'prd_for_POS' => 1,
+                    'prd_is_refillable' => 1,
+                    'prd_for_tank' => $prd_for_tank,
+                    'prd_components' => $selected_valve,
+                    'prd_seals' => $selected_seal,
+                    'sup_id' => $sup_id
+                ]);
 
             $products = DB::table('products')
-            ->orderBy('prd_id', 'desc')
-            ->first();
+                ->orderBy('prd_id', 'desc')
+                ->first();
 
             DB::table('stocks_logs')
-            ->insert([
-                'acc_id' => session('acc_id'),
-                'prd_id' => $products->prd_id,
-                'pdn_id' => get_last_production_id()
-            ]);
+                ->insert([
+                    'acc_id' => session('acc_id'),
+                    'prd_id' => $products->prd_id,
+                    'pdn_id' => get_last_production_id()
+                ]);
         }
 
-        if($request->file('prd_image'))
-        {
+        if ($request->file('prd_image')) {
             $prd_id = DB::table('products')
-            ->where('acc_id', '=', session('acc_id'))
-            ->select('prd_id')
-            ->orderBy('prd_id', 'desc')
-            ->first();
+                ->where('acc_id', '=', session('acc_id'))
+                ->select('prd_id')
+                ->orderBy('prd_id', 'desc')
+                ->first();
 
             $file = $request->file('prd_image');
 
@@ -872,17 +790,15 @@ class ProductionController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );
 
             // dd(public_path());
 
-            if ($validator->fails())
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+            if ($validator->fails()) {
+                session()->flash('errorMessage', "Invalid File Extension or maximum size limit of 5MB reached!");
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -891,15 +807,15 @@ class ProductionController extends Controller
             Storage::disk('local')->put('img/products/' . $fileName, fopen($file, 'r+'));
 
             DB::table('products')
-            ->where('acc_id', '=', session('acc_id'))
-            ->where('prd_id','=',$prd_id->prd_id)
-            ->update([
-                'prd_image' => $fileName,
-            ]);
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_id', '=', $prd_id->prd_id)
+                ->update([
+                    'prd_image' => $fileName,
+                ]);
         }
 
-        session()->flash('getProdValues', array( $prodValues));
-        session()->flash('successMessage','Raw material has been added');
+        session()->flash('getProdValues', array($prodValues));
+        session()->flash('successMessage', 'Raw material has been added');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -907,12 +823,11 @@ class ProductionController extends Controller
     public function addQuantity(Request $request)
     {
         $trx_id = DB::table('transactions')
-        ->max('trx_id');
+            ->max('trx_id');
 
-        if($trx_id == null){
+        if ($trx_id == null) {
             $trx_id = 1;
-        }
-        else{
+        } else {
             $trx_id += 1;
         }
 
@@ -921,13 +836,12 @@ class ProductionController extends Controller
         $flag = $request->stockin_flag;
         $tnk_id = $request->selected_tank;
 
-        if($prd_quantity <= 0){
-            session()->flash('errorMessage','Invalid input!');
+        if ($prd_quantity <= 0) {
+            session()->flash('errorMessage', 'Invalid input!');
 
-            if($request->return_page == "pos"){
+            if ($request->return_page == "pos") {
                 return redirect()->action('SalesController@main');
-            }
-            else{
+            } else {
                 return redirect()->action('ProductionController@manage');
             }
         }
@@ -935,38 +849,37 @@ class ProductionController extends Controller
         record_stockin($prd_id, $prd_quantity);
 
         $quantity = DB::table('products')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_id', '=', $prd_id)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $prd_id)
+            ->first();
 
         $raw_materials = DB::table('products')
-        ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->get();
+            ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '0')
+            ->get();
 
         $stocks_logs = DB::table('stocks_logs')
-        ->where('prd_id','=',$prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->where('pdn_id', '=', get_last_production_id())
-        ->first();
-
-        if($quantity->prd_is_refillable == 1){
-            $stocks_logs = DB::table('stocks_logs')
+            ->where('prd_id', '=', $prd_id)
             ->where('acc_id', '=', session('acc_id'))
-            ->where('prd_id','=', $prd_id)
             ->where('pdn_id', '=', get_last_production_id())
             ->first();
+
+        if ($quantity->prd_is_refillable == 1) {
+            $stocks_logs = DB::table('stocks_logs')
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_id', '=', $prd_id)
+                ->where('pdn_id', '=', get_last_production_id())
+                ->first();
             // dd($stocks_logs);
-            if($stocks_logs == null)
-            {
+            if ($stocks_logs == null) {
                 DB::table('stocks_logs')
-                ->insert([
-                    'acc_id' => session('acc_id'),
-                    'prd_id' => $prd_id,
-                    'pdn_id' => get_last_production_id()
-                ]);
+                    ->insert([
+                        'acc_id' => session('acc_id'),
+                        'prd_id' => $prd_id,
+                        'pdn_id' => get_last_production_id()
+                    ]);
             }
         }
 
@@ -997,17 +910,16 @@ class ProductionController extends Controller
         );
 
         // dd($prodValues);
-        if($flag == 0)
-        {
+        if ($flag == 0) {
             //ADD QUANTITY TO RAW MATERIALS
-            if($quantity->prd_is_refillable == 1){
-                $new_quantity = (float)$quantity->prd_raw_can_qty + $prd_quantity;
+            if ($quantity->prd_is_refillable == 1) {
+                $new_quantity = (float) $quantity->prd_raw_can_qty + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_raw_can_qty' => (float)$new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_raw_can_qty' => (float) $new_quantity
+                    ]);
 
                 // SUBTRACT FROM RAW MATERIALS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1017,55 +929,47 @@ class ProductionController extends Controller
 
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                    'stk_raw_materials' => (float)$stocks_logs->stk_raw_materials + (float)$prd_quantity
-                ]);
-            }
-            else
-            {
-                $new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_raw_materials' => (float) $stocks_logs->stk_raw_materials + (float) $prd_quantity
+                    ]);
+            } else {
+                $new_quantity = (float) $quantity->prd_quantity + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_quantity' => (float)$new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_quantity' => (float) $new_quantity
+                    ]);
             }
 
-            session()->flash('getProdValues', array( $prodValues));
-            session()->flash('successMessage','Raw materials added');
+            session()->flash('getProdValues', array($prodValues));
+            session()->flash('successMessage', 'Raw materials added');
             return redirect()->action('ProductionController@manage');
-        }
-
-        elseif($flag == 1)
-        {
-            if(!($this->check_has_valve($prd_id)))
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Valve not found! Check canister info for valve selection');
+        } elseif ($flag == 1) {
+            if (!($this->check_has_valve($prd_id))) {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Valve not found! Check canister info for valve selection');
                 return redirect()->action('ProductionController@manage');
             }
 
-            if(!($this->check_valve_quantity($prd_id, $prd_quantity)))
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Valves insufficient!');
+            if (!($this->check_valve_quantity($prd_id, $prd_quantity))) {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Valves insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
 
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //ADD QUANTITY TO EMPTY GOODS
-                (float)$new_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
+                (float) $new_quantity = (float) $quantity->prd_empty_goods + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_empty_goods' => $new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_empty_goods' => $new_quantity
+                    ]);
 
                 // SUBTRACT FROM RAW MATERIALS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1075,88 +979,77 @@ class ProductionController extends Controller
 
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                    'stk_empty_goods' => (float)$stocks_logs->stk_empty_goods + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_empty_goods' => (float) $stocks_logs->stk_empty_goods + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT LOGS FROM RAW MATERIALS IN STOCKS_LOGS FOR EMPTY GOODS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                    'stk_raw_materials' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_raw_materials' => $stock_in_quantity
+                    ]);
 
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Empty goods added');
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('successMessage', 'Empty goods added');
+                return redirect()->action('ProductionController@manage');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Raw materials insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Raw materials insufficient!');
-                return redirect()->action('ProductionController@manage');
-            }
-        }
-
-        elseif($flag == 2)
-        {
-            if(!($this->check_has_seal($prd_id)))
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Seal not found! Check canister info for seal selection');
+        } elseif ($flag == 2) {
+            if (!($this->check_has_seal($prd_id))) {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Seal not found! Check canister info for seal selection');
                 return redirect()->action('ProductionController@manage');
             }
 
-            if(!($this->check_seal_quantity($prd_id, $prd_quantity)))
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Seal insufficient!');
+            if (!($this->check_seal_quantity($prd_id, $prd_quantity))) {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Seal insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
 
-            if($this->check_gas_quantity($tnk_id, $prd_id, $prd_quantity))
-            {
-                if(check_materials($flag, $prd_quantity, $prd_id))
-                {
+            if ($this->check_gas_quantity($tnk_id, $prd_id, $prd_quantity)) {
+                if (check_materials($flag, $prd_quantity, $prd_id)) {
                     //ADD QUANTITY TO FILLED
-                    (float)$new_quantity = (float)$quantity->prd_quantity + $prd_quantity;
+                    (float) $new_quantity = (float) $quantity->prd_quantity + $prd_quantity;
 
                     $tank = DB::table('tanks')
-                    ->where('tnk_id', '=', $tnk_id)
-                    ->first();
+                        ->where('tnk_id', '=', $tnk_id)
+                        ->first();
 
                     //IF TANK QUANTITY IS LESS THAN 0
-                    if($tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity) < 0)
-                    {
+                    if ($tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity) < 0) {
 
                     }
 
                     $tank_quantity = $tank->tnk_remaining - ($quantity->prd_weight * $prd_quantity);
 
                     DB::table('tanks')
-                    ->where('tnk_id', '=', $tnk_id)
-                    ->update([
-                        'tnk_remaining' => $tank_quantity
-                    ]);
+                        ->where('tnk_id', '=', $tnk_id)
+                        ->update([
+                            'tnk_remaining' => $tank_quantity
+                        ]);
 
                     DB::table('products')
-                    ->where('prd_id','=',$prd_id)
-                    ->update([
-                        'prd_quantity' => $new_quantity
-                    ]);
+                        ->where('prd_id', '=', $prd_id)
+                        ->update([
+                            'prd_quantity' => $new_quantity
+                        ]);
 
                     //SUBTRACT FROM RAW MATERIALS
                     subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1167,207 +1060,186 @@ class ProductionController extends Controller
                     //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                     //ADD QUANTITY TO FILLED
                     DB::table('stocks_logs')
-                    ->where('prd_id','=',$prd_id)
-                    ->where('acc_id','=', session('acc_id'))
-                    ->where('pdn_id', '=', get_last_production_id())
-                    ->update([
-                    'stk_filled' => (float)$stocks_logs->stk_filled + (float)$prd_quantity
-                    ]);
+                        ->where('prd_id', '=', $prd_id)
+                        ->where('acc_id', '=', session('acc_id'))
+                        ->where('pdn_id', '=', get_last_production_id())
+                        ->update([
+                            'stk_filled' => (float) $stocks_logs->stk_filled + (float) $prd_quantity
+                        ]);
 
                     //SUBTRACT QUANTITY FROM EMPTY
                     $stock_in_quantity = 0;
 
-                    if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                    {
-                        $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                    if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                        $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                     }
 
                     DB::table('stocks_logs')
-                    ->where('prd_id','=',$prd_id)
-                    ->where('acc_id','=', session('acc_id'))
-                    ->where('pdn_id', '=', get_last_production_id())
-                    ->update([
-                    'stk_empty_goods' => $stock_in_quantity
-                    ]);
+                        ->where('prd_id', '=', $prd_id)
+                        ->where('acc_id', '=', session('acc_id'))
+                        ->where('pdn_id', '=', get_last_production_id())
+                        ->update([
+                            'stk_empty_goods' => $stock_in_quantity
+                        ]);
 
-                    session()->flash('getProdValues', array( $prodValues));
-                    session()->flash('successMessage','Canister added');
+                    session()->flash('getProdValues', array($prodValues));
+                    session()->flash('successMessage', 'Canister added');
+                    return redirect()->action('ProductionController@manage');
+                } else {
+                    session()->flash('getProdValues', array($prodValues));
+                    session()->flash('errorMessage', 'Empty goods insufficient!');
                     return redirect()->action('ProductionController@manage');
                 }
-                else
-                {
-                    session()->flash('getProdValues', array( $prodValues));
-                    session()->flash('errorMessage','Empty goods insufficient!');
-                    return redirect()->action('ProductionController@manage');
-                }
-            }
-            else
-            {
-                session()->flash('errorMessage','Tank LPG insufficient!');
+            } else {
+                session()->flash('errorMessage', 'Tank LPG insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
-        }
-
-        elseif($flag == 3)
-        {
+        } elseif ($flag == 3) {
             //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
             $trx_ref_id = $request->trx_ref_id;
-            (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
-            (float)$deduct_backflushed = (float)$quantity->prd_quantity - $prd_quantity;
+            (float) $new_quantity = (float) $quantity->prd_leakers + $prd_quantity;
+            (float) $deduct_backflushed = (float) $quantity->prd_quantity - $prd_quantity;
 
             $bo_transaction = DB::table('transactions')
-            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-            ->where('acc_id', '=', session('acc_id'))
-            ->where('trx_ref_id', '=', $trx_ref_id)
-            ->where('trx_active','=','1')
-            ->get();
-
-            if(empty($bo_transaction[0])) {
-                session()->flash('warningMessage','Please check your inputs');
-
-                if($request->return_page == "pos"){
-                    return redirect()->action('SalesController@main');
-                }
-                else{
-                    return redirect()->action('ProductionController@manage');
-                }
-            }
-            else{
-                $has_this_prd = DB::table('transactions')
                 ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                ->where('acc_id', '=', session('acc_id'))
                 ->where('trx_ref_id', '=', $trx_ref_id)
-                ->where('purchases.prd_id', '=', $prd_id)
+                ->where('trx_active', '=', '1')
                 ->get();
 
-                if(empty($has_this_prd[0])) {
-                    session()->flash('errorMessage','No purchases with this product');
+            if (empty($bo_transaction[0])) {
+                session()->flash('warningMessage', 'Please check your inputs');
 
-                    if($request->return_page == "pos"){
+                if ($request->return_page == "pos") {
+                    return redirect()->action('SalesController@main');
+                } else {
+                    return redirect()->action('ProductionController@manage');
+                }
+            } else {
+                $has_this_prd = DB::table('transactions')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->where('trx_ref_id', '=', $trx_ref_id)
+                    ->where('purchases.prd_id', '=', $prd_id)
+                    ->get();
+
+                if (empty($has_this_prd[0])) {
+                    session()->flash('errorMessage', 'No purchases with this product');
+
+                    if ($request->return_page == "pos") {
                         return redirect()->action('SalesController@main');
-                    }
-                    else{
+                    } else {
                         return redirect()->action('ProductionController@manage');
                     }
-                }
-                else{
-                    if($prd_quantity > 0){
-                        if($prd_quantity <= $has_this_prd[0]->pur_qty){
+                } else {
+                    if ($prd_quantity > 0) {
+                        if ($prd_quantity <= $has_this_prd[0]->pur_qty) {
                             $crate_quantity = $request->crate_quantity;
                             $quantity = $request->quantity;
 
-                            if($crate_quantity == null && $quantity == null){
-                                session()->flash('warningMessage','Please check your inputs');
-                            }
-                            else{
+                            if ($crate_quantity == null && $quantity == null) {
+                                session()->flash('warningMessage', 'Please check your inputs');
+                            } else {
                                 DB::table('products')
-                                ->where('prd_id','=',$prd_id)
-                                ->update([
-                                    'prd_leakers' => $new_quantity,
-                                    'prd_quantity' => $deduct_backflushed
-                                ]);
+                                    ->where('prd_id', '=', $prd_id)
+                                    ->update([
+                                        'prd_leakers' => $new_quantity,
+                                        'prd_quantity' => $deduct_backflushed
+                                    ]);
 
                                 $max_bo_id = DB::table('bad_orders')
-                                ->max('bo_id');
+                                    ->max('bo_id');
 
                                 $new_bo_id = $max_bo_id + 1;
-                                $bo_ref_id = "BO-". date('Y') . date('m') . date('d') . "-" . $new_bo_id;
+                                $bo_ref_id = "BO-" . date('Y') . date('m') . date('d') . "-" . $new_bo_id;
 
                                 DB::table('bad_orders')
-                                ->insert([
-                                    'acc_id' => session('acc_id'),
-                                    'bo_ref_id' => $bo_ref_id,
-                                    'trx_id' => $bo_transaction[0]->trx_id,
-                                    'bo_crates' => $request->crate_quantity,
-                                    'prd_id' => $prd_id,
-                                    'bo_loose' => $request->quantity,
-                                    'bo_date' => date('Y-m-d'),
-                                    'bo_time' => date('H:i:s'),
-                                    'bo_datetime' => date('Y-m-d H:i:s')
-                                ]);
+                                    ->insert([
+                                        'acc_id' => session('acc_id'),
+                                        'bo_ref_id' => $bo_ref_id,
+                                        'trx_id' => $bo_transaction[0]->trx_id,
+                                        'bo_crates' => $request->crate_quantity,
+                                        'prd_id' => $prd_id,
+                                        'bo_loose' => $request->quantity,
+                                        'bo_date' => date('Y-m-d'),
+                                        'bo_time' => date('H:i:s'),
+                                        'bo_datetime' => date('Y-m-d H:i:s')
+                                    ]);
 
-                                session(['latest_bo_id' => $new_bo_id ]);
+                                session(['latest_bo_id' => $new_bo_id]);
 
-                                if($has_this_prd[0]->prd_is_refillable == 1){
+                                if ($has_this_prd[0]->prd_is_refillable == 1) {
                                     //LOG ACTION IN PRODUCTION
                                     record_movement($prd_id, $prd_quantity, $flag);
 
                                     //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                                     DB::table('stocks_logs')
-                                    ->where('prd_id','=',$prd_id)
-                                    ->where('acc_id','=', session('acc_id'))
-                                    ->where('pdn_id', '=', get_last_production_id())
-                                    ->update([
-                                        'stk_leakers' => (float)$stocks_logs->stk_leakers + (float)$prd_quantity
-                                    ]);
+                                        ->where('prd_id', '=', $prd_id)
+                                        ->where('acc_id', '=', session('acc_id'))
+                                        ->where('pdn_id', '=', get_last_production_id())
+                                        ->update([
+                                            'stk_leakers' => (float) $stocks_logs->stk_leakers + (float) $prd_quantity
+                                        ]);
                                 }
 
-                                session()->flash('successMessage','Leakers added');
-                                session(['return_page' =>$request->return_page]);
+                                session()->flash('successMessage', 'Leakers added');
+                                session(['return_page' => $request->return_page]);
                                 return redirect()->action('PrintController@badorderReceipt');
                             }
-                        }
-                        else{
-                            session()->flash('errorMessage','Number of leakers must not exceed to the purchased quantity');
+                        } else {
+                            session()->flash('errorMessage', 'Number of leakers must not exceed to the purchased quantity');
 
-                            if($request->return_page == "pos"){
+                            if ($request->return_page == "pos") {
                                 return redirect()->action('SalesController@main');
-                            }
-                            else{
+                            } else {
                                 return redirect()->action('ProductionController@manage');
                             }
                         }
-                    }
-                    else{
-                        session()->flash('errorMessage','Invalid input');
+                    } else {
+                        session()->flash('errorMessage', 'Invalid input');
 
-                        if($request->return_page == "pos"){
+                        if ($request->return_page == "pos") {
                             return redirect()->action('SalesController@main');
-                        }
-                        else{
+                        } else {
                             return redirect()->action('ProductionController@manage');
                         }
                     }
                 }
             }
 
-            session()->flash('getProdValues', array( $prodValues));
+            session()->flash('getProdValues', array($prodValues));
 
-        }
-
-        elseif($flag == 4)
-        {
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+        } elseif ($flag == 4) {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //ADD QUANTITY FROM LEAKERS TO REVALVING
-                (float)$new_quantity = (float)$quantity->prd_empty_goods + $prd_quantity;
+                (float) $new_quantity = (float) $quantity->prd_empty_goods + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_empty_goods' => $new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_empty_goods' => $new_quantity
+                    ]);
 
                 $canister_details = DB::table('products')
-                ->where('acc_id', '=', session('acc_id'))
-                ->where('prd_id', '=', $prd_id)
-                ->first();
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('prd_id', '=', $prd_id)
+                    ->first();
 
                 $valve_details = DB::table('products')
-                ->where('acc_id', '=', session('acc_id'))
-                ->where('prd_id', '=', $canister_details->prd_components)
-                ->first();
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('prd_id', '=', $canister_details->prd_components)
+                    ->first();
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
 
                 //SUBTRACT 1 VALVE FOR REVALVING
                 DB::table('products')
-                ->where('acc_id', '=', session('acc_id'))
-                ->where('prd_id', '=', $valve_details->prd_id)
-                ->update([
-                    'prd_quantity' => $valve_qty = $valve_details->prd_quantity - 1
-                ]);
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('prd_id', '=', $valve_details->prd_id)
+                    ->update([
+                        'prd_quantity' => $valve_qty = $valve_details->prd_quantity - 1
+                    ]);
 
                 //LOG ACTION IN PRODUCTION
                 record_movement($prd_id, $prd_quantity, $flag);
@@ -1375,53 +1247,46 @@ class ProductionController extends Controller
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 //ADD QUANTITY TO EMPTY GOODS
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_empty_goods' => (float)$stocks_logs->stk_filled + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_empty_goods' => (float) $stocks_logs->stk_filled + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_empty_goods' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_empty_goods' => $stock_in_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Canisters decanted and revalved');
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('successMessage', 'Canisters decanted and revalved');
+                return redirect()->action('ProductionController@manage');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Canisters for revalving insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Canisters for revalving insufficient!');
-                return redirect()->action('ProductionController@manage');
-            }
-        }
-
-        elseif($flag == 5)
-        {
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+        } elseif ($flag == 5) {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //ADD QUANTITY TO SCRAPS FROM LEAKERS
-                (float)$new_quantity = (float)$quantity->prd_scraps + $prd_quantity;
+                (float) $new_quantity = (float) $quantity->prd_scraps + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_scraps' => $new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_scraps' => $new_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1432,54 +1297,47 @@ class ProductionController extends Controller
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 //ADD QUANTITY FROM LEAKERS
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_scraps' => (float)$stocks_logs->stk_scraps + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_scraps' => (float) $stocks_logs->stk_scraps + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY TO EMPTY GOODS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_leakers' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_leakers' => $stock_in_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Leakers sent as Scraps');
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('successMessage', 'Leakers sent as Scraps');
                 return redirect()->action('ProductionController@manage');
-                }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Leakers insufficient!');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Leakers insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
 
-        }
-
-        elseif($flag == 6)
-        {
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+        } elseif ($flag == 6) {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //ADD QUANTITY TO LEAKERS FROM SELLER RETURNS
-                (float)$new_quantity = (float)$quantity->prd_leakers + $prd_quantity;
+                (float) $new_quantity = (float) $quantity->prd_leakers + $prd_quantity;
 
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_leakers' => $new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_leakers' => $new_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1490,53 +1348,46 @@ class ProductionController extends Controller
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 //ADD QUANTITY FROM LEAKERS
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_leakers' => (float)$stocks_logs->stk_leakers + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_leakers' => (float) $stocks_logs->stk_leakers + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY TO EMPTY GOODS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_filled' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_filled' => $stock_in_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Leakers added');
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('successMessage', 'Leakers added');
+                return redirect()->action('ProductionController@manage');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Backflushed insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Backflushed insufficient!');
-                return redirect()->action('ProductionController@manage');
-            }
-        }
-
-        elseif($flag == 7)
-        {
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+        } elseif ($flag == 7) {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //ADD QUANTITY TO FOR_REVALVING FROM LEAKERS
-                (float)$new_quantity = (float)$quantity->prd_for_revalving + $prd_quantity;
-                            // dd($new_quantity, $quantity->prd_for_revalving, $prd_quantity);
+                (float) $new_quantity = (float) $quantity->prd_for_revalving + $prd_quantity;
+                // dd($new_quantity, $quantity->prd_for_revalving, $prd_quantity);
                 DB::table('products')
-                ->where('prd_id','=',$prd_id)
-                ->update([
-                    'prd_for_revalving' => $new_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->update([
+                        'prd_for_revalving' => $new_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY FROM LEAKERS
                 subtract_qty($flag, $prd_quantity, $prd_id);
@@ -1547,45 +1398,38 @@ class ProductionController extends Controller
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 //ADD QUANTITY FROM LEAKERS
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_for_revalving' => (float)$stocks_logs->stk_for_revalving + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_for_revalving' => (float) $stocks_logs->stk_for_revalving + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY TO EMPTY GOODS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_leakers' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_leakers' => $stock_in_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('successMessage','Canisters added for revalving');
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('successMessage', 'Canisters added for revalving');
+                return redirect()->action('ProductionController@manage');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Leakers insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Leakers insufficient!');
-                return redirect()->action('ProductionController@manage');
-            }
-        }
-
-        elseif($flag == 8)
-        {
-            if(check_materials($flag, $prd_quantity, $prd_id))
-            {
+        } elseif ($flag == 8) {
+            if (check_materials($flag, $prd_quantity, $prd_id)) {
                 //SUBTRACT QUANTITY FROM SCRAPS
                 subtract_qty($flag, $prd_quantity, $prd_id);
 
@@ -1595,43 +1439,40 @@ class ProductionController extends Controller
                 //ADD LOGS TO STOCKS_LOGS FOR CANISTER MOVEMENT TRACKING
                 //ADD QUANTITY FROM LEAKERS
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_scraps' => (float)$stocks_logs->stk_scraps + (float)$prd_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_scraps' => (float) $stocks_logs->stk_scraps + (float) $prd_quantity
+                    ]);
 
                 //SUBTRACT QUANTITY TO EMPTY GOODS
                 $stock_in_quantity = 0;
 
-                if(!($stocks_logs->stk_raw_materials - (float)$prd_quantity < $stocks_logs->stk_raw_materials))
-                {
-                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float)$prd_quantity;
+                if (!($stocks_logs->stk_raw_materials - (float) $prd_quantity < $stocks_logs->stk_raw_materials)) {
+                    $stock_in_quantity = $stocks_logs->stk_raw_materials - (float) $prd_quantity;
                 }
 
                 DB::table('stocks_logs')
-                ->where('prd_id','=',$prd_id)
-                ->where('acc_id','=', session('acc_id'))
-                ->where('pdn_id', '=', get_last_production_id())
-                ->update([
-                'stk_leakers' => $stock_in_quantity
-                ]);
+                    ->where('prd_id', '=', $prd_id)
+                    ->where('acc_id', '=', session('acc_id'))
+                    ->where('pdn_id', '=', get_last_production_id())
+                    ->update([
+                        'stk_leakers' => $stock_in_quantity
+                    ]);
 
-                session()->flash('getProdValues', array( $prodValues));
+                session()->flash('getProdValues', array($prodValues));
                 session()->flash('successMessage', $prd_quantity . ' scrap/s disposed');
                 return redirect()->action('ProductionController@manage');
-            }
-            else
-            {
-                session()->flash('getProdValues', array( $prodValues));
-                session()->flash('errorMessage','Scraps insufficient!');
+            } else {
+                session()->flash('getProdValues', array($prodValues));
+                session()->flash('errorMessage', 'Scraps insufficient!');
                 return redirect()->action('ProductionController@manage');
             }
 
         }
 
-        session()->flash('getProdValues', array( $prodValues));
+        session()->flash('getProdValues', array($prodValues));
     }
 
     //EDIT EMPTY GOOD
@@ -1641,13 +1482,13 @@ class ProductionController extends Controller
         $prd_empty_goods = $request->prd_empty_goods;
 
         DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->update([
-            'prd_empty_goods' => $prd_empty_goods
-        ]);
+            ->where('prd_id', '=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->update([
+                'prd_empty_goods' => $prd_empty_goods
+            ]);
         // dd($quantity);
-        session()->flash('successMessage','Empty quantity has been updated.');
+        session()->flash('successMessage', 'Empty quantity has been updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1658,13 +1499,13 @@ class ProductionController extends Controller
         $prd_quantity = $request->prd_quantity;
 
         DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->update([
-            'prd_quantity' => $prd_quantity
-        ]);
+            ->where('prd_id', '=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->update([
+                'prd_quantity' => $prd_quantity
+            ]);
         // dd($quantity);
-        session()->flash('successMessage','Filled quantity has been updated.');
+        session()->flash('successMessage', 'Filled quantity has been updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1675,13 +1516,13 @@ class ProductionController extends Controller
         $prd_leakers = $request->prd_leakers;
 
         DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->update([
-            'prd_leakers' => $prd_leakers
-        ]);
+            ->where('prd_id', '=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->update([
+                'prd_leakers' => $prd_leakers
+            ]);
         // dd($quantity);
-        session()->flash('successMessage','Leakers quantity has been updated.');
+        session()->flash('successMessage', 'Leakers quantity has been updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1692,13 +1533,13 @@ class ProductionController extends Controller
         $prd_for_revalving = $request->prd_for_revalving;
 
         DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->update([
-            'prd_for_revalving' => $prd_for_revalving
-        ]);
+            ->where('prd_id', '=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->update([
+                'prd_for_revalving' => $prd_for_revalving
+            ]);
         // dd($quantity);
-        session()->flash('successMessage','Revalving quantity has been updated.');
+        session()->flash('successMessage', 'Revalving quantity has been updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1709,13 +1550,13 @@ class ProductionController extends Controller
         $prd_scraps = $request->prd_scraps;
 
         DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->where('acc_id','=', session('acc_id'))
-        ->update([
-            'prd_scraps' => $prd_scraps
-        ]);
+            ->where('prd_id', '=', $prd_id)
+            ->where('acc_id', '=', session('acc_id'))
+            ->update([
+                'prd_scraps' => $prd_scraps
+            ]);
         // dd($quantity);
-        session()->flash('successMessage','Scaps quantity has been updated.');
+        session()->flash('successMessage', 'Scaps quantity has been updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1733,7 +1574,7 @@ class ProductionController extends Controller
         $prd_reorder = $request->prd_reorder;
         $sup_id = $request->sup_id;
         $prd_uuid = $request->prd_uuid;
-        $prd_quantity = (float)$request->prd_quantity;
+        $prd_quantity = (float) $request->prd_quantity;
         $selected_valve = $request->valve;
         $selected_seal = $request->seal;
         $prd_components = "";
@@ -1757,21 +1598,20 @@ class ProductionController extends Controller
         );
 
         $sku_checker = DB::table('products')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_uuid', '<>', $prd_uuid)
-        ->where('prd_sku','=',$prd_sku)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_uuid', '<>', $prd_uuid)
+            ->where('prd_sku', '=', $prd_sku)
+            ->first();
 
-        if($sku_checker != null)
-        {
-            session()->flash('errorMessage','Product with this SKU already exists');
+        if ($sku_checker != null) {
+            session()->flash('errorMessage', 'Product with this SKU already exists');
             return redirect()->action('ProductController@manage');
         }
 
         $qty_checker = DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->select('prd_quantity')
-        ->first();
+            ->where('prd_id', '=', $prd_id)
+            ->select('prd_quantity')
+            ->first();
 
         // if($qty_checker->prd_quantity > $prd_quantity)
         // {
@@ -1787,25 +1627,22 @@ class ProductionController extends Controller
         //     record_stockin($prd_id, $prd_quantity);
         // }
 
-        if($prd_type == 0)
-        {
+        if ($prd_type == 0) {
             // dd("asd");
             DB::table('products')
-            ->where('prd_id', '=', $prd_id)
-            ->update([
-                'prd_name' => $prd_name,
-                'prd_description' => $prd_description,
-                'prd_sku' => $prd_sku,
-                'prd_reorder_point' => $prd_reorder,
-                'prd_for_POS' => 0,
-                'prd_is_refillable' => 0,
-                'prd_components' => null,
-                'prd_seals' => null,
-                'sup_id' => $sup_id
-            ]);
-        }
-        elseif($prd_type == 1)
-        {
+                ->where('prd_id', '=', $prd_id)
+                ->update([
+                    'prd_name' => $prd_name,
+                    'prd_description' => $prd_description,
+                    'prd_sku' => $prd_sku,
+                    'prd_reorder_point' => $prd_reorder,
+                    'prd_for_POS' => 0,
+                    'prd_is_refillable' => 0,
+                    'prd_components' => null,
+                    'prd_seals' => null,
+                    'sup_id' => $sup_id
+                ]);
+        } elseif ($prd_type == 1) {
             // $get_components = "";
 
             // if(!is_null($components)){
@@ -1816,26 +1653,25 @@ class ProductionController extends Controller
             // }
 
             DB::table('products')
-            ->where('prd_id', '=', $prd_id)
-            ->update([
-                'prd_name'=> $prd_name,
-                'prd_description' => $prd_description,
-                'prd_sku' => $prd_sku,
-                'prd_price' => $prd_price,
-                'prd_deposit' => $prd_deposit,
-                'prd_weight' => $prd_weight,
-                'prd_reorder_point' => $prd_reorder,
-                'prd_for_production' => 1,
-                'prd_for_POS' => 1,
-                'prd_is_refillable' => 1,
-                'prd_components' => $selected_valve,
-                'prd_seals' => $selected_seal,
-                'sup_id' => $sup_id
-            ]);
+                ->where('prd_id', '=', $prd_id)
+                ->update([
+                    'prd_name' => $prd_name,
+                    'prd_description' => $prd_description,
+                    'prd_sku' => $prd_sku,
+                    'prd_price' => $prd_price,
+                    'prd_deposit' => $prd_deposit,
+                    'prd_weight' => $prd_weight,
+                    'prd_reorder_point' => $prd_reorder,
+                    'prd_for_production' => 1,
+                    'prd_for_POS' => 1,
+                    'prd_is_refillable' => 1,
+                    'prd_components' => $selected_valve,
+                    'prd_seals' => $selected_seal,
+                    'sup_id' => $sup_id
+                ]);
         }
 
-        if($request->file('prd_image'))
-        {
+        if ($request->file('prd_image')) {
             $file = $request->file('prd_image');
 
             $validator = Validator::make(
@@ -1844,17 +1680,15 @@ class ProductionController extends Controller
                     'extension' => strtolower($file->getClientOriginalExtension()),
                 ],
                 [
-                    'file' => 'required',
-                    'file' => 'max:3072', //3MB
+                    'file' => 'required|max:3072',
                     'extension' => 'required|in:jpg,png,gif',
                 ]
             );
 
             // dd(public_path());
 
-            if ($validator->fails())
-            {
-                session()->flash('errorMessage',  "Invalid File Extension or maximum size limit of 5MB reached!");
+            if ($validator->fails()) {
+                session()->flash('errorMessage', "Invalid File Extension or maximum size limit of 5MB reached!");
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -1863,12 +1697,12 @@ class ProductionController extends Controller
             Storage::disk('local')->put('img/products/' . $fileName, fopen($file, 'r+'));
 
             DB::table('products')
-            ->where('prd_id','=',$request->prd_id)
-            ->update([
-                'prd_image' => $fileName,
-            ]);
+                ->where('prd_id', '=', $request->prd_id)
+                ->update([
+                    'prd_image' => $fileName,
+                ]);
         }
-        session()->flash('successMessage','Product details updated.');
+        session()->flash('successMessage', 'Product details updated.');
         return redirect()->action('ProductionController@manage');
     }
 
@@ -1876,30 +1710,27 @@ class ProductionController extends Controller
     public function activateProduct($prd_uuid)
     {
         $active_checker = DB::table('products')
-        ->where('prd_uuid','=',$prd_uuid)
-        ->first();
+            ->where('prd_uuid', '=', $prd_uuid)
+            ->first();
 
         // dd($active_checker);
-        if($active_checker->prd_active == 0)
-        {
+        if ($active_checker->prd_active == 0) {
             DB::table('products')
-            ->where('prd_uuid', '=', $prd_uuid)
-            ->update([
-                'prd_active' => 1
-            ]);
+                ->where('prd_uuid', '=', $prd_uuid)
+                ->update([
+                    'prd_active' => 1
+                ]);
 
-            session()->flash('successMessage','Product reactivated');
+            session()->flash('successMessage', 'Product reactivated');
             return redirect()->action('ProductionController@manage');
-        }
-        else
-        {
+        } else {
             DB::table('products')
-            ->where('prd_uuid', '=', $prd_uuid)
-            ->update([
-                'prd_active' => 0
-            ]);
+                ->where('prd_uuid', '=', $prd_uuid)
+                ->update([
+                    'prd_active' => 0
+                ]);
 
-            session()->flash('successMessage','Product deactivated');
+            session()->flash('successMessage', 'Product deactivated');
             return redirect()->action('ProductionController@manage');
         }
     }
@@ -1913,9 +1744,9 @@ class ProductionController extends Controller
         $sup_notes = $request->sup_notes;
 
         $check_sup_name = DB::table('suppliers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('sup_name','=', $sup_name)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('sup_name', '=', $sup_name)
+            ->first();
 
         $prodValues = array(
             $request->sup_prd_name,
@@ -1934,25 +1765,23 @@ class ProductionController extends Controller
 
         // dd($prodValues);
 
-        if($check_sup_name != null)
-        {
-            session()->flash('errorMessage','Supplier already exist');
-            session()->flash('getProductionValues', array( $prodValues));
-        }
-        else{
+        if ($check_sup_name != null) {
+            session()->flash('errorMessage', 'Supplier already exist');
+            session()->flash('getProductionValues', array($prodValues));
+        } else {
             $usr_id = DB::table('suppliers')
-            ->insert([
-            'sup_id' => session('sup_id'),
-            'acc_id' => session('acc_id'),
-            'sup_uuid' => generateuuid(),
-            'sup_name' => $sup_name,
-            'sup_address' => $sup_address,
-            'sup_contact' => $sup_contact,
-            'sup_notes' => $sup_notes
-            ]);
+                ->insert([
+                    'sup_id' => session('sup_id'),
+                    'acc_id' => session('acc_id'),
+                    'sup_uuid' => generateuuid(),
+                    'sup_name' => $sup_name,
+                    'sup_address' => $sup_address,
+                    'sup_contact' => $sup_contact,
+                    'sup_notes' => $sup_notes
+                ]);
 
-            session()->flash('successMessage','Supplier has been added');
-            session()->flash('getProdValues', array( $prodValues));
+            session()->flash('successMessage', 'Supplier has been added');
+            session()->flash('getProdValues', array($prodValues));
         }
         return redirect()->action('ProductionController@manage');
     }
@@ -1960,49 +1789,43 @@ class ProductionController extends Controller
     private function check_gas_quantity($tnk_id, $prd_id, $prd_quantity)
     {
         $tank = DB::table('tanks')
-        ->where('tnk_id', '=', $tnk_id)
-        ->first();
+            ->where('tnk_id', '=', $tnk_id)
+            ->first();
 
         $canister = DB::table('products')
-        ->where('prd_id', '=', $prd_id)
-        ->first();
+            ->where('prd_id', '=', $prd_id)
+            ->first();
 
-        if($tank->tnk_remaining < ($canister->prd_weight * $prd_quantity))
-        {
+        if ($tank->tnk_remaining < ($canister->prd_weight * $prd_quantity)) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
     private function check_tank_remaining_quantities($tank_array, $tnk_id, $amount_to_subtract)
     {
-        $tank = DB::table('tanks')
-        ->whereIn('tnk_id', $tank_array)
-        ->get();
+        $tanks = DB::table('tanks')
+            ->whereIn('tnk_id', $tank_array)
+            ->get();
 
         $next_tank = DB::table('tanks')
-        ->whereNotIn('tnk_id', $tank_array)
-        ->where('tnk_active', '=', 1)
-        ->orderBy('tnk_id', 'ASC')
-        ->select('tnk_id')
-        ->first();
+            ->whereNotIn('tnk_id', $tank_array)
+            ->where('tnk_active', '=', 1)
+            ->orderBy('tnk_id', 'ASC')
+            ->select('tnk_id')
+            ->first();
 
-        if($next_tank == null)
-        {
+        if ($next_tank == null) {
             return false;
         }
 
         $count_tanks_remaining = 0;
 
-        foreach($tanks as $tank)
-        {
+        foreach ($tanks as $tank) {
             $count_tanks_remaining = $count_tanks_remaining + $tank->tnk_remaining;
         }
 
-        if($count_tanks_remaining < $amount_to_subtract)
-        {
+        if ($count_tanks_remaining < $amount_to_subtract) {
             $this->check_tank_remaining_quantities($tank_array, $next_tank, $amount_to_subtract);
         }
 
@@ -2012,18 +1835,16 @@ class ProductionController extends Controller
     private function subtract_tank_amount($tank_array, $amount_to_subtract)
     {
         $tanks = DB::table('tanks')
-        ->whereIn('tnk_id', $tank_array)
-        ->get();
+            ->whereIn('tnk_id', $tank_array)
+            ->get();
 
         $amount_remaining = $amount_to_subtract + 0;
 
-        foreach($tanks as $tank)
-        {
+        foreach ($tanks as $tank) {
             $amount_remaining = $amount_remaining - $tank->tnk_remaining;
 
             $tank_remaining = abs($amount_remaining);
-            if($amount_remaining < 0)
-            {
+            if ($amount_remaining < 0) {
 
             }
         }
@@ -2032,21 +1853,20 @@ class ProductionController extends Controller
     private function check_has_valve($prd_id)
     {
         $product = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$prd_id)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $prd_id)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '1')
+            ->first();
 
         $valves = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$product->prd_components)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $product->prd_components)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '0')
+            ->first();
 
-        if(is_null($valves))
-        {
+        if (is_null($valves)) {
             return false;
         }
         return true;
@@ -2055,21 +1875,20 @@ class ProductionController extends Controller
     private function check_valve_quantity($prd_id, $qty)
     {
         $product = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$prd_id)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $prd_id)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '1')
+            ->first();
 
         $valves = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$product->prd_components)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $product->prd_components)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '0')
+            ->first();
 
-        if($valves->prd_quantity < $qty)
-        {
+        if ($valves->prd_quantity < $qty) {
             return false;
         }
 
@@ -2079,21 +1898,20 @@ class ProductionController extends Controller
     private function check_has_seal($prd_id)
     {
         $product = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$prd_id)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $prd_id)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '1')
+            ->first();
 
         $seals = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$product->prd_seals)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $product->prd_seals)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '0')
+            ->first();
 
-        if(is_null($seals))
-        {
+        if (is_null($seals)) {
             return false;
         }
         return true;
@@ -2102,23 +1920,22 @@ class ProductionController extends Controller
     private function check_seal_quantity($prd_id, $qty)
     {
         $product = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$prd_id)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','1')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $prd_id)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '1')
+            ->first();
 
         $seals = DB::table('products')
-        ->where('products.acc_id', '=', session('acc_id'))
-        ->where('prd_id','=',$product->prd_seals)
-        ->where('prd_for_production','=','1')
-        ->where('prd_is_refillable','=','0')
-        ->first();
+            ->where('products.acc_id', '=', session('acc_id'))
+            ->where('prd_id', '=', $product->prd_seals)
+            ->where('prd_for_production', '=', '1')
+            ->where('prd_is_refillable', '=', '0')
+            ->first();
 
         // dd($product->prd_seals);
 
-        if($seals->prd_quantity < $qty)
-        {
+        if ($seals->prd_quantity < $qty) {
             return false;
         }
 
@@ -2128,13 +1945,12 @@ class ProductionController extends Controller
     private function check_supervisor_verification($prd_id, $pdn_id)
     {
         $verification_check = DB::table('stock_verifications')
-        ->whereIn('verify_user_type', [1, 5])//
-        ->where('verify_prd_id', '=', $prd_id)
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->get();
+            ->whereIn('verify_user_type', [1, 5]) //
+            ->where('verify_prd_id', '=', $prd_id)
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->get();
         // dd($verification_check);
-        if(!$verification_check)
-        {
+        if (!$verification_check) {
             return false;
         }
 
@@ -2145,99 +1961,87 @@ class ProductionController extends Controller
     {
         $pdn_id = get_last_production_id();
 
-        if(check_production_log())
-        {
+        if (check_production_log()) {
             $pdn_id = $pdn_id + 1;
         }
 
         $supervisor_canisters = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_is_product', '=', 1)
-        ->where('verify_user_type', '=', 5)
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_is_product', '=', 1)
+            ->where('verify_user_type', '=', 5)
+            ->get();
 
         $supervisor_tanks = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_is_product', '=', 0)
-        ->where('verify_user_type', '=', 5)
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_is_product', '=', 0)
+            ->where('verify_user_type', '=', 5)
+            ->get();
 
         $pm_canisters = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_is_product', '=', 1)
-        ->where('verify_user_type', '=', 4)
-        ->get();
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_is_product', '=', 1)
+            ->where('verify_user_type', '=', 4)
+            ->get();
 
         $pm_tanks = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_is_product', '=', 0)
-        ->where('verify_user_type', '=', 4)
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_is_product', '=', 0)
+            ->where('verify_user_type', '=', 4)
+            ->get();
 
         $admin_canisters = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_is_product', '=', 0)
-        ->where('verify_user_type', '=', 1)
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_is_product', '=', 0)
+            ->where('verify_user_type', '=', 1)
+            ->get();
 
         $admin_tanks = DB::table('stock_verifications')
-        ->where('verify_pdn_id', '=', $pdn_id)
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_is_product', '=', 0)
-        ->where('verify_user_type', '=', 1)
-        ->get();
+            ->where('verify_pdn_id', '=', $pdn_id)
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_is_product', '=', 0)
+            ->where('verify_user_type', '=', 1)
+            ->get();
 
         // dd($supervisor_canisters, $supervisor_tanks, get_last_production_id());
         //IF ADMIN INPUT BEFORE SUPERVISOR
 
         $did_admin_verify = true;
-        if(check_production_log()) //OPENING
+        if (check_production_log()) //OPENING
         {
-            foreach($admin_canisters as $canister)
-            {
-                if($canister->verify_opening == null)
-                {
+            foreach ($admin_canisters as $canister) {
+                if ($canister->verify_opening == null) {
                     $did_admin_verify = false;
                 }
             }
 
-            foreach($admin_tanks as $tank)
-            {
-                if($tank->verify_opening == null)
-                {
+            foreach ($admin_tanks as $tank) {
+                if ($tank->verify_opening == null) {
                     $did_admin_verify = false;
                 }
             }
 
-            if($did_admin_verify)
-            {
+            if ($did_admin_verify) {
                 return true;
             }
-        }
-        else //CLOSING
+        } else //CLOSING
         {
-            foreach($admin_canisters as $canister)
-            {
-                if($canister->verify_closing == null)
-                {
+            foreach ($admin_canisters as $canister) {
+                if ($canister->verify_closing == null) {
                     $did_admin_verify = false;
                 }
             }
 
-            foreach($admin_tanks as $tank)
-            {
-                if($tank->verify_closing == null)
-                {
+            foreach ($admin_tanks as $tank) {
+                if ($tank->verify_closing == null) {
                     $did_admin_verify = false;
                 }
             }
-            if($did_admin_verify)
-            {
+            if ($did_admin_verify) {
                 return true;
             }
         }
@@ -2250,19 +2054,13 @@ class ProductionController extends Controller
         // }
 
         //IF SUPERVISOR INPUT BEFORE ADMIN
-        if(count($supervisor_canisters) <> 0 && count($supervisor_tanks) <> 0)
-        {
+        if (count($supervisor_canisters) <> 0 && count($supervisor_tanks) <> 0) {
             //IF ADMIN HAS INPUT
-            if(count($admin_canisters) <> 0 && count($admin_tanks) <> 0)
-            {
-                foreach($supervisor_canisters as $supervisor_canister)
-                {
-                    foreach($admin_canisters as $admin_canister)
-                    {
-                        if($admin_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
-                        {
-                            if(check_production_log())
-                            {
+            if (count($admin_canisters) <> 0 && count($admin_tanks) <> 0) {
+                foreach ($supervisor_canisters as $supervisor_canister) {
+                    foreach ($admin_canisters as $admin_canister) {
+                        if ($admin_canister->verify_prd_id == $supervisor_canister->verify_prd_id) {
+                            if (check_production_log()) {
                                 if
                                 (
                                     $admin_canister->verify_opening <> $supervisor_canister->verify_opening ||
@@ -2270,13 +2068,10 @@ class ProductionController extends Controller
                                     $admin_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
                                     $admin_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers ||
                                     $admin_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving
-                                )
-                                {
+                                ) {
                                     return false;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 if
                                 (
                                     $admin_canister->verify_closing <> $supervisor_canister->verify_closing ||
@@ -2284,37 +2079,28 @@ class ProductionController extends Controller
                                     $admin_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
                                     $admin_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers ||
                                     $admin_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving
-                                )
-                                {
+                                ) {
                                     return false;
                                 }
                             }
                         }
                     }
                 }
-                foreach($supervisor_tanks as $supervisor_tank)
-                {
-                    foreach($admin_tanks as $admin_tank)
-                    {
-                        if($admin_tank->verify_prd_id == $supervisor_tank->verify_prd_id)
-                        {
-                            if(check_production_log())
-                            {
+                foreach ($supervisor_tanks as $supervisor_tank) {
+                    foreach ($admin_tanks as $admin_tank) {
+                        if ($admin_tank->verify_prd_id == $supervisor_tank->verify_prd_id) {
+                            if (check_production_log()) {
                                 if
                                 (
                                     $admin_tank->verify_opening <> $supervisor_tank->verify_opening
-                                )
-                                {
+                                ) {
                                     return false;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 if
                                 (
                                     $admin_tank->verify_closing <> $supervisor_tank->verify_closing
-                                )
-                                {
+                                ) {
                                     // dd($admin_tank, $supervisor_tank);
                                     return false;
                                 }
@@ -2326,16 +2112,11 @@ class ProductionController extends Controller
             }
 
             //PLANT MANAGER INPUT
-            if(count($pm_canisters) <> 0 && count($pm_tanks) <> 0)
-            {
-                foreach($supervisor_canisters as $supervisor_canister)
-                {
-                    foreach($pm_canisters as $pm_canister)
-                    {
-                        if($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id)
-                        {
-                            if(check_production_log())
-                            {
+            if (count($pm_canisters) <> 0 && count($pm_tanks) <> 0) {
+                foreach ($supervisor_canisters as $supervisor_canister) {
+                    foreach ($pm_canisters as $pm_canister) {
+                        if ($pm_canister->verify_prd_id == $supervisor_canister->verify_prd_id) {
+                            if (check_production_log()) {
                                 if
                                 (
                                     $pm_canister->verify_opening <> $supervisor_canister->verify_opening ||
@@ -2343,13 +2124,10 @@ class ProductionController extends Controller
                                     $pm_canister->verify_opening_empty <> $supervisor_canister->verify_opening_empty ||
                                     $pm_canister->verify_opening_leakers <> $supervisor_canister->verify_opening_leakers ||
                                     $pm_canister->verify_opening_for_revalving <> $supervisor_canister->verify_opening_for_revalving
-                                )
-                                {
+                                ) {
                                     return false;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 if
                                 (
                                     $pm_canister->verify_closing <> $supervisor_canister->verify_closing ||
@@ -2357,33 +2135,24 @@ class ProductionController extends Controller
                                     $pm_canister->verify_closing_empty <> $supervisor_canister->verify_closing_empty ||
                                     $pm_canister->verify_closing_leakers <> $supervisor_canister->verify_closing_leakers ||
                                     $pm_canister->verify_closing_for_revalving <> $supervisor_canister->verify_closing_for_revalving
-                                )
-                                {
+                                ) {
                                     return false;
                                 }
                             }
                         }
                     }
                 }
-                foreach($supervisor_tanks as $supervisor_tank)
-                {
-                    foreach($pm_tanks as $pm_tank)
-                    {
-                        if($pm_tank->verify_prd_id == $supervisor_tank->verify_prd_id)
-                        {
-                            if(check_production_log())
-                            {
+                foreach ($supervisor_tanks as $supervisor_tank) {
+                    foreach ($pm_tanks as $pm_tank) {
+                        if ($pm_tank->verify_prd_id == $supervisor_tank->verify_prd_id) {
+                            if (check_production_log()) {
                                 if
-                                ($pm_tank->verify_opening <> $supervisor_tank->verify_opening)
-                                {
+                                ($pm_tank->verify_opening <> $supervisor_tank->verify_opening) {
                                     return false;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 if
-                                ($pm_tank->verify_closing <> $supervisor_tank->verify_closing)
-                                {
+                                ($pm_tank->verify_closing <> $supervisor_tank->verify_closing) {
                                     return false;
                                 }
                             }
@@ -2398,25 +2167,25 @@ class ProductionController extends Controller
     private function printProduction()
     {
         $canisters = DB::table('products')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('prd_is_refillable', '=', 1)
-        ->where('prd_for_production', '=', 1)
-        ->where('prd_active', '=', 1)
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('prd_is_refillable', '=', 1)
+            ->where('prd_for_production', '=', 1)
+            ->where('prd_active', '=', 1)
+            ->get();
 
         $customers = DB::table('customers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('cus_active', '=', 1)
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('cus_active', '=', 1)
+            ->get();
 
         $oppositions = DB::table('oppositions')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('ops_active', '=', 1)
-        ->get();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('ops_active', '=', 1)
+            ->get();
 
         $production_logs = DB::table('production_logs')
-        ->where('pdn_id', '=', get_last_production_id())
-        ->first();
+            ->where('pdn_id', '=', get_last_production_id())
+            ->first();
 
         $production_date = date("F j, Y", strtotime($production_logs->pdn_date));
         $production_start = date("h:i a", strtotime($production_logs->pdn_start_time));
@@ -2429,54 +2198,53 @@ class ProductionController extends Controller
         // ->get();
 
         $product_verifications = DB::table('stock_verifications')
-        ->where('verify_acc_id', '=', session('acc_id'))
-        ->where('verify_pdn_id', '=', get_last_production_id())
-        ->where('verify_is_product', '=', 1)
-        ->whereIn('verify_user_type', [1, 4])
-        ->orderBy('verify_id', 'DESC')
-        ->get();
+            ->where('verify_acc_id', '=', session('acc_id'))
+            ->where('verify_pdn_id', '=', get_last_production_id())
+            ->where('verify_is_product', '=', 1)
+            ->whereIn('verify_user_type', [1, 4])
+            ->orderBy('verify_id', 'DESC')
+            ->get();
 
         $opening_stocks_array = [];
-        foreach($product_verifications as $opening)
-        {
+        foreach ($product_verifications as $opening) {
             // dd($opening->verify_opening);
-            if(!empty($opening->verify_opening))//$opening->verify_user_type == 1 && )
+            if (!empty($opening->verify_opening)) //$opening->verify_user_type == 1 && )
             {
                 array_unshift($opening_stocks_array, $opening->verify_opening_filled);
             }
         }
 
         $closing_stocks_array = [];
-        foreach($product_verifications as $closing)
-        {
-            if(!empty($closing->verify_closing))//$closing->verify_user_type == 1 && )
+        foreach ($product_verifications as $closing) {
+            if (!empty($closing->verify_closing)) //$closing->verify_user_type == 1 && )
             {
                 array_unshift($closing_stocks_array, $closing->verify_closing_filled);
             }
         }
 
-        $customers = DB::table('customers')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('cus_active', '=', 1)
-        ->get();
+        // ! FOR DEBUGGING ***************************************************************
+        // $customers = DB::table('customers')
+        //     ->where('acc_id', '=', session('acc_id'))
+        //     ->where('cus_active', '=', 1)
+        //     ->get();
 
         $purchases = DB::table('purchases')
-        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-        ->orderBy('trx_id', 'DESC')
-        ->get();
+            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+            ->orderBy('trx_id', 'DESC')
+            ->get();
 
         $transactions = DB::table('transactions')
-        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-        ->where('transactions.pdn_id', '=', get_last_production_id())
-        ->where('trx_active','=','1')
-        ->orderBy('transactions.trx_id', 'DESC')
-        ->get();
+            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+            ->where('transactions.pdn_id', '=', get_last_production_id())
+            ->where('trx_active', '=', '1')
+            ->orderBy('transactions.trx_id', 'DESC')
+            ->get();
 
         $tanks = DB::table('tank_logs')
-        ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
-        ->where('pdn_id', '=', get_last_production_id())
-        ->where('tank_logs.acc_id', '=', session('acc_id'))
-        ->get();
+            ->join('tanks', 'tanks.tnk_id', '=', 'tank_logs.tnk_id')
+            ->where('pdn_id', '=', get_last_production_id())
+            ->where('tank_logs.acc_id', '=', session('acc_id'))
+            ->get();
 
         $purchases_array = [];
         $received_customers_array = [];
@@ -2496,10 +2264,8 @@ class ProductionController extends Controller
         $opposition_table_rows = 3; //Minimum number of rows in the Opposition table
 
         $total_array = [];
-        foreach($purchases_array as $purchase)
-        {
-            for($index = 0; $index < count($canisters); $index++)
-            {
+        foreach ($purchases_array as $purchase) {
+            for ($index = 0; $index < count($canisters); $index++) {
                 $total_array[$index] = ($total_array[$index] ?? 0) + $purchase[$index + 2];
             }
 
@@ -2509,93 +2275,66 @@ class ProductionController extends Controller
         // $new_purchase_array = EodReport::retrieve();
 
         $eod_reports = EodReport::select('ref_id')
-                                ->where('pdn_id', '=', get_last_production_id())
-                                ->groupBy('ref_id')
-                                ->get();
+            ->where('pdn_id', '=', get_last_production_id())
+            ->groupBy('ref_id')
+            ->get();
 
         $new_purchases_array = [];
         $new_received_array = [];
         $new_issued_array = [];
         $new_opposition_array = [];
 
-        foreach($eod_reports as $report)
-        {
+        foreach ($eod_reports as $report) {
             $new_purchases = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
-                                        ->where('ref_id', '=', $report['ref_id'])
-                                        ->where('pdn_id', '=', get_last_production_id())
-                                        ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
-                                        ->get();
+                ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
+                ->where('ref_id', '=', $report['ref_id'])
+                ->where('pdn_id', '=', get_last_production_id())
+                ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
+                ->get();
 
-                                        // dd($new_purchases);
-                array_push($new_purchases_array, $new_purchases);
-            
-            $new_received =  EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
-                                        ->where('ref_id', '=', $report['ref_id'])
-                                        ->where('pdn_id', '=', get_last_production_id())
-                                        ->where('report_type', '=', '2') //Report type '2' refers to 'Received'
-                                        ->get();
+            // dd($new_purchases);
+            array_push($new_purchases_array, $new_purchases);
+
+            $new_received = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+                ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
+                ->where('ref_id', '=', $report['ref_id'])
+                ->where('pdn_id', '=', get_last_production_id())
+                ->where('report_type', '=', '2') //Report type '2' refers to 'Received'
+                ->get();
             array_push($new_received_array, $new_received);
 
             $new_issued = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                    ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
-                                    ->where('ref_id', '=', $report['ref_id'])
-                                    ->where('pdn_id', '=', get_last_production_id())
-                                    ->where('report_type', '=', '3') //Report type '3' refers to 'Issued'
-                                    ->get();
-                array_push($new_issued_array, $new_issued);
+                ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
+                ->where('ref_id', '=', $report['ref_id'])
+                ->where('pdn_id', '=', get_last_production_id())
+                ->where('report_type', '=', '3') //Report type '3' refers to 'Issued'
+                ->get();
+            array_push($new_issued_array, $new_issued);
 
             $new_opposition = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
-                                        ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
-                                        ->where('ref_id', '=', $report['ref_id'])
-                                        ->where('pdn_id', '=', get_last_production_id())
-                                        ->where('report_type', '=', '4') //Report type '4' refers to 'Opposition'
-                                        ->get();
-                array_push($new_opposition_array, $new_opposition);
+                ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
+                ->where('ref_id', '=', $report['ref_id'])
+                ->where('pdn_id', '=', get_last_production_id())
+                ->where('report_type', '=', '4') //Report type '4' refers to 'Opposition'
+                ->get();
+            array_push($new_opposition_array, $new_opposition);
         }
         // dd($new_opposition_array, $new_issued_array, $new_received_array, $new_purchases_array);
         //Iterate 4 times for the Purchases, Received,
         //Issued, and Opposition tables
         // dd($eod_reports);
-        for($x = 0; $x <= 3; $x++)
-        {
+        for ($x = 0; $x <= 3; $x++) {
             //$new_internal_array holds the quantities
             //of the products in the transaction
-            $new_internal_array= [];
+            $new_internal_array = [];
 
             //$holder_array holds the type of array
             //being worked on
-            $holder_array= [];
+            $holder_array = [];
 
             //Switch case to put table arrays on
             //$holder_array
-            switch ($x) {
-                case 0:
-                    if (!empty($new_internal_array)) {
-                        $new_purchases_array['quantities'] = $new_internal_array;
-                    }
-                    break;
 
-                case 1:
-                    if (!empty($new_internal_array)) {
-                        $new_received_array['quantities'] = $new_internal_array;
-                    }
-                    break;
-
-                case 2:
-                    if (!empty($new_internal_array)) {
-                        $new_issued_array['quantities'] = $new_internal_array;
-                    }
-                    break;
-
-                case 3:
-                    if (!empty($new_internal_array)) {
-                        $new_opposition_array['quantities'] = $new_internal_array;
-                    }
-                    break;
-
-            }
 
 
             // switch($x)
@@ -2622,32 +2361,65 @@ class ProductionController extends Controller
 
             //Do,While to add quantity that corresponds
             //to its products or add '0' if it doesn't
-            do
-            {
-                foreach($holder_array as $row)
-                {
-                    foreach($canisters as $canister)
-                    {
+            do {
+                foreach ($holder_array as $row) {
+                    foreach ($canisters as $canister) {
                         // dd($canister, $canister->prd_id, $row);
-                        if($canister->prd_id == $row->prd_id)
-                        {
+                        if ($canister->prd_id == $row->prd_id) {
                             array_push($new_internal_array, $row->quantity);
-                        }
-                        else
-                        {
+                        } else {
                             array_push($new_internal_array, 0);
                         }
                     }
                 }
             }
-            while(!empty($holder_array));
+            while (!empty($holder_array));
 
             //Switch case to add key='quantities',
             //value ='$new_internal_array' pair to
             //table arrays
-            
+            switch ($x) {
+                case 0:
+                    if (!empty($new_internal_array)) {
+                        $new_purchases_array['quantities'] = $new_internal_array;
+                    }
+                    break;
+
+                case 1:
+                    if (!empty($new_internal_array)) {
+                        $new_received_array['quantities'] = $new_internal_array;
+                    }
+                    break;
+
+                case 2:
+                    if (!empty($new_internal_array)) {
+                        $new_issued_array['quantities'] = $new_internal_array;
+                    }
+                    break;
+
+                case 3:
+                    if (!empty($new_internal_array)) {
+                        $new_opposition_array['quantities'] = $new_internal_array;
+                    }
+                    break;
+            }
+
         }
 
+        // $new_count = count($new_purchases_array);
+        // for($i=0; $i <= $new_count; $i++)
+        // {
+        //     foreach($new_purchases_array[$i] as $neww)
+        //     {
+        //         foreach($new_purchases_array[$i] as $quants)
+        //         dd(
+        //             $neww->cus_name,
+        //             $neww->ref_id,
+        //             $quants->quantity
+        //         );
+        //     }
+        // }
+        // dd($new_count);
         // dd(
         //     $new_purchases_array,
         //     $new_received_array,
@@ -2655,38 +2427,41 @@ class ProductionController extends Controller
         //     $new_opposition_array
         // );
 
-        return view('admin.print.productiontoggle', compact(
-            'canisters',
-            'customers',
-            'closing_stocks_array',
-            'received_customers_array',
-            'issued_customers_array',
-            'opening_stocks_array',
-            'oppositions',
-            'oppositions_array',
-            'purchase_table_rows',
-            'received_table_rows',
-            'issued_table_rows',
-            'opposition_table_rows',
-            'production_date',
-            'production_start',
-            'production_end',
-            'purchases',
-            'purchases_array',
-            'tanks',
-            'total_array',
-            'transactions',
-            'new_purchases_array',
-            'new_received_array',
-            'new_issued_array',
-            'new_opposition_array',
-        ));
+        return view(
+            'admin.print.productiontoggle',
+            compact(
+                'canisters',
+                'customers',
+                'closing_stocks_array',
+                'received_customers_array',
+                'issued_customers_array',
+                'opening_stocks_array',
+                'oppositions',
+                'oppositions_array',
+                'purchase_table_rows',
+                'received_table_rows',
+                'issued_table_rows',
+                'opposition_table_rows',
+                'production_date',
+                'production_start',
+                'production_end',
+                'purchases',
+                'purchases_array',
+                'tanks',
+                'total_array',
+                'transactions',
+                'new_purchases_array',
+                'new_received_array',
+                'new_issued_array',
+                'new_opposition_array',
+            )
+        );
     }
 
     public function tank()
     {
         $tanks = DB::table('tanks')
-        ->get();
+            ->get();
 
         return view('admin.production.tank', compact('tanks'));
     }
@@ -2700,25 +2475,24 @@ class ProductionController extends Controller
         $tnk_notes = $request->tnk_notes;
 
         $check_tank_name = DB::table('tanks')
-        ->where('acc_id', '=', session('acc_id'))
-        ->where('tnk_name','=', $tnk_name)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('tnk_name', '=', $tnk_name)
+            ->first();
 
-        if($check_tank_name != null)
-        {
-            session()->flash('errorMessage','Tank already exist');
+        if ($check_tank_name != null) {
+            session()->flash('errorMessage', 'Tank already exist');
             return redirect()->action('ProductionController@tank');
         }
 
         DB::table('tanks')
-        ->insert([
-        'acc_id' => session('acc_id'),
-        'tnk_name' => $tnk_name,
-        'tnk_capacity' => (float)$tnk_capacity * 1000,
-        'tnk_notes' => $tnk_notes
-        ]);
+            ->insert([
+                'acc_id' => session('acc_id'),
+                'tnk_name' => $tnk_name,
+                'tnk_capacity' => (float) $tnk_capacity * 1000,
+                'tnk_notes' => $tnk_notes
+            ]);
 
-        session()->flash('successMessage','Tank has been added');
+        session()->flash('successMessage', 'Tank has been added');
         return redirect()->action('ProductionController@tank');
     }
 
@@ -2727,34 +2501,31 @@ class ProductionController extends Controller
     {
         $tnk_id = $request->tnk_id;
         $tnk_name = $request->tnk_name;
-        $tnk_capacity = (float)$request->tnk_capacity * 1000;
-        $tnk_remaining = (float)$request->tnk_remaining * 1000;
+        $tnk_capacity = (float) $request->tnk_capacity * 1000;
+        $tnk_remaining = (float) $request->tnk_remaining * 1000;
         $tnk_notes = $request->tnk_notes;
         $tnk_uuid = $request->tnk_uuid;
 
         $tank = DB::table('tanks')
-        ->where('acc_id','=', session('acc_id'))
-        ->where('tnk_name','=', $tnk_name)
-        ->first();
+            ->where('acc_id', '=', session('acc_id'))
+            ->where('tnk_name', '=', $tnk_name)
+            ->first();
 
-        if($tank != null && $tank->tnk_id != $tnk_id)
-        {
-            session()->flash('errorMessage','Tank already exist');
-        }
-        else{
-            if($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0){
+        if ($tank != null && $tank->tnk_id != $tnk_id) {
+            session()->flash('errorMessage', 'Tank already exist');
+        } else {
+            if ($tnk_capacity >= $tnk_remaining && $tnk_capacity > 0) {
                 DB::table('tanks')
-                ->where('tnk_id', '=', $tnk_id)
-                ->update([
-                    'tnk_name' => $tnk_name,
-                    'tnk_capacity' => $tnk_capacity,
-                    'tnk_remaining' => $tnk_remaining,
-                    'tnk_notes' => $tnk_notes
-                ]);
-                session()->flash('successMessage','Tank details updated.');
-            }
-            else{
-                session()->flash('errorMessage','Tank capacity must not be less than zero or the remaining LPG');
+                    ->where('tnk_id', '=', $tnk_id)
+                    ->update([
+                        'tnk_name' => $tnk_name,
+                        'tnk_capacity' => $tnk_capacity,
+                        'tnk_remaining' => $tnk_remaining,
+                        'tnk_notes' => $tnk_notes
+                    ]);
+                session()->flash('successMessage', 'Tank details updated.');
+            } else {
+                session()->flash('errorMessage', 'Tank capacity must not be less than zero or the remaining LPG');
             }
         }
 
@@ -2765,21 +2536,20 @@ class ProductionController extends Controller
     public function tankActivation($tnk_id, $tnk_active)
     {
 
-        if($tnk_active==1){
+        if ($tnk_active == 1) {
             DB::table('tanks')
-            ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_active' => 0
-            ]);
-            session()->flash('successMessage','Tank deactivated.');
-        }
-        else if($tnk_active==0){
+                ->where('tnk_id', '=', $tnk_id)
+                ->update([
+                    'tnk_active' => 0
+                ]);
+            session()->flash('successMessage', 'Tank deactivated.');
+        } else if ($tnk_active == 0) {
             DB::table('tanks')
-            ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_active' => 1
-            ]);
-            session()->flash('successMessage','Tank activated.');
+                ->where('tnk_id', '=', $tnk_id)
+                ->update([
+                    'tnk_active' => 1
+                ]);
+            session()->flash('successMessage', 'Tank activated.');
         }
 
         return redirect()->action('ProductionController@tank');
@@ -2789,31 +2559,29 @@ class ProductionController extends Controller
     public function refillTank(Request $request)
     {
         $tnk_id = $request->tnk_id;
-        $refill_cty = (float)$request->tnk_remaining * 1000;
+        $refill_cty = (float) $request->tnk_remaining * 1000;
 
         $remaining = DB::table('tanks')
-        ->where('tnk_id', '=', $tnk_id)
-        ->first();
-
-        $tnk_capacity = (float)$remaining->tnk_capacity;
-        $tnk_remaining = (float)$remaining->tnk_remaining + $refill_cty;
-
-        if($tnk_remaining > $tnk_capacity){
-            session()->flash('errorMessage','Refill must not be greater than tank capacity');
-        }
-        else if($tnk_remaining < 0 || $refill_cty < 0){
-            session()->flash('errorMessage','Refill must not be less than zero');
-        }
-        else{
-            DB::table('tanks')
             ->where('tnk_id', '=', $tnk_id)
-            ->update([
-                'tnk_remaining' => (float)$tnk_remaining,
-            ]);
+            ->first();
+
+        $tnk_capacity = (float) $remaining->tnk_capacity;
+        $tnk_remaining = (float) $remaining->tnk_remaining + $refill_cty;
+
+        if ($tnk_remaining > $tnk_capacity) {
+            session()->flash('errorMessage', 'Refill must not be greater than tank capacity');
+        } else if ($tnk_remaining < 0 || $refill_cty < 0) {
+            session()->flash('errorMessage', 'Refill must not be less than zero');
+        } else {
+            DB::table('tanks')
+                ->where('tnk_id', '=', $tnk_id)
+                ->update([
+                    'tnk_remaining' => (float) $tnk_remaining,
+                ]);
 
             record_stockin($tnk_id, $refill_cty);
 
-            session()->flash('successMessage','Tank refilled');
+            session()->flash('successMessage', 'Tank refilled');
 
         }
 
