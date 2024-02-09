@@ -32,8 +32,6 @@
                             <h3 class="card-title"><i class="fas fa-box-open"></i> Find Canister</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="POST" action="{{ action('OppositionController@opposite') }}">
-                            {{ csrf_field() }} 
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
@@ -68,7 +66,6 @@
                                         </div>
                                     </div> --}}
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>

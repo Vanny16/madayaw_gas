@@ -84,7 +84,7 @@
             }, 500);
         }
         else{
-            window.location.href = "{{ action('ProductController@opposite') }}";
+            window.close();
         }
     }
 
@@ -95,7 +95,7 @@
     window.addEventListener("load", function() {
         setTimeout(function() {
             window.print();
-            window.location.href = "{{ action('ProductController@opposite') }}";
+            window.close();
         }, 500);
     });
 </script>

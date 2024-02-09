@@ -115,6 +115,8 @@ class OppositionController extends Controller
             return redirect()->action('OppositionController@opposite');
         }
 
+
+
         DB::table('oppositions')
         ->insert([
         'acc_id' => session('acc_id'),
@@ -129,7 +131,7 @@ class OppositionController extends Controller
         //IMAGE UPLOAD 
         if($request->file('ops_image'))
         {
-            $ops_id = DB::table('oppostions')
+            $ops_id = DB::table('oppositions')
             ->select('ops_id')
             ->orderBy('ops_id', 'desc')
             ->first();
@@ -155,9 +157,9 @@ class OppositionController extends Controller
     
             $fileName = $ops_id->ops_id . '.' . $file->getClientOriginalExtension();
     
-            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+            Storage::disk('local')->put('img/oppositions/' . $fileName, fopen($file, 'r+'));
 
-            DB::table('customers')
+            DB::table('oppositions')
             ->where('ops_id','=',$ops_id->ops_id)
             ->update([
                 'ops_image' => $fileName,
@@ -225,11 +227,9 @@ class OppositionController extends Controller
         //IMAGE UPLOAD 
         if($request->file('ops_image'))
         {
-            $ops_id = DB::table('oppostions')
-            ->select('ops_id')
-            ->orderBy('ops_id', 'desc')
-            ->first();
-    
+            $ops_id = DB::table('oppositions')
+            ->max('ops_id');
+
             $file = $request->file('ops_image');
 
             $validator = Validator::make( 
@@ -251,9 +251,9 @@ class OppositionController extends Controller
     
             $fileName = $ops_id->ops_id . '.' . $file->getClientOriginalExtension();
     
-            Storage::disk('local')->put('img/customers/' . $fileName, fopen($file, 'r+'));
+            Storage::disk('local')->put('img/oppositions/' . $fileName, fopen($file, 'r+'));
 
-            DB::table('customers')
+            DB::table('oppositions')
             ->where('ops_id','=',$ops_id->ops_id)
             ->update([
                 'ops_image' => $fileName,
@@ -294,7 +294,7 @@ class OppositionController extends Controller
         $products = DB::table('products')
         ->get();
 
-        return view('admin.products.opposite', compact( 'statuses', 'default_status', 'oppostions','ops_active','products'));
+        return view('admin.products.opposite', compact( 'statuses', 'default_status', 'oppositions','ops_active','products'));
     }
 
     public function tradeCanisters(Request $request)
