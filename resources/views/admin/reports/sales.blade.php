@@ -133,12 +133,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-1 mb-3">
+                                        <div class="col-md-1 mb-3">
                                         <button type="submit" name="filter_btn" value="print" class="btn btn-light text-success form-control"><span class="fa fa-print"></span> Print</button>
-                                    </div>
-                                    <div class="col-md-1 mb-3">
+                                        </div>
+                                        <div class="col-md-1 mb-3">
                                         <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span class="fa fa-file-export"></span> Export</button>
-                                    </div>
+                                        </div>
                                 </div>
                             </form>
                         </div>
@@ -324,7 +324,7 @@
                                                                     <input type="date_from" class="form-control" id="sales_date_from" name="sales_date_from" value="{{ $date_from }}" hidden/>
                                                                     <input type="date_to" class="form-control" id="sales_date_to" name="sales_date_to" value="{{ $date_to }}" hidden/>
                                                                 </form>
-                                                                <button type="submit" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times mr-1"> </i> Close</button>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -245,7 +245,7 @@
                                 <td colspan="1" style="text-align:center; border:1px solid black; border-right:1px solid black"><i>{{ $issued_array[0]->cus_name }}</i></td>
                                 <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $issued_array[0]->ref_id }}</i></td>
                                 @foreach ($canisters as $canister)
-                                    @php($quantity = $issued_array->firstWhere('prd_id', $canister->prd_id)->quantity ?? 0;)
+                                    @php($quantity = $issued_array->firstWhere('prd_id', $canister->prd_id)->quantity ?? 0)
                                 @endforeach
                                 @for($index = 2; $index < count($customers_array); $index++)
                                     <td style="text-align:center; border:1px solid black"><strong>{{$quantity}}</strong></td>    
@@ -271,69 +271,10 @@
                     <tr style="border-top:1px solid black"></tr>
                 </tbody>
             </table>
-            <br>OPPOSITION
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="4" style="text-align:center; border:1px solid black">RECEIVED</th>
-                        @if(isset($oppositions))
-                        @foreach($oppositions as $opposition)
-                        <th style="border-bottom:1px solid black"></th>
-                        @endforeach
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black">
-                            <i>CUSTOMER</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-bottom:2px solid black">
-                            <i>REFERENCE ID</i></td>
-                        @if(isset($oppositions))
-                        @foreach($oppositions as $opposition)
-                        <td style="text-align:center; border:1px solid black; border-bottom:2px solid black">
-                            <strong>{{$opposition->ops_name}}</strong></td>
-                        @endforeach
-                        @endif
-                    </tr>
-                    <tr>
-                        <!-- add forloop here for how many customers ordered  -->
-                        @foreach($new_opposition_array as $opposition_array)
+            <br>
+            {{-- ! OPPOSITION --}}
             
-                    <tr>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{
-                                $newopposition_array[0]->cus_name }}</i></td>
-                        <td colspan="2" style="text-align:center; border:1px solid black; border-left:1px solid black"><i>{{
-                                $newopposition_array[0]->ref_id }}</i></td>
-                        @if(isset($oppositions))
-                        @foreach($oppositions as $opposition)
-                        @php($quantity = $purchase_array->firstWhere('ops_id', $opposition->ops_id)->quantity ?? 0;)
-                        <td style="text-align:center; border:1px solid black;"><strong>{{$quantity}}</strong></td>
-                        @endforeach
-                        @endif
-            
-                    </tr>
-            
-                    @endforeach
-            
-                    @php($row_count = $opposition_table_rows)
-                    @php(($td_count = count($oppositions)))
-                    @if($row_count <> 0)
-                        @while($row_count > 0)
-                        <tr>
-                            <td colspan="2" style="text-indent:-9999px; border:1px solid black; border-right:1px solid black">0</td>
-                            <td colspan="2" style="text-indent:-9999px; border:1px solid black">0</td>
-                            @for($count = 0; $count < $td_count; $count++) <td style="text-indent:-9999px; border:1px solid black">0
-                                </td>
-                                @endfor
-                        </tr>
-                        @php($row_count--)
-                        @endwhile
-                        @endif
-                        </tr>
-                        <tr style="border-top:1px solid black"></tr>
-                </tbody>
-            </table>
+            {{-- ! --}}
             <br>
             <!-- Part 3 -->
             <div class="d-flex align-items-center">
