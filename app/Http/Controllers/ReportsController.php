@@ -50,7 +50,9 @@ class ReportsController extends Controller
         $products = DB::table('products')
             ->get();
 
-        session(['tbl_sales_form' => 'sales']);
+        session(['tbl_sales_form' => 'salesAll']);
+        // session(['tbl_sales_formAll' => 'salesAll']);
+        // $salesAll = session(['tbl_sales_formAll' => 'salesAll']);
         session(['select_grp' => -1]);
         session(['select_set' => '0']);
 
@@ -113,143 +115,217 @@ class ReportsController extends Controller
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
-        if ($select_grp != -1) {
+        // dd(session('tbl_sales_form'));
 
-            $col_name = "";
-            $col_val = "";
+        if(session('tbl_sales_form') === 'salesAll'){
+            // dd(session('tbl_sales_form'));
+            
+            $sales = DB::table('transactions')
+                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                ->where('transactions.trx_total', '!=', 0)
+                ->orderBy('transactions.trx_datetime', 'DESC')
+                ->paginate($paginate_row);
 
-            if ($select_set[$select_grp] != null) {
-                if ($select_grp == 0) {
-                    $col_name = "trx_ref_id";
-                    $col_val = $select_set[$select_grp];
+            $tbl_sales_form = "salesAll";
 
-                    if ($col_val == "SUMMARY") {
-                        $sales = DB::table('transactions')
-                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                            ->where('trx_total', '!=', 0)
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->orderBy('transactions.trx_datetime', 'DESC')
-                            ->paginate($paginate_row);
+            $purchases = DB::table('purchases')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                ->get();
 
-                        $tbl_sales_form = "sales_summary";
-                    } else if ($col_val != "ALL") {
-                        $sales = DB::table('transactions')
-                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                            ->where($col_name, '=', $col_val)
-                            ->where('trx_total', '!=', 0)
-                            ->orderBy('transactions.trx_datetime', 'DESC')
-                            ->paginate($paginate_row);
+            $transactions = DB::table('transactions')
+                ->select('trx_ref_id') // Select only the columns you are grouping by
+                ->where('trx_active', '=', '1')
+                ->groupBy('trx_ref_id')
+                ->get();
 
-                        $tbl_sales_form = "sales";
-                    } else {
-                        $sales = DB::table('transactions')
-                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                            ->where('trx_total', '!=', 0)
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->orderBy('transactions.trx_datetime', 'DESC')
-                            ->paginate($paginate_row);
+            $customers = DB::table('customers')
+                ->get();
 
-                        $tbl_sales_form = "sales";
+            $users = DB::table('users')
+                ->get();
+
+            $products = DB::table('products')
+                ->where('prd_for_POS', '=', '1')
+                ->get();
+
+            session(['sales_date_from' => $sales_date_from]);
+            session(['sales_date_to' => $sales_date_to]);
+
+            session(['tbl_sales_form' => $tbl_sales_form]);
+            session(['select_grp' => $select_grp]);
+            session(['paginate_row' => $paginate_row]);
+
+            session(['select_set_arr' => $select_set]);
+            session(['filter_btn' => $filter_btn]);
+            if ($select_grp != -1) {
+                session(['select_set' => $select_set[$select_grp]]);
+            } else {
+                session(['select_set' => '0']);
+            }
+
+            if ($filter_btn == "print") {
+                return view('admin.print.salesreports', compact('sales', 'sales_date_from', 'sales_date_to', 'purchases', 'transactions', 'customers', 'users', 'products'));
+            } else if ($filter_btn == "export") {
+                // session()->flash('successMessage',  "Invalid search");
+                return Excel::download(new ExcelExport('salesExport', 'salesHeader', date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))), 'sales-export.xlsx');
+            }
+
+        } else {
+            // dd(session('tbl_sales_form'));
+
+            if ($select_grp != -1) {
+
+                $col_name = "";
+                $col_val = "";
+
+                if ($select_set[$select_grp] != null) {
+                    if ($select_grp == 0) {
+                        $col_name = "trx_ref_id";
+                        $col_val = $select_set[$select_grp];
+
+                        if ($col_val == "SUMMARY") {
+                            $sales = DB::table('transactions')
+                                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->where('trx_total', '!=', 0)
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->orderBy('transactions.trx_datetime', 'DESC')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "sales_summary";
+                        } else if ($col_val != "ALL") {
+                            $sales = DB::table('transactions')
+                                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where($col_name, '=', $col_val)
+                                ->where('trx_total', '!=', 0)
+                                ->orderBy('transactions.trx_datetime', 'DESC')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "sales";
+                        } else {
+                            $sales = DB::table('transactions')
+                                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where('trx_total', '!=', 0)
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->orderBy('transactions.trx_datetime', 'DESC')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "sales";
+                        }
+
+                    } else if ($select_grp == 1) {
+                        $col_name = "prd_name";
+                        $col_val = $select_set[$select_grp];
+
+                        if ($col_val != "ALL") {
+                            $sales = DB::table('products')
+                                ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+                                ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+                                ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->where($col_name, '=', $col_val)
+                                ->groupBy('products.prd_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "products";
+                        } else {
+                            $sales = DB::table('products')
+                                ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
+                                ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
+                                ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->groupBy('products.prd_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "products";
+                        }
+                    } else if ($select_grp == 2) {
+                        $col_name = "cus_name";
+                        $col_val = $select_set[$select_grp];
+
+                        if ($col_val != "ALL") {
+                            $sales = DB::table('customers')
+                                ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where('products.prd_is_refillable', '=', '1')
+                                ->where($col_name, '=', $col_val)
+                                ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->groupBy('customers.cus_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "customers";
+                        } else {
+                            $sales = DB::table('customers')
+                                ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
+                                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                                ->where('products.prd_is_refillable', '=', '1')
+                                ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->groupBy('customers.cus_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "customers";
+                        }
+
+                    } else if ($select_grp == 3) {
+                        $col_name = "usr_full_name";
+                        $col_val = $select_set[$select_grp];
+
+                        if ($col_val != "ALL") {
+                            $sales = DB::table('users')
+                                ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
+                                ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->where($col_name, '=', $col_val)
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->groupBy('users.usr_full_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "cashiers";
+                        } else {
+                            $sales = DB::table('users')
+                                ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
+                                ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
+                                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                                ->where('transactions.trx_total', '!=', 0)
+                                ->groupBy('users.usr_full_name')
+                                ->paginate($paginate_row);
+
+                            $tbl_sales_form = "cashiers";
+                        }
                     }
+                } else {
+                    session()->flash('errorMessage', "Invalid search");
 
-                } else if ($select_grp == 1) {
-                    $col_name = "prd_name";
-                    $col_val = $select_set[$select_grp];
+                    $sales = DB::table('transactions')
+                        ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                        ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                        ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                        ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                        ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
+                        ->where('transactions.trx_total', '!=', 0)
+                        ->orderBy('transactions.trx_datetime', 'DESC')
+                        ->paginate($paginate_row);
 
-                    if ($col_val != "ALL") {
-                        $sales = DB::table('products')
-                            ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
-                            ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
-                            ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->where($col_name, '=', $col_val)
-                            ->groupBy('products.prd_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "products";
-                    } else {
-                        $sales = DB::table('products')
-                            ->join('purchases', 'purchases.prd_id', '=', 'products.prd_id')
-                            ->join('transactions', 'transactions.trx_id', '=', 'purchases.trx_id')
-                            ->select('products.prd_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(purchases.pur_total) as pur_total'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->groupBy('products.prd_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "products";
-                    }
-                } else if ($select_grp == 2) {
-                    $col_name = "cus_name";
-                    $col_val = $select_set[$select_grp];
-
-                    if ($col_val != "ALL") {
-                        $sales = DB::table('customers')
-                            ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
-                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                            ->where('products.prd_is_refillable', '=', '1')
-                            ->where($col_name, '=', $col_val)
-                            ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->groupBy('customers.cus_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "customers";
-                    } else {
-                        $sales = DB::table('customers')
-                            ->join('transactions', 'transactions.cus_id', '=', 'customers.cus_id')
-                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                            ->where('products.prd_is_refillable', '=', '1')
-                            ->select('customers.cus_name', DB::raw('SUM((purchases.pur_crate_in * 12) + purchases.pur_loose_in) as pur_qty_in'), DB::raw('SUM(purchases.pur_qty) as pur_qty_out'), DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('SUM(transactions.trx_balance) as trx_balance'), DB::raw('SUM(transactions.trx_amount_paid) as trx_amount_paid'))
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->groupBy('customers.cus_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "customers";
-                    }
-
-                } else if ($select_grp == 3) {
-                    $col_name = "usr_full_name";
-                    $col_val = $select_set[$select_grp];
-
-                    if ($col_val != "ALL") {
-                        $sales = DB::table('users')
-                            ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
-                            ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->where($col_name, '=', $col_val)
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->groupBy('users.usr_full_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "cashiers";
-                    } else {
-                        $sales = DB::table('users')
-                            ->join('transactions', 'transactions.usr_id', '=', 'users.usr_id')
-                            ->select('users.usr_full_name', DB::raw('SUM(transactions.trx_total) as trx_total'), DB::raw('COUNT(transactions.trx_id) as trx_count'))
-                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                            ->where('transactions.trx_total', '!=', 0)
-                            ->groupBy('users.usr_full_name')
-                            ->paginate($paginate_row);
-
-                        $tbl_sales_form = "cashiers";
-                    }
+                    $tbl_sales_form = "sales";
                 }
             } else {
-                session()->flash('errorMessage', "Invalid search");
-
                 $sales = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                     ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -262,20 +338,8 @@ class ReportsController extends Controller
 
                 $tbl_sales_form = "sales";
             }
-        } else {
-            $sales = DB::table('transactions')
-                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
-                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($sales_date_from)), date("Y-m-d", strtotime($sales_date_to))])
-                ->where('transactions.trx_total', '!=', 0)
-                ->orderBy('transactions.trx_datetime', 'DESC')
-                ->paginate($paginate_row);
 
-            $tbl_sales_form = "sales";
         }
-
 
         $purchases = DB::table('purchases')
             ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
@@ -362,6 +426,8 @@ class ReportsController extends Controller
             ->where('prd_active', '=', 1)
             ->get();
 
+        session(['tbl_transraction0' => 'transactionsAll']);
+
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
     }
 
@@ -405,12 +471,13 @@ class ReportsController extends Controller
             ->where('prd_active', '=', 1)
             ->get();
 
+        session(['tbl_transraction0' => 'transactionsToday']);
+
         return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
     }
 
     public function transactionsFilter(Request $request)
     {
-
         $page_number = $request->input('page');
 
         if ($page_number == null) {
@@ -424,25 +491,63 @@ class ReportsController extends Controller
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
-        if ($search_transactions != null) {
+        if(session('tbl_transraction0') === 'transactionsAll'){
+
             $transactions = DB::table('transactions')
                 ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                 ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                 ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                 ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                 ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
-                ->where('trx_ref_id', 'LIKE', '%' . $search_transactions . '%')
-                ->paginate($paginate_row);
+                ->where('trx_active', '=', '1')
+                ->orderBy('transactions.trx_datetime', 'DESC')
+                ->get();
 
-            if ($transactions->isEmpty()) {
+            $purchases = DB::table('purchases')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                ->get();
+
+            $pur_ins = DB::table('purchases')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                ->get();
+
+            $ops_ins = DB::table('purchases')
+                ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+                ->get();
+
+            $bad_orders = DB::table('bad_orders')
+                ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->get();
+
+            $canisters = DB::table('products')
+                ->where('prd_is_refillable', '=', 1)
+                ->where('prd_active', '=', 1)
+                ->get();
+
+            session(['search_transactions' => $search_transactions]);
+            session(['transactions_date_from' => $transactions_date_from]);
+            session(['transactions_date_to' => $transactions_date_to]);
+            session(['paginate_row' => $paginate_row]);
+            session(['filter_btn' => $filter_btn]);
+
+            if ($filter_btn == "print") {
+                return view('admin.print.transactionreport', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
+            } else if ($filter_btn == "export") {
+                return Excel::download(new ExcelExport('transactionsExport', 'transactionsHeader', date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))), 'transaction-export.xlsx');
+            }
+
+        } else {
+
+            if ($search_transactions != null) {
                 $transactions = DB::table('transactions')
                     ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                     ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                     ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                     ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                     ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
-                    ->where('customers.cus_name', 'LIKE', '%' . $search_transactions . '%')
-                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                    ->where('trx_ref_id', 'LIKE', '%' . $search_transactions . '%')
                     ->paginate($paginate_row);
 
                 if ($transactions->isEmpty()) {
@@ -452,60 +557,84 @@ class ReportsController extends Controller
                         ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
                         ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
                         ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
-                        ->where('products.prd_name', 'LIKE', '%' . $search_transactions . '%')
+                        ->where('customers.cus_name', 'LIKE', '%' . $search_transactions . '%')
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
                         ->paginate($paginate_row);
+
+                    if ($transactions->isEmpty()) {
+                        $transactions = DB::table('transactions')
+                            ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                            ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                            ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                            ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
+                            ->where('products.prd_name', 'LIKE', '%' . $search_transactions . '%')
+                            ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                            ->paginate($paginate_row);
+
+                    }
+
+                    session(['tbl_transraction0' => '0']);
                 }
+
+                session(['tbl_transraction0' => '0']);
+
+            } else {
+                $transactions = DB::table('transactions')
+                    ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
+                    ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                    ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+                    ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
+                    ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
+                    ->where('trx_active', '=', '1')
+                    ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
+                    ->orderBy('transactions.trx_datetime', 'DESC')
+                    ->paginate($paginate_row);
+
+                session(['tbl_transraction0' => '0']);
+                    
             }
-        } else {
-            $transactions = DB::table('transactions')
-                ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
-                ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-                ->join('purchases', 'purchases.trx_id', '=', 'transactions.trx_id')
+
+            $purchases = DB::table('purchases')
                 ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-                ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id') //ADDED FOR OPPOSITION NAME DISPLAY ON CUSTOMER COLUMN 
-                ->where('trx_active', '=', '1')
-                ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))])
-                ->orderBy('transactions.trx_datetime', 'DESC')
-                ->paginate($paginate_row);
+                ->get();
+
+            $pur_ins = DB::table('purchases')
+                ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
+                ->get();
+
+            $ops_ins = DB::table('purchases')
+                ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
+                ->get();
+
+            $bad_orders = DB::table('bad_orders')
+                ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
+                ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
+                ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
+                ->get();
+
+            $canisters = DB::table('products')
+                ->where('prd_is_refillable', '=', 1)
+                ->where('prd_active', '=', 1)
+                ->get();
+
+            session(['search_transactions' => $search_transactions]);
+            session(['transactions_date_from' => $transactions_date_from]);
+            session(['transactions_date_to' => $transactions_date_to]);
+            session(['paginate_row' => $paginate_row]);
+            session(['filter_btn' => $filter_btn]);
+
+            if ($filter_btn == "find") {
+                return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
+            } else if ($filter_btn == "print") {
+                return view('admin.print.transactionreport', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
+            } else if ($filter_btn == "export") {
+                return Excel::download(new ExcelExport('transactionsExport', 'transactionsHeader', date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))), 'transaction-export.xlsx');
+            }
+
         }
 
-        $purchases = DB::table('purchases')
-            ->join('products', 'products.prd_id', '=', 'purchases.prd_id')
-            ->get();
-
-        $pur_ins = DB::table('purchases')
-            ->join('products', 'products.prd_id', '=', 'purchases.prd_id_in')
-            ->get();
-
-        $ops_ins = DB::table('purchases')
-            ->join('oppositions', 'oppositions.ops_id', '=', 'purchases.prd_id_in')
-            ->get();
-
-        $bad_orders = DB::table('bad_orders')
-            ->join('transactions', 'transactions.trx_id', '=', 'bad_orders.trx_id')
-            ->join('products', 'products.prd_id', '=', 'bad_orders.prd_id')
-            ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
-            ->get();
-
-        $canisters = DB::table('products')
-            ->where('prd_is_refillable', '=', 1)
-            ->where('prd_active', '=', 1)
-            ->get();
-
-        session(['search_transactions' => $search_transactions]);
-        session(['transactions_date_from' => $transactions_date_from]);
-        session(['transactions_date_to' => $transactions_date_to]);
-        session(['paginate_row' => $paginate_row]);
-        session(['filter_btn' => $filter_btn]);
-
-        if ($filter_btn == "find") {
-            return view('admin.reports.transactions', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
-        } else if ($filter_btn == "print") {
-            return view('admin.print.transactionreport', compact('transactions', 'transactions_date_from', 'transactions_date_to', 'purchases', 'pur_ins', 'ops_ins', 'bad_orders', 'canisters'));
-        } else if ($filter_btn == "export") {
-            return Excel::download(new ExcelExport('transactionsExport', 'transactionsHeader', date("Y-m-d", strtotime($transactions_date_from)), date("Y-m-d", strtotime($transactions_date_to))), 'transaction-export.xlsx');
-        }
+        
     }
 
     public function paymentsToday()

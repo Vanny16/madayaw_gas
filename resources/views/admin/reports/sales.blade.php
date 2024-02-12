@@ -133,11 +133,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                   
                                         <div class="col-md-1 mb-3">
-                                        <button type="submit" name="filter_btn" value="print" class="btn btn-light text-success form-control"><span class="fa fa-print"></span> Print</button>
+                                            <button type="submit" name="filter_btn" value="print" class="btn btn-light text-success form-control"><span
+                                                    class="fa fa-print"></span> Print</button>
                                         </div>
                                         <div class="col-md-1 mb-3">
-                                        <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span class="fa fa-file-export"></span> Export</button>
+                                            <button type="submit" name="filter_btn" value="export" class="btn btn-light text-success form-control"><span
+                                                    class="fa fa-file-export"></span> Export</button>
                                         </div>
                                 </div>
                             </form>
@@ -179,6 +182,19 @@
                                             
                                         @elseif(session('tbl_sales_form') == "sales")
                                             <tr>
+                                                <th>Reference ID</th>
+                                                <th>Date & Time</th>
+                                                <th>Item</th>
+                                                <th>IN</th>
+                                                <th>OUT</th>
+                                                <th>Net Sale</th>
+                                                <th>Cashier</th>
+                                                <th>Customer</th>
+                                            </tr>
+
+                                        @elseif(session('tbl_sales_form') === "salesAll")
+                                            <tr>
+                                                <th>asckubnafj</th>
                                                 <th>Reference ID</th>
                                                 <th>Date & Time</th>
                                                 <th>Item</th>
@@ -239,8 +255,20 @@
                                                     <td>{{ $sale->cus_name }}</td>
                                                 </tr>
                                             
-                                            @elseif(session('tbl_sales_form') == "sales")
+                                            @elseif(session('tbl_sales_form') === "sales")
                                                 <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $sale->trx_ref_id }}" >
+                                                    <td>{{ $sale->trx_ref_id }}</td>
+                                                    <td>{{ $sale->trx_datetime }}</td>
+                                                    <td>{{ $sale->prd_name }}</td>
+                                                    <td>{{ ($sale->pur_crate_in * 12) + $sale->pur_loose_in}}</td>
+                                                    <td>{{ $sale->pur_qty }}</td>
+                                                    <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
+                                                    <td>{{ $sale->usr_full_name }}</td>
+                                                    <td>{{ $sale->cus_name }}</td>
+                                                </tr>
+
+                                            @elseif(session('tbl_sales_form') == "salesAll")
+                                                <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $sale->trx_ref_id }}">
                                                     <td>{{ $sale->trx_ref_id }}</td>
                                                     <td>{{ $sale->trx_datetime }}</td>
                                                     <td>{{ $sale->prd_name }}</td>

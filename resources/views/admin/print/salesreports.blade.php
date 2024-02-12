@@ -81,6 +81,19 @@
                                 <th>Cashier</th>
                                 <th>Customer</th>
                             </tr>
+
+                        @elseif(session('tbl_sales_form') === "salesAll")
+                            <tr>
+                                <th>askljdbuiabf</th>
+                                <th>Reference ID</th>
+                                <th>Date & Time</th>
+                                <th>Item</th>
+                                <th>IN</th>
+                                <th>OUT</th>
+                                <th>Net Sale</th>
+                                <th>Cashier</th>
+                                <th>Customer</th>
+                            </tr>
                         
                         @elseif(session('tbl_sales_form') == "products")
                             <tr>
@@ -134,6 +147,18 @@
                             
                             @elseif(session('tbl_sales_form') == "sales")
                                 <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $sale->trx_ref_id }}" >
+                                    <td>{{ $sale->trx_ref_id }}</td>
+                                    <td>{{ $sale->trx_datetime }}</td>
+                                    <td>{{ $sale->prd_name }}</td>
+                                    <td>{{ ($sale->pur_crate_in * 12) + $sale->pur_loose_in}}</td>
+                                    <td>{{ $sale->pur_qty }}</td>
+                                    <td>₱ {{ number_format($sale->pur_total, 2, '.', ',') }}</td>
+                                    <td>{{ $sale->usr_full_name }}</td>
+                                    <td>{{ $sale->cus_name }}</td>
+                                </tr>
+
+                            @elseif(session('tbl_sales_form') === "salesAll")
+                                <tr class='clickable-row' data-toggle="modal" data-target="#purchases-modal{{ $sale->trx_ref_id }}">
                                     <td>{{ $sale->trx_ref_id }}</td>
                                     <td>{{ $sale->trx_datetime }}</td>
                                     <td>{{ $sale->prd_name }}</td>

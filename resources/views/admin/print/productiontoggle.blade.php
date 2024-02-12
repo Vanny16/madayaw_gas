@@ -246,10 +246,9 @@
                                 <td colspan="1" style="text-align:center; border:1px solid black"><i>{{ $issued_array[0]->ref_id }}</i></td>
                                 @foreach ($canisters as $canister)
                                     @php($quantity = $issued_array->firstWhere('prd_id', $canister->prd_id)->quantity ?? 0)
+                                    <td style="text-align:center; border:1px solid black"><strong>{{$quantity}}</strong></td>
                                 @endforeach
-                                @for($index = 2; $index < count($customers_array); $index++)
-                                    <td style="text-align:center; border:1px solid black"><strong>{{$quantity}}</strong></td>    
-                                @endfor
+                                
                             </tr>
                         @endforeach
 
