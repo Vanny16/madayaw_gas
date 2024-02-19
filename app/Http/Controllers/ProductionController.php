@@ -2335,8 +2335,6 @@ class ProductionController extends Controller
             //Switch case to put table arrays on
             //$holder_array
 
-
-
             // switch($x)
 
             // {

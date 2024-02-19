@@ -419,6 +419,8 @@ class SalesController extends Controller
         $list = $request->purchases;
         $selected_item_list  = $list;
         $purchase_row = explode(",#,", $selected_item_list);
+
+        // dd($purchase_row);
         
         //for products variable
         $deduct_qty = 0;
@@ -455,6 +457,8 @@ class SalesController extends Controller
                 $can_type_in = $purchase_data[12];
                 $cus_id = $customer_id->cus_id; //$customer_id[0]->cus_id;
             }
+
+            // dd($prd_id);
             
             DB::table('purchases')
             ->insert([

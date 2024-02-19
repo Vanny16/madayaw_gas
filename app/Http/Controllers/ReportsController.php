@@ -117,9 +117,9 @@ class ReportsController extends Controller
 
         // dd(session('tbl_sales_form'));
 
-        if(session('tbl_sales_form') === 'salesAll'){
+        if (session('tbl_sales_form') === 'salesAll') {
             // dd(session('tbl_sales_form'));
-            
+
             $sales = DB::table('transactions')
                 ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
                 ->leftJoin('customers', 'customers.cus_id', '=', 'transactions.cus_id')
@@ -491,7 +491,7 @@ class ReportsController extends Controller
         $paginate_row = $request->input('paginate_row') ?? session('paginate_row');
         $filter_btn = $request->input('filter_btn') ?? session('filter_btn');
 
-        if(session('tbl_transraction0') === 'transactionsAll'){
+        if (session('tbl_transraction0') === 'transactionsAll') {
 
             $transactions = DB::table('transactions')
                 ->leftJoin('users', 'users.usr_id', '=', 'transactions.usr_id')
@@ -592,7 +592,7 @@ class ReportsController extends Controller
                     ->paginate($paginate_row);
 
                 session(['tbl_transraction0' => '0']);
-                    
+
             }
 
             $purchases = DB::table('purchases')
@@ -634,7 +634,7 @@ class ReportsController extends Controller
 
         }
 
-        
+
     }
 
     public function paymentsToday()
@@ -734,9 +734,11 @@ class ReportsController extends Controller
                     ->where('trx_active', '=', '1')
                     ->where('trx_ref_id', 'LIKE', '%' . $search_payments . '%')
                     ->when($status_filter == 'Pending', function ($query) {
-                        return $query->where('trx_balance', '>', 0); })
+                        return $query->where('trx_balance', '>', 0);
+                    })
                     ->when($status_filter == 'Paid', function ($query) {
-                        return $query->where('trx_balance', '<=', 0); })
+                        return $query->where('trx_balance', '<=', 0);
+                    })
                     ->orderBy('transactions.trx_datetime', 'DESC')
                     ->paginate($paginate_row);
 
@@ -747,9 +749,11 @@ class ReportsController extends Controller
                         ->where('trx_active', '=', '1')
                         ->where('customers.cus_name', 'LIKE', '%' . $search_payments . '%')
                         ->when($status_filter == 'Pending', function ($query) {
-                            return $query->where('trx_balance', '>', 0); })
+                            return $query->where('trx_balance', '>', 0);
+                        })
                         ->when($status_filter == 'Paid', function ($query) {
-                            return $query->where('trx_balance', '<=', 0); })
+                            return $query->where('trx_balance', '<=', 0);
+                        })
                         ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
                         ->orderBy('transactions.trx_datetime', 'DESC')
                         ->paginate($paginate_row);
@@ -759,9 +763,11 @@ class ReportsController extends Controller
                     ->join('customers', 'customers.cus_id', '=', 'transactions.cus_id')
                     ->where('trx_active', '=', '1')
                     ->when($status_filter == 'Pending', function ($query) {
-                        return $query->where('trx_balance', '>', 0); })
+                        return $query->where('trx_balance', '>', 0);
+                    })
                     ->when($status_filter == 'Paid', function ($query) {
-                        return $query->where('trx_balance', '<=', 0); })
+                        return $query->where('trx_balance', '<=', 0);
+                    })
                     ->whereBetween('transactions.trx_date', [date("Y-m-d", strtotime($payments_date_from)), date("Y-m-d", strtotime($payments_date_to))])
                     ->orderBy('transactions.trx_datetime', 'DESC')
                     ->paginate($paginate_row);
@@ -945,5 +951,95 @@ class ReportsController extends Controller
             ->get();
 
         return view('admin.reports.production', compact('canisters', 'production_date_from', 'production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id', 'selectedDate', 'selectedID', 'months', 'years', 'scrapped_month'));
+    }
+
+    public function eod_main()
+    {
+        $selectedDate = Carbon::now()->format('Y-m-d');
+
+        return view('admin.reports.EODMain', compact('selectedDate'));
+    }
+
+    public function search_eod(Request $request)
+    {
+        $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d');
+        // dd($selectedDate);
+        $eod_by_date = DB::table('eod_reports')
+            ->whereRaw('DATE(created_at) = ?', [$selectedDate])
+            ->join('products', 'products.prd_id', '=', 'eod_reports.prd_id')
+            ->select(
+                'eod_reports.prd_id',
+                'products.prd_name',
+                'eod_reports.cus_name',
+                'eod_reports.ref_id',
+                'eod_reports.quantity'
+            )
+            ->orderBy('eod_reports.ref_id')
+            ->groupBy('eod_reports.prd_id', 'products.prd_name', 'eod_reports.cus_name', 'eod_reports.ref_id', 'eod_reports.quantity')
+            ->get();
+
+        // dd($eod_by_date);
+
+        // $production_id = DB::table('eod_reports')whereRaw('DATE(created_at) = ?', [$selectedDate])
+        //     ->where('created_at', '=', $selectedDate);
+
+        // // dd(empty($production_id));
+
+        // $canisters = DB::table('products')
+        //     ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+        //     ->where('products.acc_id', '=', session('acc_id'))
+        //     ->where('prd_for_production', '=', '1')
+        //     ->where('prd_is_refillable', '=', '1')
+        //     ->get();
+
+        // $production_datetime = DB::table('production_logs');
+
+        // $production_datetime = $production_datetime->first();
+
+        // if (!empty($production_datetime)) {
+        //     $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
+        //     $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
+
+        //     $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
+
+        //     if (!empty($production_datetime->pdn_end_time)) {
+        //         $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
+        //     } else {
+        //         $pdn_end_time = "--:--  --";
+        //     }
+        // } else {
+        //     $pdn_date = Carbon::now()->format('F j, Y');
+        //     $pdn_start_time = "--:--  --";
+        //     $pdn_end_time = "--:--  --";
+        //     $scrapped_month = Carbon::now()->format('F Y');
+        // }
+
+        // // dd($production_datetime);
+
+        // $production_list = DB::table('production_logs')
+        //     ->select('pdn_id', 'pdn_date')
+        //     ->get();
+
+        // $months = [];
+        // $years = [];
+
+        // foreach ($production_list as $row) {
+        //     if (!in_array(date("F", strtotime($row->pdn_date)), $months)) {
+        //         array_push($months, date("F", strtotime($row->pdn_date)));
+        //     }
+
+        //     if (!in_array(date("Y", strtotime($row->pdn_date)), $years)) {
+        //         array_push($years, date("Y", strtotime($row->pdn_date)));
+        //     }
+        // }
+
+        // $production_date_from = "";
+        // $production_date_to = "";
+
+        // $tanks = DB::table('tanks')
+        //     ->where('acc_id', '=', session('acc_id'))
+        //     ->get();
+
+        return view('admin.reports.EODMain', compact('selectedDate','eod_by_date'));
     }
 }

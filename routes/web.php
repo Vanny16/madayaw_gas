@@ -161,12 +161,16 @@ Route::group(['prefix' => 'reports'], function()
 
     Route::post('production', 'ReportsController@production');
     Route::post('production-filter', 'ReportsController@productionFilter');
+
+    // * eod new
+    Route::get('eod_main', 'ReportsController@eod_main');
+    Route::post('search_eod', 'ReportsController@search_eod');
 });
 
 Route::group(['prefix' => 'sales'], function()
 {
     Route::get('main', 'SalesController@main');
-    // Route::get('payments', 'SalesController@payments'); // ! FOR DEBUGGING *******************************************
+    // Route::get('payments', 'SalesController@payments'); // ! FOR DEBUGGING ****** (No PRoblem 02-19-2024) *******
     Route::get('get-transaction/{trx_ref_id}', 'SalesController@getTransaction');
 
     Route::post('main', 'SalesController@selectCustomer'); //'select_customer'
