@@ -58,8 +58,40 @@
                                             @if ($eod_by_date->count() === 0)
                                             <td><div>NO DATA FOR {{ date('F j, Y', strtotime($selectedDate)) }}</div></td>
                                             @endif
+{{-- 
+                                            @foreach($eod_by_date as $eod)
+                                            <tr>
+                                                <td style="text-align:center; border:1px solid;"><i>{{ $eod->ref_id }}</i></td>
+                                                <td style="text-align:center; border:1px solid;"><i>{{ $eod->cus_name }}</i></td>
+                                                @foreach($canisters as $canister)
+                                                @php
+                                                // Find the index of the current prd_id in the prd_ids array
+                                                $index = array_search($canister->prd_id, explode(',', $eod->prd_ids));
+                                                // Get the corresponding quantity
+                                                $quantity = explode(',', $eod->quantities)[$index] ?? 0;
+                                                @endphp
+                                                <td style="text-align:center; border:1px solid;"><strong>{{ $quantity }}</strong></td>
+                                                @endforeach
+                                            </tr>
+                                            @endforeach --}}
 
                                             @foreach($eod_by_date as $eod)
+                                            <tr>
+                                                <td style="text-align:center; border:1px solid;"><i>{{ $eod->ref_id }}</i></td>
+                                                <td style="text-align:center; border:1px solid;"><i>{{ $eod->cus_name }}</i></td>
+                                                @foreach($canisters as $canister)
+                                                @php
+                                                // Find the index of the current prd_id in the prd_ids array
+                                                $index = array_search($canister->prd_id, explode(',', $eod->prd_ids));
+                                                // Get the corresponding quantity, or default to 0 if prd_id not found
+                                                $quantity = ($index !== false) ? explode(',', $eod->quantities)[$index] : 0;
+                                                @endphp
+                                                <td style="text-align:center; border:1px solid;"><strong>{{ $quantity }}</strong></td>
+                                                @endforeach
+                                            </tr>
+                                            @endforeach
+
+                                            {{-- @foreach($eod_by_date as $eod)
                                             <tr>
                                                 <td style="text-align:center; border:1px solid;"><i>{{ $eod->ref_id }}</i></td>
                                                 <td style="text-align:center; border:1px solid;"><i>{{ $eod->cus_name }}</i></td>
@@ -70,7 +102,7 @@
                                                 <td style="text-align:center; border:1px solid;"><strong>{{ $quantity }}</strong></td>
                                                 @endforeach
                                             </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                             @endif
                                         </tbody>
                                     </table>

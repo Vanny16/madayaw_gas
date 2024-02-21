@@ -1025,7 +1025,6 @@ class ReportsController extends Controller
 
             // dd($production_datetime);
 
-
             $production_list = DB::table('production_logs')
                 ->select('pdn_id', 'pdn_date')
                 ->get();
@@ -1074,10 +1073,7 @@ class ReportsController extends Controller
                 ->groupBy('ref_id', 'cus_name')
                 ->get();
 
-                
-
             // dd($eod_reports);
-
 
             // dd($eod_reports);
             // $eod_by_date = EodReport::join('transactions', 'eod_reports.ref_id', '=', 'transactions.trx_ref_id')
