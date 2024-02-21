@@ -11,6 +11,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ action('MainController@home') }}">Home</a></li>
                         <li class="breadcrumb-item active">Reports</li>
+                        <li class="breadcrumb-item active">Production</li>
                     </ol>
                 </div>
             </div>
@@ -31,7 +32,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <form method="POST" action="{{ action('ReportsController@production') }}">
+                                            <form method="POST" action="{{ action('ReportsController@search_eod_production') }}">
                                             {{ csrf_field() }}
                                                 <div class="row">
                                                     <div class="col-md-5 mb-3">
@@ -60,8 +61,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-3 mb-3">
-                                                        <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
+                                                    <div class="col-md-2 mb-3">
+                                                        <button type="submit" class="btn btn-success float-right w-100" name="action" value="search"><span
+                                                                class="fa fa-search"></span> Search</button>
+                                                        {{-- <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Search</button>
+                                                        <button type="submit" class="btn btn-success float-right w-100"><span class="fa fa-search"></span> Print EOD</button> --}}
+                                                    </div>
+                                                    <div class="col-md-2 mb-3">
+                                                        <button type="submit" class="btn btn-primary float-right w-100" name="action" value="print_eod"><span
+                                                                class="fa fa-print"></span> Print EOD</button>
                                                     </div>
                                                 </div>
                                             </form>

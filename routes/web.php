@@ -106,8 +106,8 @@ Route::group(['prefix' => 'production'], function()
     Route::post('edit-leakers', 'ProductionController@editLeakers');
     Route::post('edit-revalving', 'ProductionController@editRevalving');
     Route::post('edit-scrap', 'ProductionController@editScraps');
-    
 
+    
 });
 
 Route::group(['prefix' => 'product'], function()
@@ -159,12 +159,12 @@ Route::group(['prefix' => 'reports'], function()
     Route::get('transactions/today', 'ReportsController@transactionsToday');
     Route::get('transactions-filter', 'ReportsController@transactionsFilter')->name('transactions-filter');
 
-    Route::post('production', 'ReportsController@production');
-    Route::post('production-filter', 'ReportsController@productionFilter');
+    Route::get('production', 'ReportsController@production');
+    // Route::post('production-filter', 'ReportsController@productionFilter');
 
     // * eod new
-    Route::get('eod_main', 'ReportsController@eod_main');
-    Route::post('search_eod', 'ReportsController@search_eod');
+    // Route::get('eod_main', 'ReportsController@eod_main');
+    Route::post('search_eod', 'ReportsController@search_eod_production');
 });
 
 Route::group(['prefix' => 'sales'], function()

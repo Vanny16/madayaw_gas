@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\EodReport;
 use Carbon\Carbon;
 use App\Product;
 use App\Opposition;
@@ -865,17 +866,18 @@ class ReportsController extends Controller
 
     }
 
-    public function production(Request $request)
+    public function production()
     {
-        $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d');
-        $selectedID = $request->selectedID ?? '';
+        $selected_ID = "";
+        $selectedDate = Carbon::now()->format('Y-m-d');
+        $selectedID = $selected_ID ?? '';
 
         $production_id = DB::table('production_logs')
             ->where('pdn_date', '=', $selectedDate);
 
-        if ($selectedID <> '') {
-            $production_id = $production_id->where('pdn_id', '=', $selectedID);
-        }
+        // if ($selectedID <> '') {
+        //     $production_id = $production_id->where('pdn_id', '=', $selectedID);
+        // }
         $production_id = $production_id->get();
         // dd($production_id);
 
@@ -951,95 +953,173 @@ class ReportsController extends Controller
             ->get();
 
         return view('admin.reports.production', compact('canisters', 'production_date_from', 'production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id', 'selectedDate', 'selectedID', 'months', 'years', 'scrapped_month'));
+        // return view('admin.reports.production', compact('selectedDate', 'production_id', 'pdn_date', 'pdn_start_time'));
+
     }
 
-    public function eod_main()
+    // public function eod_main()
+    // {
+    //     $selectedDate = Carbon::now()->format('Y-m-d');
+
+    //     return view('admin.reports.EODMain', compact('selectedDate'));
+    // }
+
+    public function search_eod_production(Request $request)
     {
-        $selectedDate = Carbon::now()->format('Y-m-d');
+        if ($request->input('action') === 'search') {
+            $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d');
+            $selectedID = $request->selectedID ?? '';
 
-        return view('admin.reports.EODMain', compact('selectedDate'));
-    }
+            $production_id = DB::table('production_logs')
+                ->where('pdn_date', '=', $selectedDate);
 
-    public function search_eod(Request $request)
-    {
-        $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d');
-        // dd($selectedDate);
-        $eod_by_date = DB::table('eod_reports')
-            ->whereRaw('DATE(created_at) = ?', [$selectedDate])
-            ->join('products', 'products.prd_id', '=', 'eod_reports.prd_id')
-            ->select(
-                'eod_reports.prd_id',
-                'products.prd_name',
-                'eod_reports.cus_name',
-                'eod_reports.ref_id',
-                'eod_reports.quantity'
-            )
-            ->orderBy('eod_reports.ref_id')
-            ->groupBy('eod_reports.prd_id', 'products.prd_name', 'eod_reports.cus_name', 'eod_reports.ref_id', 'eod_reports.quantity')
-            ->get();
+            if ($selectedID <> '') {
+                $production_id = $production_id->where('pdn_id', '=', $selectedID);
+            }
+            $production_id = $production_id->get();
+            // dd($production_id);
 
-        // dd($eod_by_date);
+            // dd(empty($production_id));
 
-        // $production_id = DB::table('eod_reports')whereRaw('DATE(created_at) = ?', [$selectedDate])
-        //     ->where('created_at', '=', $selectedDate);
+            if (count($production_id) < 2 && count($production_id) > 0) {
+                $selectedID = $production_id[0]->pdn_id;
+            }
 
-        // // dd(empty($production_id));
+            $canisters = DB::table('products')
+                ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
+                ->where('products.acc_id', '=', session('acc_id'))
+                ->where('prd_for_production', '=', '1')
+                ->where('prd_is_refillable', '=', '1')
+                ->get();
 
-        // $canisters = DB::table('products')
-        //     ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
-        //     ->where('products.acc_id', '=', session('acc_id'))
-        //     ->where('prd_for_production', '=', '1')
-        //     ->where('prd_is_refillable', '=', '1')
-        //     ->get();
+            $production_datetime = DB::table('production_logs');
 
-        // $production_datetime = DB::table('production_logs');
+            if ($selectedID <> '') {
+                $production_datetime = $production_datetime->where('pdn_id', '=', $selectedID);
+                // dd('if');
+            } elseif (!empty($production_id[0])) {
+                $production_datetime = $production_datetime->where('pdn_id', '=', $production_id[0]->pdn_id);
+                // dd('elseif');
+            }
 
-        // $production_datetime = $production_datetime->first();
+            $production_datetime = $production_datetime->first();
 
-        // if (!empty($production_datetime)) {
-        //     $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
-        //     $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
 
-        //     $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
+            if (!empty($production_datetime)) {
+                $pdn_date = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F j, Y');
+                $pdn_start_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_start_time)->format('h:i A');
 
-        //     if (!empty($production_datetime->pdn_end_time)) {
-        //         $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
-        //     } else {
-        //         $pdn_end_time = "--:--  --";
-        //     }
-        // } else {
-        //     $pdn_date = Carbon::now()->format('F j, Y');
-        //     $pdn_start_time = "--:--  --";
-        //     $pdn_end_time = "--:--  --";
-        //     $scrapped_month = Carbon::now()->format('F Y');
-        // }
+                $scrapped_month = Carbon::createFromFormat('Y-m-d', $production_datetime->pdn_date)->format('F Y');
 
-        // // dd($production_datetime);
+                if (!empty($production_datetime->pdn_end_time)) {
+                    $pdn_end_time = Carbon::createFromFormat('H:i:s', $production_datetime->pdn_end_time)->format('h:i A');
+                } else {
+                    $pdn_end_time = "--:--  --";
+                }
+            } else {
+                $pdn_date = Carbon::now()->format('F j, Y');
+                $pdn_start_time = "--:--  --";
+                $pdn_end_time = "--:--  --";
+                $scrapped_month = Carbon::now()->format('F Y');
+            }
 
-        // $production_list = DB::table('production_logs')
-        //     ->select('pdn_id', 'pdn_date')
-        //     ->get();
+            // dd($production_datetime);
 
-        // $months = [];
-        // $years = [];
 
-        // foreach ($production_list as $row) {
-        //     if (!in_array(date("F", strtotime($row->pdn_date)), $months)) {
-        //         array_push($months, date("F", strtotime($row->pdn_date)));
-        //     }
+            $production_list = DB::table('production_logs')
+                ->select('pdn_id', 'pdn_date')
+                ->get();
 
-        //     if (!in_array(date("Y", strtotime($row->pdn_date)), $years)) {
-        //         array_push($years, date("Y", strtotime($row->pdn_date)));
-        //     }
-        // }
+            $months = [];
+            $years = [];
 
-        // $production_date_from = "";
-        // $production_date_to = "";
+            foreach ($production_list as $row) {
+                if (!in_array(date("F", strtotime($row->pdn_date)), $months)) {
+                    array_push($months, date("F", strtotime($row->pdn_date)));
+                }
 
-        // $tanks = DB::table('tanks')
-        //     ->where('acc_id', '=', session('acc_id'))
-        //     ->get();
+                if (!in_array(date("Y", strtotime($row->pdn_date)), $years)) {
+                    array_push($years, date("Y", strtotime($row->pdn_date)));
+                }
+            }
 
-        return view('admin.reports.EODMain', compact('selectedDate','eod_by_date'));
+            $production_date_from = "";
+            $production_date_to = "";
+
+            $tanks = DB::table('tanks')
+                ->where('acc_id', '=', session('acc_id'))
+                ->get();
+
+            return view('admin.reports.production', compact('canisters', 'production_date_from', 'production_date_to', 'pdn_date', 'pdn_start_time', 'pdn_end_time', 'tanks', 'production_id', 'selectedDate', 'selectedID', 'months', 'years', 'scrapped_month'));
+
+        } elseif ($request->input('action') === 'print_eod') {
+            // Perform print EOD action
+            $selectedDate = $request->selectedDate ?? Carbon::now()->format('Y-m-d');
+
+            $canisters = DB::table('products')
+                ->where('acc_id', '=', session('acc_id'))
+                ->where('prd_is_refillable', '=', 1)
+                ->where('prd_for_production', '=', 1)
+                ->where('prd_active', '=', 1)
+                ->get();
+
+            // $eod_reports = EodReport::select('ref_id')
+            //     ->whereRaw('DATE(created_at) = ?', [$selectedDate])
+            //     ->groupBy('ref_id')
+            //     ->get();
+
+            $eod_by_date = EodReport::select('ref_id', 'cus_name', DB::raw('GROUP_CONCAT(prd_id) AS prd_ids'), DB::raw('GROUP_CONCAT(quantity) AS quantities'))
+                ->whereRaw('DATE(created_at) = ?', [$selectedDate])
+                ->where('report_type', '=', '1')
+                ->groupBy('ref_id', 'cus_name')
+                ->get();
+
+                
+
+            // dd($eod_reports);
+
+
+            // dd($eod_reports);
+            // $eod_by_date = EodReport::join('transactions', 'eod_reports.ref_id', '=', 'transactions.trx_ref_id')
+            //     ->select('eod_reports.ref_id', 'eod_reports.prd_id', 'eod_reports.quantity', 'eod_reports.cus_name')
+            //     // ->groupBy('eod_reports.ref_id', 'eod_reports.prd_id', 'eod_reports.quantity', 'eod_reports.cus_name')
+            //     ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
+            //     ->get();
+
+            // foreach($eod_reports as $report){
+            //     $eod_by_date = EodReport::join('customers', 'eod_reports.cus_id', '=', 'customers.cus_id')
+            //         ->select('customers.cus_name AS cus_name', 'ref_id', 'prd_id', 'quantity')
+            //         ->where('ref_id', '=', $report->ref_id)
+            //         ->where('report_type', '=', '1') //Report type '1' refers to 'Purchases'
+            //         ->get();
+                    
+
+            // }
+
+
+            // $holder_array = [];
+            // $holder_array = $eod_by_date;
+            // $new_internal_array = [];
+            // do {
+            //     foreach ($holder_array as $row) {
+            //         foreach ($canisters as $canister) {
+            //             // dd($canister, $canister->prd_id, $row);
+            //             if ($canister->prd_id == $row->prd_id) {
+            //                 array_push($new_internal_array, $row->quantity);
+            //             } else {
+            //                 array_push($new_internal_array, 0);
+            //             }
+            //         }
+            //     }
+            // }
+            // while (!empty($holder_array));
+            // if (!empty($eod_by_date)) {
+            //     $eod_by_date['quantities'] = $new_internal_array;
+            // }
+
+            // dd($eod_by_date);
+
+            return view('admin.reports.production_eod', compact('selectedDate', 'eod_by_date', 'canisters'));
+        }
     }
 }

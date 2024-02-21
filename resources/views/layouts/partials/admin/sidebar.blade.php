@@ -189,19 +189,11 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('ReportsController@eod_main') }}" class="nav-link">
-                        <i class="nav-icon fa fa-bar-chart"></i>
-                        <p>
-                            EOD Report
-                        </p>
-                    </a>
-                </li>
                 @endif
 
                 @if(session('typ_id') == '1' || session('typ_id') == '5') {{-- || session('typ_id') == '4'--}}
                 <li class="nav-item">
-                    <form id="go_productions" method="POST" action="{{ action('ReportsController@production') }}">
+                    <form id="go_productions" action="{{ action('ReportsController@production') }}">
                     {{ csrf_field() }}
                         <button href="" class="nav-link btn btn-transparent text-dark" onclick="go_productions.submit()">
                             <i class="nav-icon fa fa-bar-chart"></i>
