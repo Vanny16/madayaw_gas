@@ -1047,7 +1047,7 @@
                                         <div class="col-md-4 col-12 mb-3">
                                             <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_canister_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{{ number_format(get_total_canister_report()) }}</h2>
                                                     <p>Madayaw Canister Population</p>
                                                 </div>
                                             </div>
@@ -1055,7 +1055,7 @@
                                         <div class="col-md-4 col-12 mb-3">
                                             <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_opposition_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{{ number_format(get_total_opposition_report()) }}</h2>
                                                     <p>Opposition Canister Population</p>
                                                 </div>
                                             </div>
@@ -1063,7 +1063,7 @@
                                         <div class="col-md-4 col-12 mb-3">
                                             <div class="card border card-stretch" style="">
                                                 <div class="card-body text-center">
-                                                    <h2 style="color:#238ab2;">{!! get_total_stock_report() !!}</h2>
+                                                    <h2 style="color:#238ab2;">{{ number_format(get_total_stock_report()) }}</h2>
                                                     <p>Total Canister Population</p>
                                                 </div>
                                             </div>
