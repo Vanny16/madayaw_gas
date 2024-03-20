@@ -31,7 +31,7 @@ class ProductionController extends Controller
             ->join('suppliers', 'suppliers.sup_id', '=', 'products.sup_id')
             ->where('products.acc_id', '=', session('acc_id'))
             ->where('prd_for_production', '=', '1')
-            ->where('prd_is_refillable', '=', '1')
+            ->where('prd_is_refillable', '=', '1') // !
             ->get();
 
         $suppliers = DB::table('suppliers')

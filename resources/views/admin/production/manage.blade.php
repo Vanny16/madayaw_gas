@@ -445,7 +445,7 @@
                                                     @if(isset($raw_materials))
                                                         @foreach($raw_materials as $raw_material)
                                                             @if($raw_material->prd_is_refillable == 1)
-                                                                @if($raw_material->prd_raw_can_qty < $raw_material->prd_reorder_point)
+                                                                @if($raw_material->prd_quantity < $raw_material->prd_reorder_point)
                                                                     @php($reorder_indicator = "table-danger" )
                                                                 @else
                                                                     @php($reorder_indicator = "")
@@ -468,12 +468,12 @@
                                                                 <td>{{$raw_material->prd_name}}</td>
                                                                 <td>
                                                                     @if($raw_material->prd_is_refillable == 1)
-                                                                        {{number_format($raw_material->prd_raw_can_qty, 0, '.', ',')}}
+                                                                        {{number_format($raw_material->prd_quantity, 0, '.', ',')}}
                                                                         <br>
                                                                         @if($reorder_indicator != "") 
-                                                                            @if($raw_material->prd_raw_can_qty == 0)
+                                                                            @if($raw_material->prd_quantity == 0)
                                                                                 <span class="badge badge-danger">Restock now</span>
-                                                                            @elseif($raw_material->prd_raw_can_qty < $raw_material->prd_reorder_point)
+                                                                            @elseif($raw_material->prd_quantity < $raw_material->prd_reorder_point)
                                                                                 <span class="badge badge-warning">Request for restock</span>
                                                                             @endif
                                                                         @endif
@@ -570,7 +570,7 @@
                                                                                         </div>
                                                                                         @php($quantity = "")
                                                                                         @if($raw_material->prd_is_refillable == 1)
-                                                                                            @php($quantity = $raw_material->prd_raw_can_qty)
+                                                                                            @php($quantity = $raw_material->prd_quantity)
                                                                                         @else
                                                                                             @php($quantity = $raw_material->prd_quantity)
                                                                                         @endif
@@ -1904,7 +1904,7 @@
                                                                             <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                                         @else
                                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
-                                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity ?? 0 }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                                             
                                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
                                                                             <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
@@ -1942,7 +1942,7 @@
                                                                             <td><input type="text" class="form-control" name="verify_total_stock_quantity{{$canister->prd_id}}" value="{!! get_product_total_stock($canister->prd_id) !!}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                                         @else
                                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
-                                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity ?? 0  }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                                             
                                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
                                                                             <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
@@ -1964,7 +1964,7 @@
                                                             @endforeach
                                                         @else
                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
-                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                            <td><input type="text" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity ?? 0  }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                             
                                                             <td><input type="text" class="form-control" value="N/A" disabled></td>
                                                             <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
@@ -1986,7 +1986,7 @@
                                                     @else
                                                         <td><i>{{$canister->prd_name}}</i></td>
                                                         
-                                                        <td><input type="form-check-input" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
+                                                        <td><input type="form-check-input" class="form-control" name="verify_filled_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_quantity ?? 0 }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         <td><input type="text" class="form-control" name="verify_leakers_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_leakers }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
                                                         
                                                         <td><input type="text" class="form-control" name="verify_empty_stock_quantity{{$canister->prd_id}}" value="{{ $canister->prd_empty_goods }}" onclick="this.select();" onkeypress="return isNumberKey(this, event);" onchange="noNegativeValue(this.id)" required></td>
